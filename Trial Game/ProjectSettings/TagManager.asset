@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Cursor
+  - Unit
   layers:
   - Default
   - TransparentFX
@@ -13,14 +15,14 @@ TagManager:
   - UI
   - 
   - 
+  - PlayBoundaries
+  - Cursor
+  - Map
+  - Player1
+  - Player2
+  - Player3
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Projectile
   - 
   - 
   - 
