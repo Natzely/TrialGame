@@ -13,13 +13,15 @@ public class CursorController : MonoBehaviour
     SpriteRenderer _sR;
     List<Vector2> _moves;
     Vector2 _startPos;
+    Color _playerColor;
+    Color _errorColor;
     bool _selecting;
     bool _noGo;
     float _moveTimer;
     float _horzClamp;
     float _vertClamp;
     float _actionTimer;
-    string _player;
+    string _playerPrefix;
 
     // Start is called before the first frame update
     void Start()
@@ -33,17 +35,28 @@ public class CursorController : MonoBehaviour
         _vertClamp = (int)Boundaries.bounds.extents.y;
         _actionTimer = 0;
         _startPos = transform.position;
-        _player = gameObject.layer == LayerMask.NameToLayer("Player1") ? "P1" : "P2";
+        _playerPrefix = gameObject.layer == LayerMask.NameToLayer("Player1") ? "P1" : "P2";
+        _errorColor = Colors.Error;
+
+        switch (Player)
+        {
+            case Enums.Player.Player2:
+                _playerColor = _sR.color = Colors.Player2;
+                break;
+            default:
+                _playerColor = _sR.color = Colors.Player1;
+                break;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        int vert = Mathf.RoundToInt(Input.GetAxis(_player + "_Vertical"));
-        int horz = Mathf.RoundToInt(Input.GetAxis(_player + "_Horizontal"));
-        bool select = Input.GetButtonUp(_player + "_Select") ;
-        bool cancel = Input.GetButtonUp(_player + "_Cancel");
-        bool attack = Input.GetButtonUp(_player + "_Attack");
+        int vert = Mathf.RoundToInt(Input.GetAxis(_playerPrefix + "_Vertical"));
+        int horz = Mathf.RoundToInt(Input.GetAxis(_playerPrefix + "_Horizontal"));
+        bool select = Input.GetButtonUp(_playerPrefix + "_Select") ;
+        bool cancel = Input.GetButtonUp(_playerPrefix + "_Cancel");
+        bool attack = Input.GetButtonUp(_playerPrefix + "_Attack");
 
         // Possible next move
         Vector2 tmpPos = transform.position;
@@ -65,7 +78,7 @@ public class CursorController : MonoBehaviour
             }
         }
 
-        if (select && _actionTimer <= 0 && _currUnit.Player == Player && !_currUnit.OnCooldown)
+        if (select && _actionTimer <= 0 && _currUnit != null && _currUnit.Player == Player && !_currUnit.OnCooldown)
         {
             if (transform.position == _currUnit.GetHolder().position)
             {
@@ -122,13 +135,15 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Triger Enter");
         GameObject gO = collision.gameObject;
+        Debug.Log($"Is water: {gO.layer == LayerMask.NameToLayer("Map")}");
         if (gO.layer == LayerMask.NameToLayer("Map") ||
             (gO.tag == "Unit" && _currUnit != null && gO != _currUnit.gameObject && _selecting))
         {
             if (_selecting)
             {
-                _sR.color = new Color(.8f, 0f, 0f);
+                _sR.color = _errorColor;
                 _noGo = true;
                 if (_moves.Count > 0)
                     _moves.Pop();
@@ -154,7 +169,7 @@ public class CursorController : MonoBehaviour
         if (gO.layer == LayerMask.NameToLayer("Map") || 
             (gO.tag == "Unit" && _selecting))
         {
-            _sR.color = new Color(1f, 1f, 1f);
+            _sR.color = _playerColor;
             _noGo = false;
         }
         else if(_currUnit != null)

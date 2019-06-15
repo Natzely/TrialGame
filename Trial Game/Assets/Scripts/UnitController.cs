@@ -106,11 +106,11 @@ public class UnitController : MonoBehaviour
         {
             case Enums.Player.Player2:
                 _animator.SetFloat("Look X", -1);
-                _sR.color = new Color(.6f, .6f, 1f);
+                _sR.color = Colors.Player2;
                 break;
             default:
                 _animator.SetFloat("Look X", 1);
-                _sR.color = new Color(.6f, 1f, .6f);
+                _sR.color = Colors.Player1;
                 break;
         }
     }
@@ -121,7 +121,6 @@ public class UnitController : MonoBehaviour
         {
             if (_nextPoint == null)
             {
-                Debug.Log("Grabbing next point");
                 _nextPoint = (Vector2)_moveToPoints.Dequeue();
                 _lastPoint = Holder.position;
 
