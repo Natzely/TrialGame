@@ -9,4 +9,11 @@ public class Enums : MonoBehaviour
         Player1 = 11,
         Player2 = 12,
     }
+
+    public enum CursorState
+    {
+        Default,
+        Moving,
+        Attacking,
+    }
 }

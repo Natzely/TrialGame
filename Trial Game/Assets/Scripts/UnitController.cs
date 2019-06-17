@@ -20,6 +20,12 @@ public class UnitController : MonoBehaviour
         get { return _moved; }
     }
 
+    private bool _moving;
+    public bool Moving
+    {
+        get { return _moving; }
+    }
+
     Animator _animator;
     SpriteRenderer _sR;
     Queue _moveToPoints;
@@ -34,6 +40,7 @@ public class UnitController : MonoBehaviour
 
     public void Hover(bool hover)
     {
+        Debug.Log($"Hover {hover}");
         _hover = hover;
         _animator.SetBool("Hover", hover);
     }
@@ -43,10 +50,9 @@ public class UnitController : MonoBehaviour
         if (_cooldown <= 0)
         {
             _selected = select;
-            _animator.SetBool("Selected", select);
-            if (!_selected && (_moved || _attacked))
+            if (!_moving)
             {
-                GoOnCooldown();
+                Selected();
             }
         }
     }
@@ -72,6 +78,7 @@ public class UnitController : MonoBehaviour
         {
             while (movePoints.Count > 0)
                 _moveToPoints.Enqueue(movePoints.Dequeue());
+            _moving = true;
         }
     }
 
@@ -81,6 +88,7 @@ public class UnitController : MonoBehaviour
         _nextPoint = null;
         Holder.position = _originalPoint;
         _moved = false;
+        _moving = false;
     }
 
     public Transform GetHolder()
@@ -141,7 +149,10 @@ public class UnitController : MonoBehaviour
                 {
                     _animator.SetFloat("Look X", Player == Enums.Player.Player1 ? 1 : -1);
                     _animator.SetFloat("Look Y", 0);
+                    _moving = false;
                     _moved = true;
+                    if (_selected == false)
+                        Selected();
                 }
 
             }
@@ -157,6 +168,15 @@ public class UnitController : MonoBehaviour
                 _animator.SetBool("Cooldown", OnCooldown = false);
                 _moved = false;
             } 
+        }
+    }
+
+    private void Selected()
+    {
+        _animator.SetBool("Selected", _selected);
+        if (!_selected && (_moved || _attacked))
+        {
+            GoOnCooldown();
         }
     }
 
