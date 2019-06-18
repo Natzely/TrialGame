@@ -26,6 +26,12 @@ public class UnitController : MonoBehaviour
         get { return _moving; }
     }
 
+    private bool _attacked;
+    public bool Attacked
+    {
+        get { return _attacked; }
+    }
+
     Animator _animator;
     SpriteRenderer _sR;
     Queue _moveToPoints;
@@ -35,7 +41,6 @@ public class UnitController : MonoBehaviour
 
     bool _hover;
     bool _selected;
-    bool _attacked;
     float _cooldown;
 
     public void Hover(bool hover)
@@ -184,6 +189,7 @@ public class UnitController : MonoBehaviour
     {
         _originalPoint = Holder.position;
         _animator.SetBool("Selected", false);
+        Hover(false);
         _cooldown = Cooldown;
         _animator.SetBool("Cooldown", OnCooldown = true);
     }

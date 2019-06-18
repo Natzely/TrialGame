@@ -11,10 +11,12 @@ public class CursorController : MonoBehaviour
 
     Enums.CursorState _currState;
     Enums.CursorState _lastState;
+    Animator _animator;
     UnitController _currUnit;
     SpriteRenderer _sR;
     List<Vector2> _moves;
     Vector2 _startPos;
+    Vector2 _attackPos;
     Color _playerColor;
     Color _errorColor;
     bool _noGo;
@@ -33,8 +35,9 @@ public class CursorController : MonoBehaviour
     void Start()
     {
         _currState = Enums.CursorState.Default;
-        _moves = new List<Vector2>();
+        _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
+        _moves = new List<Vector2>();
         _noGo = false;
         _moveTimer = 0;
         _horzClamp = (int)Boundaries.bounds.extents.x;
@@ -81,7 +84,7 @@ public class CursorController : MonoBehaviour
         else if (_currState == Enums.CursorState.Default)
         {
             UnitController tmpUnit = gO.GetComponent<UnitController>();
-            if (tmpUnit != null && tmpUnit.Player == Player)
+            if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown)
             {
                 _currUnit = tmpUnit;
                 _currUnit.Hover(true);
@@ -92,14 +95,13 @@ public class CursorController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         GameObject gO = collision.gameObject;
-        Debug.Log($"Player: {Player} | Unit: {gO.layer}");
         if ((_currState == Enums.CursorState.Moving && gO.layer == LayerMask.NameToLayer("Map")) || 
             (gO.tag == "Unit" && gO.layer != (int)Player))
         {
             _sR.color = _playerColor;
             _noGo = false;
         }
-        else if(_currUnit != null)
+        else if(_currUnit != null && _currState == Enums.CursorState.Default)
         {
             _currUnit.Hover(false);
             if (_currState == Enums.CursorState.Default)
@@ -113,27 +115,35 @@ public class CursorController : MonoBehaviour
         {
             if (_cancel)
             {
-                Debug.Log("Cancel");
                 Cancel();
             }
             else if (_attack)
             {
-                Debug.Log("Attack");
                 Attack();
             }
-            else if (_select && _currUnit != null)
+            else if (_select && _currUnit != null && _currState != Enums.CursorState.Attacking)
             {
-                Debug.Log("Select");
                 Select();
             }
-            else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0) && (_currUnit != null ? !_currUnit.Moving && !_currUnit.Moved : true))
+            // In order for the cursor to move it needs to meet the following conditions
+            // - The action timer is off cooldown
+            // - There is horizontal or vertical movement
+            // - There isn't a unit selected
+            // - If there is a unit selected
+            //   - It hasn't moved or isn't moving
+            //   - The cursor is in attack state
+            else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0) && 
+                (_currUnit != null ? (_currState == Enums.CursorState.Attacking) || 
+                (!_currUnit.Moving && !_currUnit.Moved) : true))
             {
                 Move();
             }
         }
 
-        _actionTimer -= Time.deltaTime;
-        _moveTimer -= Time.deltaTime;
+        if (_actionTimer > 0)
+            _actionTimer -= Time.deltaTime;
+        if (_moveTimer > 0)
+            _moveTimer -= Time.deltaTime;
     }
 
     private void Cancel()
@@ -144,6 +154,7 @@ public class CursorController : MonoBehaviour
                 if (transform.position != _currUnit.GetHolder().position)
                     transform.position = _currUnit.GetHolder().position;
                 _currState = _lastState;
+                _animator.SetBool("Attacking", false);
                 break;
             case Enums.CursorState.Moving:
                 if(_currUnit.Moved || _currUnit.Moving)
@@ -171,13 +182,17 @@ public class CursorController : MonoBehaviour
     {
         if (_currState != Enums.CursorState.Attacking)
         {
+            _lastState = _currState;
             _currState = Enums.CursorState.Attacking;
+            _animator.SetBool("Attacking", true);
+            _attackPos = transform.position;
         }
         else if (transform.position != _currUnit.GetHolder().position)
         {
             _currUnit.Attack(transform.position);
-            _currUnit.Select(false);
             _currState = Enums.CursorState.Default;
+            _animator.SetBool("Attacking", false);
+            transform.position = _attackPos;
         }
 
         _actionTimer = ActionTimer;
@@ -199,7 +214,7 @@ public class CursorController : MonoBehaviour
                 _currUnit.Select(true);
             }
         }
-        else if (!_noGo && !_currUnit.Moving && !_currUnit.Moved)
+        else if (!_noGo && !_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos)
         {
             _currUnit.MoveTo(_moves);
         }
@@ -221,12 +236,14 @@ public class CursorController : MonoBehaviour
         tmpPos.x = Mathf.Clamp(tmpPos.x + _horz, -_horzClamp, _horzClamp);
         tmpPos.y = Mathf.Clamp(tmpPos.y + _vert, -_vertClamp, _vertClamp);
 
-        float distance = Vector2.Distance(tmpPos, _startPos);
+        float moveDis = Vector2.Distance(tmpPos, _startPos);
+        float attackDis = Vector2.Distance(tmpPos, _attackPos);
+
         if (_currState == Enums.CursorState.Default)
         {
             transform.position = tmpPos;
         } 
-        if (_currState == Enums.CursorState.Moving && distance <= _currUnit.TotalMoves)
+        else if (_currState == Enums.CursorState.Moving && moveDis <= _currUnit.TotalMoves)
         {
             transform.position = tmpPos;
             if(!_noGo)
@@ -236,6 +253,10 @@ public class CursorController : MonoBehaviour
 
                 LinkAndAddMove(tmpPos);
             }
+        }
+        else if(_currState == Enums.CursorState.Attacking && attackDis <= _currUnit.AttackDistance)
+        {
+            transform.position = tmpPos;
         }
 
         _moveTimer = MoveTimer;
