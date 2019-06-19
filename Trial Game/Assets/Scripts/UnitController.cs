@@ -45,7 +45,6 @@ public class UnitController : MonoBehaviour
 
     public void Hover(bool hover)
     {
-        Debug.Log($"Hover {hover}");
         _hover = hover;
         _animator.SetBool("Hover", hover);
     }

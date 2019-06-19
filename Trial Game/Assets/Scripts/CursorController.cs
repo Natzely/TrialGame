@@ -72,40 +72,66 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Enter");
         GameObject gO = collision.gameObject;
-        if ((_currState == Enums.CursorState.Moving && gO.layer == LayerMask.NameToLayer("Map")) ||
-             (gO.tag == "Unit" && gO.layer != (int)Player))
+        if (CheckForNoGo(gO))
         {
             _sR.color = _errorColor;
             _noGo = true;
             if (_moves.Count > 0)
                 _moves.Pop();
         }
-        else if (_currState == Enums.CursorState.Default)
+        else if (CheckForYesGo())
         {
-            UnitController tmpUnit = gO.GetComponent<UnitController>();
-            if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown)
-            {
-                _currUnit = tmpUnit;
-                _currUnit.Hover(true);
-            }
+            GetUnit(gO);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(CheckForYesGo())
+        {
+            GameObject gO = collision.gameObject;
+            GetUnit(gO);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("Exit");
         GameObject gO = collision.gameObject;
-        if ((_currState == Enums.CursorState.Moving && gO.layer == LayerMask.NameToLayer("Map")) || 
-            (gO.tag == "Unit" && gO.layer != (int)Player))
+        if (CheckForNoGo(gO))
         {
             _sR.color = _playerColor;
             _noGo = false;
         }
-        else if(_currUnit != null && _currState == Enums.CursorState.Default)
+        else if(CheckForYesGo())
         {
-            _currUnit.Hover(false);
+            if (_currUnit != null)
+                _currUnit.Hover(false);
             if (_currState == Enums.CursorState.Default)
                 _currUnit = null;
+        }
+    }
+
+    private bool CheckForNoGo(GameObject gO)
+    {
+                // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
+        return _currState == Enums.CursorState.Moving && (gO.layer == LayerMask.NameToLayer("Map") || (gO.transform.position != _currUnit.transform.position));
+    }
+
+    private bool CheckForYesGo()
+    {
+        return _currState == Enums.CursorState.Default && _currUnit == null;
+    }
+
+    private void GetUnit(GameObject gO)
+    {
+        UnitController tmpUnit = gO.GetComponent<UnitController>();
+        if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown)
+        {
+            _currUnit = tmpUnit;
+            _currUnit.Hover(true);
         }
     }
 
@@ -220,7 +246,6 @@ public class CursorController : MonoBehaviour
         }
         else if(_currUnit.Moving || _currUnit.Moved)
         {
-            Debug.Log("Deselect");  
             _currUnit.Select(false);
             _currUnit = null;
             _currState = Enums.CursorState.Default;
