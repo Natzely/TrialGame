@@ -76,12 +76,12 @@ public class UnitController : MonoBehaviour
         Select(false);
     }
 
-    public void MoveTo(List<Vector2> movePoints)
+    public void MoveTo(List<MoveSpace> movePoints)
     {
         if (_cooldown <= 0 && !_moved)
         {
             while (movePoints.Count > 0)
-                _moveToPoints.Enqueue(movePoints.Dequeue());
+                _moveToPoints.Enqueue(movePoints.Dequeue().Position);
             _moving = true;
         }
     }

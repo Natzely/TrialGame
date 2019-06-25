@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: 11
   Boundaries: {fileID: 0}
+  MovePath: {fileID: 8308475768684495235, guid: dfdb238e00f2b5c47a7689e502e8908d,
+    type: 3}
   MoveTimer: 0.1
   ActionTimer: 0.1
 --- !u!50 &1230999480

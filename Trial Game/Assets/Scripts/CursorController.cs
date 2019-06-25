@@ -6,15 +6,19 @@ public class CursorController : MonoBehaviour
 {
     public Enums.Player Player = Enums.Player.Player1;
     public PolygonCollider2D Boundaries;
+    public GameObject MovePath;
     public float MoveTimer = 1;
     public float ActionTimer = .1f;
 
     Enums.CursorState _currState;
     Enums.CursorState _lastState;
+    Enums.PathDirection _lastDir;
+    Enums.PathDirection _currDir;
+
     Animator _animator;
     UnitController _currUnit;
     SpriteRenderer _sR;
-    List<Vector2> _moves;
+    List<MoveSpace> _moves;
     Vector2 _startPos;
     Vector2 _attackPos;
     Color _playerColor;
@@ -35,9 +39,11 @@ public class CursorController : MonoBehaviour
     void Start()
     {
         _currState = Enums.CursorState.Default;
+        _lastDir = _currDir = Enums.PathDirection.Start;
+
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
-        _moves = new List<Vector2>();
+        _moves = new List<MoveSpace>();
         _noGo = false;
         _moveTimer = 0;
         _horzClamp = (int)Boundaries.bounds.extents.x;
@@ -72,9 +78,24 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Enter");
         GameObject gO = collision.gameObject;
-        if (CheckForNoGo(gO))
+        var movePath = gO.GetComponentInChildren<MoveSpace>();
+        if (movePath != null)
+        {
+            _currDir = movePath.PathDirection;
+            MoveSpace tmp;
+            while((tmp = _moves.Pop()) != movePath)
+            {
+                tmp.Destroy();
+            }
+            tmp.Destroy();
+
+            _vert = _currDir == Enums.PathDirection.Down ? -1 : _currDir == Enums.PathDirection.Up ? 1 : 0;
+            _horz = _currDir == Enums.PathDirection.Left ? -1 : _currDir == Enums.PathDirection.Right ? 1 : 0;
+            _animator.SetFloat("Horizontal", _horz);
+            _animator.SetFloat("Vertical", _vert);
+        }
+        else if (CheckForNoGo(gO))
         {
             _sR.color = _errorColor;
             _noGo = true;
@@ -98,7 +119,6 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Exit");
         GameObject gO = collision.gameObject;
         if (CheckForNoGo(gO))
         {
@@ -235,7 +255,6 @@ public class CursorController : MonoBehaviour
                 {
                     _startPos = transform.position;
                     _moves.Clear();
-                    LinkAndAddMove(_startPos);
                 }
                 _currUnit.Select(true);
             }
@@ -270,14 +289,15 @@ public class CursorController : MonoBehaviour
         } 
         else if (_currState == Enums.CursorState.Moving && moveDis <= _currUnit.TotalMoves)
         {
-            transform.position = tmpPos;
+            _animator.SetBool("Moving", true);
+            _animator.SetFloat("Horizontal", _horz);
+            _animator.SetFloat("Vertical", _vert);
             if(!_noGo)
             {
-                if (_moves.Contains(tmpPos))
-                    while ((Vector2)_moves.Pop() != tmpPos) { }
-
-                LinkAndAddMove(tmpPos);
+                CreatePath(transform.position);
             }
+
+            transform.position = tmpPos;
         }
         else if(_currState == Enums.CursorState.Attacking && attackDis <= _currUnit.AttackDistance)
         {
@@ -288,8 +308,14 @@ public class CursorController : MonoBehaviour
         _actionTimer = ActionTimer;
     }
 
-    private void LinkAndAddMove(Vector2 move)
+    private void CreatePath(Vector2 move)
     {
-        _moves.Add(move);
+        _lastDir = _currDir;
+        _currDir = _horz == 1 ? Enums.PathDirection.Right : _horz == -1 ? Enums.PathDirection.Left : _vert == 1 ? Enums.PathDirection.Up : Enums.PathDirection.Down;
+        var newPath = Instantiate(MovePath, new Vector3(move.x, move.y, 0), Quaternion.identity);
+        MoveSpace mS = newPath.GetComponentInChildren<MoveSpace>();
+        Debug.Log($"{_lastDir} | {_currDir}");
+        mS.MoveState(Player, _lastDir, _currDir);
+        _moves.Add(mS);
     }
 }

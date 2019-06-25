@@ -16,4 +16,21 @@ public class Enums : MonoBehaviour
         Moving,
         Attacking,
     }
+
+    public enum PathState
+    {
+        Head,
+        Straight,
+        Curve,
+        Start,
+    }
+
+    public enum PathDirection
+    {
+        Start = -1,
+        Left = 0,
+        Right = 1,
+        Up = 3,
+        Down = 4,
+    }
 }
