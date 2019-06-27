@@ -13,6 +13,15 @@ public class MoveSpace : MonoBehaviour
     {
         get { return Holder.position; }
     }
+    public bool Show
+    {
+        get { return _sR.enabled; }
+        set
+        {
+            if (_pDir != Enums.PathDirection.Start)
+                _sR.enabled = value;
+        }
+    }
 
     Animator _animator;
     SpriteRenderer _sR;
@@ -20,7 +29,8 @@ public class MoveSpace : MonoBehaviour
 
     public void MoveState(Enums.Player player, Enums.PathDirection direction, Enums.PathDirection nextDirection)
     {
-        if (direction == Enums.PathDirection.Start)
+        _pDir = direction;
+        if (direction == Enums.PathDirection.Start || nextDirection == Enums.PathDirection.End)
             return;
 
         switch (player)
@@ -33,7 +43,6 @@ public class MoveSpace : MonoBehaviour
                 break;
         }
 
-        _pDir = direction;
         if (Mathf.Abs(_pDir - nextDirection) > 1)
         {
             _animator.SetBool("Curve", true);

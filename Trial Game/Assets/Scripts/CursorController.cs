@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CursorController : MonoBehaviour
 {
@@ -92,15 +93,12 @@ public class CursorController : MonoBehaviour
 
             _vert = _currDir == Enums.PathDirection.Down ? -1 : _currDir == Enums.PathDirection.Up ? 1 : 0;
             _horz = _currDir == Enums.PathDirection.Left ? -1 : _currDir == Enums.PathDirection.Right ? 1 : 0;
-            _animator.SetFloat("Horizontal", _horz);
-            _animator.SetFloat("Vertical", _vert);
+            SetCursorMove();
         }
         else if (CheckForNoGo(gO))
         {
             _sR.color = _errorColor;
             _noGo = true;
-            if (_moves.Count > 0)
-                _moves.Pop();
         }
         else if (CheckForYesGo())
         {
@@ -125,7 +123,7 @@ public class CursorController : MonoBehaviour
             _sR.color = _playerColor;
             _noGo = false;
         }
-        else if(CheckForYesGo())
+        else
         {
             if (_currUnit != null)
                 _currUnit.Hover(false);
@@ -137,7 +135,7 @@ public class CursorController : MonoBehaviour
     private bool CheckForNoGo(GameObject gO)
     {
                 // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-        return _currState == Enums.CursorState.Moving && (gO.layer == LayerMask.NameToLayer("Map") || (gO.transform.position != _currUnit.transform.position));
+        return _currState == Enums.CursorState.Moving && (gO.layer == LayerMask.NameToLayer("Map") || (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position));
     }
 
     private bool CheckForYesGo()
@@ -201,21 +199,22 @@ public class CursorController : MonoBehaviour
                     transform.position = _currUnit.GetHolder().position;
                 _currState = _lastState;
                 _animator.SetBool("Attacking", false);
+                _moves.ForEach(i => i.Show = true);
                 break;
             case Enums.CursorState.Moving:
-                if(_currUnit.Moved || _currUnit.Moving)
-                    _currUnit.CancelMove();
-                if (transform.position.V2() == _startPos)
+                if (_currUnit.Moved || _currUnit.Moving)
                 {
-                    Debug.Log("Unselect");
+                    _currDir = _lastDir;
+                    _currUnit.CancelMove();
+                }
+                else if (transform.position.V2() == _startPos)
+                {
                     _currState = Enums.CursorState.Default;
                     _currUnit.Select(false);
                 }
                 else
                 {
-                    Debug.Log("Move back to start");
-                    transform.position = _startPos;
-                    _moves.Clear();
+                    ClearPath();
                 }
                 break;
             default:
@@ -224,29 +223,9 @@ public class CursorController : MonoBehaviour
         _actionTimer = ActionTimer;
     }
 
-    private void Attack()
-    {
-        if (_currState != Enums.CursorState.Attacking)
-        {
-            _lastState = _currState;
-            _currState = Enums.CursorState.Attacking;
-            _animator.SetBool("Attacking", true);
-            _attackPos = transform.position;
-        }
-        else if (transform.position != _currUnit.GetHolder().position)
-        {
-            _currUnit.Attack(transform.position);
-            _currState = Enums.CursorState.Default;
-            _animator.SetBool("Attacking", false);
-            transform.position = _attackPos;
-        }
-
-        _actionTimer = ActionTimer;
-    }
-
     private void Select()
     {
-        if(_currState != Enums.CursorState.Moving)
+        if(_currState == Enums.CursorState.Default)
         {
             _currState = Enums.CursorState.Moving;
             if (transform.position == _currUnit.GetHolder().position)
@@ -254,13 +233,14 @@ public class CursorController : MonoBehaviour
                 if (!_currUnit.Moved)
                 {
                     _startPos = transform.position;
-                    _moves.Clear();
+                    ClearPath();
                 }
                 _currUnit.Select(true);
             }
         }
         else if (!_noGo && !_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos)
         {
+            CreatePath(_currState == Enums.CursorState.Attacking ? _attackPos : transform.position.V2(), true);
             _currUnit.MoveTo(_moves);
         }
         else if(_currUnit.Moving || _currUnit.Moved)
@@ -268,6 +248,7 @@ public class CursorController : MonoBehaviour
             _currUnit.Select(false);
             _currUnit = null;
             _currState = Enums.CursorState.Default;
+            ClearPath(false);
         }
 
         _actionTimer = ActionTimer;
@@ -285,15 +266,19 @@ public class CursorController : MonoBehaviour
 
         if (_currState == Enums.CursorState.Default)
         {
+            Debug.Log("Move default");
             transform.position = tmpPos;
         } 
         else if (_currState == Enums.CursorState.Moving && moveDis <= _currUnit.TotalMoves)
         {
-            _animator.SetBool("Moving", true);
-            _animator.SetFloat("Horizontal", _horz);
-            _animator.SetFloat("Vertical", _vert);
-            if(!_noGo)
+            Debug.Log("Move moving");
+            if (tmpPos == _startPos)
             {
+                ClearPath();
+            }
+            else if(!_noGo && !_moves.Any(i => i.Position == tmpPos))
+            {
+                SetCursorMove();
                 CreatePath(transform.position);
             }
 
@@ -301,6 +286,7 @@ public class CursorController : MonoBehaviour
         }
         else if(_currState == Enums.CursorState.Attacking && attackDis <= _currUnit.AttackDistance)
         {
+            Debug.Log("Move attacking");
             transform.position = tmpPos;
         }
 
@@ -308,14 +294,59 @@ public class CursorController : MonoBehaviour
         _actionTimer = ActionTimer;
     }
 
-    private void CreatePath(Vector2 move)
+    private void Attack()
+    {
+        if (_currState != Enums.CursorState.Attacking)
+        {
+            _lastState = _currState;
+            _currState = Enums.CursorState.Attacking;
+            _animator.SetBool("Attacking", true);
+            _attackPos = transform.position;
+            _moves.ForEach(i => i.Show = false);
+        }
+        else if (transform.position != _currUnit.GetHolder().position)
+        {
+            if (_moves.Count > 0 && (_currUnit.Moving || !_currUnit.Moved))
+            {
+                Select();
+            }
+            ClearPath(false);
+            _currUnit.ReadyAttack(transform.position);
+            _currState = Enums.CursorState.Default;
+            _animator.SetBool("Attacking", false);
+            _currUnit = null;
+        }
+
+        _actionTimer = ActionTimer;
+    }
+
+    private void CreatePath(Vector2 move, bool end = false)
     {
         _lastDir = _currDir;
-        _currDir = _horz == 1 ? Enums.PathDirection.Right : _horz == -1 ? Enums.PathDirection.Left : _vert == 1 ? Enums.PathDirection.Up : Enums.PathDirection.Down;
+        if (!end)
+            _currDir = _horz == 1 ? Enums.PathDirection.Right : _horz == -1 ? Enums.PathDirection.Left : _vert == 1 ? Enums.PathDirection.Up : Enums.PathDirection.Down;
+        else
+            _currDir = Enums.PathDirection.End;
         var newPath = Instantiate(MovePath, new Vector3(move.x, move.y, 0), Quaternion.identity);
         MoveSpace mS = newPath.GetComponentInChildren<MoveSpace>();
-        Debug.Log($"{_lastDir} | {_currDir}");
         mS.MoveState(Player, _lastDir, _currDir);
         _moves.Add(mS);
+    }
+
+    private void ClearPath(bool resetLoc = true)
+    {
+        _animator.SetBool("Moving", false);
+        _lastDir = _currDir = Enums.PathDirection.Start;
+        _moves.ForEach(i => i.Destroy());
+        _moves.Clear();
+        if (resetLoc)
+            transform.position = _startPos;
+    }
+
+    private void SetCursorMove()
+    {
+        _animator.SetBool("Moving", true);
+        _animator.SetFloat("Horizontal", _horz);
+        _animator.SetFloat("Vertical", _vert);
     }
 }

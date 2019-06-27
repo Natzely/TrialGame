@@ -32,5 +32,6 @@ public class Enums : MonoBehaviour
         Right = 1,
         Up = 3,
         Down = 4,
+        End = 6,
     }
 }
