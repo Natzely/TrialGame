@@ -27,20 +27,15 @@ public class MoveSpace : MonoBehaviour
     SpriteRenderer _sR;
     Enums.PathDirection _pDir;
 
+    bool _enable = true;
+
     public void MoveState(Enums.Player player, Enums.PathDirection direction, Enums.PathDirection nextDirection)
     {
         _pDir = direction;
         if (direction == Enums.PathDirection.Start || nextDirection == Enums.PathDirection.End)
-            return;
-
-        switch (player)
         {
-            case Enums.Player.Player2:
-                _sR.color = Colors.Player2;
-                break;
-            default:
-                _sR.color = Colors.Player1;
-                break;
+            _enable = false;
+            return;
         }
 
         if (Mathf.Abs(_pDir - nextDirection) > 1)
@@ -68,7 +63,16 @@ public class MoveSpace : MonoBehaviour
             if (_pDir == Enums.PathDirection.Up || _pDir == Enums.PathDirection.Down)
                 transform.Rotate(0, 0, 90);
         }
-        _sR.enabled = true;
+
+        switch (player)
+        {
+            case Enums.Player.Player2:
+                _sR.color = Colors.Player2;
+                break;
+            default:
+                _sR.color = Colors.Player1;
+                break;
+        }
     }
 
     public void Destroy()
@@ -80,6 +84,11 @@ public class MoveSpace : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
-        _sR.enabled = false;
+    }
+
+    void Update()
+    {
+        if (_enable)
+            _sR.enabled = true;
     }
 }
