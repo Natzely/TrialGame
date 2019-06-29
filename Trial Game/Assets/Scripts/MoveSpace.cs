@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoveSpace : MonoBehaviour
 {
     public Transform Holder;
+    public Sprite Curve;
     public Enums.PathDirection PathDirection
     {
         get { return _pDir; }
@@ -23,24 +24,33 @@ public class MoveSpace : MonoBehaviour
         }
     }
 
+    public int PathOrder
+    {
+        get { return _pathOrder; }
+    }
+
     Animator _animator;
     SpriteRenderer _sR;
+    CursorController _parent;
     Enums.PathDirection _pDir;
+    int _pathOrder;
 
-    bool _enable = true;
-
-    public void MoveState(Enums.Player player, Enums.PathDirection direction, Enums.PathDirection nextDirection)
+    public void MoveState(Enums.Player player, Enums.PathDirection direction, Enums.PathDirection nextDirection,
+        CursorController parent, int pathOrder)
     {
         _pDir = direction;
+        _parent = parent;
+        _pathOrder = pathOrder;
+
         if (direction == Enums.PathDirection.Start || nextDirection == Enums.PathDirection.End)
         {
-            _enable = false;
+            //_enable = false;
             return;
         }
 
         if (Mathf.Abs(_pDir - nextDirection) > 1)
         {
-            _animator.SetBool("Curve", true);
+            _sR.sprite = Curve;//    _animator.SetBool("Curve", true);
             if ((_pDir == Enums.PathDirection.Right && nextDirection == Enums.PathDirection.Up) ||
                (_pDir == Enums.PathDirection.Down && nextDirection == Enums.PathDirection.Left))
             {
@@ -73,12 +83,13 @@ public class MoveSpace : MonoBehaviour
                 _sR.color = Colors.Player1;
                 break;
         }
+        _sR.enabled = true;
     }
 
-    public void Destroy()
-    {
-        Destroy(transform.parent.gameObject);
-    }
+    //public void Destroy()
+    //{
+    //    Destroy(transform.parent.gameObject);
+    //}
 
     void Awake()
     {
@@ -88,7 +99,7 @@ public class MoveSpace : MonoBehaviour
 
     void Update()
     {
-        if (_enable)
-            _sR.enabled = true;
+        if (_parent.CurrentMove <= _pathOrder)
+            Destroy(transform.parent.gameObject);
     }
 }
