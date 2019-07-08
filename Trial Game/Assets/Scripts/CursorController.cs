@@ -159,7 +159,8 @@ public class CursorController : MonoBehaviour
             }
             else if (_select && _currUnit != null && _currState != Enums.CursorState.Attacking)
             {
-                Select();
+                CreateMoveGrid();
+                //Select();
             }
             // In order for the cursor to move it needs to meet the following conditions
             // - The action timer is off cooldown

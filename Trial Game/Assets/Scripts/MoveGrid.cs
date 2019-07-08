@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utilities : MonoBehaviour
+public class MoveGrid : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
