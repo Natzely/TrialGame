@@ -159,8 +159,7 @@ public class CursorController : MonoBehaviour
             }
             else if (_select && _currUnit != null && _currState != Enums.CursorState.Attacking)
             {
-                CreateMoveGrid();
-                //Select();
+                Select();
             }
             // In order for the cursor to move it needs to meet the following conditions
             // - The action timer is off cooldown
@@ -265,7 +264,6 @@ public class CursorController : MonoBehaviour
         {
             if (tmpPos == _startPos)
             {
-                Debug.Log("back to start");
                 ClearPath();
             }
             //else if(_lastMove != null && _lastMove.Position == tmpPos)
@@ -358,7 +356,6 @@ public class CursorController : MonoBehaviour
 
     private void SetCursorMove()
     {
-        Debug.Log("Moving");
         _animator.SetBool("Moving", true);
         _animator.SetFloat("Horizontal", _horz);
         _animator.SetFloat("Vertical", _vert);
