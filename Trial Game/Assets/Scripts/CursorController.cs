@@ -8,6 +8,7 @@ public class CursorController : MonoBehaviour
     public Enums.Player Player = Enums.Player.Player1;
     public PolygonCollider2D Boundaries;
     public GameObject MovePath;
+    public GameObject MoveGrid;
     public float MoveTimer = 1;
     public float ActionTimer = .1f;
     public int CurrentMove;
@@ -228,6 +229,11 @@ public class CursorController : MonoBehaviour
                     ClearPath();
                 }
                 _currUnit.Select(true);
+                var gridObj = Instantiate(MoveGrid, transform.position, Quaternion.identity);
+                var moveGrid = gridObj.GetComponent<MoveGrid>();
+                moveGrid.Player = Player;
+                moveGrid.MaxMove = _currUnit.TotalMoves;
+                moveGrid.CreateGrid();
             }
         }
         else if (!_noGo && !_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos)
@@ -266,10 +272,6 @@ public class CursorController : MonoBehaviour
             {
                 ClearPath();
             }
-            //else if(_lastMove != null && _lastMove.Position == tmpPos)
-            //{
-            //    CopyLastMove(_lastMove);
-            //}
             else if(!_noGo && !_moves.Any(i => i.Position == tmpPos))
             {
                 SetCursorMove();
@@ -324,7 +326,7 @@ public class CursorController : MonoBehaviour
         CurrentMove = _moves.Count+1;
         var newPath = Instantiate(MovePath, new Vector3(move.x, move.y, 0), Quaternion.identity);
         MoveSpace mS = newPath.GetComponentInChildren<MoveSpace>();
-        mS.MoveState(Player, _lastDir, _currDir, this, _moves.Count);
+        mS.MoveState(_lastDir, _currDir, this, _moves.Count);
         _moves.Add(mS);
         //_lastMove = mS;
     }

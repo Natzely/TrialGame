@@ -149,8 +149,8 @@ TextureImporter:
         - {x: -26, y: -7}
         - {x: -14, y: 14}
         - {x: 3, y: 26}
-        - {x: 32, y: 29}
-        - {x: 32, y: -32}
+        - {x: 32, y: 28}
+        - {x: 31, y: -31}
       tessellationDetail: 0
       bones: []
       spriteID: c8f7e991eff238648b63dddb54647e39

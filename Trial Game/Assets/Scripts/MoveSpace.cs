@@ -12,7 +12,7 @@ public class MoveSpace : MonoBehaviour
     }
     public Vector2 Position
     {
-        get { return Holder.position; }
+        get { return transform.position; }
     }
     public bool Show
     {
@@ -21,6 +21,23 @@ public class MoveSpace : MonoBehaviour
         {
             if (_pDir != Enums.PathDirection.Start)
                 _sR.enabled = value;
+        }
+    }
+    public Enums.Player Player
+    {
+        get { return _player; }
+        set
+        {
+            _player = value;
+            switch (_player)
+            {
+                case Enums.Player.Player2:
+                    _sR.color = Colors.Player2;
+                    break;
+                default:
+                    _sR.color = Colors.Player1;
+                    break;
+            }
         }
     }
 
@@ -32,10 +49,11 @@ public class MoveSpace : MonoBehaviour
     Animator _animator;
     SpriteRenderer _sR;
     CursorController _parent;
+    Enums.Player _player;
     Enums.PathDirection _pDir;
     int _pathOrder;
 
-    public void MoveState(Enums.Player player, Enums.PathDirection direction, Enums.PathDirection nextDirection,
+    public void MoveState(Enums.PathDirection direction, Enums.PathDirection nextDirection,
         CursorController parent, int pathOrder)
     {
         _pDir = direction;
@@ -73,23 +91,12 @@ public class MoveSpace : MonoBehaviour
             if (_pDir == Enums.PathDirection.Up || _pDir == Enums.PathDirection.Down)
                 transform.Rotate(0, 0, 90);
         }
-
-        switch (player)
-        {
-            case Enums.Player.Player2:
-                _sR.color = Colors.Player2;
-                break;
-            default:
-                _sR.color = Colors.Player1;
-                break;
-        }
-        _sR.enabled = true;
     }
 
-    //public void Destroy()
-    //{
-    //    Destroy(transform.parent.gameObject);
-    //}
+    public void Destroy()
+    {
+        Destroy(transform.parent.gameObject);
+    }
 
     void Awake()
     {
@@ -99,7 +106,7 @@ public class MoveSpace : MonoBehaviour
 
     void Update()
     {
-        if (_parent.CurrentMove <= _pathOrder)
-            Destroy(transform.parent.gameObject);
+        //if (_parent.CurrentMove <= _pathOrder)
+        //    Destroy(transform.parent.gameObject);
     }
 }

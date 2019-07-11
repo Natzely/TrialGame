@@ -27,11 +27,11 @@ public class Enums : MonoBehaviour
 
     public enum PathDirection
     {
-        Start = -1,
-        Left = 0,
-        Right = 1,
+        Start = 0,
+        Left = 1,
+        Right = 2,
         Up = 3,
         Down = 4,
-        End = 6,
+        End = 5,
     }
 }
