@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System.Linq;
 
 public class CursorController : MonoBehaviour
@@ -83,6 +84,7 @@ public class CursorController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject gO = collision.gameObject;
+        Debug.Log($"Enter : {gO.name}");
         var movePath = gO.GetComponentInChildren<MoveSpace>();
         if (movePath != null)
         {

@@ -34,4 +34,11 @@ public class Enums : MonoBehaviour
         Down = 4,
         End = 5,
     }
+
+    public enum TileType
+    {
+        Grass,
+        Rock,
+        Water,
+    }
 }
