@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    public Enums.Player Player;
+    public Enums.Player Player = Enums.Player.Player1;
     public Transform Holder;
     public GameObject Projectile;
     public bool OnCooldown = false;

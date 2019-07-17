@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MoveSpace : MonoBehaviour
 {
-    public Transform Holder;
-    public Sprite Curve;
     public Enums.PathDirection PathDirection
     {
         get { return _pDir; }
@@ -46,6 +44,7 @@ public class MoveSpace : MonoBehaviour
         get { return _pathOrder; }
     }
 
+    PlayerManager _pM;
     Animator _animator;
     SpriteRenderer _sR;
     CursorController _parent;
@@ -68,7 +67,7 @@ public class MoveSpace : MonoBehaviour
 
         if (Mathf.Abs(_pDir - nextDirection) > 1)
         {
-            _sR.sprite = Curve;//    _animator.SetBool("Curve", true);
+            //_sR.sprite = Curve;//    _animator.SetBool("Curve", true);
             if ((_pDir == Enums.PathDirection.Right && nextDirection == Enums.PathDirection.Up) ||
                (_pDir == Enums.PathDirection.Down && nextDirection == Enums.PathDirection.Left))
             {
@@ -102,11 +101,12 @@ public class MoveSpace : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
+        _pM = FindObjectOfType<PlayerManager>();
     }
 
     void Update()
     {
-        //if (_parent.CurrentMove <= _pathOrder)
-        //    Destroy(transform.parent.gameObject);
+        if (_pM.GetDeleteMoveSpace(Player))
+            Destroy(gameObject);
     }
 }

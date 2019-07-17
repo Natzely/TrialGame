@@ -53,6 +53,7 @@ public class CursorController : MonoBehaviour
         _moveTimer = 0;
         _horzClamp = (int)Boundaries.bounds.extents.x;
         _vertClamp = (int)Boundaries.bounds.extents.y;
+        Debug.Log($"Horz Clamp: {_horzClamp} | Vert Clamp: {_vertClamp}");
         _actionTimer = 0;
         _startPos = transform.position;
         _playerPrefix = Player == Enums.Player.Player1 ? "P1" : "P2";
