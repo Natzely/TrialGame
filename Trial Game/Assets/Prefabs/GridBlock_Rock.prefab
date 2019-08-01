@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5460475136893554025}
   - component: {fileID: 8282250386879923856}
   - component: {fileID: 824339820758328376}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GridBlock_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
-  MovementCost: 0
+  MovementCost: 1
   Unpassable: 0
 --- !u!61 &824339820758328376
 BoxCollider2D:

@@ -8,6 +8,8 @@ public class Enums : MonoBehaviour
     {
         Player1 = 11,
         Player2 = 12,
+        Player3 = 13,
+        Player4 = 14,
     }
 
     public enum CursorState
@@ -19,10 +21,10 @@ public class Enums : MonoBehaviour
 
     public enum PathState
     {
-        Head,
-        Straight,
-        Curve,
-        Start,
+        Start = 0,
+        Head = 1,
+        Straight = 2,
+        Curve = 3,
     }
 
     public enum PathDirection
@@ -32,7 +34,6 @@ public class Enums : MonoBehaviour
         Right = 2,
         Up = 3,
         Down = 4,
-        End = 5,
     }
 
     public enum TileType

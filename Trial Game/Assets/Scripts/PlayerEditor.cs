@@ -68,13 +68,16 @@ public class PlayerEditor : Editor
         playerInfo.Player = (Enums.Player)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth + 40, y, rect.width, k_SingleLineHeight), playerInfo.Player);
         y += k_SingleLineHeight;
         playerInfo.DeleteMoveSpace = EditorGUI.Toggle(new Rect(rect.xMin, y, rect.width, k_SingleLineHeight), "Delete Move Space", playerInfo.DeleteMoveSpace);
+        y += k_SingleLineHeight;
+        playerInfo.ResetMoveSpacesAbove = EditorGUI.IntField(new Rect(rect.xMin, y, rect.width + k_LabelWidth, k_SingleLineHeight), "Reset Move Spaces", playerInfo.ResetMoveSpacesAbove);
     }
 
     private void OnAddElement(ReorderableList list)
     {
         PlayerManager.PlayerInfo player = new PlayerManager.PlayerInfo();
-        player.Player = Enums.Player.Player1;
+        player.Player = (Enums.Player)_playerManager.PlayerList.Count + 11;
         player.DeleteMoveSpace = false;
+        player.ResetMoveSpacesAbove = 0;
         _playerManager.PlayerList.Add(player);
     }
 

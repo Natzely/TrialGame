@@ -42,4 +42,9 @@ public static class Extensions
     {
         return v;
     }
+
+    public static Vector3 Copy(this Vector3 v)
+    {
+        return new Vector3(v.x, v.y, v.z);
+    }
 }

@@ -200,8 +200,7 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1413627217310246489}
   - {fileID: -7673258657660629715}
-  m_StateMachineBehaviours:
-  - {fileID: -4503746412384126830}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

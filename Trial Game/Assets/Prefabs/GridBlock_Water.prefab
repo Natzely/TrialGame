@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1035513563995690849}
   - component: {fileID: 4677800291288723509}
   - component: {fileID: 7472597618557682154}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GridBlock_Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
-  MovementCost: 0
-  Unpassable: 0
+  MovementCost: -1
+  Unpassable: 1
 --- !u!61 &7472597618557682154
 BoxCollider2D:
   m_ObjectHideFlags: 0

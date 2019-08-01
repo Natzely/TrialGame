@@ -8,7 +8,7 @@ public class UnitController : MonoBehaviour
     public Transform Holder;
     public GameObject Projectile;
     public bool OnCooldown = false;
-    public int TotalMoves = 4;
+    public int TotalMoves = 4;  
     public float Speed = 5;
     public float Cooldown = 5;
     public float AttackDistance = 5;

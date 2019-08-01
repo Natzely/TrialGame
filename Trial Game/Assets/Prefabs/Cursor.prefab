@@ -71,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f1f870cd44fceec45903a1394cae279e, type: 3}
   m_Color: {r: 0.990566, g: 0.990566, b: 0.990566, a: 1}
   m_FlipX: 0
@@ -97,10 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: 11
   Boundaries: {fileID: 0}
-  MovePath: {fileID: 8308475768684495235, guid: dfdb238e00f2b5c47a7689e502e8908d,
-    type: 3}
-  MoveGrid: {fileID: 8457680389353650308, guid: 8601c102398d8e440937bd629232b8e2,
-    type: 3}
   MoveTimer: 0.1
   ActionTimer: 0.1
   CurrentMove: 0
