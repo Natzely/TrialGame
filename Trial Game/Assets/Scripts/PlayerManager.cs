@@ -11,7 +11,8 @@ public class PlayerManager : MonoBehaviour
 
     public bool GetDeleteMoveSpace(Enums.Player player)
     {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault().DeleteMoveSpace;
+        var tmp = PlayerList.Where(x => x.Player == player).FirstOrDefault();
+        return tmp.DeleteMoveSpace;
     }
 
     public int GetResetMoveSpace(Enums.Player player)
@@ -31,22 +32,22 @@ public class PlayerManager : MonoBehaviour
 
     public void SetPathMatrix(Enums.Player player, int gridSize)
     {
-        PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = new MoveSpace[gridSize*2+1, gridSize*2+1];
+        PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = new Space[gridSize*2+1, gridSize*2+1];
     }
 
-    public MoveSpace GetMatrixItem(Enums.Player player, Vector2 gridPos)
+    public Space GetMatrixItem(Enums.Player player, Vector2 gridPos)
     {
         return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)gridPos.x, (int)gridPos.y];
     }
 
-    public void UpdatePathMatrix(Enums.Player player, Vector2 pos, MoveSpace ms)
+    public void UpdatePathMatrix(Enums.Player player, Vector2 pos, Space ms)
     {
         var grid = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
         if (pos.x < grid.GetLength(0) && pos.y < grid.GetLength(0))
-            PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)pos.x, (int)pos.y] = ms;
+                PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)pos.x, (int)pos.y] = ms;
     }
 
-    public MoveSpace[,] GetPathMatrix(Enums.Player player)
+    public Space[,] GetPathMatrix(Enums.Player player)
     {
         return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
     }
@@ -89,7 +90,7 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerable<MoveSpace> CreatePath(Enums.Player player, MoveSpace msStart, MoveSpace msEnd)
     {
-        MoveSpace[,] map = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
+        Space[,] map = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
 
         Location current = null;
         var start = new Location { X = (int)msStart.GridPosition.x, Y = (int)msStart.GridPosition.y };
@@ -162,7 +163,7 @@ public class PlayerManager : MonoBehaviour
         int count = -1;
         foreach (Location l in closedList)
         {
-            MoveSpace ms = map[l.X, l.Y];
+            MoveSpace ms = (MoveSpace)map[l.X, l.Y];
             pathList.Add(ms);
             if (lastMS != null)
             {
@@ -181,7 +182,7 @@ public class PlayerManager : MonoBehaviour
         return PlayerList.Where(p => p.Player == player).FirstOrDefault().MovementPath = pathList;
     }
 
-    private List<Location> GetWalkableAdjacentSquares(int x, int y, MoveSpace[,] map)
+    private List<Location> GetWalkableAdjacentSquares(int x, int y, Space[,] map)
     {
         var proposedLocations = new List<Location>()
         {
@@ -191,7 +192,7 @@ public class PlayerManager : MonoBehaviour
             new Location { X = x + 1, Y = y },
         };
 
-        return proposedLocations.Where(l => l.Y < map.GetLength(0) && l.X < map.GetLength(0) && map[l.X, l.Y] != null).ToList();
+        return proposedLocations.Where(l => l.Y < map.GetLength(0) && l.X < map.GetLength(0) && map[l.X, l.Y] != null && map[l.X, l.Y].GetType() == typeof(MoveSpace)).ToList();
     }
 
     private int ComputeHScore(int x, int y, int targetX, int targetY)
@@ -205,7 +206,7 @@ public class PlayerManager : MonoBehaviour
         public Enums.Player Player;
         public bool DeleteMoveSpace;
         public int ResetMoveSpacesAbove;
-        public MoveSpace[,] MovementGrid;
+        public Space[,] MovementGrid;
         public List<MoveSpace> MovementPath;
     }
 

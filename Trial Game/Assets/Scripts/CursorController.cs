@@ -16,7 +16,7 @@ public class CursorController : MonoBehaviour
     Enums.CursorState _lastState;
 
     PlayerManager _playerManager;
-    GridBlock _curGridBlock;
+    GridBlock _currGridBlock;
     Animator _animator;
     UnitController _currUnit;
     SpriteRenderer _sR;
@@ -26,7 +26,6 @@ public class CursorController : MonoBehaviour
     Vector2 _startPos;
     Vector2 _attackPos;
     Color _playerColor;
-    Color _errorColor;
     bool _noGo;
     bool _select;
     bool _attack;
@@ -56,7 +55,6 @@ public class CursorController : MonoBehaviour
         _actionTimer = 0;
         _startPos = transform.position;
         _playerPrefix = Player == Enums.Player.Player1 ? "P1" : "P2";
-        _errorColor = Colors.Error;
 
         switch (Player)
         {
@@ -101,11 +99,10 @@ public class CursorController : MonoBehaviour
         }
         else if (grid != null)
         {
-            _curGridBlock = grid;
+            _currGridBlock = grid;
         }
         else if (CheckForNoGo(gO))
         {
-            _sR.color = _errorColor;
             _noGo = true;
         }
         else if (CheckForYesGo())
@@ -256,9 +253,9 @@ public class CursorController : MonoBehaviour
                     ClearPath();
                 }
                 _currUnit.Select(true);
-                int gridSize = _currUnit.TotalMoves;
+                int gridSize = _currUnit.TotalMoves + _currUnit.AttackDistance;
                 _playerManager.SetPathMatrix(Player, gridSize);
-                _curGridBlock.CreateGrid(Player, _currUnit.TotalMoves + 1, new Vector2(gridSize, gridSize));
+                _currGridBlock.CreateGrid(Player, _currUnit.TotalMoves + 1, _currUnit.AttackDistance, new Vector2(gridSize, gridSize));
                 var matrix = _playerManager.GetPathMatrix(Player);
             }
         }
@@ -273,10 +270,11 @@ public class CursorController : MonoBehaviour
             _currUnit = null;
             _currState = Enums.CursorState.Default;
             ClearPath(false);
+            _playerManager.SetDeleteMoveSpace(Player, true);
         }
 
         _actionTimer = ActionTimer;
-    }
+    }   
 
     private void Move()
     {
@@ -325,7 +323,7 @@ public class CursorController : MonoBehaviour
             _currState = Enums.CursorState.Attacking;
             _animator.SetBool("Attacking", true);
             _attackPos = transform.position;
-            _moves.ForEach(i => i.Show = false);
+            //_moves.ForEach(i => i.Show = false);
         }
         else if (transform.position != _currUnit.GetHolder().position)
         {

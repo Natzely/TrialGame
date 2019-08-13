@@ -47,4 +47,18 @@ public static class Extensions
     {
         return new Vector3(v.x, v.y, v.z);
     }
+
+    public static Enums.PathDirection ToPathDirection(this Vector2 vector)
+    {
+        if (vector == Vector2.down)
+            return Enums.PathDirection.Down;
+        else if (vector == Vector2.up)
+            return Enums.PathDirection.Up;
+        else if (vector == Vector2.left)
+            return Enums.PathDirection.Left;
+        else if (vector == Vector2.right)
+            return Enums.PathDirection.Right;
+        else
+            return Enums.PathDirection.Start;
+    }
 }

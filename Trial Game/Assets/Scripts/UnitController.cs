@@ -8,10 +8,10 @@ public class UnitController : MonoBehaviour
     public Transform Holder;
     public GameObject Projectile;
     public bool OnCooldown = false;
-    public int TotalMoves = 4;  
+    public int TotalMoves = 4;
+    public int AttackDistance = 2;
     public float Speed = 5;
     public float Cooldown = 5;
-    public float AttackDistance = 5;
     public float AttackSpeed = 5;
 
     private bool _moved;
@@ -212,14 +212,6 @@ public class UnitController : MonoBehaviour
     {
         _animator.SetFloat("Look X", Player == Enums.Player.Player1 ? 1 : -1);
         _animator.SetFloat("Look Y", 0);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
     }
 }
 

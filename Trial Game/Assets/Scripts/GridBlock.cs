@@ -8,50 +8,76 @@ using UnityEngine;
 public class GridBlock : MonoBehaviour
 {
     public GameObject MoveSpace;
+    public GameObject AttackSpace;
     public int MovementCost = 0;
     public bool Unpassable = false;
 
-    private Dictionary<Enums.Player, MoveSpace> _movesSpaces;
-    private Dictionary<Vector2, GridBlock> _neighbors;
+    private Dictionary<Enums.Player, Space> _moveSpaces;
+    private Dictionary<Enums.Player, Space> _attackSpaces;
+    private Dictionary<Enums.Player, Space> _spaces;
+    private GridNeighbors _neighbors;
+    private GameObject _space;
     private SpriteRenderer _sR;
     private bool _gotNeighbors;
     private bool _showingGrid;
-    private int _distance;
 
-    public void CreateGrid(Enums.Player player, int distance, Vector2 gridPos)
+    public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
     {
-        distance -= MovementCost;
-               
-        if (Unpassable || distance < 0)
+        if ((moveDistance <= 0 && attackDistance == 0) || 
+            (_moveSpaces.ContainsKey(player) && _moveSpaces[player].Enabled))
             return;
 
-        _distance = distance;
+        if (Unpassable)
+            moveDistance = 0;
 
-        if (!_movesSpaces.ContainsKey(player))
+        if (moveDistance > 0)
         {
-            var gO = Instantiate(MoveSpace, transform.position, Quaternion.identity);
-            _movesSpaces[player] = gO.GetComponent<MoveSpace>();
-            _movesSpaces[player].Player = player;
+            _space = MoveSpace;
+            _spaces = _moveSpaces;
+            moveDistance -= MovementCost;
+            if (_attackSpaces.ContainsKey(player))
+                _attackSpaces[player].Disable();
         }
         else
-            _movesSpaces[player].Enable();
-
-        _movesSpaces[player].GridPosition = gridPos;
-
-        if (distance > 0)
         {
-            _neighbors[Vector2.up]?.CreateGrid(player, distance, new Vector2(gridPos.x, gridPos.y - 1));
-            _neighbors[Vector2.down]?.CreateGrid(player, distance, new Vector2(gridPos.x, gridPos.y + 1));
-            _neighbors[Vector2.right]?.CreateGrid(player, distance, new Vector2(gridPos.x + 1, gridPos.y));
-            _neighbors[Vector2.left]?.CreateGrid(player, distance, new Vector2(gridPos.x - 1, gridPos.y));
+            _space = AttackSpace;
+            _spaces = _attackSpaces;
+            attackDistance -= 1;
         }
+
+        if (!_spaces.ContainsKey(player))
+        {
+            var gO = Instantiate(_space, transform.position, Quaternion.identity);
+            _spaces[player] = gO.GetComponent<Space>();
+            _spaces[player].Player = player;
+        }
+
+        if (_spaces.ContainsKey(player))
+        {
+            try
+            {
+                _spaces[player].Enable();
+                _spaces[player].GridPosition = gridPos;
+            }
+            catch
+            {
+                Debug.Log("");
+            }
+        }
+        
+
+        _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y - 1));
+        _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y + 1));
+        _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x + 1, gridPos.y));
+        _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x - 1, gridPos.y));
     }
 
     private void Start()
     {
-        _neighbors = new Dictionary<Vector2, GridBlock>();
+        _neighbors = new GridNeighbors();
         _sR = GetComponent<SpriteRenderer>();
-        _movesSpaces = new Dictionary<Enums.Player, MoveSpace>();
+        _moveSpaces = new Dictionary<Enums.Player, Space>();
+        _attackSpaces = new Dictionary<Enums.Player, Space>();
         transform.parent = null;
     }
 
@@ -71,13 +97,15 @@ public class GridBlock : MonoBehaviour
 
     private void GetNeighbors()
     {
-        GetNeighbor(Vector2.up);
-        GetNeighbor(Vector2.down);
-        GetNeighbor(Vector2.left);
-        GetNeighbor(Vector2.right);
+        _neighbors.SetNeighbors(
+            GetNeighbor(Vector2.up),
+            GetNeighbor(Vector2.down),  
+            GetNeighbor(Vector2.left),
+            GetNeighbor(Vector2.right)
+        );
     }
 
-    private void GetNeighbor(Vector2 dir)
+    private GridBlock GetNeighbor(Vector2 dir)
     {
         Vector2 startPos = transform.position.V2();
         RaycastHit2D hit = Physics2D.Raycast(startPos, dir, 1f, LayerMask.GetMask("MapGrid"));
@@ -85,8 +113,10 @@ public class GridBlock : MonoBehaviour
         {
             GameObject rhgo = hit.transform.gameObject;
             GridBlock grid = rhgo.GetComponent<GridBlock>();
-            if (grid != null)
-                _neighbors[dir] = grid;
+
+            return grid;
         }
+
+        return null;
     }
 }

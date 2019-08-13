@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
+  AttackSpace: {fileID: 1168837427428086730, guid: 8f6ccdf6f94252849b1cf812e5d21dc4,
+    type: 3}
   MovementCost: -1
   Unpassable: 1
 --- !u!61 &7472597618557682154
