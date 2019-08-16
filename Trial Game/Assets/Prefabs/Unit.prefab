@@ -127,9 +127,9 @@ MonoBehaviour:
     type: 3}
   OnCooldown: 0
   TotalMoves: 4
+  AttackDistance: 1
   Speed: 5
   Cooldown: 8
-  AttackDistance: 4
   AttackSpeed: 500
 --- !u!95 &347991490560029868
 Animator:

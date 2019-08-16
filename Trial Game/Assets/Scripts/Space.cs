@@ -31,7 +31,7 @@ public class Space : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public bool Enabled
+    public bool SpaceActive
     {
         get { return gameObject.activeSelf; }
     }

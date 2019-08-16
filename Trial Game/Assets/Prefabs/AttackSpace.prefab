@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1168837427428086728}
   - component: {fileID: 1168837427428086731}
   - component: {fileID: 5880151509130541217}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: AttackSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}

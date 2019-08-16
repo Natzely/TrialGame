@@ -12,31 +12,41 @@ public class GridBlock : MonoBehaviour
     public int MovementCost = 0;
     public bool Unpassable = false;
 
-    private Dictionary<Enums.Player, Space> _moveSpaces;
-    private Dictionary<Enums.Player, Space> _attackSpaces;
-    private Dictionary<Enums.Player, Space> _spaces;
+    private GridPlayerSpaces _moveSpaces;
+    private GridPlayerSpaces _attackSpaces;
+    private GridPlayerSpaces _spaces;
     private GridNeighbors _neighbors;
     private GameObject _space;
     private SpriteRenderer _sR;
+    private int _moveDistance;
     private bool _gotNeighbors;
     private bool _showingGrid;
 
     public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
     {
-        if ((moveDistance <= 0 && attackDistance == 0) || 
-            (_moveSpaces.ContainsKey(player) && _moveSpaces[player].Enabled))
+        // If there aren't any more move or attack chances, return;
+        if (moveDistance <= 0 && attackDistance == 0)
+            return;
+
+        // if the space is visited again through a better path, reset it.
+        if (_moveDistance < moveDistance && _attackSpaces.PlayerSpaceEnabled(player))
+            _attackSpaces[player].Disable();
+        else if (_moveDistance < moveDistance && _moveSpaces.PlayerSpaceEnabled(player))
+            _moveSpaces[player].Disable();
+        else if (_moveSpaces.PlayerSpaceEnabled(player))
             return;
 
         if (Unpassable)
             moveDistance = 0;
+
+        _moveDistance = moveDistance;
 
         if (moveDistance > 0)
         {
             _space = MoveSpace;
             _spaces = _moveSpaces;
             moveDistance -= MovementCost;
-            if (_attackSpaces.ContainsKey(player))
-                _attackSpaces[player].Disable();
+            _attackSpaces[player]?.Disable();
         }
         else
         {
@@ -45,25 +55,15 @@ public class GridBlock : MonoBehaviour
             attackDistance -= 1;
         }
 
-        if (!_spaces.ContainsKey(player))
+        if (_spaces[player] == null)
         {
             var gO = Instantiate(_space, transform.position, Quaternion.identity);
             _spaces[player] = gO.GetComponent<Space>();
             _spaces[player].Player = player;
         }
 
-        if (_spaces.ContainsKey(player))
-        {
-            try
-            {
-                _spaces[player].Enable();
-                _spaces[player].GridPosition = gridPos;
-            }
-            catch
-            {
-                Debug.Log("");
-            }
-        }
+        _spaces[player].Enable();
+        _spaces[player].GridPosition = gridPos;
         
 
         _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y - 1));
@@ -76,8 +76,8 @@ public class GridBlock : MonoBehaviour
     {
         _neighbors = new GridNeighbors();
         _sR = GetComponent<SpriteRenderer>();
-        _moveSpaces = new Dictionary<Enums.Player, Space>();
-        _attackSpaces = new Dictionary<Enums.Player, Space>();
+        _moveSpaces = new GridPlayerSpaces();
+        _attackSpaces = new GridPlayerSpaces();
         transform.parent = null;
     }
 

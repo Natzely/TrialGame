@@ -170,6 +170,8 @@ public class UnitController : MonoBehaviour
                 _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
                 _moved = false;
+                _attacked = false;
+                _moving = false;
             } 
         }
     }
