@@ -109,7 +109,7 @@ public class MoveSpace : Space
         transform.rotation = Quaternion.identity;
     }
 
-    public void Reset()
+    public void ResetSpace()
     {
         ResetRotation();
         _pathOrder = -1;
@@ -133,7 +133,7 @@ public class MoveSpace : Space
     {
         if (!_pM.GetPlayerInfo(Player).MovementPath.Contains(this))
         {
-            Reset();
+            ResetSpace();
         }
 
         base.Update();

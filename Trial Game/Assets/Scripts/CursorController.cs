@@ -97,9 +97,6 @@ public class CursorController : MonoBehaviour
 
             _currMoveSpace = moveSpace;
 
-            var ms = _playerManager.GetMatrixItem(Player, _currMoveSpace.GridPosition);
-            var ms1 = ms;
-
             _moves = _playerManager.CreatePath(Player, _orgMoveSpace, _currMoveSpace).ToList();
         }
         else if (CheckForNoGo(gO))
@@ -249,7 +246,7 @@ public class CursorController : MonoBehaviour
                 int gridSize = _currUnit.TotalMoves + _currUnit.AttackDistance;
                 _playerManager.SetPathMatrix(Player, gridSize);
                 _orgMoveSpace = _currMoveSpace;
-                _currGridBlock.CreateGrid(Player, _currUnit.TotalMoves + 1, _currUnit.AttackDistance, new Vector2(gridSize, gridSize));
+                _currGridBlock.CreateGrid(Player, _currUnit.TotalMoves + _currGridBlock.MovementCost, _currUnit.AttackDistance, new Vector2(gridSize, gridSize));
                 var matrix = _playerManager.GetPathMatrix(Player);
             }
         }

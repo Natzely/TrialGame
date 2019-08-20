@@ -24,9 +24,7 @@ public class GridBlock : MonoBehaviour
 
     public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
     {
-        // If there aren't any more move or attack chances, return;
-        if (moveDistance <= 0 && attackDistance == 0)
-            return;
+        moveDistance -= MovementCost;
 
         // if the space is visited again through a better path, reset it.
         if (_moveDistance < moveDistance && _attackSpaces.PlayerSpaceEnabled(player))
@@ -36,16 +34,12 @@ public class GridBlock : MonoBehaviour
         else if (_moveSpaces.PlayerSpaceEnabled(player))
             return;
 
-        if (Unpassable)
-            moveDistance = 0;
-
         _moveDistance = moveDistance;
 
-        if (moveDistance > 0)
+        if (moveDistance >= 0)
         {
             _space = MoveSpace;
             _spaces = _moveSpaces;
-            moveDistance -= MovementCost;
             _attackSpaces[player]?.Disable();
         }
         else
@@ -64,12 +58,15 @@ public class GridBlock : MonoBehaviour
 
         _spaces[player].Enable();
         _spaces[player].GridPosition = gridPos;
-        
 
-        _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y - 1));
-        _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y + 1));
-        _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x + 1, gridPos.y));
-        _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x - 1, gridPos.y));
+        // If there aren't any more move or attack spaces, dont ask neighbors to do anything
+        if (moveDistance > 0 || attackDistance > 0)
+        {
+            _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y - 1));
+            _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y + 1));
+            _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x + 1, gridPos.y));
+            _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x - 1, gridPos.y));
+        }
     }
 
     private void Start()
@@ -82,7 +79,7 @@ public class GridBlock : MonoBehaviour
     }
 
     private void Update()
-    {
+    { 
         if (!_gotNeighbors)
         {
             GetNeighbors();
