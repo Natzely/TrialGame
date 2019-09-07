@@ -50,6 +50,7 @@ MonoBehaviour:
     type: 3}
   MovementCost: 2
   Unpassable: 0
+  CurrentUnit: {fileID: 0}
 --- !u!61 &5570947507939381739
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -74,5 +75,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0

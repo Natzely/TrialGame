@@ -33,6 +33,13 @@ public static class Extensions
         return r;
     }
 
+    public static T GetAndRemove<T>(this List<T> list, int index)
+    {
+        T obj = list[index];
+        list.RemoveAt(index);
+        return obj;
+    }
+
     public static bool IsEmpty(this Queue q)
     {
         return q.Count == 0;

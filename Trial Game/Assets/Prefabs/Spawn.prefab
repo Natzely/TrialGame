@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1035513563995690863
+--- !u!1 &1337446913543468413
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1035513563995690849}
-  - component: {fileID: 4677800291288723509}
-  - component: {fileID: 7472597618557682154}
-  m_Layer: 16
-  m_Name: GridBlock_Water
+  - component: {fileID: 1337446913543468414}
+  - component: {fileID: 9069428651089894933}
+  - component: {fileID: 4977517012837581437}
+  - component: {fileID: 6191959905376247713}
+  m_Layer: 17
+  m_Name: Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1035513563995690849
+--- !u!4 &1337446913543468414
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035513563995690863}
+  m_GameObject: {fileID: 1337446913543468413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,32 +33,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4677800291288723509
+--- !u!114 &9069428651089894933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035513563995690863}
+  m_GameObject: {fileID: 1337446913543468413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82c8e4747021ad148acaa83d5537eb52, type: 3}
+  m_Script: {fileID: 11500000, guid: 29fd661e58a4b074881ad576f2e28baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
+  OtherSpawns: []
+  UnitSpawn: {fileID: 7530291345336432978, guid: f08af2124ce0fec4892bacd4b849c403,
     type: 3}
-  AttackSpace: {fileID: 1168837427428086730, guid: 8f6ccdf6f94252849b1cf812e5d21dc4,
-    type: 3}
-  MovementCost: 99999
-  Unpassable: 1
-  CurrentUnit: {fileID: 0}
---- !u!61 &7472597618557682154
+  SpawnIntervalMin: 30
+  SpawnIntervalMax: 120
+  GridBlock: {fileID: 0}
+--- !u!50 &4977517012837581437
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337446913543468413}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &6191959905376247713
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035513563995690863}
+  m_GameObject: {fileID: 1337446913543468413}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -67,13 +88,13 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

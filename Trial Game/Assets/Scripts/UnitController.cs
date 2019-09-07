@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
     public Enums.Player Player = Enums.Player.Player1;
-    public Transform Holder;
     public GameObject Projectile;
     public bool OnCooldown = false;
     public int TotalMoves = 4;
@@ -13,32 +13,21 @@ public class UnitController : MonoBehaviour
     public float Speed = 5;
     public float Cooldown = 5;
     public float AttackSpeed = 5;
-
-    private bool _moved;
-    public bool Moved
-    {
-        get { return _moved; }
-    }
-
-    private bool _moving;
-    public bool Moving
-    {
-        get { return _moving; }
-    }
-
-    private bool _attacked;
-    public bool Attacked
-    {
-        get { return _attacked; }
-    }
+    
+    public bool Moved { get; internal set; }
+    public bool Moving { get; internal set; }
+    public bool Attacked { get; internal set; }
+    public GridBlock StartPos { get; set; }
+    public GridBlock EndPos { get; set; }
 
     Animator _animator;
     SpriteRenderer _sR;
     Queue _moveToPoints;
-    Vector3? _nextPoint;
-    Vector3 _lastPoint;
+    Vector2? _nextPoint;
+    Vector2 _lastPoint;
     Vector2 _originalPoint;
     Vector2 _attackPos;
+    PlayerManager _pm;
 
     bool _hover;
     bool _selected;
@@ -56,7 +45,7 @@ public class UnitController : MonoBehaviour
         if (_cooldown <= 0)
         {
             _selected = select;
-            if (!_moving)
+            if (!Moving)
             {
                 Selected();
             }
@@ -69,13 +58,13 @@ public class UnitController : MonoBehaviour
         _attackPos = pos;
     }
 
-    public void MoveTo(List<MoveSpace> movePoints)
+    public void MoveTo(List<GridBlock> movePoints)
     {
-        if (_cooldown <= 0 && !_moved)
+        if (_cooldown <= 0 && !Moved)
         {
             for(int x = 0; x <= movePoints.Count - 1; x++)
                 _moveToPoints.Enqueue(movePoints[x].Position);
-            _moving = true;
+            Moving = true;
         }
     }
 
@@ -83,15 +72,15 @@ public class UnitController : MonoBehaviour
     {
         _moveToPoints.Clear();
         _nextPoint = null;
-        Holder.position = _originalPoint;
-        _moved = false;
-        _moving = false;
+        transform.position = _originalPoint;
+        Moved = false;
+        Moving = false;
         ResetLook();
     }
 
-    public Transform GetHolder()
+    public Vector3 Position
     {
-        return Holder;
+        get { return transform.position; }
     }
 
     // Start is called before the first frame update
@@ -99,13 +88,14 @@ public class UnitController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
+        _pm = FindObjectOfType<PlayerManager>();
 
+        Moved = false;
         _hover = false;
         _selected = false;
-        _moved = false;
         _nextPoint = null;
         _moveToPoints = new Queue();
-        _originalPoint = Holder.position;
+        _originalPoint = transform.position;
 
         Player = (Enums.Player)gameObject.layer;
         switch (Player)
@@ -128,25 +118,22 @@ public class UnitController : MonoBehaviour
             if (_nextPoint == null)
             {
                 _nextPoint = (Vector2)_moveToPoints.Dequeue();
-                _lastPoint = Holder.position;
+                _lastPoint = transform.position;
 
-                float x = _nextPoint.Value.x - _lastPoint.x;
-                float y = _nextPoint.Value.y - _lastPoint.y;
-                _animator.SetFloat("Look X", x == 0 ? 0 : x > 0 ? 1 : -1);
-                _animator.SetFloat("Look Y", y == 0 ? 0 : y > 0 ? 1 : -1);
+                LookAt(_nextPoint.Value);
             }
             
-            Vector2 moveVector = Vector2.MoveTowards(Holder.position, _nextPoint.Value, Speed * Time.deltaTime);
+            Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
 
-            Holder.position = moveVector;
-            if (Holder.position == _nextPoint.Value)
+            transform.position = moveVector;
+            if (transform.position.V2() == _nextPoint.Value)
             {
                 _nextPoint = null;
 
                 if(_moveToPoints.IsEmpty())
                 {
-                    _moving = false;
-                    _moved = true;
+                    Moving = false;
+                    Moved = true;
                     if (_selected == false && !_attack)
                         Selected();
                 }
@@ -161,6 +148,13 @@ public class UnitController : MonoBehaviour
             Selected();
         }
 
+        if (Player != Enums.Player.Player1 && _moveToPoints.IsEmpty() && _nextPoint == null && !_animator.GetBool("Fixed"))
+        {
+            var path = _pm.CreatePath(Player, StartPos, EndPos).ToList();
+            MoveTo(path);
+            _animator.SetFloat("Speed", Speed);
+        }
+
         if (_cooldown > 0)
         {
             _cooldown -= Time.deltaTime;
@@ -169,40 +163,52 @@ public class UnitController : MonoBehaviour
             {
                 _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
-                _moved = false;
-                _attacked = false;
-                _moving = false;
-            } 
+                Moved = false;
+                Attacked = false;
+                Moving = false;
+            }
         }
     }
 
     private void Selected()
     {
-        _animator.SetBool("Selected", _selected);
-        if (!_selected && (_moved || _attacked))
+        if (Player == Enums.Player.Player1)
         {
-            GoOnCooldown();
+            _animator.SetBool("Selected", _selected);
+
+            if (!_selected && (Moved || Attacked))
+            {
+                GoOnCooldown();
+            }
+        }
+        else
+        {
+            _animator.SetFloat("Speed", 0);
+            _animator.SetBool("Fixed", true);
         }
     }
 
     private void Attack()
     {
-        GameObject projObj = Instantiate(Projectile, (Vector2)Holder.position + (Vector2.up * .5f) + (Vector2.right * .5f), Quaternion.identity);
+        LookAt(_attackPos);
+
+        Vector2 dir = new Vector2(_animator.GetFloat("Look X"), _animator.GetFloat("Look Y"));
+        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
         projObj.layer = gameObject.layer;
 
         Projectile tmpProjectile = projObj.GetComponent<Projectile>();
-        var tmpDir = _attackPos - Holder.position.V2();
+        var tmpDir = _attackPos - transform.position.V2();
         tmpDir.Normalize();
         tmpProjectile.Launch(tmpDir, AttackSpeed, AttackDistance);
 
-        _attacked = true;
+        Attacked = true;
         _animator.SetTrigger("Launch");
-        Select(false);
+        StartCoroutine(Deselect());
     }
 
     private void GoOnCooldown()
     {
-        _originalPoint = Holder.position;
+        _originalPoint = transform.position;
         ResetLook();
         _animator.SetBool("Selected", false);
         Hover(false);
@@ -214,6 +220,21 @@ public class UnitController : MonoBehaviour
     {
         _animator.SetFloat("Look X", Player == Enums.Player.Player1 ? 1 : -1);
         _animator.SetFloat("Look Y", 0);
+    }
+
+    private void LookAt(Vector2 lookAt)
+    {
+        float x = lookAt.x - transform.position.x;
+        float y = lookAt.y - transform.position.y;
+        _animator.SetFloat("Look X", x == 0 ? 0 : x > 0 ? 1 : -1);
+        _animator.SetFloat("Look Y", y == 0 ? 0 : y > 0 ? 1 : -1);
+    }
+
+    IEnumerator Deselect()
+    {
+        yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
+        yield return new WaitUntil(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
+        Select(false);
     }
 }
 

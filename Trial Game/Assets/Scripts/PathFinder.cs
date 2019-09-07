@@ -6,14 +6,26 @@ using System.Linq;
 
 public class PathFinder
 {
-    public static IEnumerable<MoveSpace> CreatePath(Enums.Player player, MoveSpace msStart, MoveSpace msEnd, Space[,] map)
+    public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock msStart, GridBlock msEnd, GridBlock[,] map)
     {
         Location current = null;
-        var start = new Location { X = (int)msStart.GridPosition.x, Y = (int)msStart.GridPosition.y };
-        var target = new Location { X = (int)msEnd.GridPosition.x, Y = (int)msEnd.GridPosition.y };
+        Location start = null;
+        Location target = null;
+
+        if (player == Enums.Player.Player1)
+        {
+            start = new Location { X = (int)msStart.PlayerGridPosition.x, Y = (int)msStart.PlayerGridPosition.y };
+            target = new Location { X = (int)msEnd.PlayerGridPosition.x, Y = (int)msEnd.PlayerGridPosition.y };
+        }
+        else
+        {
+            start = new Location { X = (int)msStart.FullGridPosition.x, Y = (int)msStart.FullGridPosition.y };
+            target = new Location { X = (int)msEnd.FullGridPosition.x, Y = (int)msEnd.FullGridPosition.y };
+        }
+
         var openList = new List<Location>();
         var closedList = new List<Location>();
-        var pathList = new List<MoveSpace>();
+        var pathList = new List<GridBlock>();
         int g = 0;
 
         // start by adding the original position to the open list
@@ -35,10 +47,10 @@ public class PathFinder
             if (closedList.FirstOrDefault(l => l.X == target.X && l.Y == target.Y) != null)
                 break;
 
-            var adjacentSquares = GetWalkableAdjacentSquares(current.X, current.Y, map);
+            var adjacentSquares = GetWalkableAdjacentSquares(player, current.X, current.Y, map);
             g++;
 
-            foreach (var adjacentSquare in adjacentSquares)
+            foreach (Location adjacentSquare in adjacentSquares)
             {
                 // if this adjacent square is already in the closed list, ignore it
                 if (closedList.FirstOrDefault(l => l.X == adjacentSquare.X
@@ -73,32 +85,39 @@ public class PathFinder
             }
         }
 
-        MoveSpace lastMS = null;
-        Vector2 lastPos = new Vector2(0, 0);
-        Vector2 lastDir = new Vector2(0, 0);
-        int count = -1;
-        foreach (Location l in closedList)
+        Vector2? lastDir = null;
+        Vector2? dir = null;
+        GridBlock pB = null;
+
+        while (current != null)
         {
-            MoveSpace ms = (MoveSpace)map[l.X, l.Y];
-            pathList.Add(ms);
-            if (lastMS != null)
+            GridBlock gB = map[current.X, current.Y];
+            pathList.Add(gB);
+
+            if (current.Parent != null)
             {
-                Vector2 dir = ms.Position - lastPos;
-                lastMS.MoveState(lastDir, dir, count);
-                lastDir = dir;
+                pB = map[current.Parent.X, current.Parent.Y];
+
+                dir = gB.Position - pB.Position;
+                // Since the first lastDir is null, it will create an arrow spacefd
+                if (player == Enums.Player.Player1)
+                    gB.UpdateMoveSpaceState(player, dir.Value, lastDir);
+            }
+            else if (player == Enums.Player.Player1)
+            {
+                // Reached the first space, make it the start
+                gB.UpdateMoveSpaceState(player, new Vector2(0, 0), lastDir);
             }
 
-            count++;
-            lastPos = ms.Position;
-            lastMS = ms;
+            lastDir = dir;
+            current = current.Parent;
         }
 
-        lastMS.MoveState(lastDir, null, count);
-
+        pathList.Reverse();
         return pathList;
     }
 
-    private static List<Location> GetWalkableAdjacentSquares(int x, int y, Space[,] map)
+    private static List<Location> GetWalkableAdjacentSquares(Enums.Player player, int x, int y, GridBlock[,] map)
     {
         var proposedLocations = new List<Location>()
         {
@@ -108,7 +127,13 @@ public class PathFinder
             new Location { X = x + 1, Y = y },
         };
 
-        return proposedLocations.Where(l => l.Y < map.GetLength(0) && l.X < map.GetLength(0) && map[l.X, l.Y] != null && map[l.X, l.Y].GetType() == typeof(MoveSpace)).ToList();
+        return proposedLocations.Where(l =>
+            l.X >= 0 && l.Y >= 0 &&
+            l.X < map.GetLength(0) && l.Y < map.GetLength(1) &&
+            map[l.X, l.Y] != null &&
+            (map[l.X, l.Y].CurrentUnit == null || map[l.X, l.Y].CurrentUnit.Player == player) &&
+            !map[l.X, l.Y].Unpassable
+         ).ToList();
     }
 
     private static int ComputeHScore(int x, int y, int targetX, int targetY)

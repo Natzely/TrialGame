@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 783470378874735502}
   - component: {fileID: 347991490560029868}
   - component: {fileID: 3097757917150243156}
+  - component: {fileID: 1199923704173266940}
   m_Layer: 12
   m_Name: Unit_Baddie
   m_TagString: Unit
@@ -60,6 +61,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -96,10 +98,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.031387925, y: 0.28775847}
+  m_Offset: {x: 0.03721863, y: 0.042867064}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.2}
     oldSize: {x: 1.7069987, y: 1.7053334}
     newSize: {x: 1.2806249, y: 1.28}
     adaptiveTilingThreshold: 0.5
@@ -107,7 +109,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.52034116, y: 0.57551694}
+  m_Size: {x: 0.6019715, y: 0.62216306}
   m_EdgeRadius: 0
 --- !u!114 &783470378874735502
 MonoBehaviour:
@@ -121,14 +123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cf10c278cc42741a8450273e64039e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: 0
-  Holder: {fileID: 0}
+  Player: 12
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
   OnCooldown: 0
   TotalMoves: 4
   AttackDistance: 1
-  Speed: 5
+  Speed: 1
   Cooldown: 8
   AttackSpeed: 500
 --- !u!95 &347991490560029868
@@ -162,4 +163,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67b2bdeba2013b241914817d023b105e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 2
+  Health: 1
+--- !u!50 &1199923704173266940
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530291345336432978}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

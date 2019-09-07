@@ -6,7 +6,7 @@ public class Space : MonoBehaviour
 {
     public Vector2 Position
     {
-        get { return new Vector2(transform.position.x - .5f, transform.position.y - .5f); }
+        get { return new Vector2(transform.position.x, transform.position.y); }
     }
 
     public virtual Enums.Player Player
@@ -36,18 +36,23 @@ public class Space : MonoBehaviour
         get { return gameObject.activeSelf; }
     }
 
-    public Vector2 GridPosition
+    public GridBlock ParentGridBlock
     {
-        get
-        {
-            return _gridPos;
-        }
-        set
-        {
-            _gridPos = value;
-            _pM.UpdatePathMatrix(Player, value, this);
-        }
+        get; set;
     }
+
+    //public Vector2 GridPosition
+    //{
+    //    get
+    //    {
+    //        return _gridPos;
+    //    }
+    //    set
+    //    {
+    //        _gridPos = value;
+    //        _pM.UpdatePathMatrix(Player, value, this);
+    //    }
+    //}
 
     protected SpriteRenderer _sR;
     protected Enums.Player _player;
@@ -63,8 +68,30 @@ public class Space : MonoBehaviour
 
     virtual protected void Update()
     {
-        if (_pM.GetDeleteMoveSpace(Player))
+        var grid = _pM.GetPathMatrix(Player);
+        bool inGrid = false;
+
+        if (grid != null)
+        {
+            for (int y = 0; y < grid.GetLength(0); y++)
+            {
+                if (inGrid)
+                    break;
+                for (int x = 0; x < grid.GetLength(0); x++)
+                {
+                    if (grid[x, y] == ParentGridBlock)
+                    {
+                        inGrid = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(!inGrid)
             gameObject.SetActive(false);
 
+        if (_pM.GetDeleteMoveSpace(Player))
+            gameObject.SetActive(false);
     }
 }

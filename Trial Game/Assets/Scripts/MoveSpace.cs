@@ -27,12 +27,11 @@ public class MoveSpace : Space
         }
     }
 
-    public void MoveState(Vector2 cDir, Vector2? nDir, int pathOrder)
+    public void MoveState(Vector2 cDir, Vector2? nDir)
     {
         ResetRotation();
         PathDirection = cDir.ToPathDirection();
         Enums.PathDirection nextDir = (nDir ??  new Vector2(0,0)).ToPathDirection();
-        _pathOrder = pathOrder;
 
         if (PathDirection == Enums.PathDirection.Start)
         {
@@ -52,7 +51,7 @@ public class MoveSpace : Space
                     break;
             }
         }
-        else    if (nDir == null)
+        else if (nDir == null)
         {
             _animator.SetBool("Head", true);
             _animator.SetBool("Straight", false);
@@ -112,7 +111,6 @@ public class MoveSpace : Space
     public void ResetSpace()
     {
         ResetRotation();
-        _pathOrder = -1;
         PathDirection = Enums.PathDirection.Start;
         _animator.SetBool("Head", false);
         _animator.SetBool("Straight", false);
@@ -121,21 +119,18 @@ public class MoveSpace : Space
     }
     
     private Animator _animator;
-    private int _pathOrder;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _pathOrder = -1;
     }
 
-    override protected void Update()
-    {
-        if (!_pM.GetPlayerInfo(Player).MovementPath.Contains(this))
-        {
-            ResetSpace();
-        }
-
-        base.Update();
-    }
+    //override protected void Update()
+    //{
+    //    if (!_pM.GetPlayerInfo(Player).MovementPath.Contains(this))
+    //    {
+    //        ResetSpace();
+    //    }
+    //    base.Update();
+    //}
 }

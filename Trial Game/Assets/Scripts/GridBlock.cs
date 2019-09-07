@@ -12,6 +12,26 @@ public class GridBlock : MonoBehaviour
     public int MovementCost = 0;
     public bool Unpassable = false;
 
+    [HideInInspector]
+    public UnitController CurrentUnit;
+
+    private Vector2 _gridPos;
+    public Vector2 PlayerGridPosition
+    {
+        get
+        {
+            return _gridPos;
+        }
+        set
+        {
+            _gridPos = value;
+            _pM.UpdatePathMatrix(Enums.Player.Player1, value, this);
+        }
+    }
+
+    public Vector2 FullGridPosition { get; set; }
+
+    private PlayerManager _pM;
     private GridPlayerSpaces _moveSpaces;
     private GridPlayerSpaces _attackSpaces;
     private GridPlayerSpaces _spaces;
@@ -22,9 +42,17 @@ public class GridBlock : MonoBehaviour
     private bool _gotNeighbors;
     private bool _showingGrid;
 
+    public Vector2 Position
+    {
+        get { return transform.position; }
+    }
+
     public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
     {
-        moveDistance -= MovementCost;
+        //if (CurrentUnit != null && CurrentUnit.Player != player)
+        //    moveDistance -= 9999;
+        //else
+            moveDistance -= MovementCost;
 
         // if the space is visited again through a better path, reset it.
         if (_moveDistance < moveDistance && _attackSpaces.PlayerSpaceEnabled(player))
@@ -54,10 +82,11 @@ public class GridBlock : MonoBehaviour
             var gO = Instantiate(_space, transform.position, Quaternion.identity);
             _spaces[player] = gO.GetComponent<Space>();
             _spaces[player].Player = player;
+            _spaces[player].ParentGridBlock = this;
         }
 
         _spaces[player].Enable();
-        _spaces[player].GridPosition = gridPos;
+        PlayerGridPosition = gridPos;
 
         // If there aren't any more move or attack spaces, dont ask neighbors to do anything
         if (moveDistance > 0 || attackDistance > 0)
@@ -69,8 +98,19 @@ public class GridBlock : MonoBehaviour
         }
     }
 
+    public void UpdateMoveSpaceState(Enums.Player player, Vector2 cDir, Vector2? nDir)
+    {
+        var space = _moveSpaces[player];
+        if(space != null)
+        {
+            var moveSpace = (MoveSpace)space;
+            moveSpace.MoveState(cDir, nDir);
+        }
+    }
+
     private void Start()
     {
+        _pM = FindObjectOfType<PlayerManager>();
         _neighbors = new GridNeighbors();
         _sR = GetComponent<SpriteRenderer>();
         _moveSpaces = new GridPlayerSpaces();
@@ -85,11 +125,43 @@ public class GridBlock : MonoBehaviour
             GetNeighbors();
             _gotNeighbors = true;
         }
+
+        if (!_pM.GetPlayerInfo(Enums.Player.Player1).MovementPath.Contains(this))
+        {
+            var space = _moveSpaces[Enums.Player.Player1];
+            if (space != null)
+            {
+                var moveSpace = (MoveSpace)space;
+                moveSpace.ResetSpace();
+            }
+        }
     }
 
-    public void Destroy()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
+        var colObj = collision.gameObject;
+        var unitCon = colObj.GetComponent<UnitController>();
+        if (unitCon != null && CurrentUnit == null)
+            CurrentUnit = unitCon;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (CurrentUnit == null)
+        {
+            var colObj = collision.gameObject;
+            var unitCon = colObj.GetComponent<UnitController>();
+            if (unitCon != null && CurrentUnit == null)
+                CurrentUnit = unitCon;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        var colObj = collision.gameObject;
+        var unitCon = colObj.GetComponent<UnitController>();
+        if (unitCon == CurrentUnit)
+            CurrentUnit = null;
     }
 
     private void GetNeighbors()
