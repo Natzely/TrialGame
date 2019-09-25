@@ -7,12 +7,16 @@ public class UnitController : MonoBehaviour
 {
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
+    public EnemyController EnemyController;
     public bool OnCooldown = false;
     public int TotalMoves = 4;
     public int AttackDistance = 2;
     public float Speed = 5;
     public float Cooldown = 5;
     public float AttackSpeed = 5;
+
+    [HideInInspector]
+    public GridBlock CurrentGridBlock { get; private set; }
     
     public bool Moved { get; internal set; }
     public bool Moving { get; internal set; }
@@ -20,6 +24,7 @@ public class UnitController : MonoBehaviour
     public GridBlock StartPos { get; set; }
     public GridBlock EndPos { get; set; }
 
+    PlayerManager _pm;
     Animator _animator;
     SpriteRenderer _sR;
     Queue _moveToPoints;
@@ -27,7 +32,6 @@ public class UnitController : MonoBehaviour
     Vector2 _lastPoint;
     Vector2 _originalPoint;
     Vector2 _attackPos;
-    PlayerManager _pm;
 
     bool _hover;
     bool _selected;
@@ -65,6 +69,7 @@ public class UnitController : MonoBehaviour
             for(int x = 0; x <= movePoints.Count - 1; x++)
                 _moveToPoints.Enqueue(movePoints[x].Position);
             Moving = true;
+            _animator.SetBool("Selected", true);  
         }
     }
 
@@ -137,7 +142,6 @@ public class UnitController : MonoBehaviour
                     if (_selected == false && !_attack)
                         Selected();
                 }
-
             }
         }
 
@@ -146,13 +150,6 @@ public class UnitController : MonoBehaviour
             Attack();
             _attack = false;
             Selected();
-        }
-
-        if (Player != Enums.Player.Player1 && _moveToPoints.IsEmpty() && _nextPoint == null && !_animator.GetBool("Fixed"))
-        {
-            var path = _pm.CreatePath(Player, StartPos, EndPos).ToList();
-            MoveTo(path);
-            _animator.SetFloat("Speed", Speed);
         }
 
         if (_cooldown > 0)
@@ -166,7 +163,20 @@ public class UnitController : MonoBehaviour
                 Moved = false;
                 Attacked = false;
                 Moving = false;
+
+                if (EnemyController != null)
+                    EnemyController.ReadyNextMove();
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var gO = collision.gameObject;
+        GridBlock gB = gO.GetComponent<GridBlock>();
+        if(gB != null)
+        {
+            CurrentGridBlock = gB;
         }
     }
 
@@ -178,7 +188,7 @@ public class UnitController : MonoBehaviour
 
             if (!_selected && (Moved || Attacked))
             {
-                GoOnCooldown();
+                GoOnCooldown(Attacked);
             }
         }
         else
@@ -206,13 +216,13 @@ public class UnitController : MonoBehaviour
         StartCoroutine(Deselect());
     }
 
-    private void GoOnCooldown()
+    private void GoOnCooldown(bool attack)
     {
         _originalPoint = transform.position;
         ResetLook();
         _animator.SetBool("Selected", false);
         Hover(false);
-        _cooldown = Cooldown;
+        _cooldown = Cooldown * (!attack ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
     }
 
@@ -237,4 +247,3 @@ public class UnitController : MonoBehaviour
         Select(false);
     }
 }
-

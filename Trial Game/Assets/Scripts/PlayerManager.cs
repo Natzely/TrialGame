@@ -64,7 +64,7 @@ public class PlayerManager : MonoBehaviour
         return PlayerList.Where(x => x.Player == player).FirstOrDefault();
     }
 
-    public bool PathMatrixContains(Enums.Player player, MoveSpace ms)
+    public bool PathMatrixContains(Enums.Player player, Space ms)
     {
         var matrix = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
         int mLength = matrix.GetLength(0);
@@ -114,9 +114,44 @@ public class PlayerManager : MonoBehaviour
         return pathList;
     }
 
+    public Vector2? GetNextUnit(Enums.Player player, UnitController unit)
+    {
+        if (unit == null)
+        {
+            var nextUnit = GetPlayerInfo(player).Units.Where(u => !u.OnCooldown).FirstOrDefault();
+            if (nextUnit != null)
+            {
+                return nextUnit.transform.position;
+            }
+        }
+        else
+        {
+            var unitList = GetPlayerInfo(player).Units.ToList();
+            var coolDownList = unitList.Where(u => !u.OnCooldown).ToList();
+            if (coolDownList.Count > 0)
+            {
+                var unitIndex = unitList.IndexOf(unit) + 1;
+                if (unitIndex >= unitList.Count)
+                    unitIndex = 0;
+
+                var nextUnit = unitList.Skip(unitIndex).FirstOrDefault(u => !u.OnCooldown);
+                return nextUnit.Position;
+            }
+        }
+
+        return null;
+    }
+
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
+        GetPlayerUnits();
+    }
+
+    public void GetPlayerUnits()
+    {
+        var units = FindObjectsOfType<UnitController>();
+        GetPlayerInfo(Enums.Player.Player1).Units.AddRange(units.Where(u => u.Player == Enums.Player.Player1));
     }
 
     IEnumerator GetGridBlocks()
@@ -150,6 +185,7 @@ public class PlayerManager : MonoBehaviour
         public Enums.Player Player;
         public GridBlock[,] MovementGrid;
         public List<GridBlock> MovementPath;
+        public List<UnitController> Units;
         public bool DeleteMoveSpace;
         public bool HideGrid;
         public int ResetMoveSpacesAbove;

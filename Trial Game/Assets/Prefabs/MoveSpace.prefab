@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1168837427428086731}
   - component: {fileID: -7308799130660300109}
   - component: {fileID: 2806234793978917358}
-  m_Layer: 16
+  m_Layer: 18
   m_Name: MoveSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

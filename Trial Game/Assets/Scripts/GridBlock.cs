@@ -29,12 +29,17 @@ public class GridBlock : MonoBehaviour
         }
     }
 
+    public bool SpaceActive
+    {
+        get { return _moveSpaces[Enums.Player.Player1].gameObject.activeSelf ||
+                     _attackSpaces[Enums.Player.Player1].gameObject.activeSelf;}
+    }
+
     public Vector2 FullGridPosition { get; set; }
 
     private PlayerManager _pM;
     private GridPlayerSpaces _moveSpaces;
     private GridPlayerSpaces _attackSpaces;
-    private GridPlayerSpaces _spaces;
     private GridNeighbors _neighbors;
     private GameObject _space;
     private SpriteRenderer _sR;
@@ -49,10 +54,8 @@ public class GridBlock : MonoBehaviour
 
     public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
     {
-        //if (CurrentUnit != null && CurrentUnit.Player != player)
-        //    moveDistance -= 9999;
-        //else
-            moveDistance -= MovementCost;
+        GridPlayerSpaces spaces;
+        moveDistance -= MovementCost;
 
         // if the space is visited again through a better path, reset it.
         if (_moveDistance < moveDistance && _attackSpaces.PlayerSpaceEnabled(player))
@@ -67,25 +70,25 @@ public class GridBlock : MonoBehaviour
         if (moveDistance >= 0)
         {
             _space = MoveSpace;
-            _spaces = _moveSpaces;
+            spaces = _moveSpaces;
             _attackSpaces[player]?.Disable();
         }
         else
         {
             _space = AttackSpace;
-            _spaces = _attackSpaces;
+            spaces = _attackSpaces;
             attackDistance -= 1;
         }
 
-        if (_spaces[player] == null)
+        if (spaces[player] == null)
         {
             var gO = Instantiate(_space, transform.position, Quaternion.identity);
-            _spaces[player] = gO.GetComponent<Space>();
-            _spaces[player].Player = player;
-            _spaces[player].ParentGridBlock = this;
+            spaces[player] = gO.GetComponent<Space>();
+            spaces[player].Player = player;
+            spaces[player].ParentGridBlock = this;
         }
 
-        _spaces[player].Enable();
+        spaces[player].Enable();
         PlayerGridPosition = gridPos;
 
         // If there aren't any more move or attack spaces, dont ask neighbors to do anything
@@ -177,7 +180,7 @@ public class GridBlock : MonoBehaviour
     private GridBlock GetNeighbor(Vector2 dir)
     {
         Vector2 startPos = transform.position.V2();
-        RaycastHit2D hit = Physics2D.Raycast(startPos, dir, 1f, LayerMask.GetMask("MapGrid"));
+        RaycastHit2D hit = Physics2D.Raycast(startPos, dir, 1f, LayerMask.GetMask("GridBlock"));
         if (hit.collider != null)
         {
             GameObject rhgo = hit.transform.gameObject;

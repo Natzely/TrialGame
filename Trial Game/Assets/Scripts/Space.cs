@@ -41,19 +41,6 @@ public class Space : MonoBehaviour
         get; set;
     }
 
-    //public Vector2 GridPosition
-    //{
-    //    get
-    //    {
-    //        return _gridPos;
-    //    }
-    //    set
-    //    {
-    //        _gridPos = value;
-    //        _pM.UpdatePathMatrix(Player, value, this);
-    //    }
-    //}
-
     protected SpriteRenderer _sR;
     protected Enums.Player _player;
     protected PlayerManager _pM;

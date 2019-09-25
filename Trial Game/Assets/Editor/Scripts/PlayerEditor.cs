@@ -113,7 +113,6 @@ public class PlayerEditor : Editor
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.Space();
 
-
         if (_reorderableList != null && _playerManager.PlayerList != null)
             _reorderableList.DoLayoutList();
     }
