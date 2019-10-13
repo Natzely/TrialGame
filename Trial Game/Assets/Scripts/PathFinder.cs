@@ -9,19 +9,12 @@ public class PathFinder
     public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock msStart, GridBlock msEnd, GridBlock[,] map)
     {
         Location current = null;
+        Location best = null;
         Location start = null;
         Location target = null;
 
-        if (player == Enums.Player.Player1)
-        {
-            start = new Location { X = (int)msStart.PlayerGridPosition.x, Y = (int)msStart.PlayerGridPosition.y };
-            target = new Location { X = (int)msEnd.PlayerGridPosition.x, Y = (int)msEnd.PlayerGridPosition.y };
-        }
-        else
-        {
-            start = new Location { X = (int)msStart.FullGridPosition.x, Y = (int)msStart.FullGridPosition.y };
-            target = new Location { X = (int)msEnd.FullGridPosition.x, Y = (int)msEnd.FullGridPosition.y };
-        }
+        start = new Location { X = (int)msStart.GridPosition.x, Y = (int)msStart.GridPosition.y };
+        target = new Location { X = (int)msEnd.GridPosition.x, Y = (int)msEnd.GridPosition.y };
 
         var openList = new List<Location>();
         var closedList = new List<Location>();
@@ -36,6 +29,10 @@ public class PathFinder
             // get the square with the lowest F score
             var lowest = openList.Min(l => l.F);
             current = openList.First(l => l.F == lowest);
+
+            if (!(current.X == start.X && current.Y == start.Y) && 
+                 (best == null || (current.F <= best.F && current.G >= best.G)))
+                best = current;
 
             // add the current square to the closed list
             closedList.Add(current);
@@ -52,20 +49,28 @@ public class PathFinder
 
             foreach (Location adjacentSquare in adjacentSquares)
             {
+                int asX = adjacentSquare.X;
+                int asY = adjacentSquare.Y;
+
+                // Skip if the square has a unit that doesn't belong to the player and isn't the target of movement;
+                if (map[asX, asY].CurrentUnit != null && map[asX, asY].CurrentUnit.Player != player &&
+                    !(asX == target.X && asY == target.Y))
+                    continue;
+
                 // if this adjacent square is already in the closed list, ignore it
-                if (closedList.FirstOrDefault(l => l.X == adjacentSquare.X
-                        && l.Y == adjacentSquare.Y) != null)
+                if (closedList.FirstOrDefault(l => l.X == asX
+                        && l.Y == asY) != null)
                     continue;
 
                 // if it's not in the open list...
-                if (openList.FirstOrDefault(l => l.X == adjacentSquare.X
-                        && l.Y == adjacentSquare.Y) == null)
+                if (openList.FirstOrDefault(l => l.X == asX
+                        && l.Y == asY) == null)
                 {
                     // compute its score, set the parent
                     adjacentSquare.G = g;
-                    adjacentSquare.H = ComputeHScore(adjacentSquare.X,
-                        adjacentSquare.Y, target.X, target.Y);
-                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H;
+                    adjacentSquare.H = ComputeHScore(asX,
+                        asY, target.X, target.Y);
+                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H;// - map[asX, asY].MovementCost;
                     adjacentSquare.Parent = current;
 
                     // and add it to the open list
@@ -78,7 +83,7 @@ public class PathFinder
                     if (g + adjacentSquare.H < adjacentSquare.F)
                     {
                         adjacentSquare.G = g;
-                        adjacentSquare.F = adjacentSquare.G + adjacentSquare.H;
+                        adjacentSquare.F = adjacentSquare.G + adjacentSquare.H;// - map[asX, asY].MovementCost;
                         adjacentSquare.Parent = current;
                     }
                 }
@@ -88,6 +93,9 @@ public class PathFinder
         Vector2? lastDir = null;
         Vector2? dir = null;
         GridBlock pB = null;
+
+        if (player != Enums.Player.Player1)
+            current = best;
 
         while (current != null)
         {
@@ -119,6 +127,7 @@ public class PathFinder
 
     private static List<Location> GetWalkableAdjacentSquares(Enums.Player player, int x, int y, GridBlock[,] map)
     {
+        List<Location> returnList = new List<Location>();
         var proposedLocations = new List<Location>()
         {
             new Location { X = x, Y = y - 1 },
@@ -127,13 +136,32 @@ public class PathFinder
             new Location { X = x + 1, Y = y },
         };
 
-        return proposedLocations.Where(l =>
-            l.X >= 0 && l.Y >= 0 &&
-            l.X < map.GetLength(0) && l.Y < map.GetLength(1) &&
-            map[l.X, l.Y] != null &&
-            (map[l.X, l.Y].CurrentUnit == null || map[l.X, l.Y].CurrentUnit.Player == player) &&
-            !map[l.X, l.Y].Unpassable
-         ).ToList();
+        foreach (var loc in proposedLocations)
+        {
+            if (loc.X < 0 || loc.Y < 0)
+                continue;
+            if (loc.X >= map.GetLength(0) || loc.Y >= map.GetLength(1))
+                continue;
+            var mapSpace = map[loc.X, loc.Y];
+            if (mapSpace == null)
+                continue;
+            var aS = mapSpace.ActiveSpace(player);
+            if (aS != Enums.ActiveTile.Move)
+                continue;
+            if (mapSpace.Unpassable)
+                continue;
+
+            returnList.Add(loc);
+        }
+
+        return returnList;
+
+        //return proposedLocations.Where(l =>
+        //    l.X >= 0 && l.Y >= 0 &&
+        //    l.X < map.GetLength(0) && l.Y < map.GetLength(1) &&
+        //    map[l.X, l.Y] != null &&
+        //    map[l.X, l.Y].ActiveSpace(player) == Enums.ActiveTile.Move && !map[l.X, l.Y].Unpassable
+        // ).ToList();
     }
 
     private static int ComputeHScore(int x, int y, int targetX, int targetY)

@@ -38,8 +38,14 @@ public class Enums : MonoBehaviour
 
     public enum TileType
     {
-        Grass,
-        Rock,
-        Water,
+        Grass = 0,
+        Rock = 1,
+        Water = 2,
+    }
+
+    public enum ActiveTile
+    {
+        Move = 0,
+        Attack = 1,
     }
 }

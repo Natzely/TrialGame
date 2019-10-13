@@ -9,7 +9,7 @@ public class UnitController : MonoBehaviour
     public GameObject Projectile;
     public EnemyController EnemyController;
     public bool OnCooldown = false;
-    public int TotalMoves = 4;
+    public int MoveDistance = 4;
     public int AttackDistance = 2;
     public float Speed = 5;
     public float Cooldown = 5;
@@ -17,6 +17,9 @@ public class UnitController : MonoBehaviour
 
     [HideInInspector]
     public GridBlock CurrentGridBlock { get; private set; }
+
+    [HideInInspector]
+    public UnitController Target { get; set; }
     
     public bool Moved { get; internal set; }
     public bool Moving { get; internal set; }
@@ -25,6 +28,7 @@ public class UnitController : MonoBehaviour
     public GridBlock EndPos { get; set; }
 
     PlayerManager _pm;
+    EnemyManager _em;
     Animator _animator;
     SpriteRenderer _sR;
     Queue _moveToPoints;
@@ -37,6 +41,21 @@ public class UnitController : MonoBehaviour
     bool _selected;
     bool _attack;
     float _cooldown;
+
+    public Vector3 Position
+    {
+        get
+        {
+            try
+            {
+                return transform.position;
+            }
+            catch
+            {
+                return new Vector3(0, 0, 0);
+            }
+        }
+    }
 
     public void Hover(bool hover)
     {
@@ -83,9 +102,18 @@ public class UnitController : MonoBehaviour
         ResetLook();
     }
 
-    public Vector3 Position
+    public bool CheckAttack(UnitController target = null)
     {
-        get { return transform.position; }
+        if (target != null)
+            Target = target;
+
+        if (Vector2.Distance(Position, Target.Position) <= AttackDistance)
+        {
+            ReadyAttack(Target.Position);
+            return true;
+        }
+
+        return false;
     }
 
     // Start is called before the first frame update
@@ -94,6 +122,11 @@ public class UnitController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
         _pm = FindObjectOfType<PlayerManager>();
+        if (Player != Enums.Player.Player1)
+            _em = FindObjectOfType<EnemyManager>();
+
+        if (_em != null)
+            _em.AddUnit(EnemyController);
 
         Moved = false;
         _hover = false;
@@ -114,6 +147,8 @@ public class UnitController : MonoBehaviour
                 _sR.color = Colors.Player1;
                 break;
         }
+
+        _pm.AddPlayerUnit(Player, this);
     }
 
     void Update()
@@ -139,7 +174,9 @@ public class UnitController : MonoBehaviour
                 {
                     Moving = false;
                     Moved = true;
-                    if (_selected == false && !_attack)
+                    if (Player != Enums.Player.Player1)
+                        CheckAttack();
+                    if (!_selected && !_attack)
                         Selected();
                 }
             }
@@ -164,8 +201,8 @@ public class UnitController : MonoBehaviour
                 Attacked = false;
                 Moving = false;
 
-                if (EnemyController != null)
-                    EnemyController.ReadyNextMove();
+                if (_em != null)
+                    _em.AddUnit(EnemyController);
             }
         }
     }
@@ -182,19 +219,11 @@ public class UnitController : MonoBehaviour
 
     private void Selected()
     {
-        if (Player == Enums.Player.Player1)
-        {
-            _animator.SetBool("Selected", _selected);
+        _animator.SetBool("Selected", _selected);
 
-            if (!_selected && (Moved || Attacked))
-            {
-                GoOnCooldown(Attacked);
-            }
-        }
-        else
+        if (!_selected && (Moved || Attacked))
         {
-            _animator.SetFloat("Speed", 0);
-            _animator.SetBool("Fixed", true);
+            GoOnCooldown(Attacked);
         }
     }
 
@@ -202,7 +231,10 @@ public class UnitController : MonoBehaviour
     {
         LookAt(_attackPos);
 
+        Attacked = true;
         Vector2 dir = new Vector2(_animator.GetFloat("Look X"), _animator.GetFloat("Look Y"));
+        _animator.SetTrigger("Launch");
+
         GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
         projObj.layer = gameObject.layer;
 
@@ -211,8 +243,6 @@ public class UnitController : MonoBehaviour
         tmpDir.Normalize();
         tmpProjectile.Launch(tmpDir, AttackSpeed, AttackDistance);
 
-        Attacked = true;
-        _animator.SetTrigger("Launch");
         StartCoroutine(Deselect());
     }
 

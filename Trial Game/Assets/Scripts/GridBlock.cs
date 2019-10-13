@@ -14,28 +14,20 @@ public class GridBlock : MonoBehaviour
 
     [HideInInspector]
     public UnitController CurrentUnit;
-
-    private Vector2 _gridPos;
-    public Vector2 PlayerGridPosition
+    [HideInInspector]
+    public bool IsSpaceActive
     {
-        get
-        {
-            return _gridPos;
-        }
-        set
-        {
-            _gridPos = value;
-            _pM.UpdatePathMatrix(Enums.Player.Player1, value, this);
-        }
+        get { return _moveSpaces.GetSpaceEnabled(Enums.Player.Player1) ||
+                     _attackSpaces.GetSpaceEnabled(Enums.Player.Player1);}
     }
 
-    public bool SpaceActive
+    [HideInInspector]
+    public Vector2 GridPosition { get; set; }
+    [HideInInspector]
+    public Vector2 Position
     {
-        get { return _moveSpaces[Enums.Player.Player1].gameObject.activeSelf ||
-                     _attackSpaces[Enums.Player.Player1].gameObject.activeSelf;}
+        get { return transform.position; }
     }
-
-    public Vector2 FullGridPosition { get; set; }
 
     private PlayerManager _pM;
     private GridPlayerSpaces _moveSpaces;
@@ -43,61 +35,93 @@ public class GridBlock : MonoBehaviour
     private GridNeighbors _neighbors;
     private GameObject _space;
     private SpriteRenderer _sR;
-    private int _moveDistance;
+    Dictionary<Enums.Player, int> _moveDistance;
+    Dictionary<Enums.Player, int> _attackDistance;
+    Dictionary<Enums.Player, Enums.ActiveTile> _activeTile;
     private bool _gotNeighbors;
     private bool _showingGrid;
 
-    public Vector2 Position
+    public Enums.ActiveTile ActiveSpace(Enums.Player player)
     {
-        get { return transform.position; }
+        //if (_moveSpaces.ContainsPlayer(player) && _moveSpaces[player].gameObject.activeSelf)
+        //    return _moveSpaces[player];
+        //else if (_attackSpaces.ContainsPlayer(player) && _attackSpaces[player].gameObject.activeSelf)
+        //    return _attackSpaces[player];
+
+        //return null;
+
+        return _activeTile[player];
     }
 
-    public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, Vector2 gridPos)
+    public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, bool start = false)
     {
         GridPlayerSpaces spaces;
         moveDistance -= MovementCost;
+        _activeTile[player] = Enums.ActiveTile.Move;
 
-        // if the space is visited again through a better path, reset it.
-        if (_moveDistance < moveDistance && _attackSpaces.PlayerSpaceEnabled(player))
-            _attackSpaces[player].Disable();
-        else if (_moveDistance < moveDistance && _moveSpaces.PlayerSpaceEnabled(player))
-            _moveSpaces[player].Disable();
-        else if (_moveSpaces.PlayerSpaceEnabled(player))
+        if (CurrentUnit != null && !start && !(player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// && CurrentUnit.Player != player) TODO: Figure out how to not allow enemy units how to stack on each other.
+            moveDistance = -1;
+
+        if (_pM.GetMovementSpace(player, GridPosition) != null && 
+            _moveDistance.ContainsKey(player) && _moveDistance[player] > moveDistance)
             return;
 
-        _moveDistance = moveDistance;
-
-        if (moveDistance >= 0)
+        if (moveDistance < 0)
         {
-            _space = MoveSpace;
-            spaces = _moveSpaces;
-            _attackSpaces[player]?.Disable();
+            _attackDistance[player] = --attackDistance;
+            _activeTile[player] = Enums.ActiveTile.Attack;
+        }
+
+
+        if (player == Enums.Player.Player1)
+        {
+            // if the space is visited again through a better path, reset it.
+            if (_moveDistance[player] < moveDistance && _attackSpaces.GetSpaceEnabled(player))
+                _attackSpaces[player].Disable();
+            else if (_moveDistance[player] < moveDistance && _moveSpaces.GetSpaceEnabled(player))
+                _moveSpaces[player].Disable();
+            else if (_moveSpaces.GetSpaceEnabled(player))
+                return;
+
+            _moveDistance[player] = moveDistance;
+
+            if (moveDistance >= 0)
+            {
+                _space = MoveSpace;
+                spaces = _moveSpaces;
+                _attackSpaces[player]?.Disable();
+            }
+            else
+            {
+                _space = AttackSpace;
+                spaces = _attackSpaces;
+            }
+
+            if (spaces[player] == null)
+            {
+                var gO = Instantiate(_space, transform.position, Quaternion.identity);
+                spaces[player] = gO.GetComponent<Space>();
+                spaces[player].Player = player;
+                spaces[player].ParentGridBlock = this;
+            }
+
+            spaces[player].Enable();
         }
         else
         {
-            _space = AttackSpace;
-            spaces = _attackSpaces;
-            attackDistance -= 1;
+            _moveDistance[player] = moveDistance;
         }
 
-        if (spaces[player] == null)
-        {
-            var gO = Instantiate(_space, transform.position, Quaternion.identity);
-            spaces[player] = gO.GetComponent<Space>();
-            spaces[player].Player = player;
-            spaces[player].ParentGridBlock = this;
-        }
-
-        spaces[player].Enable();
-        PlayerGridPosition = gridPos;
+        if (moveDistance >= 0 || player == Enums.Player.Player1)
+            _pM.UpdateMovementGrid(player, GridPosition, this);
 
         // If there aren't any more move or attack spaces, dont ask neighbors to do anything
-        if (moveDistance > 0 || attackDistance > 0)
+        if (moveDistance > 0 || (player == Enums.Player.Player1 && attackDistance > 0)) 
         {
-            _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y - 1));
-            _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x, gridPos.y + 1));
-            _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x + 1, gridPos.y));
-            _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance, new Vector2(gridPos.x - 1, gridPos.y));
+            _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance);
+            _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance);
+            _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance);
+            _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance);
         }
     }
 
@@ -118,11 +142,19 @@ public class GridBlock : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _moveSpaces = new GridPlayerSpaces();
         _attackSpaces = new GridPlayerSpaces();
+        _moveDistance = new Dictionary<Enums.Player, int>();
+        _attackDistance = new Dictionary<Enums.Player, int>();
+        _activeTile = new Dictionary<Enums.Player, Enums.ActiveTile>(); 
         transform.parent = null;
+        
+        foreach(Enums.Player player in Enum.GetValues(typeof(Enums.Player)))
+        {
+            _moveDistance.Add(player, -1);
+        }
     }
 
     private void Update()
-    { 
+    {
         if (!_gotNeighbors)
         {
             GetNeighbors();
@@ -191,4 +223,6 @@ public class GridBlock : MonoBehaviour
 
         return null;
     }
+
+
 }

@@ -6,7 +6,9 @@ public class Damageable : MonoBehaviour
 {
     public float Health = 2;
 
-    Animator _animator;
+    private PlayerManager _pM;
+    private Animator _animator;
+    private UnitController _uC;
 
     public void Damage(float damage)
     {
@@ -15,6 +17,7 @@ public class Damageable : MonoBehaviour
             Health -= damage;
             if (Health <= 0)
             {
+                _pM.RemovePlayerUnit(_uC.Player, _uC);
                 Destroy(gameObject);
             }
             else
@@ -25,5 +28,8 @@ public class Damageable : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
+        _pM = FindObjectOfType<PlayerManager>();
+        _uC = GetComponent<UnitController>();
+
     }
 }

@@ -60,10 +60,8 @@ public class Space : MonoBehaviour
 
         if (grid != null)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
-                if (inGrid)
-                    break;
                 for (int x = 0; x < grid.GetLength(0); x++)
                 {
                     if (grid[x, y] == ParentGridBlock)

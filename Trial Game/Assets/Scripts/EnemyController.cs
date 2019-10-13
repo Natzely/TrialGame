@@ -5,50 +5,18 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float NewMoveDelay = 3f;
-    
+    Enums.Player _player;
     PlayerManager _pM;
     UnitController _unitController;
-    bool _unitReady;
-    float _delayTimer;
 
-    public void ReadyNextMove()
-    {
-        _unitReady = true;
-        _delayTimer = NewMoveDelay;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _pM = FindObjectOfType<PlayerManager>();
-        _unitController = gameObject.GetComponent<UnitController>();
-        _unitController.EnemyController = this;
-        _unitReady = true;
-        _delayTimer = NewMoveDelay;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(_unitReady)
-        {
-            _delayTimer -= Time.deltaTime;
-            if(_delayTimer <= 0)
-            {
-                GetNextSpot();                
-            }
-        }
-    }
-
-    private void GetNextSpot()
+    public IEnumerator NextAction()
     {
         UnitController target = null;
         var units = _pM.GetPlayerInfo(Enums.Player.Player1).Units;
-        
 
-        var closeUnits = units.Where(u => Vector2.Distance(_unitController.Position, u.Position) <= _unitController.AttackDistance);
-        if(closeUnits.Count() > 0)
+        int attackRange = _unitController.MoveDistance + _unitController.AttackDistance;
+        var closeUnits = units.Where(u => Vector2.Distance(_unitController.Position, u.Position) <= attackRange);
+        if (closeUnits.Count() > 0)
         {
             // Decide who to attack
             target = closeUnits.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
@@ -56,9 +24,27 @@ public class EnemyController : MonoBehaviour
         else
             target = units.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
 
+        if (!_unitController.CheckAttack(target))
+            yield return new WaitUntil(() => MoveToNextSpace(target));
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        _pM = FindObjectOfType<PlayerManager>();
+        _unitController = gameObject.GetComponent<UnitController>();
+        _player = _unitController.Player;
+        _unitController.EnemyController = this;
+    }
+
+    private bool MoveToNextSpace(UnitController target)
+    {
+        _pM.GetPlayerInfo(_player).ResetNonPlayerGrid = false;
+        _pM.CreateGrid(_player, _unitController.CurrentGridBlock, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost, _unitController.AttackDistance);
+        //_pM.PrintPlayerGrid(_player);
         var path = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, target.CurrentGridBlock).ToList();
-        path.Pop();
+        _pM.ResetPathMatrix(_player);
         _unitController.MoveTo(path);
+        return true;
     }
 }

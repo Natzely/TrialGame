@@ -31,7 +31,7 @@ public class GridPlayerSpaces
         return _spaces.ContainsKey(player);
     }
 
-    public bool PlayerSpaceEnabled(Enums.Player player)
+    public bool GetSpaceEnabled(Enums.Player player)
     {
         if (_spaces.ContainsKey(player))
             return _spaces[player].SpaceActive;

@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public List<PlayerInfo> PlayerList;
 
     private GridBlock[,] _fullGrid;
+    private int _gridSizeX;
+    private int _gridSizeY;
 
     public bool GetDeleteMoveSpace(Enums.Player player)
     {
@@ -31,20 +33,17 @@ public class PlayerManager : MonoBehaviour
         PlayerList.Where(x => x.Player == player).FirstOrDefault().DeleteMoveSpace = value;
     }
 
-    public void SetPathMatrix(Enums.Player player, int gridSize)
+    public void ResetPathMatrix(Enums.Player player)
     {
-        if (gridSize > 0)
-            PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = new GridBlock[gridSize * 2 + 1, gridSize * 2 + 1];
-        else
-            PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = null;
+        PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = new GridBlock[_gridSizeX, _gridSizeY];
     }
 
-    public GridBlock GetMatrixSpace(Enums.Player player, Vector2 gridPos)
+    public GridBlock GetMovementSpace(Enums.Player player, Vector2 gridPos)
     {
         return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)gridPos.x, (int)gridPos.y];
     }
 
-    public void UpdatePathMatrix(Enums.Player player, Vector2 pos, GridBlock gB)
+    public void UpdateMovementGrid(Enums.Player player, Vector2 pos, GridBlock gB)
     {
         var grid = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
         if (pos.x < grid.GetLength(0) && pos.y < grid.GetLength(0))
@@ -53,10 +52,7 @@ public class PlayerManager : MonoBehaviour
 
     public GridBlock[,] GetPathMatrix(Enums.Player player)
     {
-        if (player == Enums.Player.Player1)
-            return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
-        else
-            return _fullGrid;
+        return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
     }
 
     public PlayerInfo GetPlayerInfo(Enums.Player player)
@@ -84,10 +80,10 @@ public class PlayerManager : MonoBehaviour
     {
         GridBlock[,] grid;
 
-        if (player == Enums.Player.Player1)
+        //if (player == Enums.Player.Player1)
             grid = GetPlayerInfo(player).MovementGrid;
-        else
-            grid = _fullGrid;
+       // else
+            //grid = _fullGrid;
 
         int lengthX = grid.GetLength(0);
         int lengthY = grid.GetLength(1);
@@ -118,7 +114,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (unit == null)
         {
-            var nextUnit = GetPlayerInfo(player).Units.Where(u => !u.OnCooldown).FirstOrDefault();
+            var nextUnit = GetPlayerInfo(player).Units.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked).FirstOrDefault();
             if (nextUnit != null)
             {
                 return nextUnit.transform.position;
@@ -131,27 +127,53 @@ public class PlayerManager : MonoBehaviour
             if (coolDownList.Count > 0)
             {
                 var unitIndex = unitList.IndexOf(unit) + 1;
-                if (unitIndex >= unitList.Count)
+                if (unitIndex >= unitList.Count)    
                     unitIndex = 0;
 
                 var nextUnit = unitList.Skip(unitIndex).FirstOrDefault(u => !u.OnCooldown);
-                return nextUnit.Position;
+                if (nextUnit != null)
+                    return nextUnit.Position;
             }
         }
 
         return null;
     }
 
+    public IEnumerator CreateGridAsync(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
+    {
+        ResetPathMatrix(player);
+        yield return new WaitUntil(() => true);
+        gridBlock.CreateGrid(
+            player,
+            moveDistance,
+            moveDistance > 0 ? attackDistance : attackDistance + 1,
+            true
+        );
+    }
+    public void CreateGrid(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
+    {
+        ResetPathMatrix(player);
+        gridBlock.CreateGrid(
+            player,
+            moveDistance,
+            moveDistance > 0 ? attackDistance : attackDistance + 1,
+            true
+        );
+    }
+
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
-        GetPlayerUnits();
     }
 
-    public void GetPlayerUnits()
+    public void AddPlayerUnit(Enums.Player player, UnitController unit)
     {
-        var units = FindObjectsOfType<UnitController>();
-        GetPlayerInfo(Enums.Player.Player1).Units.AddRange(units.Where(u => u.Player == Enums.Player.Player1));
+        GetPlayerInfo(player).Units.Add(unit);
+    }
+
+    public void RemovePlayerUnit(Enums.Player player, UnitController unit)
+    {
+        GetPlayerInfo(player).Units.Remove(unit);
     }
 
     IEnumerator GetGridBlocks()
@@ -164,18 +186,18 @@ public class PlayerManager : MonoBehaviour
         float minY = allGridBlocks.Min(gb => gb.Position.y);
         float maxY = allGridBlocks.Max(gb => gb.Position.y);
 
-        int gridSizeX = (int)(maxX - minX) + 1;
-        int gridSizeY = (int)(maxY - minY) + 1;
-        _fullGrid = new GridBlock[gridSizeX, gridSizeY];
+        _gridSizeX = (int)(maxX - minX) + 1;
+        _gridSizeY = (int)(maxY - minY) + 1;
+        _fullGrid = new GridBlock[_gridSizeX, _gridSizeY];
 
         foreach (GridBlock gb in allGridBlocks)
         {
             int posX = (int)(gb.Position.x + maxX);
             int posY = (int)Mathf.Abs((gb.Position.y + minY));
 
-            gb.FullGridPosition = new Vector2(posX, posY);
+            gb.GridPosition = new Vector2(posX, posY);
 
-            _fullGrid[posX, posY] = gb.MovementCost > 1 ? null : gb;
+            _fullGrid[posX, posY] = gb.Unpassable ? null : gb;
         }
     }
 
@@ -188,6 +210,7 @@ public class PlayerManager : MonoBehaviour
         public List<UnitController> Units;
         public bool DeleteMoveSpace;
         public bool HideGrid;
+        public bool ResetNonPlayerGrid;
         public int ResetMoveSpacesAbove;
     }
 }
