@@ -15,7 +15,7 @@ public class Enums : MonoBehaviour
     public enum CursorState
     {
         Default,
-        Moving,
+        Selected,
         Attacking,
     }
 

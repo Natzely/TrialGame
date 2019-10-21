@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
         else
             target = units.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
 
-        if (!_unitController.CheckAttack(target))
+        if (target != null && !_unitController.CheckAttack(target))
             yield return new WaitUntil(() => MoveToNextSpace(target));
     }
 

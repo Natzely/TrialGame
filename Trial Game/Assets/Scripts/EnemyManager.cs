@@ -14,11 +14,15 @@ public class EnemyManager : MonoBehaviour
         _enemyList.Add(unit);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _delayTimer = MoveDelay;
         _enemyList = new List<EnemyController>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
     }
 
     // Update is called once per frame

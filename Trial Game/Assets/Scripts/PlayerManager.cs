@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour
 
     public GridBlock GetMovementSpace(Enums.Player player, Vector2 gridPos)
     {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)gridPos.x, (int)gridPos.y];
+        return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid[(int)gridPos.x, (int)gridPos.y];
     }
 
     public void UpdateMovementGrid(Enums.Player player, Vector2 pos, GridBlock gB)
@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
 
     public GridBlock[,] GetPathMatrix(Enums.Player player)
     {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
+        return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid;
     }
 
     public PlayerInfo GetPlayerInfo(Enums.Player player)
@@ -149,6 +149,7 @@ public class PlayerManager : MonoBehaviour
             moveDistance > 0 ? attackDistance : attackDistance + 1,
             true
         );
+        PrintPlayerGrid(player);
     }
     public void CreateGrid(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
     {

@@ -126,11 +126,12 @@ MonoBehaviour:
   Player: 11
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
+  EnemyController: {fileID: 0}
   OnCooldown: 0
-  TotalMoves: 4
+  MoveDistance: 4
   AttackDistance: 1
   Speed: 5
-  Cooldown: 8
+  Cooldown: 15
   AttackSpeed: 500
 --- !u!95 &347991490560029868
 Animator:

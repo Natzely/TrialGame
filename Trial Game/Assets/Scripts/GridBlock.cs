@@ -57,7 +57,6 @@ public class GridBlock : MonoBehaviour
     {
         GridPlayerSpaces spaces;
         moveDistance -= MovementCost;
-        _activeTile[player] = Enums.ActiveTile.Move;
 
         if (CurrentUnit != null && !start && !(player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// && CurrentUnit.Player != player) TODO: Figure out how to not allow enemy units how to stack on each other.
             moveDistance = -1;
@@ -71,7 +70,8 @@ public class GridBlock : MonoBehaviour
             _attackDistance[player] = --attackDistance;
             _activeTile[player] = Enums.ActiveTile.Attack;
         }
-
+        else
+            _activeTile[player] = Enums.ActiveTile.Move;
 
         if (player == Enums.Player.Player1)
         {
@@ -135,17 +135,20 @@ public class GridBlock : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Awake()
     {
-        _pM = FindObjectOfType<PlayerManager>();
         _neighbors = new GridNeighbors();
-        _sR = GetComponent<SpriteRenderer>();
         _moveSpaces = new GridPlayerSpaces();
         _attackSpaces = new GridPlayerSpaces();
         _moveDistance = new Dictionary<Enums.Player, int>();
         _attackDistance = new Dictionary<Enums.Player, int>();
-        _activeTile = new Dictionary<Enums.Player, Enums.ActiveTile>(); 
-        transform.parent = null;
+        _activeTile = new Dictionary<Enums.Player, Enums.ActiveTile>();
+    }
+
+    void Start()
+    {
+        _pM = FindObjectOfType<PlayerManager>();
+        _sR = GetComponent<SpriteRenderer>();
         
         foreach(Enums.Player player in Enum.GetValues(typeof(Enums.Player)))
         {
@@ -153,7 +156,7 @@ public class GridBlock : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (!_gotNeighbors)
         {
@@ -167,7 +170,7 @@ public class GridBlock : MonoBehaviour
             if (space != null)
             {
                 var moveSpace = (MoveSpace)space;
-                moveSpace.ResetSpace();
+                moveSpace?.ResetSpace();
             }
         }
     }

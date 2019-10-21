@@ -18,6 +18,7 @@ public class Damageable : MonoBehaviour
             if (Health <= 0)
             {
                 _pM.RemovePlayerUnit(_uC.Player, _uC);
+                _uC.OnUnitDeath?.Invoke();
                 Destroy(gameObject);
             }
             else

@@ -138,17 +138,19 @@ public class PathFinder
 
         foreach (var loc in proposedLocations)
         {
+            if (loc.X == 9 && loc.Y == 2)
+                Debug.Log("");
             if (loc.X < 0 || loc.Y < 0)
                 continue;
             if (loc.X >= map.GetLength(0) || loc.Y >= map.GetLength(1))
                 continue;
-            var mapSpace = map[loc.X, loc.Y];
-            if (mapSpace == null)
+            var gridBlock = map[loc.X, loc.Y];
+            if (gridBlock == null)
                 continue;
-            var aS = mapSpace.ActiveSpace(player);
+            var aS = gridBlock.ActiveSpace(player);
             if (aS != Enums.ActiveTile.Move)
                 continue;
-            if (mapSpace.Unpassable)
+            if (gridBlock.Unpassable)
                 continue;
 
             returnList.Add(loc);

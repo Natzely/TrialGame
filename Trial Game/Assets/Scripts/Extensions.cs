@@ -42,6 +42,8 @@ public static class Extensions
 
     public static bool IsEmpty(this Queue q)
     {
+        if (q == null)
+            return true;
         return q.Count == 0;
     }
 

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    public delegate void OnDeath();
+    public OnDeath OnUnitDeath;
+
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
     public EnemyController EnemyController;
@@ -116,6 +119,18 @@ public class UnitController : MonoBehaviour
         return false;
     }
 
+    void Awake()
+    {
+        Moved = false;
+        Player = (Enums.Player)gameObject.layer;
+
+        _hover = false;
+        _selected = false;
+        _nextPoint = null;
+        _moveToPoints = new Queue();
+        _originalPoint = transform.position;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -125,17 +140,8 @@ public class UnitController : MonoBehaviour
         if (Player != Enums.Player.Player1)
             _em = FindObjectOfType<EnemyManager>();
 
-        if (_em != null)
-            _em.AddUnit(EnemyController);
+        _em?.AddUnit(EnemyController);
 
-        Moved = false;
-        _hover = false;
-        _selected = false;
-        _nextPoint = null;
-        _moveToPoints = new Queue();
-        _originalPoint = transform.position;
-
-        Player = (Enums.Player)gameObject.layer;
         switch (Player)
         {
             case Enums.Player.Player2:
@@ -201,8 +207,7 @@ public class UnitController : MonoBehaviour
                 Attacked = false;
                 Moving = false;
 
-                if (_em != null)
-                    _em.AddUnit(EnemyController);
+                _em?.AddUnit(EnemyController);
             }
         }
     }
@@ -234,7 +239,6 @@ public class UnitController : MonoBehaviour
         Attacked = true;
         Vector2 dir = new Vector2(_animator.GetFloat("Look X"), _animator.GetFloat("Look Y"));
         _animator.SetTrigger("Launch");
-
         GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
         projObj.layer = gameObject.layer;
 
