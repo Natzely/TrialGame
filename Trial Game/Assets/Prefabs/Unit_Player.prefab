@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 347991490560029868}
   - component: {fileID: 3097757917150243156}
   - component: {fileID: 5452845615218971147}
-  m_Layer: 11
+  m_Layer: 20
   m_Name: Unit_Player
   m_TagString: Unit
   m_Icon: {fileID: 0}
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cf10c278cc42741a8450273e64039e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlliedWith: 
   Player: 11
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
@@ -130,7 +131,7 @@ MonoBehaviour:
   OnCooldown: 0
   MoveDistance: 4
   AttackDistance: 1
-  Speed: 5
+  Speed: 3
   Cooldown: 15
   AttackSpeed: 500
 --- !u!95 &347991490560029868

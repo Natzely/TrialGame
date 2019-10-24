@@ -149,7 +149,7 @@ public class PlayerManager : MonoBehaviour
             moveDistance > 0 ? attackDistance : attackDistance + 1,
             true
         );
-        PrintPlayerGrid(player);
+        //PrintPlayerGrid(player);
     }
     public void CreateGrid(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
     {

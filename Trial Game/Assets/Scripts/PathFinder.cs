@@ -138,8 +138,6 @@ public class PathFinder
 
         foreach (var loc in proposedLocations)
         {
-            if (loc.X == 9 && loc.Y == 2)
-                Debug.Log("");
             if (loc.X < 0 || loc.Y < 0)
                 continue;
             if (loc.X >= map.GetLength(0) || loc.Y >= map.GetLength(1))

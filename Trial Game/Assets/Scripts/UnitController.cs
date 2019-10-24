@@ -8,6 +8,7 @@ public class UnitController : MonoBehaviour
     public delegate void OnDeath();
     public OnDeath OnUnitDeath;
 
+    public List<Enums.Player> AlliedWith;
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
     public EnemyController EnemyController;
@@ -34,7 +35,7 @@ public class UnitController : MonoBehaviour
     EnemyManager _em;
     Animator _animator;
     SpriteRenderer _sR;
-    Queue _moveToPoints;
+    Queue _movePositions;
     Vector2? _nextPoint;
     Vector2 _lastPoint;
     Vector2 _originalPoint;
@@ -89,7 +90,7 @@ public class UnitController : MonoBehaviour
         if (_cooldown <= 0 && !Moved)
         {
             for(int x = 0; x <= movePoints.Count - 1; x++)
-                _moveToPoints.Enqueue(movePoints[x].Position);
+                _movePositions.Enqueue(movePoints[x].Position);
             Moving = true;
             _animator.SetBool("Selected", true);  
         }
@@ -97,7 +98,7 @@ public class UnitController : MonoBehaviour
 
     public void CancelMove()
     {
-        _moveToPoints.Clear();
+        _movePositions.Clear();
         _nextPoint = null;
         transform.position = _originalPoint;
         Moved = false;
@@ -122,12 +123,10 @@ public class UnitController : MonoBehaviour
     void Awake()
     {
         Moved = false;
-        Player = (Enums.Player)gameObject.layer;
-
         _hover = false;
         _selected = false;
         _nextPoint = null;
-        _moveToPoints = new Queue();
+        _movePositions = new Queue();
         _originalPoint = transform.position;
     }
 
@@ -159,36 +158,39 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if(!_moveToPoints.IsEmpty() || _nextPoint != null)
+        if(!_movePositions.IsEmpty() || _nextPoint != null)
         {
             if (_nextPoint == null)
             {
-                _nextPoint = (Vector2)_moveToPoints.Dequeue();
+                _nextPoint = (Vector2)_movePositions.Dequeue();
                 _lastPoint = transform.position;
 
                 LookAt(_nextPoint.Value);
             }
-            
-            Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
 
-            transform.position = moveVector;
-            if (transform.position.V2() == _nextPoint.Value)
+            if (!CheckForBlock())
             {
-                _nextPoint = null;
+                Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
 
-                if(_moveToPoints.IsEmpty())
+                transform.position = moveVector;
+                if (transform.position.V2() == _nextPoint.Value)
                 {
-                    Moving = false;
-                    Moved = true;
-                    if (Player != Enums.Player.Player1)
-                        CheckAttack();
-                    if (!_selected && !_attack)
-                        Selected();
+                    _nextPoint = null;
+
+                    if (_movePositions.IsEmpty())
+                    {
+                        Moving = false;
+                        Moved = true;
+                        if (Player != Enums.Player.Player1)
+                            CheckAttack();
+                        if (!_selected && !_attack)
+                            Selected();
+                    }
                 }
             }
         }
 
-        if (_moveToPoints.IsEmpty() && _nextPoint == null && _attack)
+        if (_movePositions.IsEmpty() && _nextPoint == null && _attack)
         {
             Attack();
             _attack = false;
@@ -222,6 +224,25 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    private bool CheckForBlock()
+    {
+        var dir = _nextPoint - Position;
+        RaycastHit2D hit = Physics2D.Raycast(Position, dir.Value, 1f, LayerMask.GetMask("Unit"));
+        if (hit.collider != null)
+        {
+            UnitController uC = hit.transform.gameObject.GetComponent<UnitController>();
+            if (uC != null && uC.Player != Player && !AlliedWith.Contains(uC.Player))
+            {
+                _movePositions.Clear();
+                _nextPoint = null;
+                ReadyAttack(hit.transform.position);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void Selected()
     {
         _animator.SetBool("Selected", _selected);
@@ -240,7 +261,8 @@ public class UnitController : MonoBehaviour
         Vector2 dir = new Vector2(_animator.GetFloat("Look X"), _animator.GetFloat("Look Y"));
         _animator.SetTrigger("Launch");
         GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
-        projObj.layer = gameObject.layer;
+        Damager damager = projObj.GetComponent<Damager>();
+        damager.Player = Player;
 
         Projectile tmpProjectile = projObj.GetComponent<Projectile>();
         var tmpDir = _attackPos - transform.position.V2();

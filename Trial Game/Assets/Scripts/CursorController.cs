@@ -13,7 +13,6 @@ public class CursorController : MonoBehaviour
     public int CurrentMove;
 
     Enums.CursorState _currState;
-    Enums.CursorState _lastState;
 
     PlayerManager _pM;
     GridBlock _currGridBlock;
@@ -26,7 +25,6 @@ public class CursorController : MonoBehaviour
     Vector2 _startPos;
     Vector2 _attackPos;
     Color _playerColor;
-    bool _noGo;
     bool _select;
     bool _attack;
     bool _cancel;
@@ -48,7 +46,6 @@ public class CursorController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
         _pM = FindObjectOfType<PlayerManager>();
-        _noGo = false;
         _moveTimer = 0;
         _horzClamp = Boundaries.bounds.extents.x;
         _vertClamp = Boundaries.bounds.extents.y;
@@ -89,9 +86,10 @@ public class CursorController : MonoBehaviour
         if (grid != null)
             _currGridBlock = grid;
 
-        if (CheckForNoGo(gO))
-            _noGo = true;
-        else if (CheckForYesGo())
+        //if (CheckForObstacle(gO))
+        //    _okayToMove = false;
+        //else if (CheckForUnit())
+        if (CheckForUnit())
             GetUnit(gO);
     }
 
@@ -105,12 +103,10 @@ public class CursorController : MonoBehaviour
 
             if (space is MoveSpace)
             {
-                //if (_orgMoveSpace == null)
-                //    _orgMoveSpace = (MoveSpace)space;
                 _moves = _pM.CreatePath(Player, _orgGridBlock, _currSpace.ParentGridBlock).ToList();
             }
         }
-        else if (CheckForYesGo())
+        else if (CheckForUnit())
         {
             GameObject gO = collision.gameObject;
             GetUnit(gO);
@@ -121,10 +117,9 @@ public class CursorController : MonoBehaviour
     {
         GameObject gO = collision.gameObject;
 
-        if (CheckForNoGo(gO))
+        if (CheckForObstacle(gO))
         {
             _sR.color = _playerColor;
-            _noGo = false;
         }
         else
         {
@@ -134,16 +129,16 @@ public class CursorController : MonoBehaviour
         }
     }
 
-    private bool CheckForNoGo(GameObject gO)
+    private bool CheckForObstacle(GameObject gO)
     {
         if(_currUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-            return _currState == Enums.CursorState.Selected && (gO.layer == LayerMask.NameToLayer("Map") || (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position));
+            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position);
         
         return false;
     }
 
-    private bool CheckForYesGo()
+    private bool CheckForUnit()
     {
         return _currState == Enums.CursorState.Default && _currUnit == null;
     }
@@ -151,7 +146,7 @@ public class CursorController : MonoBehaviour
     private void GetUnit(GameObject gO)
     {
         UnitController tmpUnit = gO.GetComponent<UnitController>();
-        if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown)
+        if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown && !tmpUnit.Moving)
         {
             _currUnit = tmpUnit;
             _currUnit.OnUnitDeath += OnCurrentUnitDeath;
@@ -230,42 +225,22 @@ public class CursorController : MonoBehaviour
 
     private void Cancel()
     {
-        switch (_currState)
+        if (_currState == Enums.CursorState.Selected)
         {
-            case Enums.CursorState.Attacking:
-                _animator.SetBool("Attacking", false);
-                if (transform.position != _currUnit.Position)
-                    transform.position = _currUnit.Position;
-                _currState = _lastState;
-                if (_currState == Enums.CursorState.Selected)
-                {
-                    _gridSize = _currUnit.MoveDistance + _currUnit.AttackDistance;
-                    StartCoroutine(_pM.CreateGridAsync(Player, _orgGridBlock, _currUnit.MoveDistance + _currGridBlock.MovementCost, _currUnit.AttackDistance));
-                }
-                else
-                {
-                    _pM.ResetPathMatrix(Player);
-                    _currUnit.Select(false);
-                }
-                break;
-            case Enums.CursorState.Selected:
-                if (_currUnit.Moved || _currUnit.Moving)
-                {
-                    _currUnit.CancelMove();
-                    transform.position = _orgGridBlock.Position;
-                }
-                else if (transform.position.V2() == _startPos)
-                {
-                    _currUnit.Select(false);
-                    ResetCursor();
-                }
-                else
-                {
-                    transform.position = _orgGridBlock.Position;
-                }
-                break;
-            default:
-                break;
+            if (_currUnit.Moved || _currUnit.Moving)
+            {
+                _currUnit.CancelMove();
+                transform.position = _orgGridBlock.Position;
+            }
+            else if (transform.position.V2() == _startPos)
+            {
+                _currUnit.Select(false);
+                ResetCursor();
+            }
+            else
+            {
+                transform.position = _orgGridBlock.Position;
+            }
         }
         _actionTimer = ActionTimer;
     }
@@ -289,7 +264,7 @@ public class CursorController : MonoBehaviour
                 StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, _currUnit.AttackDistance));
             }
         }
-        else if (!_noGo && !_currUnit.Moved && transform.position.V2() != _startPos && _currSpace is MoveSpace && _currGridBlock.CurrentUnit == null)
+        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currSpace is MoveSpace && _currGridBlock.CurrentUnit == null)
         {
             _currUnit.MoveTo(_moves);
         }
