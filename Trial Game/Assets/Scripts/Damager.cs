@@ -5,6 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     public Enums.Player Player;
+    public UnitController Parent;
     public int Damage = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -15,7 +16,7 @@ public class Damager : MonoBehaviour
         
         if(uC != null && damageable != null && uC.Player != Player && !uC.AlliedWith.Contains(Player))
         {
-            damageable.Damage(Damage);
+            Parent.DamageResults(damageable.Damage(Damage));
             Destroy(gameObject);
         }
     }

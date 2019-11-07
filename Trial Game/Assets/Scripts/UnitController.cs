@@ -31,20 +31,26 @@ public class UnitController : MonoBehaviour
     public GridBlock StartPos { get; set; }
     public GridBlock EndPos { get; set; }
 
-    PlayerManager _pm;
-    EnemyManager _em;
+    Enums.UnitState _unitState;
+    PlayerManager _pM;
+    EnemyManager _eM;
     Animator _animator;
     SpriteRenderer _sR;
     Queue _movePositions;
     Vector2? _nextPoint;
-    Vector2 _lastPoint;
+    Vector2? _lastPoint;
     Vector2 _originalPoint;
     Vector2 _attackPos;
 
     bool _hover;
     bool _selected;
     bool _attack;
+    bool _attacking;
+    bool _blocked;
     float _cooldown;
+    float _defaultLook;
+    float _lookX;
+    float _lookY;
 
     public Vector3 Position
     {
@@ -71,11 +77,8 @@ public class UnitController : MonoBehaviour
     {
         if (_cooldown <= 0)
         {
+            _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
             _selected = select;
-            if (!Moving)
-            {
-                Selected();
-            }
         }
     }
 
@@ -111,7 +114,7 @@ public class UnitController : MonoBehaviour
         if (target != null)
             Target = target;
 
-        if (Vector2.Distance(Position, Target.Position) <= AttackDistance)
+        if (Target != null && Vector2.Distance(Position, Target.Position) <= AttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
@@ -120,11 +123,44 @@ public class UnitController : MonoBehaviour
         return false;
     }
 
+    public void EnterAttackState()
+    {
+        LookAt(_attackPos);
+        _unitState = Enums.UnitState.Attacking;
+        _attack = false;
+        Attacked = true;
+        Vector2 dir = _attackPos - transform.position.V2();
+        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
+        Damager damager = projObj.GetComponent<Damager>();
+        damager.Player = Player;
+        damager.Parent = this;
+
+        Projectile tmpProjectile = projObj.GetComponent<Projectile>();
+        var tmpDir = _attackPos - transform.position.V2();
+        tmpDir.Normalize();
+        tmpProjectile.Launch(tmpDir, AttackSpeed, AttackDistance);
+    }
+
+    public void ExitAttackState()
+    {
+        _unitState = Enums.UnitState.Idle;
+    }
+
+    public void EnterHurtState()
+    {
+        _unitState = Enums.UnitState.Hurt;
+    }
+
+    public void ExitHurtState()
+    {
+        _unitState = Enums.UnitState.Idle;
+    }
+
     void Awake()
     {
+        _unitState = Enums.UnitState.Idle;
         Moved = false;
         _hover = false;
-        _selected = false;
         _nextPoint = null;
         _movePositions = new Queue();
         _originalPoint = transform.position;
@@ -135,66 +171,69 @@ public class UnitController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
-        _pm = FindObjectOfType<PlayerManager>();
+        _pM = FindObjectOfType<PlayerManager>();
         if (Player != Enums.Player.Player1)
-            _em = FindObjectOfType<EnemyManager>();
+            _eM = FindObjectOfType<EnemyManager>();
 
-        _em?.AddUnit(EnemyController);
+        _eM?.AddUnit(EnemyController);
+
 
         switch (Player)
         {
             case Enums.Player.Player2:
-                _animator.SetFloat("Look X", -1);
+                _defaultLook = -1;
                 _sR.color = Colors.Player2;
                 break;
             default:
-                _animator.SetFloat("Look X", 1);
+                _defaultLook = 1; 
                 _sR.color = Colors.Player1;
                 break;
         }
 
-        _pm.AddPlayerUnit(Player, this);
+        ResetLook();
+
+        _pM.AddPlayerUnit(Player, this);
     }
 
     void Update()
     {
         if(!_movePositions.IsEmpty() || _nextPoint != null)
         {
-            if (_nextPoint == null)
+            if (_unitState != Enums.UnitState.Attacking && _unitState != Enums.UnitState.Hurt)
             {
-                _nextPoint = (Vector2)_movePositions.Dequeue();
-                _lastPoint = transform.position;
-
-                LookAt(_nextPoint.Value);
-            }
-
-            if (!CheckForBlock())
-            {
-                Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
-
-                transform.position = moveVector;
-                if (transform.position.V2() == _nextPoint.Value)
+                if (_nextPoint == null)
                 {
-                    _nextPoint = null;
+                    _nextPoint = (Vector2)_movePositions.Dequeue();
 
-                    if (_movePositions.IsEmpty())
+                    LookAt(_nextPoint.Value);
+                }
+                else
+                {
+                    Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
+
+                    transform.position = moveVector;
+                    if (transform.position.V2() == _nextPoint.Value)
                     {
-                        Moving = false;
-                        Moved = true;
-                        if (Player != Enums.Player.Player1)
+                        _lastPoint = _nextPoint;
+                        _nextPoint = null;
+
+                        if (_movePositions.IsEmpty())
+                        {
+                            Moving = false;
+                            Moved = true;
                             CheckAttack();
-                        if (!_selected && !_attack)
-                            Selected();
+                        }
                     }
                 }
             }
         }
 
-        if (_movePositions.IsEmpty() && _nextPoint == null && _attack)
+        if (!_selected && (Moved || !Moving))
+            _animator.SetBool("Selected", false);
+
+        if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"))
         {
             Attack();
-            _attack = false;
-            Selected();
         }
 
         if (_cooldown > 0)
@@ -209,8 +248,12 @@ public class UnitController : MonoBehaviour
                 Attacked = false;
                 Moving = false;
 
-                _em?.AddUnit(EnemyController);
+                _eM?.AddUnit(EnemyController);
             }
+        }
+        else if (_unitState == Enums.UnitState.Idle && (Moved || (Attacked && _nextPoint == null)))
+        {
+            GoOnCooldown();
         }
     }
 
@@ -218,23 +261,50 @@ public class UnitController : MonoBehaviour
     {
         var gO = collision.gameObject;
         GridBlock gB = gO.GetComponent<GridBlock>();
+        UnitController uC = gO.GetComponent<UnitController>();
+
         if(gB != null)
         {
             CurrentGridBlock = gB;
+        }
+        else if(uC != null)
+        {
+            var colDir = collision.gameObject.transform.position - transform.position;
+            if(Mathf.Abs(colDir.x) > Mathf.Abs(colDir.y))
+            {
+                UnitCollision(collision.gameObject.transform.position, colDir.x, _lookX);
+            }
+            else
+            {
+                UnitCollision(collision.gameObject.transform.position, colDir.y, _lookY);
+            }
+        }
+    }
+
+    private void UnitCollision(Vector3 attackPos, float colDir, float lookDir)
+    {
+        float dirRound = Mathf.Round(colDir);
+        if (dirRound == lookDir)
+        {
+            _movePositions.Clear();
+            _blocked = true;
+            Target = null;
+            ReadyAttack(attackPos);
         }
     }
 
     private bool CheckForBlock()
     {
         var dir = _nextPoint - Position;
-        RaycastHit2D hit = Physics2D.Raycast(Position, dir.Value, 1f, LayerMask.GetMask("Unit"));
+        RaycastHit2D hit = Physics2D.Raycast(Position, dir.Value, (dir.Value.x > 0 ? dir.Value.x : dir.Value.y) + .5f, LayerMask.GetMask("Unit"));
         if (hit.collider != null)
         {
             UnitController uC = hit.transform.gameObject.GetComponent<UnitController>();
-            if (uC != null && uC.Player != Player && !AlliedWith.Contains(uC.Player))
+            if (uC != null && _movePositions.Contains(uC.CurrentGridBlock.Position) && uC.Player != Player && !AlliedWith.Contains(uC.Player))
             {
                 _movePositions.Clear();
-                _nextPoint = null;
+                _blocked = true;
+                Target = null;
                 ReadyAttack(hit.transform.position);
 
                 return true;
@@ -243,48 +313,36 @@ public class UnitController : MonoBehaviour
         return false;
     }
 
-    private void Selected()
-    {
-        _animator.SetBool("Selected", _selected);
-
-        if (!_selected && (Moved || Attacked))
-        {
-            GoOnCooldown(Attacked);
-        }
-    }
-
     private void Attack()
     {
-        LookAt(_attackPos);
-
-        Attacked = true;
-        Vector2 dir = new Vector2(_animator.GetFloat("Look X"), _animator.GetFloat("Look Y"));
+        _unitState = Enums.UnitState.Attacking;
         _animator.SetTrigger("Launch");
-        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
-        Damager damager = projObj.GetComponent<Damager>();
-        damager.Player = Player;
-
-        Projectile tmpProjectile = projObj.GetComponent<Projectile>();
-        var tmpDir = _attackPos - transform.position.V2();
-        tmpDir.Normalize();
-        tmpProjectile.Launch(tmpDir, AttackSpeed, AttackDistance);
-
-        StartCoroutine(Deselect());
     }
 
-    private void GoOnCooldown(bool attack)
+    public void DamageResults(bool enemyDestroyed)
+    {
+        //if(!enemyDestroyed && _blocked)
+        //{
+        _nextPoint = null;
+        _movePositions.Enqueue(_lastPoint);
+        //}
+
+        _blocked = false;
+    }
+
+    private void GoOnCooldown()
     {
         _originalPoint = transform.position;
         ResetLook();
         _animator.SetBool("Selected", false);
         Hover(false);
-        _cooldown = Cooldown * (!attack ? .6f : 1);
+        _cooldown = Cooldown * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
     }
 
     private void ResetLook()
     {
-        _animator.SetFloat("Look X", Player == Enums.Player.Player1 ? 1 : -1);
+        _animator.SetFloat("Look X", _defaultLook);
         _animator.SetFloat("Look Y", 0);
     }
 
@@ -292,14 +350,14 @@ public class UnitController : MonoBehaviour
     {
         float x = lookAt.x - transform.position.x;
         float y = lookAt.y - transform.position.y;
-        _animator.SetFloat("Look X", x == 0 ? 0 : x > 0 ? 1 : -1);
-        _animator.SetFloat("Look Y", y == 0 ? 0 : y > 0 ? 1 : -1);
+        _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
+        _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
     }
 
-    IEnumerator Deselect()
-    {
-        yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
-        yield return new WaitUntil(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
-        Select(false);
-    }
+    //IEnumerator Deselect()
+    //{
+    //    yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
+    //    yield return new WaitUntil(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
+    //    Select(false);
+    //}
 }

@@ -10,7 +10,7 @@ public class Damageable : MonoBehaviour
     private Animator _animator;
     private UnitController _uC;
 
-    public void Damage(float damage)
+    public bool Damage(float damage)
     {
         if (damage > 0)
         {
@@ -20,10 +20,13 @@ public class Damageable : MonoBehaviour
                 _pM.RemovePlayerUnit(_uC.Player, _uC);
                 _uC.OnUnitDeath?.Invoke();
                 Destroy(gameObject);
+                return true;
             }
             else
                 _animator.SetTrigger("Hit");
         }
+
+        return false;
     }
 
     void Start()
@@ -31,6 +34,5 @@ public class Damageable : MonoBehaviour
         _animator = GetComponent<Animator>();
         _pM = FindObjectOfType<PlayerManager>();
         _uC = GetComponent<UnitController>();
-
     }
 }

@@ -19,6 +19,14 @@ public class Enums : MonoBehaviour
         Attacking,
     }
 
+    public enum UnitState
+    {
+        Idle,
+        Selected,
+        Attacking,
+        Hurt,
+    }
+
     public enum PathState
     {
         Start = 0,

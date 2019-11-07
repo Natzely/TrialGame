@@ -125,6 +125,13 @@ public class GridBlock : MonoBehaviour
         }
     }
 
+    public bool IsCurrentUnitEnemy(Enums.Player player)
+    {
+        return  CurrentUnit != null && 
+                CurrentUnit.Player != player && 
+                !CurrentUnit.AlliedWith.Contains(player);
+    }
+
     public void UpdateMoveSpaceState(Enums.Player player, Vector2 cDir, Vector2? nDir)
     {
         var space = _moveSpaces[player];

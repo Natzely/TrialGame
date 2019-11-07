@@ -60,7 +60,7 @@ public class PlayerManager : MonoBehaviour
         return PlayerList.Where(x => x.Player == player).FirstOrDefault();
     }
 
-    public bool PathMatrixContains(Enums.Player player, Space ms)
+    public bool PathMatrixContains(Enums.Player player, GridBlock gB)
     {
         var matrix = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
         int mLength = matrix.GetLength(0);
@@ -68,7 +68,7 @@ public class PlayerManager : MonoBehaviour
         {
             for(int ii = 0; ii < mLength; ii++)
             {
-                if (matrix[i, ii] == ms)
+                if (matrix[i, ii] == gB)
                     return true;
             }
         }

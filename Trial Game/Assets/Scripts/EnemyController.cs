@@ -39,12 +39,17 @@ public class EnemyController : MonoBehaviour
 
     private bool MoveToNextSpace(UnitController target)
     {
-        _pM.GetPlayerInfo(_player).ResetNonPlayerGrid = false;
-        _pM.CreateGrid(_player, _unitController.CurrentGridBlock, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost, _unitController.AttackDistance);
-        //_pM.PrintPlayerGrid(_player);
-        var path = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, target.CurrentGridBlock).ToList();
-        _pM.ResetPathMatrix(_player);
-        _unitController.MoveTo(path);
-        return true;
+        if (_unitController.CurrentGridBlock != null)
+        {
+            _pM.GetPlayerInfo(_player).ResetNonPlayerGrid = false;
+            _pM.CreateGrid(_player, _unitController.CurrentGridBlock, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost, _unitController.AttackDistance);
+            //_pM.PrintPlayerGrid(_player);
+            var path = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, target.CurrentGridBlock).ToList();
+            _pM.ResetPathMatrix(_player);
+            _unitController.MoveTo(path);
+            return true;
+        }
+        
+        return false;
     }
 }
