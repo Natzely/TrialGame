@@ -16,7 +16,6 @@ public class Enums : MonoBehaviour
     {
         Default,
         Selected,
-        Attacking,
     }
 
     public enum UnitState

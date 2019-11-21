@@ -41,6 +41,7 @@ public class EnemyManager : MonoBehaviour
                 _enemyList.RemoveAt(0);
         }
 
-        _delayTimer -= Time.deltaTime;
+        if (_enemyList.Count > 0) // Only decrease the next move timer if there are enemies available, otherwise, 
+            _delayTimer -= Time.deltaTime; // when all units are on cooldown, it will a unit instantly when one comes of cooldown instead of having a delay.
     }   
 }

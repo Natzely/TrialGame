@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GridNeighbors
+public class GridNeighbors : IEnumerable<GridBlock>
 {
     List<GridBlock> _neighbors;
 
@@ -37,5 +38,20 @@ public class GridNeighbors
     public GridBlock Right
     {
         get { return _neighbors[3]; }
+    }
+
+    public IEnumerable<GridBlock> OrderByDistance(GridBlock from)
+    {
+        return _neighbors.OrderBy(g => Vector3.Distance(g.transform.position, from.transform.position));
+    }
+
+    public IEnumerator<GridBlock> GetEnumerator()
+    {
+        return _neighbors.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

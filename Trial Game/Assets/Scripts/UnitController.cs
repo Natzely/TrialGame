@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -36,17 +37,16 @@ public class UnitController : MonoBehaviour
     EnemyManager _eM;
     Animator _animator;
     SpriteRenderer _sR;
-    Queue _movePositions;
-    Vector2? _nextPoint;
-    Vector2? _lastPoint;
-    Vector2 _originalPoint;
+    Queue<GridBlock> _movePositions;
+    Stack<GridBlock> _pastPositions;
+    GridBlock _nextPoint;
+    GridBlock _originalPoint;
     Vector2 _attackPos;
 
-    bool _hover;
     bool _selected;
     bool _attack;
-    bool _attacking;
     bool _blocked;
+    bool _hurt;
     float _cooldown;
     float _defaultLook;
     float _lookX;
@@ -69,7 +69,6 @@ public class UnitController : MonoBehaviour
 
     public void Hover(bool hover)
     {
-        _hover = hover;
         _animator.SetBool("Hover", hover);
     }
 
@@ -92,8 +91,12 @@ public class UnitController : MonoBehaviour
     {
         if (_cooldown <= 0 && !Moved)
         {
-            for(int x = 0; x <= movePoints.Count - 1; x++)
-                _movePositions.Enqueue(movePoints[x].Position);
+            for (int x = 0; x < movePoints.Count; x++)
+            {
+                var point = movePoints[x];
+                _movePositions.Enqueue(point);
+            }
+            _nextPoint = _movePositions.Dequeue();
             Moving = true;
             _animator.SetBool("Selected", true);  
         }
@@ -102,19 +105,21 @@ public class UnitController : MonoBehaviour
     public void CancelMove()
     {
         _movePositions.Clear();
-        _nextPoint = null;
-        transform.position = _originalPoint;
-        Moved = false;
-        Moving = false;
-        ResetLook();
+        transform.position = _originalPoint.Position;
+        Reset();
     }
 
     public bool CheckAttack(UnitController target = null)
     {
+        if (Target == null && target == null)
+            return false;
+
         if (target != null)
             Target = target;
 
-        if (Target != null && Vector2.Distance(Position, Target.Position) <= AttackDistance)
+        var dis = Vector2.Distance(Position, Target.Position);
+        double checkedDistance = Math.Round(dis, 2);
+        if (Target != null && checkedDistance <= AttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
@@ -127,7 +132,6 @@ public class UnitController : MonoBehaviour
     {
         LookAt(_attackPos);
         _unitState = Enums.UnitState.Attacking;
-        _attack = false;
         Attacked = true;
         Vector2 dir = _attackPos - transform.position.V2();
         GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
@@ -154,16 +158,17 @@ public class UnitController : MonoBehaviour
     public void ExitHurtState()
     {
         _unitState = Enums.UnitState.Idle;
+        if (!Attacked)
+            CollisionClear();
     }
 
     void Awake()
     {
         _unitState = Enums.UnitState.Idle;
         Moved = false;
-        _hover = false;
         _nextPoint = null;
-        _movePositions = new Queue();
-        _originalPoint = transform.position;
+        _movePositions = new Queue<GridBlock>();
+        _pastPositions = new Stack<GridBlock>();
     }
 
     // Start is called before the first frame update
@@ -175,7 +180,8 @@ public class UnitController : MonoBehaviour
         if (Player != Enums.Player.Player1)
             _eM = FindObjectOfType<EnemyManager>();
 
-        _eM?.AddUnit(EnemyController);
+        if (!OnCooldown)
+            _eM?.AddUnit(EnemyController);
 
 
         switch (Player)
@@ -197,33 +203,30 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if(!_movePositions.IsEmpty() || _nextPoint != null)
+        if (_nextPoint != null && _unitState != Enums.UnitState.Attacking && _unitState != Enums.UnitState.Hurt)
         {
-            if (_unitState != Enums.UnitState.Attacking && _unitState != Enums.UnitState.Hurt)
-            {
-                if (_nextPoint == null)
-                {
-                    _nextPoint = (Vector2)_movePositions.Dequeue();
+            Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * Time.deltaTime);
 
-                    LookAt(_nextPoint.Value);
+            transform.position = moveVector;
+            if (transform.position.V2() == _nextPoint.Position)
+            {
+                _pastPositions.Push(_nextPoint);
+                if (!_movePositions.IsEmpty())
+                {
+                    _nextPoint = _movePositions.Dequeue();
+                    if (_nextPoint.CurrentUnit != null && _nextPoint.CurrentUnit.Player == Player && _movePositions.IsEmpty())
+                        _nextPoint = null;
+                    else
+                        LookAt(_nextPoint.Position);
                 }
                 else
+                    _nextPoint = null;
+
+                if (_movePositions.IsEmpty() && _nextPoint == null)
                 {
-                    Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Value, Speed * Time.deltaTime);
-
-                    transform.position = moveVector;
-                    if (transform.position.V2() == _nextPoint.Value)
-                    {
-                        _lastPoint = _nextPoint;
-                        _nextPoint = null;
-
-                        if (_movePositions.IsEmpty())
-                        {
-                            Moving = false;
-                            Moved = true;
-                            CheckAttack();
-                        }
-                    }
+                    Moving = false;
+                    Moved = true;
+                    CheckAttack();
                 }
             }
         }
@@ -233,6 +236,7 @@ public class UnitController : MonoBehaviour
 
         if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"))
         {
+            _attack = false;
             Attack();
         }
 
@@ -266,9 +270,12 @@ public class UnitController : MonoBehaviour
         if(gB != null)
         {
             CurrentGridBlock = gB;
+            if (_originalPoint == null)
+                _originalPoint = gB;
         }
-        else if(uC != null)
+        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player))
         {
+            _blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;
             if(Mathf.Abs(colDir.x) > Mathf.Abs(colDir.y))
             {
@@ -286,31 +293,16 @@ public class UnitController : MonoBehaviour
         float dirRound = Mathf.Round(colDir);
         if (dirRound == lookDir)
         {
-            _movePositions.Clear();
-            _blocked = true;
-            Target = null;
+            CollisionClear();
             ReadyAttack(attackPos);
         }
     }
 
-    private bool CheckForBlock()
+    private void CollisionClear()
     {
-        var dir = _nextPoint - Position;
-        RaycastHit2D hit = Physics2D.Raycast(Position, dir.Value, (dir.Value.x > 0 ? dir.Value.x : dir.Value.y) + .5f, LayerMask.GetMask("Unit"));
-        if (hit.collider != null)
-        {
-            UnitController uC = hit.transform.gameObject.GetComponent<UnitController>();
-            if (uC != null && _movePositions.Contains(uC.CurrentGridBlock.Position) && uC.Player != Player && !AlliedWith.Contains(uC.Player))
-            {
-                _movePositions.Clear();
-                _blocked = true;
-                Target = null;
-                ReadyAttack(hit.transform.position);
-
-                return true;
-            }
-        }
-        return false;
+        Target = null;
+        _movePositions.Clear();
+        DamageResults(false);
     }
 
     private void Attack()
@@ -321,23 +313,39 @@ public class UnitController : MonoBehaviour
 
     public void DamageResults(bool enemyDestroyed)
     {
-        //if(!enemyDestroyed && _blocked)
-        //{
-        _nextPoint = null;
-        _movePositions.Enqueue(_lastPoint);
-        //}
+        if (_blocked)
+        {
+            foreach (var pos in _pastPositions)
+            {
+                _movePositions.Enqueue(pos);
+                if (pos.CurrentUnit == null)
+                {
+                    _nextPoint = _movePositions.Dequeue();
+                    break;
+                }
+            }
+        }
 
         _blocked = false;
     }
 
     private void GoOnCooldown()
     {
-        _originalPoint = transform.position;
-        ResetLook();
+        Reset();
+        _originalPoint = CurrentGridBlock;
         _animator.SetBool("Selected", false);
         Hover(false);
         _cooldown = Cooldown * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
+    }
+
+    private void Reset()
+    {
+        _nextPoint = null;
+        _pastPositions.Clear();
+        Moved = false;
+        Moving = false;
+        ResetLook();
     }
 
     private void ResetLook()

@@ -11,9 +11,11 @@ public class GridBlock : MonoBehaviour
     public GameObject AttackSpace;
     public int MovementCost = 0;
     public bool Unpassable = false;
+    public bool IsDestination = false;
 
     [HideInInspector]
     public UnitController CurrentUnit;
+
     [HideInInspector]
     public bool IsSpaceActive
     {
@@ -28,6 +30,14 @@ public class GridBlock : MonoBehaviour
     {
         get { return transform.position; }
     }
+    [HideInInspector]
+    public  GridNeighbors Neighbors
+    {
+        get { return _neighbors; }
+    }
+
+    [HideInInspector]
+    public Space PlayerActiveSpace { get; set; }
 
     private PlayerManager _pM;
     private GridPlayerSpaces _moveSpaces;
@@ -43,14 +53,10 @@ public class GridBlock : MonoBehaviour
 
     public Enums.ActiveTile ActiveSpace(Enums.Player player)
     {
-        //if (_moveSpaces.ContainsPlayer(player) && _moveSpaces[player].gameObject.activeSelf)
-        //    return _moveSpaces[player];
-        //else if (_attackSpaces.ContainsPlayer(player) && _attackSpaces[player].gameObject.activeSelf)
-        //    return _attackSpaces[player];
-
-        //return null;
-
-        return _activeTile[player];
+        if (player == Enums.Player.Player1)
+            return _activeTile[player];
+        else
+            return Enums.ActiveTile.Move;
     }
 
     public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, bool start = false)
@@ -105,7 +111,7 @@ public class GridBlock : MonoBehaviour
                 spaces[player].ParentGridBlock = this;
             }
 
-            spaces[player].Enable();
+            (PlayerActiveSpace = spaces[player]).Enable();
         }
         else
         {

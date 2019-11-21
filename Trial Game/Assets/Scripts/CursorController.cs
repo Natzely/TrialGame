@@ -23,20 +23,16 @@ public class CursorController : MonoBehaviour
     List<GridBlock> _moves;
     Space _currSpace;
     Vector2 _startPos;
-    Vector2 _attackPos;
     Color _playerColor;
     bool _select;
-    bool _attack;
     bool _cancel;
     bool _nextUnit;
-    bool _stayUnitSearch;
     float _moveTimer;
     float _horzClamp;
     float _vertClamp;
     float _actionTimer;
     int _vert;
     int _horz;
-    int _gridSize;
     string _playerPrefix;
 
     private void Awake()
@@ -82,11 +78,18 @@ public class CursorController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject gO = collision.gameObject;
-        var space = gO.GetComponent<Space>();
         var grid = gO.GetComponent<GridBlock>();
 
         if (grid != null)
-            _currGridBlock = grid;
+        {
+            _currGridBlock = grid; 
+            _currSpace = grid.PlayerActiveSpace;
+
+             if (_currSpace is MoveSpace && _currState == Enums.CursorState.Selected && _currGridBlock.CurrentUnit == null)
+            {
+                _moves = _pM.CreatePath(Player, _orgGridBlock, _currGridBlock).ToList();
+            }
+        }
 
         if (CheckForUnit())
             GetUnit(gO);
@@ -94,18 +97,7 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        var space = collision.gameObject.GetComponent<Space>();
-
-        if (space != null && space.Player == Player && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == _currUnit))// && _currState == Enums.CursorState.Moving)
-        {
-            _currSpace = space;
-
-            if (space is MoveSpace)
-            {
-                _moves = _pM.CreatePath(Player, _orgGridBlock, _currSpace.ParentGridBlock).ToList();
-            }
-        }
-        else if (CheckForUnit() && _stayUnitSearch)
+        if (CheckForUnit())// && _stayUnitSearch)
         {
             GameObject gO = collision.gameObject;
             GetUnit(gO);
@@ -123,10 +115,8 @@ public class CursorController : MonoBehaviour
         }
         else if(uC == _currUnit)
         {
-            _stayUnitSearch = false;
-            _currUnit?.Hover(false);
             if (_currState == Enums.CursorState.Default)
-                ResetUnit();
+                 ResetUnit();
         }
     }
 
@@ -149,7 +139,7 @@ public class CursorController : MonoBehaviour
         UnitController tmpUnit = gO.GetComponent<UnitController>();
         if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown && !tmpUnit.Moving)
         {
-            _currUnit = tmpUnit;
+             _currUnit = tmpUnit;
             _currUnit.OnUnitDeath += OnCurrentUnitDeath;
             _currUnit.Hover(true);
         }
@@ -171,14 +161,13 @@ public class CursorController : MonoBehaviour
 
     private void ResetUnit()
     {
+        _currUnit?.Hover(false);
+        _currUnit?.Select(false);
         if (_currUnit != null)
-        {
-            _currUnit.Select(false);
             _currUnit.OnUnitDeath -= OnCurrentUnitDeath;
-            _currUnit = null;
-        }
+        _currUnit = null;
         _moves = null;
-    }
+}
 
     private void CheckForAction()
     {
@@ -196,7 +185,7 @@ public class CursorController : MonoBehaviour
             //{
             //    Attack();
             //}
-            else if (_select && _currUnit != null && _currState != Enums.CursorState.Attacking)
+            else if (_select && _currUnit != null && !_currUnit.OnCooldown)
             {
                 Select();
             }
@@ -207,9 +196,7 @@ public class CursorController : MonoBehaviour
             // - If there is a unit selected
             //   - It hasn't moved or isn't moving
             //   - The cursor is in attack state
-            else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0) &&
-                (_currUnit != null ? (_currState == Enums.CursorState.Attacking) ||
-                (!_currUnit.Moving && !_currUnit.Moved) : true))
+            else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
             {
                 Move();
             }
@@ -264,15 +251,20 @@ public class CursorController : MonoBehaviour
                     _startPos = transform.position;
                 }
                 _currUnit.Select(true);
-                _gridSize = _currUnit.MoveDistance + _currUnit.AttackDistance;
 
                 StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, _currUnit.AttackDistance));
             }
         }
-        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currSpace != null && (_currGridBlock.IsCurrentUnitEnemy(Player) || _currSpace is MoveSpace))// && _currGridBlock.CurrentUnit == null)
+        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currSpace != null && 
+            (_currGridBlock.IsCurrentUnitEnemy(Player) || (_currSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
         {
             var unit = _currGridBlock.CurrentUnit;
-            _currUnit.MoveTo(_moves);
+
+            if (_moves?.Count > 0)
+                _currUnit.MoveTo(_moves);
+            else
+                _currUnit.CheckAttack(unit);
+
             if (unit != null && unit.Player != Player && !_currUnit.AlliedWith.Contains(unit.Player))
             {
                 _currUnit.Target = unit;
@@ -305,10 +297,6 @@ public class CursorController : MonoBehaviour
             transform.position = tmpPos;
         }
         else if (_currState == Enums.CursorState.Selected)
-        {
-            transform.position = tmpPos;
-        }
-        else if (_currState == Enums.CursorState.Attacking)
         {
             transform.position = tmpPos;
         }

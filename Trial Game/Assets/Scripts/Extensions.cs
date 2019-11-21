@@ -40,7 +40,7 @@ public static class Extensions
         return obj;
     }
 
-    public static bool IsEmpty(this Queue q)
+    public static bool IsEmpty<T>(this Queue<T> q)
     {
         if (q == null)
             return true;

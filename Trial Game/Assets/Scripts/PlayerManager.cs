@@ -52,7 +52,10 @@ public class PlayerManager : MonoBehaviour
 
     public GridBlock[,] GetPathMatrix(Enums.Player player)
     {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid;
+        if (player == Enums.Player.Player1)
+            return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid;
+        else
+            return _fullGrid;
     }
 
     public PlayerInfo GetPlayerInfo(Enums.Player player)

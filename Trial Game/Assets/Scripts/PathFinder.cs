@@ -6,15 +6,14 @@ using System.Linq;
 
 public class PathFinder
 {
-    public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock msStart, GridBlock msEnd, GridBlock[,] map)
+    public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock gbStart, GridBlock gbTarget, GridBlock[,] map)
     {
         Location current = null;
-        Location best = null;
         Location start = null;
         Location target = null;
 
-        start = new Location { X = (int)msStart.GridPosition.x, Y = (int)msStart.GridPosition.y };
-        target = new Location { X = (int)msEnd.GridPosition.x, Y = (int)msEnd.GridPosition.y };
+        start = new Location { X = (int)gbStart.GridPosition.x, Y = (int)gbStart.GridPosition.y };
+        target = new Location { X = (int)gbTarget.GridPosition.x, Y = (int)gbTarget.GridPosition.y };
 
         var openList = new List<Location>();
         var closedList = new List<Location>();
@@ -26,14 +25,15 @@ public class PathFinder
 
         while (openList.Count > 0)
         {
-            // get the square with the lowest F score
-            var lowest = openList.Min(l => l.F);
-            current = openList.First(l => l.F == lowest);
-
-            if (!(current.X == start.X && current.Y == start.Y) && 
-                 (best == null || (current.F <= best.F && current.G >= best.G)))
-                best = current;
-
+            // Check if the target has been added to the list
+            current = openList.FirstOrDefault(l => l.H == 0);
+            if (current == null)
+            {
+                // get the square with the lowest F score
+                var lowest = openList.Min(l => l.F);
+                current = openList.FirstOrDefault(l => l.F == lowest);
+            }
+        
             // add the current square to the closed list
             closedList.Add(current);
 
@@ -41,8 +41,8 @@ public class PathFinder
             openList.Remove(current);
 
             // if we added the destination to the closed list, we've found a path
-            if (closedList.FirstOrDefault(l => l.X == target.X && l.Y == target.Y) != null)
-                break;
+            if (current.X == target.X && current.Y == target.Y)
+              break;
 
             var adjacentSquares = GetWalkableAdjacentSquares(player, current.X, current.Y, map);
             g++;
@@ -68,9 +68,8 @@ public class PathFinder
                 {
                     // compute its score, set the parent
                     adjacentSquare.G = g;
-                    adjacentSquare.H = ComputeHScore(asX,
-                        asY, target.X, target.Y);
-                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H;// - map[asX, asY].MovementCost;
+                    adjacentSquare.H = ComputeHScore(asX, asY, target.X, target.Y);
+                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (map[asX, asY].MovementCost * 2);
                     adjacentSquare.Parent = current;
 
                     // and add it to the open list
@@ -94,12 +93,10 @@ public class PathFinder
         Vector2? dir = null;
         GridBlock pB = null;
 
-        if (player != Enums.Player.Player1)
-            current = best;
-
         while (current != null)
         {
             GridBlock gB = map[current.X, current.Y];
+
             pathList.Add(gB);
 
             if (current.Parent != null)
@@ -155,13 +152,6 @@ public class PathFinder
         }
 
         return returnList;
-
-        //return proposedLocations.Where(l =>
-        //    l.X >= 0 && l.Y >= 0 &&
-        //    l.X < map.GetLength(0) && l.Y < map.GetLength(1) &&
-        //    map[l.X, l.Y] != null &&
-        //    map[l.X, l.Y].ActiveSpace(player) == Enums.ActiveTile.Move && !map[l.X, l.Y].Unpassable
-        // ).ToList();
     }
 
     private static int ComputeHScore(int x, int y, int targetX, int targetY)
