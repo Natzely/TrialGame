@@ -8,9 +8,17 @@ public class CursorController : MonoBehaviour
 {
     public Enums.Player Player = Enums.Player.Player1;
     public PolygonCollider2D Boundaries;
+    public AudioClip SoundSelect;
+    public AudioClip SoundDeselect;
+    public AudioClip SoundMove;
+    public AudioClip SoundAttack;
     public float MoveTimer = 1;
     public float ActionTimer = .1f;
     public int CurrentMove;
+
+    [HideInInspector]
+    public Space CurrentSpace { get; set; }
+    public UnitController CurrentUnit { get; set; }
 
     Enums.CursorState _currState;
 
@@ -18,10 +26,9 @@ public class CursorController : MonoBehaviour
     GridBlock _currGridBlock;
     GridBlock _orgGridBlock;
     Animator _animator;
-    UnitController _currUnit;
     SpriteRenderer _sR;
+    AudioSource _aS;
     List<GridBlock> _moves;
-    Space _currSpace;
     Vector2 _startPos;
     Color _playerColor;
     bool _select;
@@ -47,6 +54,7 @@ public class CursorController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
+        _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
         _horzClamp = Boundaries.bounds.extents.x;
         _vertClamp = Boundaries.bounds.extents.y;
@@ -82,10 +90,10 @@ public class CursorController : MonoBehaviour
 
         if (grid != null)
         {
-            _currGridBlock = grid; 
-            _currSpace = grid.PlayerActiveSpace;
+            _currGridBlock = grid;
+            CurrentSpace = grid.PlayerActiveSpace;
 
-             if (_currSpace is MoveSpace && _currState == Enums.CursorState.Selected && _currGridBlock.CurrentUnit == null)
+             if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
             {
                 _moves = _pM.CreatePath(Player, _orgGridBlock, _currGridBlock).ToList();
             }
@@ -97,41 +105,35 @@ public class CursorController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (CheckForUnit())// && _stayUnitSearch)
-        {
-            GameObject gO = collision.gameObject;
-            GetUnit(gO);
-        }
+        //if (CheckForUnit())// && _stayUnitSearch)
+        //{
+        //    GameObject gO = collision.gameObject;
+        //    GetUnit(gO);
+        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         GameObject gO = collision.gameObject;
-        UnitController uC = gO.GetComponent<UnitController>();
 
         if (CheckForObstacle(gO))
         {
             _sR.color = _playerColor;
         }
-        else if(uC == _currUnit)
-        {
-            if (_currState == Enums.CursorState.Default)
-                 ResetUnit();
-        }
     }
 
     private bool CheckForObstacle(GameObject gO)
     {
-        if(_currUnit != null)
+        if(CurrentUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position);
+            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != CurrentUnit.transform.position);
         
         return false;
     }
 
     private bool CheckForUnit()
     {
-        return _currState == Enums.CursorState.Default && _currUnit == null;
+        return _currState == Enums.CursorState.Default && CurrentUnit == null;
     }
 
     private void GetUnit(GameObject gO)
@@ -139,35 +141,30 @@ public class CursorController : MonoBehaviour
         UnitController tmpUnit = gO.GetComponent<UnitController>();
         if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown && !tmpUnit.Moving)
         {
-             _currUnit = tmpUnit;
-            _currUnit.OnUnitDeath += OnCurrentUnitDeath;
-            _currUnit.Hover(true);
+            CurrentUnit = tmpUnit;
+            CurrentUnit.OnUnitDeath += OnCurrentUnitDeath;
+            CurrentUnit.Hover(true);
         }
     }
 
     private void OnCurrentUnitDeath()
     {
-        ResetUnit();
         ResetCursor();
     }
 
-    private void ResetCursor()
+    private void ResetCursor(bool resetUnit = true)
     {
         _currState = Enums.CursorState.Default;
-        _currSpace = null;
+        CurrentSpace = null;
         _pM.ResetPathMatrix(Player);
         _animator.SetBool("Attacking", false);
-    }
-
-    private void ResetUnit()
-    {
-        _currUnit?.Hover(false);
-        _currUnit?.Select(false);
-        if (_currUnit != null)
-            _currUnit.OnUnitDeath -= OnCurrentUnitDeath;
-        _currUnit = null;
         _moves = null;
-}
+        if (CurrentUnit != null && resetUnit)
+        {
+            CurrentUnit.OnUnitDeath -= OnCurrentUnitDeath;
+            CurrentUnit = null;
+        }
+    }
 
     private void CheckForAction()
     {
@@ -185,7 +182,7 @@ public class CursorController : MonoBehaviour
             //{
             //    Attack();
             //}
-            else if (_select && _currUnit != null && !_currUnit.OnCooldown)
+            else if (_select && CurrentUnit != null && !CurrentUnit.OnCooldown)
             {
                 Select();
             }
@@ -198,6 +195,7 @@ public class CursorController : MonoBehaviour
             //   - The cursor is in attack state
             else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
             {
+                Debug.Log("Move");
                 Move();
             }
         }
@@ -210,29 +208,35 @@ public class CursorController : MonoBehaviour
 
     private void NextUnit()
     {
-        var nextPos = _pM.GetNextUnit(Player, _currUnit);
+        var nextPos = _pM.GetNextUnit(Player, CurrentUnit);
         if (nextPos != null)
+        {
             transform.position = nextPos.Value;
+            _aS.Play(SoundMove);
+        }
     }
 
     private void Cancel()
     {
         if (_currState == Enums.CursorState.Selected)
         {
-            if (_currUnit.Moved || _currUnit.Moving)
+            if (CurrentUnit.Moved || CurrentUnit.Moving)
             {
-                _currUnit.CancelMove();
+                CurrentUnit.CancelMove();
+                _pM.GetPlayerInfo(Enums.Player.Player1).MovementPath.Clear();
                 transform.position = _orgGridBlock.Position;
             }
             else if (transform.position.V2() == _startPos)
             {
-                _currUnit.Select(false);
-                ResetCursor();
+                CurrentUnit.Select(false);
+                ResetCursor(resetUnit: false);
             }
             else
             {
                 transform.position = _orgGridBlock.Position;
             }
+
+            _aS.Play(SoundDeselect);
         }
         _actionTimer = ActionTimer;
     }
@@ -244,37 +248,51 @@ public class CursorController : MonoBehaviour
             _currState = Enums.CursorState.Selected;
             _orgGridBlock = _currGridBlock;
 
-            if (transform.position == _currUnit.Position)
+            if (transform.position == CurrentUnit.Position)
             {
-                if (!_currUnit.Moved)
+                if (!CurrentUnit.Moved)
                 {
                     _startPos = transform.position;
                 }
-                _currUnit.Select(true);
+                CurrentUnit.Select(true);
 
-                StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, _currUnit.AttackDistance));
+                _aS.Play(SoundSelect);
+
+                StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, CurrentUnit.MoveDistance + _orgGridBlock.MovementCost, CurrentUnit.MaxAttackDistance));
             }
         }
-        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currSpace != null && 
-            (_currGridBlock.IsCurrentUnitEnemy(Player) || (_currSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
+        else if (!CurrentUnit.Moving && !CurrentUnit.Moved && transform.position.V2() != _startPos && CurrentSpace != null && 
+            (_currGridBlock.IsCurrentUnitEnemy(Player) || (CurrentSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
         {
             var unit = _currGridBlock.CurrentUnit;
 
             if (_moves?.Count > 0)
-                _currUnit.MoveTo(_moves);
-            else
-                _currUnit.CheckAttack(unit);
-
-            if (unit != null && unit.Player != Player && !_currUnit.AlliedWith.Contains(unit.Player))
             {
-                _currUnit.Target = unit;
-                ResetUnit();
+                _aS.Play(SoundSelect);
+                CurrentUnit.MoveTo(_moves);
+            }
+            else
+            {
+                _aS.Play(SoundAttack);
+                CurrentUnit.CheckAttack(unit);
+            }
+
+            if (unit != null && unit.IsEnemy(Player))
+            {
+                CurrentUnit.Target = unit;
                 ResetCursor();
             }
         }
-        else if (_currUnit.Moving || _currUnit.Moved)
+        else if ((CurrentUnit.Moving || CurrentUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
         {
-            ResetUnit();
+            _aS.Play(SoundAttack);
+            CurrentUnit.Target = _currGridBlock.CurrentUnit;
+            ResetCursor();
+        }
+        else if ((CurrentUnit.Moving || CurrentUnit.Moved))
+        {
+            _aS.Play(SoundAttack);
+            CurrentUnit.Select(false);
             ResetCursor();
         }
 
@@ -290,69 +308,13 @@ public class CursorController : MonoBehaviour
         tmpPos.x = Mathf.Clamp(tmpPos.x + _horz, -_horzClamp, _horzClamp);
         tmpPos.y = Mathf.Clamp(tmpPos.y + _vert, -_vertClamp, _vertClamp);
 
-        var dir = tmpPos - transform.position.V2();      
-
-        if (_currState == Enums.CursorState.Default)
+        if (tmpPos != transform.position.V2())
         {
             transform.position = tmpPos;
-        }
-        else if (_currState == Enums.CursorState.Selected)
-        {
-            transform.position = tmpPos;
+            _aS.Play(SoundMove);
         }
 
         _moveTimer = MoveTimer;
         _actionTimer = ActionTimer;
     }
-
-    //private void Attack()
-    //{
-    //    if (_currUnit == null)
-    //        return;
-
-    //    if( _currState == Enums.CursorState.Selected && _currGridBlock.IsSpaceActive &&   
-    //        _currGridBlock.CurrentUnit != null && _currGridBlock.CurrentUnit.Player != Player)
-    //    {
-    //        if (_moves != null && _moves.Count > 0 && (_currUnit.Moving || !_currUnit.Moved))
-    //        {
-    //            _currUnit.MoveTo(_moves);
-    //        }
-
-    //        _currUnit.ReadyAttack(transform.position);
-    //        _animator.SetBool("Attacking", false);
-    //        ResetUnit();
-    //        ResetCursor();
-    //        _moves = null;
-    //    }
-
-    //    //if (_currState != Enums.CursorState.Attacking &&
-    //    //    (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == _currUnit) &&
-    //    //    (_currUnit.Position == transform.position || _currGridBlock.IsSpaceActive))
-    //    //{
-    //    //    _currUnit.Select(true);
-    //    //    _gridSize = _currUnit.AttackDistance;
-    //    //    StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, 0, _gridSize));
-
-    //    //    _lastState = _currState;
-    //    //    _currState = Enums.CursorState.Attacking;
-    //    //    _animator.SetBool("Attacking", true);   
-    //    //    _attackPos = transform.position;
-    //    //}
-    //    //else if (transform.position != _currUnit.Position && transform.position.V2() != _attackPos && 
-    //    //         _currSpace != null && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit.Player != Player))
-    //    //{
-    //    //    if (_moves != null && _moves.Count > 0 && (_currUnit.Moving || !_currUnit.Moved))
-    //    //    {
-    //    //        _currUnit.MoveTo(_moves);
-    //    //    }
-
-    //    //    _currUnit.ReadyAttack(transform.position);
-    //    //    _animator.SetBool("Attacking", false);
-    //    //    ResetUnit();
-    //    //    ResetCursor();
-    //    //    _moves = null;
-    //    //}
-
-    //    _actionTimer = ActionTimer;
-    //}
 }

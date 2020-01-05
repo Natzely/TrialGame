@@ -124,13 +124,4 @@ public class MoveSpace : Space
     {
         _animator = GetComponent<Animator>();
     }
-
-    //override protected void Update()
-    //{
-    //    if (!_pM.GetPlayerInfo(Player).MovementPath.Contains(this))
-    //    {
-    //        ResetSpace();
-    //    }
-    //    base.Update();
-    //}
 }

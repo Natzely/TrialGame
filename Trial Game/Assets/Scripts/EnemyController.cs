@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
         UnitController target = null;
         var units = _pM.GetPlayerInfo(Enums.Player.Player1).Units;
 
-        int attackRange = _unitController.MoveDistance + _unitController.AttackDistance;
+        int attackRange = _unitController.MoveDistance + _unitController.MaxAttackDistance;
         var closeUnits = units.Where(u => Vector2.Distance(_unitController.Position, u.Position) <= attackRange);
         if (closeUnits.Count() > 0)
         {

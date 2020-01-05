@@ -70,4 +70,10 @@ public static class Extensions
         else
             return Enums.PathDirection.Start;
     }
+
+    public static void Play(this AudioSource source, AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
+    }
 }

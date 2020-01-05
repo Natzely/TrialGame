@@ -55,4 +55,11 @@ public class Enums : MonoBehaviour
         Move = 0,
         Attack = 1,
     }
+
+    public enum GridBlockType
+    {
+        Stone = 0,
+        Grass = 1,
+        Water = 2,
+    }
 }

@@ -79,4 +79,12 @@ public class Space : MonoBehaviour
         if (_pM.GetDeleteMoveSpace(Player))
             gameObject.SetActive(false);
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        CursorController cc = collision.gameObject.GetComponent<CursorController>();
+        if (cc != null && cc.CurrentSpace == this)
+            cc.CurrentSpace = null;
+            
+    }
 }

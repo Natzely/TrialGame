@@ -42,7 +42,17 @@ public class GridNeighbors : IEnumerable<GridBlock>
 
     public IEnumerable<GridBlock> OrderByDistance(GridBlock from)
     {
-        return _neighbors.OrderBy(g => Vector3.Distance(g.transform.position, from.transform.position));
+        try
+        {
+            return _neighbors
+                  .Where  (g => g != null)
+                  .OrderBy(g => Vector3.Distance(g.transform.position, from.transform.position));
+        }
+        catch
+        {
+            Debug.LogError("");
+            return null;
+        }
     }
 
     public IEnumerator<GridBlock> GetEnumerator()

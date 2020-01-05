@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class GridBlock : MonoBehaviour
 {
+    public Enums.GridBlockType Type;
     public GameObject MoveSpace;
     public GameObject AttackSpace;
     public int MovementCost = 0;

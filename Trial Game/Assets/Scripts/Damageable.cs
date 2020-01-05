@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
+    public GameObject DeathSoundObject;
     public float Health = 2;
 
     private PlayerManager _pM;
@@ -17,6 +18,7 @@ public class Damageable : MonoBehaviour
             Health -= damage;
             if (Health <= 0)
             {
+                Instantiate(DeathSoundObject, transform.position, Quaternion.identity);
                 _pM.RemovePlayerUnit(_uC.Player, _uC);
                 _uC.OnUnitDeath?.Invoke();
                 Destroy(gameObject);

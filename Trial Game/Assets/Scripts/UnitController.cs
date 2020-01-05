@@ -9,13 +9,18 @@ public class UnitController : MonoBehaviour
     public delegate void OnDeath();
     public OnDeath OnUnitDeath;
 
+    public AudioSource WalkingAudioSource;
+    public AudioSource HurtAudioSource;
+    public AudioSource AttackAudioSource;
+
     public List<Enums.Player> AlliedWith;
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
     public EnemyController EnemyController;
     public bool OnCooldown = false;
     public int MoveDistance = 4;
-    public int AttackDistance = 2;
+    public int MininimumAttackDistance = 0;
+    public int MaxAttackDistance = 2;
     public float Speed = 5;
     public float Cooldown = 5;
     public float AttackSpeed = 5;
@@ -35,6 +40,7 @@ public class UnitController : MonoBehaviour
     Enums.UnitState _unitState;
     PlayerManager _pM;
     EnemyManager _eM;
+    CursorController _cC;
     Animator _animator;
     SpriteRenderer _sR;
     Queue<GridBlock> _movePositions;
@@ -104,9 +110,14 @@ public class UnitController : MonoBehaviour
 
     public void CancelMove()
     {
+        _animator.SetBool("Selected", false);
         _movePositions.Clear();
         transform.position = _originalPoint.Position;
-        Reset();
+        _nextPoint = null;
+        _pastPositions.Clear();
+        Moved = false;
+        Moving = false;
+        ResetLook();
     }
 
     public bool CheckAttack(UnitController target = null)
@@ -119,7 +130,7 @@ public class UnitController : MonoBehaviour
 
         var dis = Vector2.Distance(Position, Target.Position);
         double checkedDistance = Math.Round(dis, 2);
-        if (Target != null && checkedDistance <= AttackDistance)
+        if (Target != null && checkedDistance <= MaxAttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
@@ -142,7 +153,7 @@ public class UnitController : MonoBehaviour
         Projectile tmpProjectile = projObj.GetComponent<Projectile>();
         var tmpDir = _attackPos - transform.position.V2();
         tmpDir.Normalize();
-        tmpProjectile.Launch(tmpDir, AttackSpeed, AttackDistance);
+        tmpProjectile.Launch(tmpDir, AttackSpeed, MaxAttackDistance);
     }
 
     public void ExitAttackState()
@@ -160,6 +171,25 @@ public class UnitController : MonoBehaviour
         _unitState = Enums.UnitState.Idle;
         if (!Attacked)
             CollisionClear();
+    }
+
+    public bool IsEnemy(Enums.Player player)
+    {
+        return Player != player && 
+               !AlliedWith.Contains(player);
+    }
+
+    public void Reset()
+    {
+        Select(false);
+        Hover(false);
+        _nextPoint = null;
+        _cC = null;
+        _pastPositions.Clear();
+        Moved = false;
+        Moving = false;
+        Target = null;
+        ResetLook();
     }
 
     void Awake()
@@ -226,12 +256,16 @@ public class UnitController : MonoBehaviour
                 {
                     Moving = false;
                     Moved = true;
-                    CheckAttack();
                 }
             }
         }
 
-        if (!_selected && (Moved || !Moving))
+        if(Target != null && _movePositions.IsEmpty() && _nextPoint == null)
+        {
+            CheckAttack();
+        }
+         
+        if (!_selected && !Moving)
             _animator.SetBool("Selected", false);
 
         if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"))
@@ -252,6 +286,12 @@ public class UnitController : MonoBehaviour
                 Attacked = false;
                 Moving = false;
 
+                if (_cC != null)
+                {
+                    Debug.Log("Unit this");
+                    _cC.CurrentUnit = this;
+                }
+
                 _eM?.AddUnit(EnemyController);
             }
         }
@@ -266,6 +306,7 @@ public class UnitController : MonoBehaviour
         var gO = collision.gameObject;
         GridBlock gB = gO.GetComponent<GridBlock>();
         UnitController uC = gO.GetComponent<UnitController>();
+        CursorController cc = gO.GetComponent<CursorController>();
 
         if(gB != null)
         {
@@ -285,6 +326,22 @@ public class UnitController : MonoBehaviour
             {
                 UnitCollision(collision.gameObject.transform.position, colDir.y, _lookY);
             }
+        }
+        else if(cc != null)
+        {
+            _cC = cc;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        CursorController cc = collision.gameObject.GetComponent<CursorController>();
+        if (cc != null && !_selected && !Moving)
+        {
+            if (cc.CurrentUnit == this)
+                cc.CurrentUnit = null;
+            _cC = null;
+            Reset();
         }
     }
 
@@ -307,6 +364,7 @@ public class UnitController : MonoBehaviour
 
     private void Attack()
     {
+        Target = null;
         _unitState = Enums.UnitState.Attacking;
         _animator.SetTrigger("Launch");
     }
@@ -333,19 +391,8 @@ public class UnitController : MonoBehaviour
     {
         Reset();
         _originalPoint = CurrentGridBlock;
-        _animator.SetBool("Selected", false);
-        Hover(false);
         _cooldown = Cooldown * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
-    }
-
-    private void Reset()
-    {
-        _nextPoint = null;
-        _pastPositions.Clear();
-        Moved = false;
-        Moving = false;
-        ResetLook();
     }
 
     private void ResetLook()
