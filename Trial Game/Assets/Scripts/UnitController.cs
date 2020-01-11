@@ -102,6 +102,7 @@ public class UnitController : MonoBehaviour
                 var point = movePoints[x];
                 _movePositions.Enqueue(point);
             }
+
             _nextPoint = _movePositions.Dequeue();
             Moving = true;
             _animator.SetBool("Selected", true);  
@@ -260,7 +261,7 @@ public class UnitController : MonoBehaviour
             }
         }
 
-        if(Target != null && _movePositions.IsEmpty() && _nextPoint == null)
+        if(Target != null)// && _movePositions.IsEmpty() && _nextPoint == null)
         {
             CheckAttack();
         }
@@ -295,7 +296,7 @@ public class UnitController : MonoBehaviour
                 _eM?.AddUnit(EnemyController);
             }
         }
-        else if (_unitState == Enums.UnitState.Idle && (Moved || (Attacked && _nextPoint == null)))
+        else if (_unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
         {
             GoOnCooldown();
         }
@@ -314,7 +315,7 @@ public class UnitController : MonoBehaviour
             if (_originalPoint == null)
                 _originalPoint = gB;
         }
-        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player))
+        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MininimumAttackDistance == 0)
         {
             _blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;

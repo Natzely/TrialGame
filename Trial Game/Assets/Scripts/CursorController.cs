@@ -195,7 +195,6 @@ public class CursorController : MonoBehaviour
             //   - The cursor is in attack state
             else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
             {
-                Debug.Log("Move");
                 Move();
             }
         }
@@ -265,6 +264,7 @@ public class CursorController : MonoBehaviour
             (_currGridBlock.IsCurrentUnitEnemy(Player) || (CurrentSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
         {
             var unit = _currGridBlock.CurrentUnit;
+            CurrentUnit.Target = unit;
 
             if (_moves?.Count > 0)
             {
@@ -278,10 +278,8 @@ public class CursorController : MonoBehaviour
             }
 
             if (unit != null && unit.IsEnemy(Player))
-            {
-                CurrentUnit.Target = unit;
                 ResetCursor();
-            }
+
         }
         else if ((CurrentUnit.Moving || CurrentUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
         {
