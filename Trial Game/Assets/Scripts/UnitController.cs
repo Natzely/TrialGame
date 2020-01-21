@@ -17,9 +17,11 @@ public class UnitController : MonoBehaviour
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
     public EnemyController EnemyController;
+    public Vector2 ColliderSizeMoving;
+    public Vector2 ColliderSizeIdle;
     public bool OnCooldown = false;
     public int MoveDistance = 4;
-    public int MininimumAttackDistance = 0;
+    public int MinAttackDistance = 0;
     public int MaxAttackDistance = 2;
     public float Speed = 5;
     public float Cooldown = 5;
@@ -43,6 +45,7 @@ public class UnitController : MonoBehaviour
     CursorController _cC;
     Animator _animator;
     SpriteRenderer _sR;
+    BoxCollider2D _bC;
     Queue<GridBlock> _movePositions;
     Stack<GridBlock> _pastPositions;
     GridBlock _nextPoint;
@@ -105,6 +108,7 @@ public class UnitController : MonoBehaviour
 
             _nextPoint = _movePositions.Dequeue();
             Moving = true;
+            _bC.size = ColliderSizeMoving;
             _animator.SetBool("Selected", true);  
         }
     }
@@ -118,6 +122,7 @@ public class UnitController : MonoBehaviour
         _pastPositions.Clear();
         Moved = false;
         Moving = false;
+        _bC.size = ColliderSizeIdle;
         ResetLook();
     }
 
@@ -146,7 +151,8 @@ public class UnitController : MonoBehaviour
         _unitState = Enums.UnitState.Attacking;
         Attacked = true;
         Vector2 dir = _attackPos - transform.position.V2();
-        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position + (dir * .5f), Quaternion.identity);
+        dir.Normalize();
+        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position/* + (dir * .5f)*/, Quaternion.identity);
         Damager damager = projObj.GetComponent<Damager>();
         damager.Player = Player;
         damager.Parent = this;
@@ -189,7 +195,9 @@ public class UnitController : MonoBehaviour
         _pastPositions.Clear();
         Moved = false;
         Moving = false;
+        Attacked = false;
         Target = null;
+        _bC.size = ColliderSizeIdle;
         ResetLook();
     }
 
@@ -207,13 +215,13 @@ public class UnitController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
+        _bC = GetComponent<BoxCollider2D>();
         _pM = FindObjectOfType<PlayerManager>();
         if (Player != Enums.Player.Player1)
             _eM = FindObjectOfType<EnemyManager>();
 
         if (!OnCooldown)
             _eM?.AddUnit(EnemyController);
-
 
         switch (Player)
         {
@@ -227,6 +235,7 @@ public class UnitController : MonoBehaviour
                 break;
         }
 
+        _bC.size = ColliderSizeIdle;
         ResetLook();
 
         _pM.AddPlayerUnit(Player, this);
@@ -261,7 +270,7 @@ public class UnitController : MonoBehaviour
             }
         }
 
-        if(Target != null)// && _movePositions.IsEmpty() && _nextPoint == null)
+        if(Target != null && _movePositions.IsEmpty() && _nextPoint == null)
         {
             CheckAttack();
         }
@@ -283,9 +292,6 @@ public class UnitController : MonoBehaviour
             {
                 _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
-                Moved = false;
-                Attacked = false;
-                Moving = false;
 
                 if (_cC != null)
                 {
@@ -315,7 +321,7 @@ public class UnitController : MonoBehaviour
             if (_originalPoint == null)
                 _originalPoint = gB;
         }
-        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MininimumAttackDistance == 0)
+        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MinAttackDistance == 0)
         {
             _blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;

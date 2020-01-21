@@ -142,26 +142,28 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    public IEnumerator CreateGridAsync(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
+    public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         ResetPathMatrix(player);
         yield return new WaitUntil(() => true);
         gridBlock.CreateGrid(
+            start,
             player,
             moveDistance,
-            moveDistance > 0 ? attackDistance : attackDistance + 1,
-            true
+            minAttackDistance,
+            moveDistance > 0 ? maxAttackDistance : maxAttackDistance + 1
         );
         //PrintPlayerGrid(player);
     }
-    public void CreateGrid(Enums.Player player, GridBlock gridBlock, int moveDistance, int attackDistance)
+    public void CreateGrid(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistnace, int attackDistance)
     {
         ResetPathMatrix(player);
         gridBlock.CreateGrid(
+            start,
             player,
             moveDistance,
-            moveDistance > 0 ? attackDistance : attackDistance + 1,
-            true
+            minAttackDistnace,
+            moveDistance > 0 ? attackDistance : attackDistance + 1
         );
     }
 

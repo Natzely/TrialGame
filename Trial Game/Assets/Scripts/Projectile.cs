@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
     {
         if (direction.y > 0)
             _sR.sortingOrder = 0;
-        _rb2D.AddForce(direction * force);
+        _rb2D.AddForce(direction * force * Speed);
         _maxDis = maxDistance;
     }
 

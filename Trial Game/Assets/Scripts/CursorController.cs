@@ -257,7 +257,8 @@ public class CursorController : MonoBehaviour
 
                 _aS.Play(SoundSelect);
 
-                StartCoroutine(_pM.CreateGridAsync(Player, _currGridBlock, CurrentUnit.MoveDistance + _orgGridBlock.MovementCost, CurrentUnit.MaxAttackDistance));
+                StartCoroutine(_pM.CreateGridAsync(_currGridBlock, Player, _currGridBlock, CurrentUnit.MoveDistance + _orgGridBlock.MovementCost, 
+                    CurrentUnit.MinAttackDistance, CurrentUnit.MaxAttackDistance));
             }
         }
         else if (!CurrentUnit.Moving && !CurrentUnit.Moved && transform.position.V2() != _startPos && CurrentSpace != null && 
@@ -269,7 +270,14 @@ public class CursorController : MonoBehaviour
             if (_moves?.Count > 0)
             {
                 _aS.Play(SoundSelect);
-                CurrentUnit.MoveTo(_moves);
+                if (CurrentUnit.Target != null)
+                {
+                    int index = Mathf.Clamp(_moves.Count - CurrentUnit.MaxAttackDistance - 1, 0, 9999);
+                    int amount = Mathf.Clamp(CurrentUnit.MaxAttackDistance - 1, 0, _moves.Count);
+                    _moves.RemoveRange(index, amount);
+                }
+                if (_moves.Count > 0)
+                    CurrentUnit.MoveTo(_moves);
             }
             else
             {

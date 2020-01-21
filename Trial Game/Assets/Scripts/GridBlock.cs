@@ -46,9 +46,9 @@ public class GridBlock : MonoBehaviour
     private GridNeighbors _neighbors;
     private GameObject _space;
     private SpriteRenderer _sR;
-    Dictionary<Enums.Player, int> _moveDistance;
-    Dictionary<Enums.Player, int> _attackDistance;
-    Dictionary<Enums.Player, Enums.ActiveTile> _activeTile;
+    private Dictionary<Enums.Player, int> _moveDistance;
+    private Dictionary<Enums.Player, int> _attackDistance;
+    private Dictionary<Enums.Player, Enums.ActiveTile> _activeTile;
     private bool _gotNeighbors;
     private bool _showingGrid;
 
@@ -60,12 +60,12 @@ public class GridBlock : MonoBehaviour
             return Enums.ActiveTile.Move;
     }
 
-    public void CreateGrid(Enums.Player player, int moveDistance, int attackDistance, bool start = false)
+    public void CreateGrid(GridBlock start, Enums.Player player, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         GridPlayerSpaces spaces;
         moveDistance -= MovementCost;
 
-        if (CurrentUnit != null && !start && !(player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// && CurrentUnit.Player != player) TODO: Figure out how to not allow enemy units how to stack on each other.
+        if (CurrentUnit != null && this != start && !(player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// && CurrentUnit.Player != player) TODO: Figure out how to not allow enemy units how to stack on each other.
             moveDistance = -1;
 
         if (_pM.GetMovementSpace(player, GridPosition) != null && 
@@ -74,8 +74,11 @@ public class GridBlock : MonoBehaviour
 
         if (moveDistance < 0)
         {
-            _attackDistance[player] = --attackDistance;
-            _activeTile[player] = Enums.ActiveTile.Attack;
+            if (Vector2.Distance(start.GridPosition, GridPosition) > minAttackDistance)
+            {
+                _activeTile[player] = Enums.ActiveTile.Attack;
+            }
+            _attackDistance[player] = --maxAttackDistance;
         }
         else
             _activeTile[player] = Enums.ActiveTile.Move;
@@ -98,13 +101,15 @@ public class GridBlock : MonoBehaviour
                 spaces = _moveSpaces;
                 _attackSpaces[player]?.Disable();
             }
-            else
+            else if (_activeTile.ContainsKey(player))
             {
                 _space = AttackSpace;
                 spaces = _attackSpaces;
             }
+            else
+                spaces = null;
 
-            if (spaces[player] == null)
+            if (spaces != null && spaces[player] == null)
             {
                 var gO = Instantiate(_space, transform.position, Quaternion.identity);
                 spaces[player] = gO.GetComponent<Space>();
@@ -112,7 +117,8 @@ public class GridBlock : MonoBehaviour
                 spaces[player].ParentGridBlock = this;
             }
 
-            (PlayerActiveSpace = spaces[player]).Enable();
+            if (spaces != null)
+                (PlayerActiveSpace = spaces[player]).Enable();
         }
         else
         {
@@ -123,12 +129,12 @@ public class GridBlock : MonoBehaviour
             _pM.UpdateMovementGrid(player, GridPosition, this);
 
         // If there aren't any more move or attack spaces, dont ask neighbors to do anything
-        if (moveDistance > 0 || (player == Enums.Player.Player1 && attackDistance > 0)) 
+        if (moveDistance > 0 || (player == Enums.Player.Player1 && maxAttackDistance > 0)) 
         {
-            _neighbors.Up?.CreateGrid(player, moveDistance, attackDistance);
-            _neighbors.Down?.CreateGrid(player, moveDistance, attackDistance);
-            _neighbors.Right?.CreateGrid(player, moveDistance, attackDistance);
-            _neighbors.Left?.CreateGrid(player, moveDistance, attackDistance);
+            _neighbors.Up?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
+            _neighbors.Down?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
+            _neighbors.Right?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
+            _neighbors.Left?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
         }
     }
 

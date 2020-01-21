@@ -9,28 +9,42 @@ public class EnemyController : MonoBehaviour
     PlayerManager _pM;
     UnitController _unitController;
 
-    public IEnumerator NextAction()
+    public bool NextAction()
     {
         UnitController target = null;
         var units = _pM.GetPlayerInfo(Enums.Player.Player1).Units;
 
-        int attackRange = _unitController.MoveDistance + _unitController.MaxAttackDistance;
-        var closeUnits = units.Where(u => Vector2.Distance(_unitController.Position, u.Position) <= attackRange);
-        if (closeUnits.Count() > 0)
+        int maxAttackRange = _unitController.MoveDistance + _unitController.MaxAttackDistance;
+        int minAttackRange = _unitController.MinAttackDistance;
+
+        List<UnitController> closeUnits = units.Where(u => Vector2.Distance(u.Position, _unitController.Position) <= maxAttackRange).ToList();
+        List<UnitController> tooCloseUnits = closeUnits.Where(u => Vector2.Distance(u.Position, _unitController.Position) <= minAttackRange).ToList();
+        List<UnitController> targets = closeUnits.Except(tooCloseUnits).ToList();
+
+        if (targets.Count() > 0)
         {
             // Decide who to attack
-            target = closeUnits.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
+            target = targets.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
         }
         else
-            target = units.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
-
-        var gbTarget = BestSpaceNextToTarget(target.CurrentGridBlock, _unitController.CurrentGridBlock);
-
-        if (target != null && !_unitController.CheckAttack(target))
         {
-            _unitController.Target = target;
-            yield return new WaitUntil(() => MoveToNextSpace(gbTarget));
+            // If all the close targets were too close, remove them from the pool
+            targets = units.Except(closeUnits).ToList();
+            target = targets.OrderBy(u => Vector2.Distance(_unitController.Position, u.Position)).FirstOrDefault();
         }
+
+        if (target != null)
+        {
+            if (_unitController.CheckAttack(target))
+                return true;
+            
+            var gbTarget = BestSpaceNextToTarget(target.CurrentGridBlock, _unitController.CurrentGridBlock);
+
+            _unitController.Target = target;
+            return MoveToNextSpace(gbTarget);
+        }
+
+        return false;
     }
 
     // Start is called before the first frame update
@@ -45,17 +59,21 @@ public class EnemyController : MonoBehaviour
     private bool MoveToNextSpace(GridBlock target)
     {
         if (_unitController.CurrentGridBlock != null)
-        {   
+        {
             _pM.GetPlayerInfo(_player).ResetNonPlayerGrid = false;
-            //_pM.CreateGrid(_player, _unitController.CurrentGridBlock, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost, _unitController.AttackDistance);
-            //_pM.PrintPlayerGrid(_player);
-            var path = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, target).ToList();            
-            path = MaxMovementPath(path, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
-            _pM.ResetPathMatrix(_player);
-            _unitController.MoveTo(path);
-            return true;
+            // Try to create a path to target unit. Path returns 0, then the unit is stuck and can't move, so don't put it on cooldown.
+            var path = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, target).ToList();
+            if (path.Count > 1)
+            {
+                path = MaxMovementPath(path, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
+                _pM.ResetPathMatrix(_player);
+                _unitController.MoveTo(path);
+                return true;
+            }
+            return false;
         }
-        
+
+        Debug.Log("Unit Controller no GridBlock");
         return false;
     }
 

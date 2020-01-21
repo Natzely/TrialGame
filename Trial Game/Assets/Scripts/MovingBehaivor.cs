@@ -59,6 +59,6 @@ public class MovingBehaivor : StateMachineBehaviour
             aS.clip = WalkingStone;
         else
             aS.clip = WalkingGrass;
-        aS.Play();
+        //aS.Play();
     }
 }

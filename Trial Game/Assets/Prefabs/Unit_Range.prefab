@@ -9,17 +9,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7530291345336432983}
+  - component: {fileID: 5452845615218971147}
   - component: {fileID: 7530291345336432976}
   - component: {fileID: 3319653760666354761}
-  - component: {fileID: 783470378874735502}
   - component: {fileID: 347991490560029868}
+  - component: {fileID: 783470378874735502}
   - component: {fileID: 3097757917150243156}
-  - component: {fileID: 5452845615218971147}
   - component: {fileID: 4877884251898067759}
   - component: {fileID: 2635142902251534675}
   - component: {fileID: 5224534530976703657}
   m_Layer: 20
-  m_Name: Unit_Player
+  m_Name: Unit_Range
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,6 +39,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &5452845615218971147
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530291345336432978}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!212 &7530291345336432976
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -114,6 +135,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.94, y: 0.94}
   m_EdgeRadius: 0
+--- !u!95 &347991490560029868
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530291345336432978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b77822e0485373d40b5beb92e9a5e728, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &783470378874735502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,29 +176,11 @@ MonoBehaviour:
   EnemyController: {fileID: 0}
   OnCooldown: 0
   MoveDistance: 4
-  AttackDistance: 1
+  MininimumAttackDistance: 1
+  MaxAttackDistance: 2
   Speed: 3
   Cooldown: 15
   AttackSpeed: 500
---- !u!95 &347991490560029868
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7530291345336432978}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b77822e0485373d40b5beb92e9a5e728, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &3097757917150243156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +188,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7530291345336432978}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67b2bdeba2013b241914817d023b105e, type: 3}
   m_Name: 
@@ -174,27 +196,6 @@ MonoBehaviour:
   DeathSoundObject: {fileID: 7141788006953909565, guid: e561a8e6c321fe54f8a2dbfbeffba0c2,
     type: 3}
   Health: 2
---- !u!50 &5452845615218971147
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7530291345336432978}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!82 &4877884251898067759
 AudioSource:
   m_ObjectHideFlags: 0

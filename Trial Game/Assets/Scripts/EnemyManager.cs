@@ -33,9 +33,11 @@ public class EnemyManager : MonoBehaviour
             var nextEnemy = _enemyList[0];
             if (nextEnemy != null && nextEnemy.gameObject != null)
             {
-                StartCoroutine(_enemyList[0].NextAction());
-                _enemyList.RemoveAt(0);
-                _delayTimer = MoveDelay;
+                var enemy = _enemyList.Dequeue();   // Get next enemy (enemy is removed from the queue) 
+                if (enemy.NextAction())             // Check if it can do and action
+                    _delayTimer = MoveDelay;        // If an action was made, delay the next move (enemy will itself back to the queue when it's cooldown is done)
+                else
+                    _enemyList.Add(enemy);          // No action was taken so add the enemy back to the end of the list.
             }
             else
                 _enemyList.RemoveAt(0);

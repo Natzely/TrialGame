@@ -60,6 +60,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -142,6 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65412e9785ff1294494853011ff43027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: 0
+  Parent: {fileID: 0}
   Damage: 1
 --- !u!114 &7025874482398687422
 MonoBehaviour:
@@ -155,4 +158,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79c9c545117f21499e02dc04dc85a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 4
+  Speed: 2
