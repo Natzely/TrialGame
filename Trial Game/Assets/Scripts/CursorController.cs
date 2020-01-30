@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -56,8 +57,8 @@ public class CursorController : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
-        _horzClamp = Boundaries.bounds.extents.x;
-        _vertClamp = Boundaries.bounds.extents.y;
+        _horzClamp = Boundaries.bounds.extents.x - .5f;
+        _vertClamp = Boundaries.bounds.extents.y - .5f;
         _startPos = transform.position;
 
         switch (Player)
@@ -93,7 +94,7 @@ public class CursorController : MonoBehaviour
             _currGridBlock = grid;
             CurrentSpace = grid.PlayerActiveSpace;
 
-             if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
+            if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
             {
                 _moves = _pM.CreatePath(Player, _orgGridBlock, _currGridBlock).ToList();
             }
@@ -264,25 +265,44 @@ public class CursorController : MonoBehaviour
         else if (!CurrentUnit.Moving && !CurrentUnit.Moved && transform.position.V2() != _startPos && CurrentSpace != null && 
             (_currGridBlock.IsCurrentUnitEnemy(Player) || (CurrentSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
         {
+            List<GridBlock> backupSpaces = null;
             var unit = _currGridBlock.CurrentUnit;
+            double dis = 9999;
+            if(unit != null)
+                dis = Math.Round(Vector2.Distance(unit.Position, CurrentUnit.Position), 2);
             CurrentUnit.Target = unit;
 
-            if (_moves?.Count > 0)
+            if (_moves?.Count > 0 && dis > CurrentUnit.MaxAttackDistance)
             {
-                _aS.Play(SoundSelect);
                 if (CurrentUnit.Target != null)
                 {
+                    _aS.Play(SoundSelect);
                     int index = Mathf.Clamp(_moves.Count - CurrentUnit.MaxAttackDistance - 1, 0, 9999);
                     int amount = Mathf.Clamp(CurrentUnit.MaxAttackDistance - 1, 0, _moves.Count);
                     _moves.RemoveRange(index, amount);
                 }
                 if (_moves.Count > 0)
+                {
+                    _aS.Play(SoundAttack);
+                    if (CurrentUnit.Target != null)
+                        _moves.RemoveRange(_moves.Count - (CurrentUnit.MaxAttackDistance - 1), CurrentUnit.MaxAttackDistance - 1);
                     CurrentUnit.MoveTo(_moves);
+                }
+            }
+            else if (dis <= CurrentUnit.MaxAttackDistance && dis > CurrentUnit.MinAttackDistance)
+             {
+                _aS.Play(SoundAttack);
+                CurrentUnit.CheckAttack(unit);
+            }
+            else if((backupSpaces = AvailableAttackSpace()).Count > 0)
+            {
+                _aS.Play(SoundAttack);
+                CurrentUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
             }
             else
             {
-                _aS.Play(SoundAttack);
-                CurrentUnit.CheckAttack(unit);
+                CurrentUnit.Target = null;
+                return;
             }
 
             if (unit != null && unit.IsEnemy(Player))
@@ -305,7 +325,10 @@ public class CursorController : MonoBehaviour
         _actionTimer = ActionTimer;
     }
 
-    
+    private List<GridBlock> AvailableAttackSpace()
+    {
+        return _orgGridBlock.Neighbors.AvailableNeighbors(_currGridBlock.Position).ToList();
+    }
 
     private void Move()
     {

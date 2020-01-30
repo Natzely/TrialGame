@@ -74,10 +74,12 @@ public class GridBlock : MonoBehaviour
 
         if (moveDistance < 0)
         {
-            if (Vector2.Distance(start.GridPosition, GridPosition) > minAttackDistance)
-            {
+            //if (Vector2.Distance(start.GridPosition, GridPosition) > minAttackDistance)
+            //{
                 _activeTile[player] = Enums.ActiveTile.Attack;
-            }
+            //}
+            //else
+            //    _activeTile[player] = Enums.ActiveTile.Inactive;
             _attackDistance[player] = --maxAttackDistance;
         }
         else
@@ -101,7 +103,7 @@ public class GridBlock : MonoBehaviour
                 spaces = _moveSpaces;
                 _attackSpaces[player]?.Disable();
             }
-            else if (_activeTile.ContainsKey(player))
+            else if (_activeTile[player] == Enums.ActiveTile.Attack)
             {
                 _space = AttackSpace;
                 spaces = _attackSpaces;
@@ -157,7 +159,7 @@ public class GridBlock : MonoBehaviour
 
     void Awake()
     {
-        _neighbors = new GridNeighbors();
+        _neighbors = new GridNeighbors(this);
         _moveSpaces = new GridPlayerSpaces();
         _attackSpaces = new GridPlayerSpaces();
         _moveDistance = new Dictionary<Enums.Player, int>();

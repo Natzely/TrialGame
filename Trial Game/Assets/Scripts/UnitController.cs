@@ -98,7 +98,7 @@ public class UnitController : MonoBehaviour
 
     public void MoveTo(List<GridBlock> movePoints)
     {
-        if (_cooldown <= 0 && !Moved)
+        if (_cooldown <= 0 && !Moved && movePoints.Count > 0)
         {
             for (int x = 0; x < movePoints.Count; x++)
             {
@@ -136,7 +136,7 @@ public class UnitController : MonoBehaviour
 
         var dis = Vector2.Distance(Position, Target.Position);
         double checkedDistance = Math.Round(dis, 2);
-        if (Target != null && checkedDistance <= MaxAttackDistance)
+        if (Target != null && checkedDistance <= MaxAttackDistance && checkedDistance >= MinAttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
@@ -415,11 +415,4 @@ public class UnitController : MonoBehaviour
         _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
         _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
     }
-
-    //IEnumerator Deselect()
-    //{
-    //    yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
-    //    yield return new WaitUntil(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"));
-    //    Select(false);
-    //}
 }

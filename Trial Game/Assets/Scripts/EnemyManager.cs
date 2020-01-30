@@ -39,7 +39,7 @@ public class EnemyManager : MonoBehaviour
                 else
                     _enemyList.Add(enemy);          // No action was taken so add the enemy back to the end of the list.
             }
-            else
+            else if(nextEnemy != null)
                 _enemyList.RemoveAt(0);
         }
 
