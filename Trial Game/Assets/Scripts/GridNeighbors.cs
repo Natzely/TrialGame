@@ -48,7 +48,7 @@ public class GridNeighbors : IEnumerable<GridBlock>
         if (onlyAvailable)
             n = AvailableNeighbors().ToList();
         return n
-               .OrderBy(g => Vector3.Distance(g.transform.position, from.transform.position));
+               .OrderBy(g => g.transform.position.GridDistance(from.transform.position));
     }
 
     public IEnumerable<GridBlock> AvailableNeighbors(Vector2? behindGrid = null)

@@ -52,6 +52,15 @@ public static class Extensions
         return v;
     }
 
+    public static double GridDistance(this Vector3 v, Vector3 distanceTo)
+    {
+        double disX = Mathf.Abs(distanceTo.x - v.x);
+        double disY = Mathf.Abs(distanceTo.y - v.y);
+        double totalDis = disX + disY;
+
+        return totalDis;
+    }
+
     public static Vector3 Copy(this Vector3 v)
     {
         return new Vector3(v.x, v.y, v.z);

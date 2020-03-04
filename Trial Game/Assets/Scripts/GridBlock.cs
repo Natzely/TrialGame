@@ -60,6 +60,11 @@ public class GridBlock : MonoBehaviour
             return Enums.ActiveTile.Move;
     }
 
+    public List<GridBlock> AvailableAttackSpace(GridBlock behindGrid = null)
+    {
+        return Neighbors.AvailableNeighbors(behindGrid.Position).ToList();
+    }
+
     public void CreateGrid(GridBlock start, Enums.Player player, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         GridPlayerSpaces spaces;

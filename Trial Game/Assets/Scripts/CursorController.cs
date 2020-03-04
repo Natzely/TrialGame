@@ -269,7 +269,7 @@ public class CursorController : MonoBehaviour
             var unit = _currGridBlock.CurrentUnit;
             double dis = 9999;
             if(unit != null)
-                dis = Math.Round(Vector2.Distance(unit.Position, CurrentUnit.Position), 2);
+                dis = unit.Position.GridDistance(CurrentUnit.Position);
             CurrentUnit.Target = unit;
 
             if (_moves?.Count > 0 && dis > CurrentUnit.MaxAttackDistance)
@@ -277,7 +277,7 @@ public class CursorController : MonoBehaviour
                 if (CurrentUnit.Target != null)
                 {
                     _aS.Play(SoundSelect);
-                    int index = Mathf.Clamp(_moves.Count - CurrentUnit.MaxAttackDistance - 1, 0, 9999);
+                    int index = Mathf.Clamp(_moves.Count - (CurrentUnit.MaxAttackDistance - 1), 0, 9999);
                     int amount = Mathf.Clamp(CurrentUnit.MaxAttackDistance - 1, 0, _moves.Count);
                     _moves.RemoveRange(index, amount);
                 }
@@ -294,7 +294,7 @@ public class CursorController : MonoBehaviour
                 _aS.Play(SoundAttack);
                 CurrentUnit.CheckAttack(unit);
             }
-            else if((backupSpaces = AvailableAttackSpace()).Count > 0)
+            else if((backupSpaces = _orgGridBlock.AvailableAttackSpace(_currGridBlock)).Count > 0)
             {
                 _aS.Play(SoundAttack);
                 CurrentUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
@@ -323,11 +323,6 @@ public class CursorController : MonoBehaviour
         }
 
         _actionTimer = ActionTimer;
-    }
-
-    private List<GridBlock> AvailableAttackSpace()
-    {
-        return _orgGridBlock.Neighbors.AvailableNeighbors(_currGridBlock.Position).ToList();
     }
 
     private void Move()

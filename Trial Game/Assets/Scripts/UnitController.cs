@@ -134,9 +134,8 @@ public class UnitController : MonoBehaviour
         if (target != null)
             Target = target;
 
-        var dis = Vector2.Distance(Position, Target.Position);
-        double checkedDistance = Math.Round(dis, 2);
-        if (Target != null && checkedDistance <= MaxAttackDistance && checkedDistance >= MinAttackDistance)
+        var dis = Position.GridDistance(Target.Position);
+        if (Target != null && dis <= MaxAttackDistance && dis > MinAttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
