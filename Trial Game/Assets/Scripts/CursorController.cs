@@ -142,6 +142,7 @@ public class CursorController : MonoBehaviour
         UnitController tmpUnit = gO.GetComponent<UnitController>();
         if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown && !tmpUnit.Moving)
         {
+            Debug.Log($"Current unit {tmpUnit.gameObject.name}");
             CurrentUnit = tmpUnit;
             CurrentUnit.OnUnitDeath += OnCurrentUnitDeath;
             CurrentUnit.Hover(true);
@@ -155,6 +156,7 @@ public class CursorController : MonoBehaviour
 
     private void ResetCursor(bool resetUnit = true)
     {
+        Debug.Log("Cursor Reset");
         _currState = Enums.CursorState.Default;
         CurrentSpace = null;
         _pM.ResetPathMatrix(Player);
@@ -164,6 +166,7 @@ public class CursorController : MonoBehaviour
         {
             CurrentUnit.OnUnitDeath -= OnCurrentUnitDeath;
             CurrentUnit = null;
+            Debug.Log("Current Unit null");
         }
     }
 
@@ -276,16 +279,13 @@ public class CursorController : MonoBehaviour
             {
                 if (CurrentUnit.Target != null)
                 {
-                    _aS.Play(SoundSelect);
-                    int index = Mathf.Clamp(_moves.Count - (CurrentUnit.MaxAttackDistance - 1), 0, 9999);
-                    int amount = Mathf.Clamp(CurrentUnit.MaxAttackDistance - 1, 0, _moves.Count);
-                    _moves.RemoveRange(index, amount);
+                    while (_moves.Last().Position.GridDistance(unit.Position) <= CurrentUnit.MaxAttackDistance - 1)
+                    {
+                        _moves.RemoveAt(_moves.Count - 1);
+                    }
                 }
-                if (_moves.Count > 0)
+                if (_moves?.Count > 0)
                 {
-                    _aS.Play(SoundAttack);
-                    if (CurrentUnit.Target != null)
-                        _moves.RemoveRange(_moves.Count - (CurrentUnit.MaxAttackDistance - 1), CurrentUnit.MaxAttackDistance - 1);
                     CurrentUnit.MoveTo(_moves);
                 }
             }
@@ -306,13 +306,18 @@ public class CursorController : MonoBehaviour
             }
 
             if (unit != null && unit.IsEnemy(Player))
+            {
+                _aS.Play(SoundAttack);
+                CurrentUnit.Select(false);
                 ResetCursor();
+            }
 
         }
         else if ((CurrentUnit.Moving || CurrentUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
         {
             _aS.Play(SoundAttack);
             CurrentUnit.Target = _currGridBlock.CurrentUnit;
+            CurrentUnit.Select(false);
             ResetCursor();
         }
         else if ((CurrentUnit.Moving || CurrentUnit.Moved))

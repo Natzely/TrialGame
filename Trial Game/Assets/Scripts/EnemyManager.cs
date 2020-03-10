@@ -4,41 +4,50 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    public List<EnemyController> EnemyList;
     public float MoveDelay;
-
-    private List<EnemyController> _enemyList;
-    private float _delayTimer;
+    public float DealyTimer;
 
     public void AddUnit(EnemyController unit)
     {
-        _enemyList.Add(unit);
+        if (!EnemyList.Contains(unit))
+        {
+            EnemyList.Add(unit);
+            Debug.Log($"Enemy {unit.gameObject.name} added to the list");
+        }
+    }
+
+    public void RemoveUnit(EnemyController unit)
+    {
+        EnemyList.Remove(unit);
+        Debug.Log($"Enemy {unit.gameObject.name} removed from the  list");
     }
 
     void Awake()
     {
-        _delayTimer = MoveDelay;
-        _enemyList = new List<EnemyController>();
+        DealyTimer = MoveDelay;
+        EnemyList = new List<EnemyController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_delayTimer <= 0 && _enemyList.Count > 0)
+        if(DealyTimer <= 0 && EnemyList.Count > 0)
         {
-            var nextEnemy = _enemyList[0];
+            var nextEnemy = EnemyList[0];
             if (nextEnemy != null && nextEnemy.gameObject != null)
             {
-                var enemy = _enemyList.Dequeue();   // Get next enemy (enemy is removed from the queue) 
+                var enemy = EnemyList.Dequeue();   // Get next enemy (enemy is removed from the queue) 
                 if (enemy.NextAction())             // Check if it can do and action
-                    _delayTimer = MoveDelay;        // If an action was made, delay the next move (enemy will itself back to the queue when it's cooldown is done)
+                    DealyTimer = MoveDelay;        // If an action was made, delay the next move (enemy will itself back to the queue when it's cooldown is done)
                 else
-                    _enemyList.Add(enemy);          // No action was taken so add the enemy back to the end of the list.
+                    EnemyList.Add(enemy);          // No action was taken so add the enemy back to the end of the list.
             }
             else if(nextEnemy != null)
-                _enemyList.RemoveAt(0);
+                EnemyList.RemoveAt(0);
         }
 
-        if (_enemyList.Count > 0) // Only decrease the next move timer if there are enemies available, otherwise, 
-            _delayTimer -= Time.deltaTime; // when all units are on cooldown, it will a unit instantly when one comes of cooldown instead of having a delay.
-    }   
+        if (EnemyList.Count > 0) // Only decrease the next move timer if there are enemies available, otherwise, 
+            DealyTimer -= Time.deltaTime; // when all units are on cooldown, it will a unit instantly when one comes of cooldown instead of having a delay.
+    }
 }

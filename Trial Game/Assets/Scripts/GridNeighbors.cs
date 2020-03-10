@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -44,11 +45,22 @@ public class GridNeighbors : IEnumerable<GridBlock>
 
     public IEnumerable<GridBlock> OrderByDistance(GridBlock from, bool onlyAvailable = false)
     {
-        var n = _neighbors.Values.ToList();
-        if (onlyAvailable)
-            n = AvailableNeighbors().ToList();
-        return n
-               .OrderBy(g => g.transform.position.GridDistance(from.transform.position));
+        if (from == null)
+            return null;
+
+        try
+        {
+            var n = _neighbors.Values.ToList();
+            if (onlyAvailable)
+                n = AvailableNeighbors().ToList();
+            var orderedNeighbors = n.OrderBy(g => g.transform.position.GridDistance(from.transform.position)).ToList();
+            return orderedNeighbors;
+        }
+        catch
+        {
+            Console.WriteLine("");
+        }
+        return null;
     }
 
     public IEnumerable<GridBlock> AvailableNeighbors(Vector2? behindGrid = null)

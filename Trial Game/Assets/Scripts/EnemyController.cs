@@ -90,22 +90,24 @@ public class EnemyController : MonoBehaviour
             {
                 _moves = MaxMovementPath(_moves, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
                 _pM.ResetPathMatrix(_player);
+                bool action = false;
 
                 if (_unitController.Target != null)
                 {
-                    int index = Mathf.Clamp(_moves.Count - (_unitController.MaxAttackDistance - 1), 0, 9999);
-                    int amount = Mathf.Clamp(_unitController.MaxAttackDistance - 1, 0, _moves.Count);
-                    _moves.RemoveRange(index, amount);
-                    _unitController.MoveTo(_moves);
-                    return true;
+                    while (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
+                    {
+                        _moves.RemoveAt(_moves.Count - 1);
+                    }
+                    action = true;
                 }
                 if (_moves.Count > 0)
                 {
-                    if (_unitController.Target != null)
-                        _moves.RemoveRange(_moves.Count - (_unitController.MaxAttackDistance - 1), _unitController.MaxAttackDistance - 1);
                     _unitController.MoveTo(_moves);
-                    return true;
+                    action = true;
                 }
+
+                if (action)
+                    return true;
             }
             else if ((backupSpaces = _unitController.CurrentGridBlock.AvailableAttackSpace(gbTarget)).Count > 0)
             {
@@ -135,7 +137,8 @@ public class EnemyController : MonoBehaviour
     {
         GridBlock result = null;
         var neighbors = target.Neighbors;
-        var possibleBest = neighbors.OrderByDistance(start).Where(n => n.CurrentUnit == null && !n.Unpassable).ToList();
+        var orderedNeighbors = neighbors.OrderByDistance(start, true);
+        var possibleBest = orderedNeighbors.Where(n => n.CurrentUnit == null && !n.Unpassable).ToList();
         if(possibleBest.Count > 0)
         {
             result = possibleBest.First();

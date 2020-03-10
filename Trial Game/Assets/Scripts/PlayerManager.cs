@@ -182,6 +182,12 @@ public class PlayerManager : MonoBehaviour
         GetPlayerInfo(player).Units.Remove(unit);
     }
 
+    public void PlayerUnitMoveDown(Enums.Player player, UnitController unit)
+    {
+        GetPlayerInfo(player).Units.Remove(unit);
+        GetPlayerInfo(player).Units.Add(unit);
+    }
+
     IEnumerator GetGridBlocks()
     {
         yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0);
@@ -196,10 +202,16 @@ public class PlayerManager : MonoBehaviour
         _gridSizeY = (int)(maxY - minY) + 1;
         _fullGrid = new GridBlock[_gridSizeX, _gridSizeY];
 
+        // Use the highest ABS value between the min and max for the list math 
+        // I.E. - minX = -8.5 and maxX = 7.5, gridSizeX = 17 ((maxX - minX) + 1);
+        // the '0' index for the grid is -8.5 + 8.5 = 0 andthe '16' index is 7.5 + 8.5
+        maxX = Mathf.Max(maxX, Mathf.Abs(minX));
+        maxY = Mathf.Max(maxY, Mathf.Abs(minY));
+
         foreach (GridBlock gb in allGridBlocks)
         {
             int posX = (int)(gb.Position.x + maxX);
-            int posY = (int)Mathf.Abs((gb.Position.y + minY));
+            int posY = (int)(gb.Position.y + maxY);
 
             gb.GridPosition = new Vector2(posX, posY);
 

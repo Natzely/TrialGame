@@ -182,7 +182,7 @@ MonoBehaviour:
   MinAttackDistance: 1
   MaxAttackDistance: 2
   Speed: 3
-  Cooldown: 15
+  Cooldown: 25
   AttackSpeed: 500
 --- !u!114 &3097757917150243156
 MonoBehaviour:
