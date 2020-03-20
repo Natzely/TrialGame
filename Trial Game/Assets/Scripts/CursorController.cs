@@ -81,6 +81,9 @@ public class CursorController : MonoBehaviour
         _cancel = Input.GetButtonUp(_playerPrefix + "_Cancel");
         _nextUnit = Input.GetButtonUp("NextUnit");
 
+        if (_currState == Enums.CursorState.Selected && CurrentUnit == null)
+            _currState = Enums.CursorState.Default;
+
         CheckForAction();
     }
 

@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 7530291345336432976}
   - component: {fileID: 3319653760666354761}
   - component: {fileID: 347991490560029868}
+  - component: {fileID: -5350819402488169113}
   - component: {fileID: 783470378874735502}
   - component: {fileID: 3097757917150243156}
   - component: {fileID: 4877884251898067759}
   - component: {fileID: 2635142902251534675}
   - component: {fileID: 5224534530976703657}
-  - component: {fileID: -5350819402488169113}
   m_Layer: 20
   m_Name: Unit_Melee_Enemy
   m_TagString: Unit
@@ -157,6 +157,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-5350819402488169113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530291345336432978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 200c7292e2990d1439fdf06de220e695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &783470378874735502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,15 +501,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-5350819402488169113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7530291345336432978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 200c7292e2990d1439fdf06de220e695, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
