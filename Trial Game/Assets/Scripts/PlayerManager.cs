@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    [HideInInspector] public bool DebugOn = false;
     [HideInInspector] public List<PlayerInfo> PlayerList;
 
     private GridBlock[,] _fullGrid;
@@ -177,7 +178,7 @@ public class PlayerManager : MonoBehaviour
         GetPlayerInfo(player).Units.Add(unit);
     }
 
-    public void RemovePlayerUnit(Enums.Player player, UnitController unit)
+    public void RemoveUnit(Enums.Player player, UnitController unit)
     {
         GetPlayerInfo(player).Units.Remove(unit);
     }

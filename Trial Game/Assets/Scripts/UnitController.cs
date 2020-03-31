@@ -186,6 +186,14 @@ public class UnitController : MonoBehaviour
                !AlliedWith.Contains(player);
     }
 
+    public void DamageResults(bool enemyDestroyed)
+    {
+        if (_blocked)
+            FindGoodPreviousSpot();
+
+        _blocked = false;
+    }
+
     public void Reset()
     {
         PlayerUnitLog($"{gameObject.name} Reset");
@@ -244,9 +252,6 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if (gameObject.name == "Unit_Range_Enemy (1)")
-            Debug.Log("");
-
         if (_nextPoint != null && _unitState != Enums.UnitState.Attacking && _unitState != Enums.UnitState.Hurt)
         {
             Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * Time.deltaTime);
@@ -258,13 +263,20 @@ public class UnitController : MonoBehaviour
                 if (!_movePositions.IsEmpty())
                 {
                     _nextPoint = _movePositions.Dequeue();
-                    if (_nextPoint.CurrentUnit != null && _nextPoint.CurrentUnit.Player == Player && _movePositions.IsEmpty())
-                        _nextPoint = null;
+                    if (_nextPoint.CurrentUnit != null && _movePositions.IsEmpty())
+                    {
+                        if (CurrentGridBlock.CurrentUnit == this)
+                            _nextPoint = null;
+                        else
+                            FindGoodPreviousSpot();
+                    }
                     else
                         LookAt(_nextPoint.Position);
                 }
                 else
+                {
                     _nextPoint = null;
+                }
 
                 if (_movePositions.IsEmpty() && _nextPoint == null)
                 {
@@ -376,6 +388,7 @@ public class UnitController : MonoBehaviour
 
     private void OnDestroy()
     {
+        _pM?.RemoveUnit(Player, this);
         _eM?.RemoveUnit(EnemyController);    
     }
 
@@ -403,22 +416,17 @@ public class UnitController : MonoBehaviour
         _animator.SetTrigger("Launch");
     }
 
-    public void DamageResults(bool enemyDestroyed)
+    private void FindGoodPreviousSpot()
     {
-        if (_blocked)
+        foreach (var pos in _pastPositions)
         {
-            foreach (var pos in _pastPositions)
+            _movePositions.Enqueue(pos);
+            if (pos.CurrentUnit == null)
             {
-                _movePositions.Enqueue(pos);
-                if (pos.CurrentUnit == null)
-                {
-                    _nextPoint = _movePositions.Dequeue();
-                    break;
-                }
+                _nextPoint = _movePositions.Dequeue();
+                break;
             }
         }
-
-        _blocked = false;
     }
 
     private void GoOnCooldown()
