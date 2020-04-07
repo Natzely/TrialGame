@@ -185,10 +185,6 @@ public class CursorController : MonoBehaviour
             {
                 Cancel();
             }
-            //else if (_attack)
-            //{
-            //    Attack();
-            //}
             else if (_select && CurrentUnit != null && !CurrentUnit.OnCooldown)
             {
                 Select();
@@ -286,6 +282,11 @@ public class CursorController : MonoBehaviour
                     {
                         _moves.RemoveAt(_moves.Count - 1);
                     }
+
+                    if(_moves.Last().CurrentUnit != null && _moves.Last().CurrentUnit != this)
+                    {
+                        
+                    }
                 }
                 if (_moves?.Count > 0)
                 {
@@ -293,11 +294,11 @@ public class CursorController : MonoBehaviour
                 }
             }
             else if (dis <= CurrentUnit.MaxAttackDistance && dis > CurrentUnit.MinAttackDistance)
-             {
+            {
                 _aS.Play(SoundAttack);
                 CurrentUnit.CheckAttack(unit);
             }
-            else if((backupSpaces = _orgGridBlock.AvailableAttackSpace(_currGridBlock)).Count > 0)
+            else if ((backupSpaces = _orgGridBlock.AvailableAttackSpace(_currGridBlock)).Count > 0)
             {
                 _aS.Play(SoundAttack);
                 CurrentUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
@@ -314,7 +315,6 @@ public class CursorController : MonoBehaviour
                 CurrentUnit.Select(false);
                 ResetCursor();
             }
-
         }
         else if ((CurrentUnit.Moving || CurrentUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
         {

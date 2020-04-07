@@ -52,6 +52,55 @@ public class GridBlock : MonoBehaviour
     private bool _gotNeighbors;
     private bool _showingGrid;
 
+    public IEnumerable<GridBlock> GetRangedSpaces(GridBlock target, GridBlock start, int minDis = 1, HashSet<GridBlock> gridDis = null, List<GridBlock> usedGrids = null)
+    {
+        bool org = false;
+        if (gridDis == null)
+        {
+            gridDis = new HashSet<GridBlock>();
+            usedGrids = new List<GridBlock>();
+            org = true;
+        }
+
+        target.Neighbors
+            .OrderByDistance(start, minDis <= 1)
+            .ToList().ForEach(x => gridDis.Add(x));
+
+        if (minDis > 1)
+        {
+            foreach (GridBlock g in gridDis)
+            {
+                usedGrids.Add(g);
+                gridDis.Remove(g);
+
+                g.GetRangedSpaces(target, start, --minDis, gridDis, usedGrids);
+            }
+        }
+
+        if (org)
+            yield return gridDis.First();
+        else
+            yield break;
+
+        //var neighbors = target.Neighbors;
+        //var orderedNeighbors = neighbors.OrderByDistance(start, true);
+        //var possibleBest = orderedNeighbors.Where(n => n.CurrentUnit == null && !n.Unpassable).ToList();
+        //if (possibleBest.Count > 0)
+        //{
+        //    result = possibleBest.First();
+        //}
+        //else
+        //{
+        //    foreach (GridBlock gB in neighbors)
+        //    {
+        //        if ((result = BestSpaceNextToTarget(gB, start)) != null)
+        //            break;
+        //    }
+        //}
+
+        //return result;
+    }
+
     public Enums.ActiveTile ActiveSpace(Enums.Player player)
     {
         if (player == Enums.Player.Player1)

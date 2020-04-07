@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
             if (_unitController.CheckAttack(target))
                 return true;
 
-            var gbTarget = BestSpaceNextToTarget(target.CurrentGridBlock, _unitController.CurrentGridBlock);
+            var gbTarget = GetRangedSpaces(target.CurrentGridBlock, _unitController.CurrentGridBlock);
 
             _unitController.Target = target;
             return MoveToNextSpace(gbTarget, target);
@@ -131,28 +131,6 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("Unit Controller no GridBlock");
         return false;
-    }
-
-    private GridBlock BestSpaceNextToTarget(GridBlock target, GridBlock start)
-    {
-        GridBlock result = null;
-        var neighbors = target.Neighbors;
-        var orderedNeighbors = neighbors.OrderByDistance(start, true);
-        var possibleBest = orderedNeighbors.Where(n => n.CurrentUnit == null && !n.Unpassable).ToList();
-        if(possibleBest.Count > 0)
-        {
-            result = possibleBest.First();
-        }
-        else
-        {
-            foreach(GridBlock gB in neighbors)
-            {
-                if ((result = BestSpaceNextToTarget(gB, start)) != null)
-                    break;
-            }
-        }
-
-        return result;
     }
 
     private IEnumerable<GridBlock> MaxMovementPath(List<GridBlock> path, int maxMovement)
