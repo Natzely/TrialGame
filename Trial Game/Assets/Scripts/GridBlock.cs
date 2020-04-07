@@ -62,9 +62,15 @@ public class GridBlock : MonoBehaviour
             org = true;
         }
 
-        target.Neighbors
-            .OrderByDistance(start, minDis <= 1)
-            .ToList().ForEach(x => gridDis.Add(x));
+        var n = target.Neighbors.OrderByDistance(start, minDis <= 1).ToList();
+        foreach(GridBlock g in n)
+        {
+            if(!usedGrids.Contains(g) && (minDis > 1 && g.CurrentUnit != null))
+            {
+                gridDis.Add(g);
+            }
+        }
+
 
         if (minDis > 1)
         {
