@@ -48,10 +48,13 @@ public class EnemyController : MonoBehaviour
             if (_unitController.CheckAttack(target))
                 return true;
 
-            var gbTarget = GetRangedSpaces(target.CurrentGridBlock, _unitController.CurrentGridBlock);
+            var gbTarget = target.CurrentGridBlock.GetRangedSpaces(_unitController.CurrentGridBlock, minAttackRange);
 
-            _unitController.Target = target;
-            return MoveToNextSpace(gbTarget, target);
+            if (gbTarget != null)
+            {
+                _unitController.Target = target;
+                return MoveToNextSpace(gbTarget, target);
+            }
         }
 
         return false;
@@ -92,13 +95,36 @@ public class EnemyController : MonoBehaviour
                 _pM.ResetPathMatrix(_player);
                 bool action = false;
 
+                //if (_unitController.Target != null)
+                //{
+                //    while (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
+                //    {
+                //        _moves.RemoveAt(_moves.Count - 1);
+                //    }
+                //    action = true;
+                //}
                 if (_unitController.Target != null)
                 {
-                    while (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
+                    if (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
                     {
-                        _moves.RemoveAt(_moves.Count - 1);
+                        var lastGrid = _moves.Last();
+                        var newTargetGrid = lastGrid.Neighbors.OrderByDistance(_unitController.CurrentGridBlock, true).ToList().FirstOrDefault();
+
+                        if (newTargetGrid != null && _moves.Contains(newTargetGrid))
+                        {
+                            int index = _moves.IndexOf(newTargetGrid);
+                            _moves.RemoveRange(index, _moves.Count() - index - 1); // the -1 is to acount for index being 0 based and Count() being 1 based.
+                        }
+                        else if (newTargetGrid != null)
+                        {
+                            _moves.Add(newTargetGrid);
+                        }
+                        else if (newTargetGrid == null)
+                        {
+                            _unitController.Target = null;
+                            action = false;
+                        }
                     }
-                    action = true;
                 }
                 if (_moves.Count > 0)
                 {

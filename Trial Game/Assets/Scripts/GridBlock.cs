@@ -50,62 +50,6 @@ public class GridBlock : MonoBehaviour
     private Dictionary<Enums.Player, int> _attackDistance;
     private Dictionary<Enums.Player, Enums.ActiveTile> _activeTile;
     private bool _gotNeighbors;
-    private bool _showingGrid;
-
-    public IEnumerable<GridBlock> GetRangedSpaces(GridBlock target, GridBlock start, int minDis = 1, HashSet<GridBlock> gridDis = null, List<GridBlock> usedGrids = null)
-    {
-        bool org = false;
-        if (gridDis == null)
-        {
-            gridDis = new HashSet<GridBlock>();
-            usedGrids = new List<GridBlock>();
-            org = true;
-        }
-
-        var n = target.Neighbors.OrderByDistance(start, minDis <= 1).ToList();
-        foreach(GridBlock g in n)
-        {
-            if(!usedGrids.Contains(g) && (minDis > 1 && g.CurrentUnit != null))
-            {
-                gridDis.Add(g);
-            }
-        }
-
-
-        if (minDis > 1)
-        {
-            foreach (GridBlock g in gridDis)
-            {
-                usedGrids.Add(g);
-                gridDis.Remove(g);
-
-                g.GetRangedSpaces(target, start, --minDis, gridDis, usedGrids);
-            }
-        }
-
-        if (org)
-            yield return gridDis.First();
-        else
-            yield break;
-
-        //var neighbors = target.Neighbors;
-        //var orderedNeighbors = neighbors.OrderByDistance(start, true);
-        //var possibleBest = orderedNeighbors.Where(n => n.CurrentUnit == null && !n.Unpassable).ToList();
-        //if (possibleBest.Count > 0)
-        //{
-        //    result = possibleBest.First();
-        //}
-        //else
-        //{
-        //    foreach (GridBlock gB in neighbors)
-        //    {
-        //        if ((result = BestSpaceNextToTarget(gB, start)) != null)
-        //            break;
-        //    }
-        //}
-
-        //return result;
-    }
 
     public Enums.ActiveTile ActiveSpace(Enums.Player player)
     {
@@ -198,6 +142,46 @@ public class GridBlock : MonoBehaviour
             _neighbors.Right?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
             _neighbors.Left?.CreateGrid(start, player, moveDistance, minAttackDistance, maxAttackDistance);
         }
+    }
+
+    public GridBlock GetRangedSpaces(GridBlock start, int minDis, GridBlock target = null, List<OrderedGridBlock> gridDis = null)
+    {
+        bool org = false;
+        if (gridDis == null)
+        {
+            gridDis = new List<OrderedGridBlock>();
+            target = this;
+            org = true;
+        }
+
+        var orderedNeighbors = target.Neighbors.OrderByDistance(start, minDis <= 1).ToList();
+        var nonUsedNeighbors = orderedNeighbors.Except(gridDis.Select(g => g.GridBlock).ToList()).ToList();
+        foreach (var n in nonUsedNeighbors)
+        {
+            var dis = n.Position.GridDistance(start.Position);
+            gridDis.Add(new OrderedGridBlock(n, dis));
+        }
+
+        if (minDis > 1)
+        {
+            minDis--;
+            foreach (GridBlock g in nonUsedNeighbors)
+            {
+                g.GetRangedSpaces(start, minDis, g, gridDis);
+            }
+        }
+
+        if (org)
+        {
+            var orderedList = gridDis.OrderBy(g => g.OrderedValue).ToList();
+            var lowestVal = orderedList.First().OrderedValue;
+            var trimmedList = orderedList.Where(x => x.OrderedValue == lowestVal).ToList();
+            System.Random random = new System.Random();
+            var randomN = random.Next(trimmedList.Count() - 1);
+            return trimmedList[randomN].GridBlock;
+        }
+        else
+            return null;
     }
 
     public bool IsCurrentUnitEnemy(Enums.Player player)
@@ -308,6 +292,8 @@ public class GridBlock : MonoBehaviour
 
         return null;
     }
+}
 
-
+public static class GridExtensions
+{
 }

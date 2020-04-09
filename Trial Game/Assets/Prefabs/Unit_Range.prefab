@@ -179,7 +179,7 @@ MonoBehaviour:
   ColliderSizeIdle: {x: 0.2, y: 0.2}
   OnCooldown: 0
   MoveDistance: 4
-  MinAttackDistance: 1
+  MinAttackDistance: 2
   MaxAttackDistance: 2
   Speed: 3
   Cooldown: 25

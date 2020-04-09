@@ -7,6 +7,11 @@ using UnityEditor;
 
 public class CursorController : MonoBehaviour
 {
+    [HideInInspector]
+    public delegate void CursorMoveEventHandler(object sender, CursorMoveEventArgs e);
+    [HideInInspector]
+    public event CursorMoveEventHandler OnCursorMoveEvent;
+
     public Enums.Player Player = Enums.Player.Player1;
     public PolygonCollider2D Boundaries;
     public AudioClip SoundSelect;
@@ -19,7 +24,7 @@ public class CursorController : MonoBehaviour
 
     [HideInInspector]
     public Space CurrentSpace { get; set; }
-    public UnitController CurrentUnit { get; set; }
+    private UnitController CurrentUnit { get; set; }
 
     Enums.CursorState _currState;
 
@@ -36,8 +41,10 @@ public class CursorController : MonoBehaviour
     bool _cancel;
     bool _nextUnit;
     float _moveTimer;
-    float _horzClamp;
-    float _vertClamp;
+    float _maxXClamp;
+    float _minXClamp;
+    float _minYClamp;
+    float _maxYClamp;
     float _actionTimer;
     int _vert;
     int _horz;
@@ -57,8 +64,10 @@ public class CursorController : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
-        _horzClamp = Boundaries.bounds.extents.x - .5f;
-        _vertClamp = Boundaries.bounds.extents.y - .5f;
+        _minXClamp = Boundaries.points[0].x + .5f;//.bounds.extents.x - .5f;
+        _maxYClamp = Boundaries.points[0].y - .5f;
+        _maxXClamp = Boundaries.points[2].x - .5f;
+        _minYClamp = Boundaries.points[2].y + .5f;
         _startPos = transform.position;
 
         switch (Player)
@@ -95,6 +104,9 @@ public class CursorController : MonoBehaviour
         if (grid != null)
         {
             _currGridBlock = grid;
+            if (_currState == Enums.CursorState.Default)
+                CurrentUnit = GetUnit(grid);
+
             CurrentSpace = grid.PlayerActiveSpace;
 
             if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
@@ -102,18 +114,6 @@ public class CursorController : MonoBehaviour
                 _moves = _pM.CreatePath(Player, _orgGridBlock, _currGridBlock).ToList();
             }
         }
-
-        if (CheckForUnit())
-            GetUnit(gO);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        //if (CheckForUnit())// && _stayUnitSearch)
-        //{
-        //    GameObject gO = collision.gameObject;
-        //    GetUnit(gO);
-        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -128,28 +128,30 @@ public class CursorController : MonoBehaviour
 
     private bool CheckForObstacle(GameObject gO)
     {
-        if(CurrentUnit != null)
+        if (CurrentUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
             return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != CurrentUnit.transform.position);
-        
+
         return false;
     }
 
-    private bool CheckForUnit()
+    private UnitController GetUnit(GridBlock gB)
     {
-        return _currState == Enums.CursorState.Default && CurrentUnit == null;
-    }
+        UnitController tmpUnit = gB.CurrentUnit;
 
-    private void GetUnit(GameObject gO)
-    {
-        UnitController tmpUnit = gO.GetComponent<UnitController>();
-        if (tmpUnit != null && tmpUnit.Player == Player && !tmpUnit.OnCooldown && !tmpUnit.Moving)
+        if (tmpUnit != null && (tmpUnit.Player != Player || tmpUnit.OnCooldown || tmpUnit.Moving))
+        {
+            Debug.Log($"Current unit {tmpUnit.gameObject.name} is not applicable");
+            tmpUnit = null;
+        }
+        else if (tmpUnit != null)
         {
             Debug.Log($"Current unit {tmpUnit.gameObject.name}");
-            CurrentUnit = tmpUnit;
-            CurrentUnit.OnUnitDeath += OnCurrentUnitDeath;
+            tmpUnit.OnUnitDeath += OnCurrentUnitDeath;
             CurrentUnit.Hover(true);
         }
+
+        return tmpUnit;
     }
 
     private void OnCurrentUnitDeath()
@@ -179,15 +181,18 @@ public class CursorController : MonoBehaviour
         {
             if (_nextUnit && _currState == Enums.CursorState.Default)
             {
-                NextUnit();
+                QuickSelect();
+                _actionTimer = ActionTimer;
             }
             if (_cancel)
             {
                 Cancel();
+                _actionTimer = ActionTimer;
             }
             else if (_select && CurrentUnit != null && !CurrentUnit.OnCooldown)
             {
                 Select();
+                _actionTimer = ActionTimer;
             }
             // In order for the cursor to move it needs to meet the following conditions
             // - The action timer is off cooldown
@@ -199,7 +204,10 @@ public class CursorController : MonoBehaviour
             else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
             {
                 Move();
+                _actionTimer = ActionTimer;
             }
+
+            //_actionTimer = ActionTimer;  Because CheckForAction is called every Update() frame DO NOT uncomment this. 
         }
 
         if (_actionTimer > 0)
@@ -208,7 +216,8 @@ public class CursorController : MonoBehaviour
             _moveTimer -= Time.deltaTime;
     }
 
-    private void NextUnit()
+    // Selects the Unit closests to the cursor.
+    private void QuickSelect()
     {
         var nextPos = _pM.GetNextUnit(Player, CurrentUnit);
         if (nextPos != null)
@@ -240,7 +249,6 @@ public class CursorController : MonoBehaviour
 
             _aS.Play(SoundDeselect);
         }
-        _actionTimer = ActionTimer;
     }
 
     private void Select()
@@ -274,20 +282,32 @@ public class CursorController : MonoBehaviour
                 dis = unit.Position.GridDistance(CurrentUnit.Position);
             CurrentUnit.Target = unit;
 
-            if (_moves?.Count > 0 && dis > CurrentUnit.MaxAttackDistance)
+            if (_moves?.Count > 0 && (dis > CurrentUnit.MaxAttackDistance || dis < CurrentUnit.MaxAttackDistance))
             {
                 if (CurrentUnit.Target != null)
                 {
-                    while (_moves.Last().Position.GridDistance(unit.Position) <= CurrentUnit.MaxAttackDistance - 1)
+                    if (_moves.Last().Position.GridDistance(unit.Position) <= CurrentUnit.MaxAttackDistance - 1)
                     {
-                        _moves.RemoveAt(_moves.Count - 1);
-                    }
-
-                    if(_moves.Last().CurrentUnit != null && _moves.Last().CurrentUnit != this)
-                    {
+                        var lastGrid = _moves.Last();
+                        var newTargetGrid = lastGrid.Neighbors.OrderByDistance(_currGridBlock, true).ToList().FirstOrDefault();
                         
+                        if(newTargetGrid != null && _moves.Contains(newTargetGrid))
+                        {
+                            int index = _moves.IndexOf(newTargetGrid);
+                            _moves.RemoveRange(index, _moves.Count() - index - 1); // the -1 is to acount for index being 0 based and Count() being 1 based.
+                        }
+                        else if(newTargetGrid != null)
+                        {
+                            _moves.Add(newTargetGrid);
+                        }
+                        else if(newTargetGrid == null)
+                        {
+                            CurrentUnit.Target = null;
+                            return;
+                        }
                     }
                 }
+
                 if (_moves?.Count > 0)
                 {
                     CurrentUnit.MoveTo(_moves);
@@ -309,7 +329,7 @@ public class CursorController : MonoBehaviour
                 return;
             }
 
-            if (unit != null && unit.IsEnemy(Player))
+            if (CurrentUnit.Target != null && unit.IsEnemy(Player))
             {
                 _aS.Play(SoundAttack);
                 CurrentUnit.Select(false);
@@ -329,16 +349,14 @@ public class CursorController : MonoBehaviour
             CurrentUnit.Select(false);
             ResetCursor();
         }
-
-        _actionTimer = ActionTimer;
     }
 
     private void Move()
     {
         Vector2 tmpPos = transform.position.Copy();
 
-        tmpPos.x = Mathf.Clamp(tmpPos.x + _horz, -_horzClamp, _horzClamp);
-        tmpPos.y = Mathf.Clamp(tmpPos.y + _vert, -_vertClamp, _vertClamp);
+        tmpPos.x = Mathf.Clamp(tmpPos.x + _horz, _minXClamp, _maxXClamp);
+        tmpPos.y = Mathf.Clamp(tmpPos.y + _vert, _minYClamp, _maxYClamp);
 
         if (tmpPos != transform.position.V2())
         {
@@ -347,6 +365,15 @@ public class CursorController : MonoBehaviour
         }
 
         _moveTimer = MoveTimer;
-        _actionTimer = ActionTimer;
+    }
+}
+
+public class CursorMoveEventArgs
+{
+    public Vector2 Position { get; private set; }
+
+    public CursorMoveEventArgs(Vector2 position)
+    {
+        Position = position;
     }
 }

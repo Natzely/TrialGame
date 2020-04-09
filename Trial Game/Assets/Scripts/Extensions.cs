@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Extensions
 {
+    #region Queue Extensions -----------------------------------------------------------------------------
     public static void RemoveLast(Queue q)
     {
         object first = q.Peek();
@@ -19,6 +20,15 @@ public static class Extensions
         }
     }
 
+    public static bool IsEmpty<T>(this Queue<T> q)
+    {
+        if (q == null)
+            return true;
+        return q.Count == 0;
+    }
+    #endregion -------------------------------------------------------------------------------------------
+
+    #region List Extensions ------------------------------------------------------------------------------
     public static T Dequeue<T>(this List<T> list)
     {
             T r = list[0];
@@ -39,14 +49,9 @@ public static class Extensions
         list.RemoveAt(index);
         return obj;
     }
+    #endregion -----------------------------------------------------------------------------------------
 
-    public static bool IsEmpty<T>(this Queue<T> q)
-    {
-        if (q == null)
-            return true;
-        return q.Count == 0;
-    }
-
+    #region Vector Extensions --------------------------------------------------------------------------
     public static Vector2 V2(this Vector3 v)
     {
         return v;
@@ -88,10 +93,13 @@ public static class Extensions
         else
             return Enums.PathDirection.Start;
     }
+    #endregion -----------------------------------------------------------------------------------------
 
+    #region AudioSource Extensions ---------------------------------------------------------------------
     public static void Play(this AudioSource source, AudioClip clip)
     {
         source.clip = clip;
         source.Play();
     }
+    #endregion -----------------------------------------------------------------------------------------
 }

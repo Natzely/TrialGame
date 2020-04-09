@@ -26,11 +26,15 @@ public class UnitController : MonoBehaviour
     public float Cooldown = 5;
     public float AttackSpeed = 5;
 
+
+    [HideInInspector]
+    public UnitController Target { get; set; }
+
     [HideInInspector]
     public GridBlock CurrentGridBlock { get; private set; }
 
     [HideInInspector]
-    public UnitController Target { get; set; }
+    public double DistanceFromCursor { get; private set; }
     
     public bool Moved { get; internal set; }
     public bool Moving { get; internal set; }
@@ -134,7 +138,7 @@ public class UnitController : MonoBehaviour
             Target = target;
 
         var dis = Position.GridDistance(Target.Position);
-        if (Target != null && dis <= MaxAttackDistance && dis > MinAttackDistance)
+        if (Target != null && dis <= MaxAttackDistance && dis >= MinAttackDistance)
         {
             ReadyAttack(Target.Position);
             return true;
@@ -319,11 +323,11 @@ public class UnitController : MonoBehaviour
                 _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
 
-                if (_cC != null && _cC.CurrentUnit == null)
-                {
-                    Debug.Log("Current Unit this");
-                    _cC.CurrentUnit = this;
-                }
+                //if (_cC != null && _cC.CurrentUnit == null)
+                //{
+                //    Debug.Log("Current Unit this");
+                //    _cC.CurrentUnit = this;
+                //}
 
                 _eM?.AddUnit(EnemyController);
             }
@@ -373,23 +377,28 @@ public class UnitController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        CursorController cc = collision.gameObject.GetComponent<CursorController>();
-        if (cc != null && !_selected && !Moving && !Attacked)
-        {
-            if (cc.CurrentUnit == this)
-            {
-                cc.CurrentUnit = null;
-                Debug.Log("Current Unit Null");
-            }
-            _cC = null;
-            Reset();
-        }
+        //CursorController cc = collision.gameObject.GetComponent<CursorController>();
+        //if (cc != null && !_selected && !Moving && !Attacked)
+        //{
+        //    if (cc.CurrentUnit == this)
+        //    {
+        //        cc.CurrentUnit = null;
+        //        Debug.Log("Current Unit Null");
+        //    }
+        //    _cC = null;
+        //    Reset();
+        //}
     }
 
     private void OnDestroy()
     {
         _pM?.RemoveUnit(Player, this);
         _eM?.RemoveUnit(EnemyController);    
+    }
+
+    private void OnCursorMove(Object sender, CursorMoveEventArgs e)
+    {
+        DistanceFromCursor = transform.position.GridDistance(e.Position);
     }
 
     private void UnitCollision(Vector3 attackPos, float colDir, float lookDir)
