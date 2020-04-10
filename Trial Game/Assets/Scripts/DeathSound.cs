@@ -19,7 +19,7 @@ public class DeathSound : MonoBehaviour
     {
         if(!_aS.isPlaying)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 }

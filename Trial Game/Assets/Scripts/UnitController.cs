@@ -15,6 +15,7 @@ public class UnitController : MonoBehaviour
     public List<Enums.Player> AlliedWith;
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject Projectile;
+    public GameObject OffCooldownObject;
     public EnemyController EnemyController;
     public Vector2 ColliderSizeMoving;
     public Vector2 ColliderSizeIdle;
@@ -204,7 +205,6 @@ public class UnitController : MonoBehaviour
         Select(false);
         Hover(false);
         _nextPoint = null;
-        _cC = null;
         _pastPositions.Clear();
         Moved = false;
         Moving = false;
@@ -230,7 +230,13 @@ public class UnitController : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _bC = GetComponent<BoxCollider2D>();
         _pM = FindObjectOfType<PlayerManager>();
-        if (Player != Enums.Player.Player1)
+
+        if (Player == Enums.Player.Player1)
+        {
+            _cC = FindObjectOfType<CursorController>();
+            _cC.OnCursorMoveEvent += OnCursorMove;
+        }
+        else if (Player != Enums.Player.Player1)
             _eM = FindObjectOfType<EnemyManager>();
 
         if (!OnCooldown)
@@ -329,6 +335,9 @@ public class UnitController : MonoBehaviour
                 //    _cC.CurrentUnit = this;
                 //}
 
+                if (OffCooldownObject != null)
+                    Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
+
                 _eM?.AddUnit(EnemyController);
             }
         }
@@ -393,10 +402,12 @@ public class UnitController : MonoBehaviour
     private void OnDestroy()
     {
         _pM?.RemoveUnit(Player, this);
-        _eM?.RemoveUnit(EnemyController);    
+        _eM?.RemoveUnit(EnemyController);
+        if (_cC != null)
+            _cC.OnCursorMoveEvent -= OnCursorMove;
     }
 
-    private void OnCursorMove(Object sender, CursorMoveEventArgs e)
+    private void OnCursorMove(object sender, CursorMoveEventArgs e)
     {
         DistanceFromCursor = transform.position.GridDistance(e.Position);
     }

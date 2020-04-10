@@ -24,7 +24,7 @@ public class CursorController : MonoBehaviour
 
     [HideInInspector]
     public Space CurrentSpace { get; set; }
-    private UnitController CurrentUnit { get; set; }
+    private UnitController _currUnit { get; set; }
 
     Enums.CursorState _currState;
 
@@ -90,7 +90,7 @@ public class CursorController : MonoBehaviour
         _cancel = Input.GetButtonUp(_playerPrefix + "_Cancel");
         _nextUnit = Input.GetButtonUp("NextUnit");
 
-        if (_currState == Enums.CursorState.Selected && CurrentUnit == null)
+        if (_currState == Enums.CursorState.Selected && _currUnit == null)
             _currState = Enums.CursorState.Default;
 
         CheckForAction();
@@ -104,15 +104,18 @@ public class CursorController : MonoBehaviour
         if (grid != null)
         {
             _currGridBlock = grid;
-            if (_currState == Enums.CursorState.Default)
-                CurrentUnit = GetUnit(grid);
+            GetUnit(grid);
 
             CurrentSpace = grid.PlayerActiveSpace;
 
-            if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
+            if (CurrentSpace is MoveSpace && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == _currUnit) && !_currUnit.Moving && !_currUnit.Moved)
             {
                 _moves = _pM.CreatePath(Player, _orgGridBlock, _currGridBlock).ToList();
             }
+        }
+        else if (gO.name.StartsWith("UnitOff"))
+        {
+            GetUnit(_currGridBlock);
         }
     }
 
@@ -128,30 +131,33 @@ public class CursorController : MonoBehaviour
 
     private bool CheckForObstacle(GameObject gO)
     {
-        if (CurrentUnit != null)
+        if (_currUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != CurrentUnit.transform.position);
+            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position);
 
         return false;
     }
 
-    private UnitController GetUnit(GridBlock gB)
+    private void GetUnit(GridBlock gB)
     {
-        UnitController tmpUnit = gB.CurrentUnit;
-
-        if (tmpUnit != null && (tmpUnit.Player != Player || tmpUnit.OnCooldown || tmpUnit.Moving))
+        if (_currState == Enums.CursorState.Default)
         {
-            Debug.Log($"Current unit {tmpUnit.gameObject.name} is not applicable");
-            tmpUnit = null;
-        }
-        else if (tmpUnit != null)
-        {
-            Debug.Log($"Current unit {tmpUnit.gameObject.name}");
-            tmpUnit.OnUnitDeath += OnCurrentUnitDeath;
-            CurrentUnit.Hover(true);
-        }
+            UnitController tmpUnit = gB.CurrentUnit;
 
-        return tmpUnit;
+            if (tmpUnit != null && (tmpUnit.Player != Player || tmpUnit.OnCooldown || tmpUnit.Moving))
+            {
+                Debug.Log($"Current unit {tmpUnit.gameObject.name} is not applicable");
+                tmpUnit = null;
+            }
+            else if (tmpUnit != null)
+            {
+                Debug.Log($"Current unit {tmpUnit.gameObject.name}");
+                tmpUnit.OnUnitDeath += OnCurrentUnitDeath;
+                tmpUnit.Hover(true);
+            }
+
+            _currUnit = tmpUnit;
+        }
     }
 
     private void OnCurrentUnitDeath()
@@ -167,10 +173,10 @@ public class CursorController : MonoBehaviour
         _pM.ResetPathMatrix(Player);
         _animator.SetBool("Attacking", false);
         _moves = null;
-        if (CurrentUnit != null && resetUnit)
+        if (_currUnit != null && resetUnit)
         {
-            CurrentUnit.OnUnitDeath -= OnCurrentUnitDeath;
-            CurrentUnit = null;
+            _currUnit.OnUnitDeath -= OnCurrentUnitDeath;
+            _currUnit = null;
             Debug.Log("Current Unit null");
         }
     }
@@ -189,7 +195,7 @@ public class CursorController : MonoBehaviour
                 Cancel();
                 _actionTimer = ActionTimer;
             }
-            else if (_select && CurrentUnit != null && !CurrentUnit.OnCooldown)
+            else if (_select && _currUnit != null && !_currUnit.OnCooldown)
             {
                 Select();
                 _actionTimer = ActionTimer;
@@ -204,6 +210,7 @@ public class CursorController : MonoBehaviour
             else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
             {
                 Move();
+                OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
                 _actionTimer = ActionTimer;
             }
 
@@ -219,7 +226,7 @@ public class CursorController : MonoBehaviour
     // Selects the Unit closests to the cursor.
     private void QuickSelect()
     {
-        var nextPos = _pM.GetNextUnit(Player, CurrentUnit);
+        var nextPos = _pM.GetNextUnit(Player, _currUnit);
         if (nextPos != null)
         {
             transform.position = nextPos.Value;
@@ -231,15 +238,15 @@ public class CursorController : MonoBehaviour
     {
         if (_currState == Enums.CursorState.Selected)
         {
-            if (CurrentUnit.Moved || CurrentUnit.Moving)
+            if (_currUnit.Moved || _currUnit.Moving)
             {
-                CurrentUnit.CancelMove();
+                _currUnit.CancelMove();
                 _pM.GetPlayerInfo(Enums.Player.Player1).MovementPath.Clear();
                 transform.position = _orgGridBlock.Position;
             }
             else if (transform.position.V2() == _startPos)
             {
-                CurrentUnit.Select(false);
+                _currUnit.Select(false);
                 ResetCursor(resetUnit: false);
             }
             else
@@ -258,35 +265,35 @@ public class CursorController : MonoBehaviour
             _currState = Enums.CursorState.Selected;
             _orgGridBlock = _currGridBlock;
 
-            if (transform.position == CurrentUnit.Position)
+            if (transform.position == _currUnit.Position)
             {
-                if (!CurrentUnit.Moved)
+                if (!_currUnit.Moved)
                 {
                     _startPos = transform.position;
                 }
-                CurrentUnit.Select(true);
+                _currUnit.Select(true);
 
                 _aS.Play(SoundSelect);
 
-                StartCoroutine(_pM.CreateGridAsync(_currGridBlock, Player, _currGridBlock, CurrentUnit.MoveDistance + _orgGridBlock.MovementCost, 
-                    CurrentUnit.MinAttackDistance, CurrentUnit.MaxAttackDistance));
+                StartCoroutine(_pM.CreateGridAsync(_currGridBlock, Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, 
+                    _currUnit.MinAttackDistance, _currUnit.MaxAttackDistance));
             }
         }
-        else if (!CurrentUnit.Moving && !CurrentUnit.Moved && transform.position.V2() != _startPos && CurrentSpace != null && 
+        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && CurrentSpace != null && 
             (_currGridBlock.IsCurrentUnitEnemy(Player) || (CurrentSpace is MoveSpace && _currGridBlock.CurrentUnit == null)))
         {
             List<GridBlock> backupSpaces = null;
             var unit = _currGridBlock.CurrentUnit;
             double dis = 9999;
             if(unit != null)
-                dis = unit.Position.GridDistance(CurrentUnit.Position);
-            CurrentUnit.Target = unit;
+                dis = unit.Position.GridDistance(_currUnit.Position);
+            _currUnit.Target = unit;
 
-            if (_moves?.Count > 0 && (dis > CurrentUnit.MaxAttackDistance || dis < CurrentUnit.MaxAttackDistance))
+            if (_moves?.Count > 0 && (dis >= _currUnit.MaxAttackDistance || dis <= _currUnit.MaxAttackDistance))
             {
-                if (CurrentUnit.Target != null)
+                if (_currUnit.Target != null)
                 {
-                    if (_moves.Last().Position.GridDistance(unit.Position) <= CurrentUnit.MaxAttackDistance - 1)
+                    if (_moves.Last().Position.GridDistance(unit.Position) <= _currUnit.MaxAttackDistance)
                     {
                         var lastGrid = _moves.Last();
                         var newTargetGrid = lastGrid.Neighbors.OrderByDistance(_currGridBlock, true).ToList().FirstOrDefault();
@@ -302,7 +309,7 @@ public class CursorController : MonoBehaviour
                         }
                         else if(newTargetGrid == null)
                         {
-                            CurrentUnit.Target = null;
+                            _currUnit.Target = null;
                             return;
                         }
                     }
@@ -310,43 +317,43 @@ public class CursorController : MonoBehaviour
 
                 if (_moves?.Count > 0)
                 {
-                    CurrentUnit.MoveTo(_moves);
+                    _currUnit.MoveTo(_moves);
                 }
             }
-            else if (dis <= CurrentUnit.MaxAttackDistance && dis > CurrentUnit.MinAttackDistance)
+            else if (dis >= _currUnit.MinAttackDistance && dis <= _currUnit.MaxAttackDistance)
             {
                 _aS.Play(SoundAttack);
-                CurrentUnit.CheckAttack(unit);
+                _currUnit.CheckAttack(unit);
             }
             else if ((backupSpaces = _orgGridBlock.AvailableAttackSpace(_currGridBlock)).Count > 0)
             {
                 _aS.Play(SoundAttack);
-                CurrentUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
+                _currUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
             }
             else
             {
-                CurrentUnit.Target = null;
+                _currUnit.Target = null;
                 return;
             }
 
-            if (CurrentUnit.Target != null && unit.IsEnemy(Player))
+            if (_currUnit.Target != null && unit.IsEnemy(Player))
             {
                 _aS.Play(SoundAttack);
-                CurrentUnit.Select(false);
+                _currUnit.Select(false);
                 ResetCursor();
             }
         }
-        else if ((CurrentUnit.Moving || CurrentUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
+        else if ((_currUnit.Moving || _currUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player) && CurrentSpace != null)
         {
             _aS.Play(SoundAttack);
-            CurrentUnit.Target = _currGridBlock.CurrentUnit;
-            CurrentUnit.Select(false);
+            _currUnit.Target = _currGridBlock.CurrentUnit;
+            _currUnit.Select(false);
             ResetCursor();
         }
-        else if ((CurrentUnit.Moving || CurrentUnit.Moved))
+        else if ((_currUnit.Moving || _currUnit.Moved))
         {
             _aS.Play(SoundAttack);
-            CurrentUnit.Select(false);
+            _currUnit.Select(false);
             ResetCursor();
         }
     }
@@ -368,7 +375,7 @@ public class CursorController : MonoBehaviour
     }
 }
 
-public class CursorMoveEventArgs
+public class CursorMoveEventArgs : EventArgs
 {
     public Vector2 Position { get; private set; }
 

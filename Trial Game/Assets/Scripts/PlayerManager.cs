@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public List<PlayerInfo> PlayerList;
 
     private GridBlock[,] _fullGrid;
+    private List<UnitController> _nextUnitList;
     private int _gridSizeX;
     private int _gridSizeY;
 
@@ -116,28 +117,52 @@ public class PlayerManager : MonoBehaviour
 
     public Vector2? GetNextUnit(Enums.Player player, UnitController unit)
     {
+        if(_nextUnitList == null)
+        {
+            _nextUnitList = new List<UnitController>();
+            var playerUnits = GetPlayerInfo(player).Units;
+            foreach(var u in playerUnits)
+            {
+                var random = new System.Random();
+                int insertAt = random.Next(_nextUnitList.Count());
+                _nextUnitList.Insert(insertAt, u);
+            }
+        }
+
         if (unit == null)
         {
-            var nextUnit = GetPlayerInfo(player).Units.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked).FirstOrDefault();
-            if (nextUnit != null)
-            {
-                return nextUnit.transform.position;
-            }
+            var nextUnitPossible = _nextUnitList.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked);
+            if(nextUnitPossible.Count() > 0)
+                return nextUnitPossible.First().transform.position;
+            else
+                return GetNextUnitOnCooldown();
         }
         else
         {
-            var unitList = GetPlayerInfo(player).Units.ToList();
-            var coolDownList = unitList.Where(u => !u.OnCooldown).ToList();
+            var coolDownList = _nextUnitList.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
             if (coolDownList.Count > 0)
             {
-                var unitIndex = unitList.IndexOf(unit) + 1;
-                if (unitIndex >= unitList.Count)    
+                var unitIndex = coolDownList.IndexOf(unit) + 1;
+                if (unitIndex >= coolDownList.Count)
                     unitIndex = 0;
 
-                var nextUnit = unitList.Skip(unitIndex).FirstOrDefault(u => !u.OnCooldown);
+                var nextUnit = coolDownList.Skip(unitIndex).FirstOrDefault(u => !u.OnCooldown);
                 if (nextUnit != null)
                     return nextUnit.Position;
             }
+            else
+                return GetNextUnitOnCooldown();
+        }
+
+        return null;
+    }
+
+    private Vector2? GetNextUnitOnCooldown()
+    {
+        var nextUnitPossible = _nextUnitList.Where(u => !u.Moving && !u.Attacked);
+        if (nextUnitPossible.Count() > 0)
+        {
+            return nextUnitPossible.First().transform.position;
         }
 
         return null;
@@ -176,6 +201,8 @@ public class PlayerManager : MonoBehaviour
     public void AddPlayerUnit(Enums.Player player, UnitController unit)
     {
         GetPlayerInfo(player).Units.Add(unit);
+        if (_nextUnitList != null)
+            _nextUnitList.Add(unit);
     }
 
     public void RemoveUnit(Enums.Player player, UnitController unit)

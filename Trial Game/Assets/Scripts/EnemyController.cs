@@ -84,7 +84,7 @@ public class EnemyController : MonoBehaviour
             _unitController.Target = ucTarget;
 
 
-            if (dis <= _unitController.MaxAttackDistance && dis > _unitController.MinAttackDistance)
+            if (dis <= _unitController.MaxAttackDistance && dis >= _unitController.MinAttackDistance)
             {
                 _unitController.CheckAttack(gbTarget.CurrentUnit);
                 return true;
@@ -94,18 +94,9 @@ public class EnemyController : MonoBehaviour
                 _moves = MaxMovementPath(_moves, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
                 _pM.ResetPathMatrix(_player);
                 bool action = false;
-
-                //if (_unitController.Target != null)
-                //{
-                //    while (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
-                //    {
-                //        _moves.RemoveAt(_moves.Count - 1);
-                //    }
-                //    action = true;
-                //}
                 if (_unitController.Target != null)
                 {
-                    if (_moves.Last().Position.GridDistance(ucTarget.Position) <= _unitController.MaxAttackDistance - 1)
+                    if (_moves.Last().Position.GridDistance(ucTarget.Position) < _unitController.MaxAttackDistance)
                     {
                         var lastGrid = _moves.Last();
                         var newTargetGrid = lastGrid.Neighbors.OrderByDistance(_unitController.CurrentGridBlock, true).ToList().FirstOrDefault();
