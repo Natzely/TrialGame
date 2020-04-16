@@ -8,40 +8,33 @@ public class UnitController : MonoBehaviour
     public delegate void OnDeath();
     public OnDeath OnUnitDeath;
 
-    public AudioSource WalkingAudioSource;
-    public AudioSource HurtAudioSource;
     public AudioSource AttackAudioSource;
+    public AudioSource HurtAudioSource;
+    public AudioSource WalkingAudioSource;
 
     public List<Enums.Player> AlliedWith;
     public Enums.Player Player = Enums.Player.Player1;
-    public GameObject Projectile;
     public GameObject OffCooldownObject;
+    public GameObject Projectile;
     public EnemyController EnemyController;
     public Vector2 ColliderSizeMoving;
     public Vector2 ColliderSizeIdle;
     public bool OnCooldown = false;
-    public int MoveDistance = 4;
-    public int MinAttackDistance = 0;
-    public int MaxAttackDistance = 2;
-    public float Speed = 5;
-    public float Cooldown = 5;
     public float AttackSpeed = 5;
+    public float Cooldown = 5;
+    public float Speed = 5;
+    public int MaxAttackDistance = 2;
+    public int MinAttackDistance = 0;
+    public int MoveDistance = 4;
 
+    [HideInInspector] public UnitController Target { get; set; }
+    [HideInInspector] public float CoolDownTimer { get; private set; }
+    [HideInInspector] public GridBlock CurrentGridBlock { get; private set; }
+    [HideInInspector] public double DistanceFromCursor { get; private set; }
 
-    [HideInInspector]
-    public UnitController Target { get; set; }
-
-    [HideInInspector]
-    public GridBlock CurrentGridBlock { get; private set; }
-
-    [HideInInspector]
-    public double DistanceFromCursor { get; private set; }
-    
-    public bool Moved { get; internal set; }
-    public bool Moving { get; internal set; }
-    public bool Attacked { get; internal set; }
-    public GridBlock StartPos { get; set; }
-    public GridBlock EndPos { get; set; }
+    public bool Attacked { get; private set; }
+    public bool Moved { get; private set; }
+    public bool Moving { get; private set; }
 
     Enums.UnitState _unitState;
     PlayerManager _pM;
@@ -60,7 +53,6 @@ public class UnitController : MonoBehaviour
     bool _attack;
     bool _blocked;
     bool _hurt;
-    float _cooldown;
     float _defaultLook;
     float _lookX;
     float _lookY;
@@ -87,7 +79,7 @@ public class UnitController : MonoBehaviour
 
     public void Select(bool select)
     {
-        if (_cooldown <= 0)
+        if (CoolDownTimer <= 0)
         {
             _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
             _selected = select;
@@ -102,7 +94,7 @@ public class UnitController : MonoBehaviour
 
     public void MoveTo(List<GridBlock> movePoints)
     {
-        if (_cooldown <= 0 && !Moved && movePoints.Count > 0)
+        if (CoolDownTimer <= 0 && !Moved && movePoints.Count > 0)
         {
             for (int x = 0; x < movePoints.Count; x++)
             {
@@ -111,6 +103,7 @@ public class UnitController : MonoBehaviour
             }
 
             _nextPoint = _movePositions.Dequeue();
+            LookAt(_nextPoint.Position);
             Moving = true;
             _bC.size = ColliderSizeMoving;
             _animator.SetBool("Selected", true);  
@@ -258,6 +251,9 @@ public class UnitController : MonoBehaviour
         ResetLook();
 
         _pM.AddPlayerUnit(Player, this);
+
+        if (OffCooldownObject != null)
+            Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
     }
 
     void Update()
@@ -311,6 +307,8 @@ public class UnitController : MonoBehaviour
             PlayerUnitLog($": {gameObject.name} attacks");
             _attack = false;
             Attack();
+            if (_blocked)
+                FindGoodPreviousSpot();
         }
 
         if(Attacked)
@@ -318,11 +316,11 @@ public class UnitController : MonoBehaviour
             $"State Idle = {_unitState} | " +
             $"Moved = {Moved} | " +
             $"Attacked = {Attacked}");
-        if (_cooldown > 0)
+        if (CoolDownTimer > 0)
         {
-            _cooldown -= Time.deltaTime;
-            _animator.speed = Mathf.Clamp((1 - _cooldown / Cooldown), .2f, 1) * 3 + .1f;
-            if (_cooldown <= 0)
+            CoolDownTimer -= Time.deltaTime;
+            _animator.speed = Mathf.Clamp((1 - CoolDownTimer / Cooldown), .2f, 1) * 3 + .1f;
+            if (CoolDownTimer <= 0)
             {
                 PlayerUnitLog($": {gameObject.name} ends move");
                 
@@ -341,12 +339,12 @@ public class UnitController : MonoBehaviour
                 _eM?.AddUnit(EnemyController);
             }
         }
-        else if (_unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
+        else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
         {
             PlayerUnitLog($": {gameObject.name} goes on cooldown");
             GoOnCooldown();
         }
-        else if (_unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
+        else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
         {
             _eM?.AddUnit(EnemyController);
         }
@@ -365,7 +363,7 @@ public class UnitController : MonoBehaviour
             if (_originalPoint == null)
                 _originalPoint = gB;
         }
-        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MinAttackDistance == 0)
+        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MinAttackDistance == 1)
         {
             _blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;
@@ -397,6 +395,11 @@ public class UnitController : MonoBehaviour
         //    _cC = null;
         //    Reset();
         //}
+
+        if(_cC != null && collision.gameObject == _cC.gameObject && !_selected && !Moving && !Moved && !Attacked)
+        {
+            Hover(false);
+        }
     }
 
     private void OnDestroy()
@@ -441,7 +444,7 @@ public class UnitController : MonoBehaviour
         foreach (var pos in _pastPositions)
         {
             _movePositions.Enqueue(pos);
-            if (pos.CurrentUnit == null)
+            if (pos.CurrentUnit == null || pos.CurrentUnit == this)
             {
                 _nextPoint = _movePositions.Dequeue();
                 break;
@@ -454,7 +457,7 @@ public class UnitController : MonoBehaviour
         Reset();
         _pM.PlayerUnitMoveDown(Player, this);
         _originalPoint = CurrentGridBlock;
-        _cooldown = Cooldown * (!Attacked ? .6f : 1);
+        CoolDownTimer = Cooldown * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
     }
 
@@ -468,8 +471,11 @@ public class UnitController : MonoBehaviour
     {
         float x = lookAt.x - transform.position.x;
         float y = lookAt.y - transform.position.y;
-        _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
-        _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
+        if (x != y)
+        {
+            _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
+            _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
+        }
     }
 
     private void PlayerUnitLog(string msg)

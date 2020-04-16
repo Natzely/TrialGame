@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveSpace : Space
+public class MoveSpace : GridSpace
 {
     public Enums.PathDirection PathDirection
     {

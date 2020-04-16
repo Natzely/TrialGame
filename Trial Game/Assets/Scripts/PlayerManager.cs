@@ -6,33 +6,24 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [HideInInspector] public bool DebugOn = false;
     [HideInInspector] public List<PlayerInfo> PlayerList;
+    [HideInInspector] public GameObject PauseScreen;
+    [HideInInspector] public bool DebugOn;
+    [HideInInspector] public float ActionTimer;
 
     private GridBlock[,] _fullGrid;
     private List<UnitController> _nextUnitList;
+    private bool _pause;
+    private bool _isGamePaused;
     private int _gridSizeX;
     private int _gridSizeY;
+    private double _actionTimer;
+    private double _lastRealTime;
 
     public bool GetDeleteMoveSpace(Enums.Player player)
     {
         var tmp = PlayerList.Where(x => x.Player == player).FirstOrDefault();
         return tmp.DeleteMoveSpace;
-    }
-
-    public int GetResetMoveSpace(Enums.Player player)
-    {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault().ResetMoveSpacesAbove;
-    }
-
-    public void SetResetMoveSpace(Enums.Player player, int resetCount)
-    {
-        PlayerList.Where(x => x.Player == player).FirstOrDefault().ResetMoveSpacesAbove = resetCount;
-    }
-
-    public void SetDeleteMoveSpace(Enums.Player player, bool value)
-    {
-        PlayerList.Where(x => x.Player == player).FirstOrDefault().DeleteMoveSpace = value;
     }
 
     public void ResetPathMatrix(Enums.Player player)
@@ -117,7 +108,7 @@ public class PlayerManager : MonoBehaviour
 
     public Vector2? GetNextUnit(Enums.Player player, UnitController unit)
     {
-        if(_nextUnitList == null)
+        if(_nextUnitList == null) // Grab all units that are already in the map at the start.
         {
             _nextUnitList = new List<UnitController>();
             var playerUnits = GetPlayerInfo(player).Units;
@@ -129,15 +120,15 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        if (unit == null)
+        if (unit == null) // Select first available unit in the list 
         {
-            var nextUnitPossible = _nextUnitList.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked);
+            var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.OnCooldown && !u.Moving && !u.Attacked);
             if(nextUnitPossible.Count() > 0)
                 return nextUnitPossible.First().transform.position;
             else
                 return GetNextUnitOnCooldown();
         }
-        else
+        else // Select the next unit based on the unit that is currently selected.
         {
             var coolDownList = _nextUnitList.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
             if (coolDownList.Count > 0)
@@ -157,17 +148,6 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    private Vector2? GetNextUnitOnCooldown()
-    {
-        var nextUnitPossible = _nextUnitList.Where(u => !u.Moving && !u.Attacked);
-        if (nextUnitPossible.Count() > 0)
-        {
-            return nextUnitPossible.First().transform.position;
-        }
-
-        return null;
-    }
-
     public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         ResetPathMatrix(player);
@@ -181,6 +161,7 @@ public class PlayerManager : MonoBehaviour
         );
         //PrintPlayerGrid(player);
     }
+
     public void CreateGrid(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistnace, int attackDistance)
     {
         ResetPathMatrix(player);
@@ -193,9 +174,60 @@ public class PlayerManager : MonoBehaviour
         );
     }
 
+    private void Awake()
+    {
+        _actionTimer = 0;
+    }
+
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
+    }
+
+    private void Update()
+    {
+        _pause = Input.GetButtonUp("Pause");
+
+        if (_actionTimer <= 0)
+        {
+            if (_pause)
+            {
+                if (_isGamePaused)
+                {
+                    Debug.Log("Unpause Game");
+                    Time.timeScale = 1;
+                    PauseScreen.SetActive(false);
+                    _isGamePaused = false;
+
+                }
+                else
+                {
+                    Debug.Log("Pause Game");
+                    Time.timeScale = 0;
+                    PauseScreen.SetActive(true);
+                    _isGamePaused = true;
+                }
+
+                _actionTimer = ActionTimer;
+            }
+        }
+        else
+        {
+            _actionTimer -= Time.realtimeSinceStartup - _lastRealTime;
+        }
+
+        _lastRealTime = Time.realtimeSinceStartup;
+    }
+
+    private Vector2? GetNextUnitOnCooldown()
+    {
+        var nextUnitPossible = _nextUnitList.Where(u => !u.Moving && !u.Attacked);
+        if (nextUnitPossible.Count() > 0)
+        {
+            return nextUnitPossible.First().transform.position;
+        }
+
+        return null;
     }
 
     public void AddPlayerUnit(Enums.Player player, UnitController unit)
@@ -216,7 +248,7 @@ public class PlayerManager : MonoBehaviour
         GetPlayerInfo(player).Units.Add(unit);
     }
 
-    IEnumerator GetGridBlocks()
+    private IEnumerator GetGridBlocks()
     {
         yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0);
 
@@ -257,6 +289,5 @@ public class PlayerManager : MonoBehaviour
         public bool DeleteMoveSpace;
         public bool HideGrid;
         public bool ResetNonPlayerGrid;
-        public int ResetMoveSpacesAbove;
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Space : MonoBehaviour
+public class GridSpace : MonoBehaviour
 {
     public Vector2 Position
     {

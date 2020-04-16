@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GridPlayerSpaces
 {
-    Dictionary<Enums.Player, Space> _spaces;
+    Dictionary<Enums.Player, GridSpace> _spaces;
 
     public GridPlayerSpaces()
     {
-        _spaces = new Dictionary<Enums.Player, Space>();
+        _spaces = new Dictionary<Enums.Player, GridSpace>();
     }
 
-    public Space this[Enums.Player player]
+    public GridSpace this[Enums.Player player]
     {
         get
         {

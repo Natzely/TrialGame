@@ -50,11 +50,11 @@ MonoBehaviour:
     DeleteMoveSpace: 0
     HideGrid: 0
     ResetNonPlayerGrid: 0
-    ResetMoveSpacesAbove: 0
   - Player: 12
     MovementPath: []
     Units: []
     DeleteMoveSpace: 0
     HideGrid: 0
     ResetNonPlayerGrid: 0
-    ResetMoveSpacesAbove: 0
+  DebugOn: 1
+  ActionTimer: 0.1

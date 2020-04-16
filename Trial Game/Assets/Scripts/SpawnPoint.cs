@@ -35,8 +35,8 @@ public class SpawnPoint : MonoBehaviour
             var spawn = OtherSpawns[spawnN];
             var unit = Instantiate(UnitSpawn, transform.position, Quaternion.identity);
             UnitController uC = unit.GetComponent<UnitController>();
-            uC.StartPos = GridBlock;
-            uC.EndPos = spawn.GridBlock;    
+            //uC.StartPos = GridBlock;
+            //uC.EndPos = spawn.GridBlock;    
             _timeTillSpawn = Random.Range(SpawnIntervalMin, SpawnIntervalMax);
         }
 

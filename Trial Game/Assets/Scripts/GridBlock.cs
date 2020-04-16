@@ -38,7 +38,7 @@ public class GridBlock : MonoBehaviour
     }
 
     [HideInInspector]
-    public Space PlayerActiveSpace { get; set; }
+    public GridSpace PlayerActiveSpace { get; set; }
 
     private PlayerManager _pM;
     private GridPlayerSpaces _moveSpaces;
@@ -59,9 +59,14 @@ public class GridBlock : MonoBehaviour
             return Enums.ActiveTile.Move;
     }
 
-    public List<GridBlock> AvailableAttackSpace(GridBlock behindGrid = null)
+    public IEnumerable<GridBlock> AvailableAttackSpace(GridBlock behindGrid, int unitAttackDistance)
     {
-        return Neighbors.AvailableNeighbors(behindGrid.Position).ToList();
+        var neightbors = Neighbors.AvailableNeighbors(behindGrid.Position).ToList();
+        foreach(var n in neightbors)
+        {
+            if (n.Position.GridDistance(behindGrid.Position) <= unitAttackDistance)
+                yield return n;
+        }
     }
 
     public void CreateGrid(GridBlock start, Enums.Player player, int moveDistance, int minAttackDistance, int maxAttackDistance)
@@ -118,7 +123,7 @@ public class GridBlock : MonoBehaviour
             if (spaces != null && spaces[player] == null)
             {
                 var gO = Instantiate(_space, transform.position, Quaternion.identity);
-                spaces[player] = gO.GetComponent<Space>();
+                spaces[player] = gO.GetComponent<GridSpace>();
                 spaces[player].Player = player;
                 spaces[player].ParentGridBlock = this;
             }

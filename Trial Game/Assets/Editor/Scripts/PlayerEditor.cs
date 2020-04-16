@@ -8,6 +8,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Tilemaps;
+using UnityEditor.Build.Content;
 
 [CustomEditor(typeof(PlayerManager), true)]
 [CanEditMultipleObjects]
@@ -19,12 +20,19 @@ public class PlayerEditor : Editor
     internal const float k_LabelWidth = 80f;
 
     private PlayerManager _playerManager { get { return (target as PlayerManager); } }
+    private SerializedProperty _actionTimer;
+    private SerializedProperty _debugOn;
+    private SerializedProperty _pauseScreen;
     private ReorderableList _reorderableList;
 
     void OnEnable()
     {
         if (_playerManager.PlayerList == null)
             _playerManager.PlayerList = new List<PlayerManager.PlayerInfo>();
+
+        _actionTimer = serializedObject.FindProperty("ActionTimer");
+        _debugOn = serializedObject.FindProperty("DebugOn");
+        _pauseScreen = serializedObject.FindProperty("PauseScreen");
 
         _reorderableList = new ReorderableList(_playerManager.PlayerList, typeof(PlayerManager.PlayerInfo), true, true, true, true);
         _reorderableList.drawHeaderCallback = OnDrawHeader;
@@ -69,7 +77,6 @@ public class PlayerEditor : Editor
         y += k_SingleLineHeight;
         playerInfo.DeleteMoveSpace = EditorGUI.Toggle(new Rect(rect.xMin, y, rect.width, k_SingleLineHeight), "Delete Move Space", playerInfo.DeleteMoveSpace);
         y += k_SingleLineHeight;
-        playerInfo.ResetMoveSpacesAbove = EditorGUI.IntField(new Rect(rect.xMin, y, rect.width + k_LabelWidth, k_SingleLineHeight), "Reset Move Spaces", playerInfo.ResetMoveSpacesAbove);
     }
 
     private void OnAddElement(ReorderableList list)
@@ -77,7 +84,6 @@ public class PlayerEditor : Editor
         PlayerManager.PlayerInfo player = new PlayerManager.PlayerInfo();
         player.Player = (Enums.Player)_playerManager.PlayerList.Count + 11;
         player.DeleteMoveSpace = false;
-        player.ResetMoveSpacesAbove = 0;
         _playerManager.PlayerList.Add(player);
     }
 
@@ -113,6 +119,10 @@ public class PlayerEditor : Editor
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.Space();
 
+        EditorGUILayout.PropertyField(_debugOn);
+        EditorGUILayout.PropertyField(_actionTimer);
+        EditorGUILayout.PropertyField(_pauseScreen);
+        serializedObject.ApplyModifiedProperties();
         if (_reorderableList != null && _playerManager.PlayerList != null)
             _reorderableList.DoLayoutList();
     }

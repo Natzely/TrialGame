@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackSpace : Space
+public class AttackSpace : GridSpace
 {
     void Start()
     {

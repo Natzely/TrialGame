@@ -6,6 +6,8 @@ using System.Linq;
 
 public class PathFinder
 {
+    private const int MOVEMENTCOSTMODIFIER = 1;
+
     public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock gbStart, GridBlock gbTarget, GridBlock[,] map)
     {
         Location current = null;
@@ -69,7 +71,7 @@ public class PathFinder
                     // compute its score, set the parent
                     adjacentSquare.G = g;
                     adjacentSquare.H = ComputeHScore(asX, asY, target.X, target.Y);
-                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (map[asX, asY].MovementCost * 2);
+                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (map[asX, asY].MovementCost * MOVEMENTCOSTMODIFIER);
                     adjacentSquare.Parent = current;
 
                     // and add it to the open list

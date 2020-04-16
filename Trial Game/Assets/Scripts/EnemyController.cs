@@ -126,7 +126,7 @@ public class EnemyController : MonoBehaviour
                 if (action)
                     return true;
             }
-            else if ((backupSpaces = _unitController.CurrentGridBlock.AvailableAttackSpace(gbTarget)).Count > 0)
+            else if ((backupSpaces = _unitController.CurrentGridBlock.AvailableAttackSpace(gbTarget, _unitController.MaxAttackDistance).ToList()).Count > 0)
             {
                 _unitController.MoveTo(new List<GridBlock>() { _unitController.CurrentGridBlock, backupSpaces.First() });
                 return true;
