@@ -27,9 +27,11 @@ public class CursorController : MonoBehaviour
 
     Enums.CursorState _currState;
 
-    PlayerManager _pM;
     GridBlock _currGridBlock;
     GridBlock _orgGridBlock;
+    PlayerManager _pM;
+    UnitController _quickSelectUnit;
+
     Animator _animator;
     SpriteRenderer _sR;
     AudioSource _aS;
@@ -38,7 +40,7 @@ public class CursorController : MonoBehaviour
     Color _playerColor;
     bool _select;
     bool _cancel;
-    bool _nextUnit;
+    bool _quickSelect;
     bool _getUnit;
     float _moveTimer;
     float _maxXClamp;
@@ -86,7 +88,7 @@ public class CursorController : MonoBehaviour
         _horz = Mathf.RoundToInt(Input.GetAxis("P1_Horizontal"));
         _select = Input.GetButtonUp("P1_Select");
         _cancel = Input.GetButtonUp("P1_Cancel");
-        _nextUnit = Input.GetButtonUp("NextUnit");
+        _quickSelect = Input.GetButtonUp("NextUnit");
 
         if (_currState == Enums.CursorState.Selected && _currUnit == null)
             _currState = Enums.CursorState.Default;
@@ -105,6 +107,7 @@ public class CursorController : MonoBehaviour
         GameObject gO = collision.gameObject;
         var grid = gO.GetComponent<GridBlock>();
 
+        Debug.Log("Cursor: Trigger Enter");
         if (grid != null)
         {
             _currGridBlock = grid;
@@ -119,15 +122,16 @@ public class CursorController : MonoBehaviour
         }
         else if (gO.name.StartsWith("UnitOff"))
         {
+            Debug.Log("Cursor: Unit cooldown object detected");
             if (_currGridBlock == null)
             {
-                Debug.Log("Get Unit after cooldown... later");
+                Debug.Log("Cursor: Get Unit after cooldown... later");
                 _getUnit = true;
             }
             else
             {
                 GetUnit(_currGridBlock);
-                Debug.Log("Get unit after cooldown");
+                Debug.Log("Cursor: Get unit after cooldown");
             }
         }
     }
@@ -199,7 +203,7 @@ public class CursorController : MonoBehaviour
     {
         if (_actionTimer <= 0)
         {
-            if (_nextUnit && _currState == Enums.CursorState.Default)
+            if (_quickSelect && _currState == Enums.CursorState.Default)
             {
                 QuickSelect();
                 _actionTimer = _pM.ActionTimer;
@@ -240,10 +244,10 @@ public class CursorController : MonoBehaviour
     // Selects the Unit closests to the cursor.
     private void QuickSelect()
     {
-        var nextPos = _pM.GetNextUnit(Player, _currUnit);
-        if (nextPos != null)
+        _quickSelectUnit = _pM.GetNextUnit(Player, _currUnit ?? _quickSelectUnit);
+        if (_quickSelectUnit != null)
         {
-            transform.position = nextPos.Value;
+            transform.position = _quickSelectUnit.transform.position;
             _aS.Play(SoundMove);
         }
     }

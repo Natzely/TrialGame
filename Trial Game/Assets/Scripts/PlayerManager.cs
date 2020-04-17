@@ -106,7 +106,7 @@ public class PlayerManager : MonoBehaviour
         return pathList;
     }
 
-    public Vector2? GetNextUnit(Enums.Player player, UnitController unit)
+    public UnitController GetNextUnit(Enums.Player player, UnitController unit)
     {
         if(_nextUnitList == null) // Grab all units that are already in the map at the start.
         {
@@ -123,14 +123,14 @@ public class PlayerManager : MonoBehaviour
         if (unit == null) // Select first available unit in the list 
         {
             var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.OnCooldown && !u.Moving && !u.Attacked);
-            if(nextUnitPossible.Count() > 0)
-                return nextUnitPossible.First().transform.position;
+            if (nextUnitPossible.Count() > 0)
+                return nextUnitPossible.First();
             else
-                return GetNextUnitOnCooldown();
+                return GetNextUnitOnCooldown(unit);
         }
         else // Select the next unit based on the unit that is currently selected.
         {
-            var coolDownList = _nextUnitList.Where(u => !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
+            var coolDownList = _nextUnitList.Where(u => u != null && !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
             if (coolDownList.Count > 0)
             {
                 var unitIndex = coolDownList.IndexOf(unit) + 1;
@@ -138,14 +138,11 @@ public class PlayerManager : MonoBehaviour
                     unitIndex = 0;
 
                 var nextUnit = coolDownList.Skip(unitIndex).FirstOrDefault(u => !u.OnCooldown);
-                if (nextUnit != null)
-                    return nextUnit.Position;
+                return nextUnit;
             }
             else
-                return GetNextUnitOnCooldown();
+                return GetNextUnitOnCooldown(unit);
         }
-
-        return null;
     }
 
     public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
@@ -219,12 +216,24 @@ public class PlayerManager : MonoBehaviour
         _lastRealTime = Time.realtimeSinceStartup;
     }
 
-    private Vector2? GetNextUnitOnCooldown()
+    private UnitController GetNextUnitOnCooldown(UnitController afterUnit)
     {
-        var nextUnitPossible = _nextUnitList.Where(u => !u.Moving && !u.Attacked);
+        var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.Moving && !u.Attacked);
         if (nextUnitPossible.Count() > 0)
         {
-            return nextUnitPossible.First().transform.position;
+            var orderByCooldownLeft = nextUnitPossible.OrderBy(u => u.Cooldown).ToList();
+            if (afterUnit == null)
+                return nextUnitPossible.FirstOrDefault();
+            else
+            {
+                var unitIndex = _nextUnitList.IndexOf(afterUnit) + 1;
+                if (unitIndex >= _nextUnitList.Count)
+                    unitIndex = 0;
+
+                var nextUnit = _nextUnitList.Skip(unitIndex).FirstOrDefault();
+                return nextUnit;
+            }
+
         }
 
         return null;

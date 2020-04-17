@@ -20,15 +20,15 @@ public class UnitController : MonoBehaviour
     public Vector2 ColliderSizeMoving;
     public Vector2 ColliderSizeIdle;
     public bool OnCooldown = false;
-    public float AttackSpeed = 5;
-    public float Cooldown = 5;
-    public float Speed = 5;
-    public int MaxAttackDistance = 2;
-    public int MinAttackDistance = 0;
-    public int MoveDistance = 4;
+    public float AttackSpeed;
+    public float CooldownTimer;
+    public float Speed;
+    public int MaxAttackDistance;
+    public int MinAttackDistance;
+    public int MoveDistance;
 
     [HideInInspector] public UnitController Target { get; set; }
-    [HideInInspector] public float CoolDownTimer { get; private set; }
+    [HideInInspector] public float Cooldown { get; private set; }
     [HideInInspector] public GridBlock CurrentGridBlock { get; private set; }
     [HideInInspector] public double DistanceFromCursor { get; private set; }
 
@@ -79,7 +79,7 @@ public class UnitController : MonoBehaviour
 
     public void Select(bool select)
     {
-        if (CoolDownTimer <= 0)
+        if (Cooldown <= 0)
         {
             _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
             _selected = select;
@@ -94,7 +94,7 @@ public class UnitController : MonoBehaviour
 
     public void MoveTo(List<GridBlock> movePoints)
     {
-        if (CoolDownTimer <= 0 && !Moved && movePoints.Count > 0)
+        if (Cooldown <= 0 && !Moved && movePoints.Count > 0)
         {
             for (int x = 0; x < movePoints.Count; x++)
             {
@@ -316,11 +316,11 @@ public class UnitController : MonoBehaviour
             $"State Idle = {_unitState} | " +
             $"Moved = {Moved} | " +
             $"Attacked = {Attacked}");
-        if (CoolDownTimer > 0)
+        if (Cooldown > 0)
         {
-            CoolDownTimer -= Time.deltaTime;
-            _animator.speed = Mathf.Clamp((1 - CoolDownTimer / Cooldown), .2f, 1) * 3 + .1f;
-            if (CoolDownTimer <= 0)
+            Cooldown -= Time.deltaTime;
+            _animator.speed = Mathf.Clamp((1 - Cooldown / CooldownTimer), .2f, 1) * 3 + .1f;
+            if (Cooldown <= 0)
             {
                 PlayerUnitLog($": {gameObject.name} ends move");
                 
@@ -334,7 +334,10 @@ public class UnitController : MonoBehaviour
                 //}
 
                 if (OffCooldownObject != null)
+                {
+                    Debug.Log("Create cooldown object");
                     Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
+                }
 
                 _eM?.AddUnit(EnemyController);
             }
@@ -457,7 +460,7 @@ public class UnitController : MonoBehaviour
         Reset();
         _pM.PlayerUnitMoveDown(Player, this);
         _originalPoint = CurrentGridBlock;
-        CoolDownTimer = Cooldown * (!Attacked ? .6f : 1);
+        Cooldown = CooldownTimer * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);
     }
 

@@ -181,23 +181,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cf10c278cc42741a8450273e64039e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkingAudioSource: {fileID: 4877884251898067759}
-  HurtAudioSource: {fileID: 2635142902251534675}
   AttackAudioSource: {fileID: 5224534530976703657}
+  HurtAudioSource: {fileID: 2635142902251534675}
+  WalkingAudioSource: {fileID: 4877884251898067759}
   AlliedWith: 
   Player: 12
+  OffCooldownObject: {fileID: 0}
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
   EnemyController: {fileID: -5350819402488169113}
   ColliderSizeMoving: {x: 0.65, y: 0.65}
   ColliderSizeIdle: {x: 0.2, y: 0.2}
   OnCooldown: 0
-  MoveDistance: 4
-  MinAttackDistance: 1
-  MaxAttackDistance: 1
-  Speed: 3
-  Cooldown: 20
   AttackSpeed: 500
+  CooldownTimer: 20
+  Speed: 3
+  MaxAttackDistance: 1
+  MinAttackDistance: 1
+  MoveDistance: 4
 --- !u!114 &3097757917150243156
 MonoBehaviour:
   m_ObjectHideFlags: 0
