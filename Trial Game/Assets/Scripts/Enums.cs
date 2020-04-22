@@ -6,10 +6,10 @@ public class Enums : MonoBehaviour
 {
     public enum Player
     {
-        Player1 = 11,
-        Player2 = 12,
-        Player3 = 13,
-        Player4 = 14,
+        Player1 = 0,
+        Player2 = 1,
+        Player3 = 2,
+        Player4 = 3,
     }
 
     public enum CursorState
@@ -50,11 +50,11 @@ public class Enums : MonoBehaviour
         Water = 2,
     }
 
-    public enum ActiveTile
+    public enum ActiveSpace
     {
+        Inactive = -1,
         Move     = 0,
         Attack   = 1,
-        Inactive = 2,
     }
 
     public enum GridBlockType

@@ -6,23 +6,24 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    Enums.Player _player;
-    PlayerManager _pM;
-    UnitController _unitController;
+    [HideInInspector] public UnitManager UnitManager;
+    [HideInInspector] public UnitController UnitController;
+
+    private PlayerManager _pM;
 
     public bool NextAction()
     {
         UnitController target = null;
-        var units = _pM.GetPlayerInfo(Enums.Player.Player1).Units;
+        var units = _pM.PlayerInfo.Units;
 
-        int maxAttackRange = _unitController.MoveDistance + _unitController.MaxAttackDistance;
-        int minAttackRange = _unitController.MinAttackDistance;
+        int maxAttackRange = UnitController.MoveDistance + UnitController.MaxAttackDistance;
+        int minAttackRange = UnitController.MinAttackDistance;
 
-        List<UnitController> inRangeUnits = units.Where(u => u.Position.GridDistance(_unitController.Position) == _unitController.MaxAttackDistance).ToList();
+        List<UnitController> inRangeUnits = units.Where(u => u.Position.GridDistance(UnitController.Position) == UnitController.MaxAttackDistance).ToList();
         units = units.Except(inRangeUnits).ToList();
-        List<UnitController> tooCloseUnits = units.Except(inRangeUnits).Where(u => u.Position.GridDistance(_unitController.Position) <= minAttackRange).ToList();
+        List<UnitController> tooCloseUnits = units.Except(inRangeUnits).Where(u => u.Position.GridDistance(UnitController.Position) <= minAttackRange).ToList();
         units = units.Except(tooCloseUnits).ToList();
-        List<UnitController> closeUnits = units.Except(inRangeUnits.Union(tooCloseUnits)).Where(u => u.Position.GridDistance(_unitController.Position) <= maxAttackRange).ToList();
+        List<UnitController> closeUnits = units.Except(inRangeUnits.Union(tooCloseUnits)).Where(u => u.Position.GridDistance(UnitController.Position) <= maxAttackRange).ToList();
         units = units.Except(closeUnits).ToList();
         List<UnitController> targets = units.Except(tooCloseUnits).ToList();
         
@@ -36,23 +37,23 @@ public class EnemyController : MonoBehaviour
         }
         else if(closeUnits.Count > 0)
         {
-            target = closeUnits.OrderBy(u => u.Position.GridDistance(_unitController.Position)).FirstOrDefault();
+            target = closeUnits.OrderBy(u => u.Position.GridDistance(UnitController.Position)).FirstOrDefault();
         }
         else if(targets.Count > 0)
         {
-            target = targets.OrderBy(u => u.Position.GridDistance(_unitController.Position)).FirstOrDefault();
+            target = targets.OrderBy(u => u.Position.GridDistance(UnitController.Position)).FirstOrDefault();
         }
 
         if (target != null)
         {
-            if (_unitController.CheckAttack(target))
+            if (UnitController.CheckAttack(target))
                 return true;
 
-            var gbTarget = target.CurrentGridBlock.GetRangedSpaces(_unitController.CurrentGridBlock, minAttackRange);
+            var gbTarget = target.CurrentGridBlock.GetRangedSpaces(UnitController.CurrentGridBlock, minAttackRange);
 
             if (gbTarget != null)
             {
-                _unitController.Target = target;
+                UnitController.Target = target;
                 return MoveToNextSpace(gbTarget, target);
             }
         }
@@ -64,42 +65,40 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         _pM = FindObjectOfType<PlayerManager>();
-        _unitController = gameObject.GetComponent<UnitController>();
-        _player = _unitController.Player;
-        _unitController.EnemyController = this;
+        UnitController = gameObject.GetComponent<UnitController>();
+        UnitController.EnemyController = this;
     }
 
     private bool MoveToNextSpace(GridBlock gbTarget, UnitController ucTarget)
     {
-        if (_unitController.CurrentGridBlock != null)
+        if (UnitController.CurrentGridBlock != null)
         {
-            _pM.GetPlayerInfo(_player).ResetNonPlayerGrid = false;
             // Try to create a path to target unit. Path returns 0, then the unit is stuck and can't move, so don't put it on cooldown.
-            var _moves = _pM.CreatePath(_unitController.Player, _unitController.CurrentGridBlock, gbTarget).ToList();
+            var _moves = UnitManager.CreatePath(UnitController.CurrentGridBlock, gbTarget).ToList();
 
             List<GridBlock> backupSpaces = null;
             double dis = 9999;
             if (ucTarget != null)
-                dis = _unitController.Position.GridDistance(ucTarget.Position);
-            _unitController.Target = ucTarget;
+                dis = UnitController.Position.GridDistance(ucTarget.Position);
+            UnitController.Target = ucTarget;
 
 
-            if (dis <= _unitController.MaxAttackDistance && dis >= _unitController.MinAttackDistance)
+            if (dis <= UnitController.MaxAttackDistance && dis >= UnitController.MinAttackDistance)
             {
-                _unitController.CheckAttack(gbTarget.CurrentUnit);
+                UnitController.CheckAttack(gbTarget.CurrentUnit);
                 return true;
             }
-            else if (_moves?.Count > 0 && dis > _unitController.MaxAttackDistance)
+            else if (_moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
             {
-                _moves = MaxMovementPath(_moves, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
-                _pM.ResetPathMatrix(_player);
+                _moves = MaxMovementPath(_moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
+                UnitManager.ResetBlockGrid();
                 bool action = false;
-                if (_unitController.Target != null)
+                if (UnitController.Target != null)
                 {
-                    if (_moves.Last().Position.GridDistance(ucTarget.Position) < _unitController.MaxAttackDistance)
+                    if (_moves.Last().Position.GridDistance(ucTarget.Position) < UnitController.MaxAttackDistance)
                     {
                         var lastGrid = _moves.Last();
-                        var newTargetGrid = lastGrid.Neighbors.OrderByDistance(_unitController.CurrentGridBlock, true).ToList().FirstOrDefault();
+                        var newTargetGrid = lastGrid.Neighbors.OrderByDistance(UnitController.CurrentGridBlock, true).ToList().FirstOrDefault();
 
                         if (newTargetGrid != null && _moves.Contains(newTargetGrid))
                         {
@@ -112,28 +111,28 @@ public class EnemyController : MonoBehaviour
                         }
                         else if (newTargetGrid == null)
                         {
-                            _unitController.Target = null;
+                            UnitController.Target = null;
                             action = false;
                         }
                     }
                 }
                 if (_moves.Count > 0)
                 {
-                    _unitController.MoveTo(_moves);
+                    UnitController.MoveTo(_moves);
                     action = true;
                 }
 
                 if (action)
                     return true;
             }
-            else if ((backupSpaces = _unitController.CurrentGridBlock.AvailableAttackSpace(gbTarget, _unitController.MaxAttackDistance).ToList()).Count > 0)
+            else if ((backupSpaces = UnitController.CurrentGridBlock.AvailableAttackSpace(gbTarget, UnitController.MaxAttackDistance).ToList()).Count > 0)
             {
-                _unitController.MoveTo(new List<GridBlock>() { _unitController.CurrentGridBlock, backupSpaces.First() });
+                UnitController.MoveTo(new List<GridBlock>() { UnitController.CurrentGridBlock, backupSpaces.First() });
                 return true;
             }
             else
             {
-                _unitController.Target = null;
+                UnitController.Target = null;
             }
 
             //if (path.Count > 1)

@@ -27,18 +27,19 @@ public class UnitController : MonoBehaviour
     public int MinAttackDistance;
     public int MoveDistance;
 
-    [HideInInspector] public UnitController Target { get; set; }
-    [HideInInspector] public float Cooldown { get; private set; }
-    [HideInInspector] public GridBlock CurrentGridBlock { get; private set; }
-    [HideInInspector] public double DistanceFromCursor { get; private set; }
+    public UnitManager UnitManager {get;set;}
+    public UnitController Target { get; set; }
+    public float Cooldown { get; private set; }
+    public GridBlock CurrentGridBlock { get; private set; }
+    public double DistanceFromCursor { get; private set; }
+
+
 
     public bool Attacked { get; private set; }
     public bool Moved { get; private set; }
     public bool Moving { get; private set; }
 
     Enums.UnitState _unitState;
-    PlayerManager _pM;
-    EnemyManager _eM;
     CursorController _cC;
     Animator _animator;
     SpriteRenderer _sR;
@@ -52,7 +53,6 @@ public class UnitController : MonoBehaviour
     bool _selected;
     bool _attack;
     bool _blocked;
-    bool _hurt;
     float _defaultLook;
     float _lookX;
     float _lookY;
@@ -222,18 +222,15 @@ public class UnitController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
         _bC = GetComponent<BoxCollider2D>();
-        _pM = FindObjectOfType<PlayerManager>();
 
         if (Player == Enums.Player.Player1)
         {
             _cC = FindObjectOfType<CursorController>();
             _cC.OnCursorMoveEvent += OnCursorMove;
         }
-        else if (Player != Enums.Player.Player1)
-            _eM = FindObjectOfType<EnemyManager>();
 
         if (!OnCooldown)
-            _eM?.AddUnit(EnemyController);
+            UnitManager?.AddUnit(this, true);
 
         switch (Player)
         {
@@ -247,10 +244,10 @@ public class UnitController : MonoBehaviour
                 break;
         }
 
+        gameObject.name = $"P{((int)Player) + 1}_" + gameObject.name;
+
         _bC.size = ColliderSizeIdle;
         ResetLook();
-
-        _pM.AddPlayerUnit(Player, this);
 
         if (OffCooldownObject != null)
             Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
@@ -339,7 +336,8 @@ public class UnitController : MonoBehaviour
                     Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
                 }
 
-                _eM?.AddUnit(EnemyController);
+                if(Player != Enums.Player.Player1)
+                UnitManager?.AddUnit(this);
             }
         }
         else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
@@ -347,9 +345,9 @@ public class UnitController : MonoBehaviour
             PlayerUnitLog($": {gameObject.name} goes on cooldown");
             GoOnCooldown();
         }
-        else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
+        else if (Player != Enums.Player.Player1 && _nextPoint == null && _unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
         {
-            _eM?.AddUnit(EnemyController);
+            UnitManager.AddUnit(this);
         }
     }
 
@@ -407,8 +405,7 @@ public class UnitController : MonoBehaviour
 
     private void OnDestroy()
     {
-        _pM?.RemoveUnit(Player, this);
-        _eM?.RemoveUnit(EnemyController);
+        UnitManager.RemoveUnit(this);
         if (_cC != null)
             _cC.OnCursorMoveEvent -= OnCursorMove;
     }
@@ -458,7 +455,7 @@ public class UnitController : MonoBehaviour
     private void GoOnCooldown()
     {
         Reset();
-        _pM.PlayerUnitMoveDown(Player, this);
+        //_pM?.PlayerUnitMoveDown(this);
         _originalPoint = CurrentGridBlock;
         Cooldown = CooldownTimer * (!Attacked ? .6f : 1);
         _animator.SetBool("Cooldown", OnCooldown = true);

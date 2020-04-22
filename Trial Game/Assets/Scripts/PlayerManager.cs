@@ -4,61 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : UnitManager
 {
-    [HideInInspector] public List<PlayerInfo> PlayerList;
-    [HideInInspector] public GameObject PauseScreen;
-    [HideInInspector] public bool DebugOn;
-    [HideInInspector] public float ActionTimer;
+    public GameObject PauseScreen;
+    public bool DebugOn;
+    public float ActionTimer;    
 
-    private GridBlock[,] _fullGrid;
     private List<UnitController> _nextUnitList;
     private bool _pause;
     private bool _isGamePaused;
-    private int _gridSizeX;
-    private int _gridSizeY;
     private double _actionTimer;
     private double _lastRealTime;
 
-    public bool GetDeleteMoveSpace(Enums.Player player)
+    public bool GetDeleteMoveSpace()
     {
-        var tmp = PlayerList.Where(x => x.Player == player).FirstOrDefault();
-        return tmp.DeleteMoveSpace;
+        return PlayerInfo.DeleteMoveSpace;
     }
 
-    public void ResetPathMatrix(Enums.Player player)
+    public GridBlock[,] GetGridMatrix()
     {
-        PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid = new GridBlock[_gridSizeX, _gridSizeY];
+        return PlayerInfo.BlockGrid;
     }
 
-    public GridBlock GetMovementSpace(Enums.Player player, Vector2 gridPos)
+    public bool GridMatrixContains(GridBlock gB)
     {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid[(int)gridPos.x, (int)gridPos.y];
-    }
-
-    public void UpdateMovementGrid(Enums.Player player, Vector2 pos, GridBlock gB)
-    {
-        var grid = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
-        if (pos.x < grid.GetLength(0) && pos.y < grid.GetLength(0))
-                PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid[(int)pos.x, (int)pos.y] = gB;
-    }
-
-    public GridBlock[,] GetPathMatrix(Enums.Player player)
-    {
-        if (player == Enums.Player.Player1)
-            return PlayerList.Where(x => x.Player == player).FirstOrDefault()?.MovementGrid;
-        else
-            return _fullGrid;
-    }
-
-    public PlayerInfo GetPlayerInfo(Enums.Player player)
-    {
-        return PlayerList.Where(x => x.Player == player).FirstOrDefault();
-    }
-
-    public bool PathMatrixContains(Enums.Player player, GridBlock gB)
-    {
-        var matrix = PlayerList.Where(x => x.Player == player).FirstOrDefault().MovementGrid;
+        var matrix = PlayerInfo.BlockGrid;
         int mLength = matrix.GetLength(0);
         for(int i = 0; i < mLength; i++)
         {
@@ -76,10 +46,7 @@ public class PlayerManager : MonoBehaviour
     {
         GridBlock[,] grid;
 
-        //if (player == Enums.Player.Player1)
-            grid = GetPlayerInfo(player).MovementGrid;
-       // else
-            //grid = _fullGrid;
+        grid = PlayerInfo.BlockGrid;
 
         int lengthX = grid.GetLength(0);
         int lengthY = grid.GetLength(1);
@@ -96,22 +63,12 @@ public class PlayerManager : MonoBehaviour
         Debug.Log(s);
     }
 
-    public IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock startPos, GridBlock endPos)
-    {
-        var pathList = PathFinder.CreatePath(player, startPos, endPos, GetPathMatrix(player));
-
-        if (player == Enums.Player.Player1)
-            GetPlayerInfo(player).MovementPath = pathList.ToList();
-
-        return pathList;
-    }
-
     public UnitController GetNextUnit(Enums.Player player, UnitController unit)
     {
         if(_nextUnitList == null) // Grab all units that are already in the map at the start.
         {
             _nextUnitList = new List<UnitController>();
-            var playerUnits = GetPlayerInfo(player).Units;
+            var playerUnits = PlayerInfo.Units;
             foreach(var u in playerUnits)
             {
                 var random = new System.Random();
@@ -145,40 +102,26 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
+    public override IEnumerable<GridBlock> CreatePath(GridBlock startPos, GridBlock endPos)
     {
-        ResetPathMatrix(player);
-        yield return new WaitUntil(() => true);
-        gridBlock.CreateGrid(
-            start,
-            player,
-            moveDistance,
-            minAttackDistance,
-            moveDistance > 0 ? maxAttackDistance : maxAttackDistance + 1
-        );
-        //PrintPlayerGrid(player);
+        var pathList = PathFinder.CreatePath(Player, startPos, endPos, GetGridMatrix());
+        PlayerInfo.MovementPath = pathList.ToList();
+
+        return pathList;
     }
 
-    public void CreateGrid(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistnace, int attackDistance)
+    protected override void Awake()
     {
-        ResetPathMatrix(player);
-        gridBlock.CreateGrid(
-            start,
-            player,
-            moveDistance,
-            minAttackDistnace,
-            moveDistance > 0 ? attackDistance : attackDistance + 1
-        );
-    }
+        base.Awake();
 
-    private void Awake()
-    {
         _actionTimer = 0;
-    }
 
-    private void Start()
-    {
-        StartCoroutine(GetGridBlocks());
+        var nonNullUnits = StartingUnits.Where(uC => uC != null).ToList();
+        foreach (UnitController uC in nonNullUnits)
+        {
+            uC.Player = Player;
+            uC.UnitManager = this;
+        }
     }
 
     private void Update()
@@ -239,64 +182,17 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    public void AddPlayerUnit(Enums.Player player, UnitController unit)
+    public override void AddUnit(UnitController unit, bool addAtRandom = false)
     {
-        GetPlayerInfo(player).Units.Add(unit);
         if (_nextUnitList != null)
             _nextUnitList.Add(unit);
+
+        base.AddUnit(unit);
     }
 
-    public void RemoveUnit(Enums.Player player, UnitController unit)
-    {
-        GetPlayerInfo(player).Units.Remove(unit);
-    }
-
-    public void PlayerUnitMoveDown(Enums.Player player, UnitController unit)
-    {
-        GetPlayerInfo(player).Units.Remove(unit);
-        GetPlayerInfo(player).Units.Add(unit);
-    }
-
-    private IEnumerator GetGridBlocks()
-    {
-        yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0);
-
-        var allGridBlocks = FindObjectsOfType<GridBlock>();
-        float minX = allGridBlocks.Min(gb => gb.Position.x);
-        float maxX = allGridBlocks.Max(gb => gb.Position.x);
-        float minY = allGridBlocks.Min(gb => gb.Position.y);
-        float maxY = allGridBlocks.Max(gb => gb.Position.y);
-
-        _gridSizeX = (int)(maxX - minX) + 1;
-        _gridSizeY = (int)(maxY - minY) + 1;
-        _fullGrid = new GridBlock[_gridSizeX, _gridSizeY];
-
-        // Use the highest ABS value between the min and max for the list math 
-        // I.E. - minX = -8.5 and maxX = 7.5, gridSizeX = 17 ((maxX - minX) + 1);
-        // the '0' index for the grid is -8.5 + 8.5 = 0 andthe '16' index is 7.5 + 8.5
-        maxX = Mathf.Max(maxX, Mathf.Abs(minX));
-        maxY = Mathf.Max(maxY, Mathf.Abs(minY));
-
-        foreach (GridBlock gb in allGridBlocks)
-        {
-            int posX = (int)(gb.Position.x + maxX);
-            int posY = (int)(gb.Position.y + maxY);
-
-            gb.GridPosition = new Vector2(posX, posY);
-
-            _fullGrid[posX, posY] = gb.Unpassable ? null : gb;
-        }
-    }
-
-    [Serializable]
-    public class PlayerInfo
-    {
-        public Enums.Player Player;
-        public GridBlock[,] MovementGrid;
-        public List<GridBlock> MovementPath;
-        public List<UnitController> Units;
-        public bool DeleteMoveSpace;
-        public bool HideGrid;
-        public bool ResetNonPlayerGrid;
-    }
+    //public void PlayerUnitMoveDown(UnitController unit)
+    //{
+    //    PlayerInfo.Units.Remove(unit);
+    //    PlayerInfo.Units.Add(unit);
+    //}
 }

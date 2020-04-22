@@ -171,7 +171,7 @@ MonoBehaviour:
   HurtAudioSource: {fileID: 2635142902251534675}
   WalkingAudioSource: {fileID: 4877884251898067759}
   AlliedWith: 
-  Player: 11
+  Player: 0
   OffCooldownObject: {fileID: 6984718576672131601, guid: 527e62d427a8a0f428ed52dbf3b3472c,
     type: 3}
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,

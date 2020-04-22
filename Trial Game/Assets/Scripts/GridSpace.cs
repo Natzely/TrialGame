@@ -52,39 +52,4 @@ public class GridSpace : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _pM = FindObjectOfType<PlayerManager>();
     }
-
-    virtual protected void Update()
-    {
-        var grid = _pM.GetPathMatrix(Player);
-        bool inGrid = false;
-
-        if (grid != null)
-        {
-            for (int y = 0; y < grid.GetLength(1); y++)
-            {
-                for (int x = 0; x < grid.GetLength(0); x++)
-                {
-                    if (grid[x, y] == ParentGridBlock)
-                    {
-                        inGrid = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if(!inGrid)
-            gameObject.SetActive(false);
-
-        if (_pM.GetDeleteMoveSpace(Player))
-            gameObject.SetActive(false);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        CursorController cc = collision.gameObject.GetComponent<CursorController>();
-        if (cc != null && cc.CurrentSpace == this)
-            cc.CurrentSpace = null;
-            
-    }
 }
