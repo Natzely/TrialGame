@@ -61,21 +61,12 @@ public class CursorController : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
-        _minXClamp = Boundaries.points[0].x + .5f;//.bounds.extents.x - .5f;
-        _maxYClamp = Boundaries.points[0].y - .5f;
-        _maxXClamp = Boundaries.points[2].x - .5f;
-        _minYClamp = Boundaries.points[2].y + .5f;
+        _minXClamp = Boundaries.points[1].x + .5f;
+        _minYClamp = Boundaries.points[1].y + .5f;
+        _maxXClamp = Boundaries.points[3].x - .5f;
+        _maxYClamp = Boundaries.points[3].y - .5f;
         _startPos = transform.position;
-
-        switch (Player)
-        {
-            case Enums.Player.Player2:
-                _playerColor = _sR.color = Colors.Player2;
-                break;
-            default:
-                _playerColor = _sR.color = Colors.Player1;
-                break;
-        }
+        _playerColor = _sR.color = Colors.Player1;
     }
 
     // Update is called once per frame
@@ -289,8 +280,10 @@ public class CursorController : MonoBehaviour
 
                 _aS.Play(SoundSelect);
 
-                StartCoroutine(_pM.CreateGridAsync(_currGridBlock, Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, 
-                    _currUnit.MinAttackDistance, _currUnit.MaxAttackDistance));
+                _currGridBlock.SetGrid(null, _currUnit.MoveDistance + _currGridBlock.MovementCost, _currUnit.MinAttackDistance, _currUnit.MaxAttackDistance);
+
+                //StartCoroutine(_pM.CreateGridAsync(_currGridBlock, Player, _currGridBlock, _currUnit.MoveDistance + _orgGridBlock.MovementCost, 
+                //    _currUnit.MinAttackDistance, _currUnit.MaxAttackDistance));
 
                 _moves = new List<GridBlock>() { _currGridBlock };
             }

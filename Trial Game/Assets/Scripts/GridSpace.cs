@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GridSpace : MonoBehaviour
 {
+    public float MoveAnimationSpeed;
+
+    private bool _activate;
+
     public Vector2 Position
     {
         get { return new Vector2(transform.position.x, transform.position.y); }
@@ -21,9 +25,22 @@ public class GridSpace : MonoBehaviour
         set { _sR.enabled = value; }
     }
 
-    public void Enable()
+    public void Enable(Vector2? moveFrom)
     {
-        gameObject.SetActive(true);
+        if (!gameObject.activeSelf)
+        {
+            if (moveFrom != null)
+            {
+                var newT = transform.position.Copy();
+
+                newT.x = (transform.position.x + moveFrom.Value.x) / 2;
+                newT.y = (transform.position.y + moveFrom.Value.y) / 2;
+                transform.position = newT;
+                _activate = true;
+            }
+
+            gameObject.SetActive(true);
+        }
     }
 
     public void Disable()
@@ -31,7 +48,7 @@ public class GridSpace : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public bool SpaceActive
+    public bool Active
     {
         get { return gameObject.activeSelf; }
     }
@@ -51,5 +68,19 @@ public class GridSpace : MonoBehaviour
     {
         _sR = GetComponent<SpriteRenderer>();
         _pM = FindObjectOfType<PlayerManager>();
+    }
+
+    private void Update()
+    {
+        if (_activate)
+        {
+            Vector2 moveVector = Vector2.MoveTowards(transform.position, ParentGridBlock.transform.position, MoveAnimationSpeed * Time.deltaTime);
+            transform.position = moveVector;
+
+            if (transform.position == ParentGridBlock.transform.position)
+            {
+                _activate = false;
+            }
+        }
     }
 }

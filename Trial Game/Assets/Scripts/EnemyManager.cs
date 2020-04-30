@@ -31,13 +31,12 @@ public class EnemyManager : UnitManager
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(DealyTimer <= 0 && PlayerInfo.Units.Count > 0)
         {
             var nextEnemy = PlayerInfo.Units[0];
-            if (nextEnemy != null && nextEnemy.gameObject != null)
+            if (nextEnemy != null)
             {
                 var enemy = PlayerInfo.Units.Dequeue();    // Get next enemy (enemy is removed from the queue)
                 var enemyController = enemy.GetComponent<EnemyController>();
@@ -46,7 +45,7 @@ public class EnemyManager : UnitManager
                 else
                     PlayerInfo.Units.Add(enemy);           // No action was taken so add the enemy back to the end of the list.
             }
-            else if(nextEnemy != null)
+            else
                 PlayerInfo.Units.RemoveAt(0);
         }
 

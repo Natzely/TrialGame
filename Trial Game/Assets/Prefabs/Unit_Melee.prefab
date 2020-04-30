@@ -183,6 +183,7 @@ MonoBehaviour:
   OnCooldown: 0
   AttackSpeed: 500
   CooldownTimer: 20
+  Cooldown: 0
   Speed: 3
   MaxAttackDistance: 1
   MinAttackDistance: 1

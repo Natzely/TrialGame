@@ -43,4 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ecaaac7a22b8b74db7ebb31d849bdc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveDelay: 4
+  Player: 0
+  CursorBoundaries: {fileID: 0}
+  StartingUnits: []
+  DebugLog: 0
+  MoveDelay: 3.5
+  DealyTimer: 0

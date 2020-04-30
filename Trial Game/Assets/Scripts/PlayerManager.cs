@@ -7,10 +7,10 @@ using UnityEngine;
 public class PlayerManager : UnitManager
 {
     public GameObject PauseScreen;
-    public bool DebugOn;
     public float ActionTimer;    
 
     private List<UnitController> _nextUnitList;
+    HashSet<GridBlock> _activeGrid;
     private bool _pause;
     private bool _isGamePaused;
     private double _actionTimer;
@@ -61,6 +61,47 @@ public class PlayerManager : UnitManager
         }
 
         Debug.Log(s);
+    }
+
+    public void UpdateBlockGrid(Vector2 pos, GridBlock gB, bool showOnGrid)
+    {
+        var grid = PlayerInfo.BlockGrid;
+        if (pos.x < grid.GetLength(0) && pos.y < grid.GetLength(0))
+        {
+            if (showOnGrid)
+                PlayerInfo.ActiveGrid.Add(gB);
+            else
+            {
+                PlayerInfo.ActiveGrid.Remove(gB);
+                gB = null;
+            }
+            PlayerInfo.BlockGrid[(int)pos.x, (int)pos.y] = gB;
+        }
+    }
+
+    public void UpdateActiveGrid(GridBlock updateFrom)
+    {
+        var orderList = PlayerInfo.ActiveGrid
+            .OrderByDescending(p => p.PlayerMoveDistance)
+            .ThenByDescending(p => p.PlayerAttackDistance)
+            .ToList();
+
+        var loopList = orderList.Skip(1).ToList();
+        loopList.Remove(updateFrom);
+
+        foreach(GridBlock gB in loopList)
+        {
+            var bestN = gB.Neighbors.GetBestMoveNeighbor();
+            if (bestN != null)
+            { 
+                var mParams = bestN.GetPlayerMoveParams();
+                gB.SetGrid(null, mParams.Item1, mParams.Item2, mParams.Item3);
+            }
+            else
+            {
+                gB.SetGrid(null, -1, -1, -1);
+            }
+        }
     }
 
     public UnitController GetNextUnit(Enums.Player player, UnitController unit)

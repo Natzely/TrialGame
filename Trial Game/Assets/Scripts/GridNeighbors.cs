@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class GridNeighbors : IEnumerable<GridBlock>
@@ -43,24 +44,43 @@ public class GridNeighbors : IEnumerable<GridBlock>
         get { return _neighbors[Enums.NeighborDirection.Right]; }
     }
 
+    public GridBlock GetBestMoveNeighbor()
+    {
+        GridBlock rGB = null;
+        (int move, int min, int max) param = (-1, -1, -1);
+
+        foreach(var gB in _neighbors.Values)
+        {
+            if (gB != null)
+            {
+                var values = gB.GetPlayerMoveParams();
+                if (values.MoveDistance > param.move)
+                {
+                    param = values;
+                    rGB = gB;
+                }
+                else if (values.MaxAttackDis > param.max)
+                {
+                    param = values;
+                    rGB = gB;
+                }
+            }
+        }
+
+        return rGB;
+    }
+
     public IEnumerable<GridBlock> OrderByDistance(GridBlock from, bool onlyAvailable = false)
     {
         if (from == null)
             return null;
 
-        try
-        {
-            var n = _neighbors.Values.ToList();
-            if (onlyAvailable)
-                n = AvailableNeighbors().ToList();
-            var orderedNeighbors = n.OrderBy(g => g.transform.position.GridDistance(from.transform.position)).ToList();
-            return orderedNeighbors;
-        }
-        catch
-        {
-            Console.WriteLine("");
-        }
-        return null;
+        var neighbors = _neighbors.Values.Where(n => n != null).ToList();
+        if (onlyAvailable)
+            neighbors = AvailableNeighbors().ToList();
+        var orderedNeighbors = neighbors.OrderBy(g => g.transform.position.GridDistance(from.transform.position)).ToList();
+
+        return orderedNeighbors;
     }
 
     public IEnumerable<GridBlock> AvailableNeighbors(Vector2? behindGrid = null)

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
-public class UnitController : MonoBehaviour
+public class UnitController : MonoBehaviour, ILog
 {
     public delegate void OnDeath();
     public OnDeath OnUnitDeath;
@@ -22,6 +23,7 @@ public class UnitController : MonoBehaviour
     public bool OnCooldown = false;
     public float AttackSpeed;
     public float CooldownTimer;
+    public float Cooldown;
     public float Speed;
     public int MaxAttackDistance;
     public int MinAttackDistance;
@@ -29,7 +31,6 @@ public class UnitController : MonoBehaviour
 
     public UnitManager UnitManager {get;set;}
     public UnitController Target { get; set; }
-    public float Cooldown { get; private set; }
     public GridBlock CurrentGridBlock { get; private set; }
     public double DistanceFromCursor { get; private set; }
 
@@ -74,26 +75,34 @@ public class UnitController : MonoBehaviour
 
     public void Hover(bool hover)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _animator.SetBool("Hover", hover);
+        Log("----------------------------------------");
     }
 
     public void Select(bool select)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (Cooldown <= 0)
         {
             _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
             _selected = select;
         }
+        Log("----------------------------------------");
     }
 
     public void ReadyAttack(Vector2 pos)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _attack = true;
         _attackPos = pos;
+        Log("----------------------------------------");
     }
 
     public void MoveTo(List<GridBlock> movePoints)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        Log($"Number of moves: {movePoints.Count}");
         if (Cooldown <= 0 && !Moved && movePoints.Count > 0)
         {
             for (int x = 0; x < movePoints.Count; x++)
@@ -104,14 +113,17 @@ public class UnitController : MonoBehaviour
 
             _nextPoint = _movePositions.Dequeue();
             LookAt(_nextPoint.Position);
+            Log("Moving");
             Moving = true;
             _bC.size = ColliderSizeMoving;
-            _animator.SetBool("Selected", true);  
+            _animator.SetBool("Selected", true);
         }
+        Log("----------------------------------------");
     }
 
     public void CancelMove()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _animator.SetBool("Selected", false);
         _movePositions.Clear();
         transform.position = _originalPoint.Position;
@@ -121,12 +133,18 @@ public class UnitController : MonoBehaviour
         Moving = false;
         _bC.size = ColliderSizeIdle;
         ResetLook();
+        Log("----------------------------------------");
     }
 
     public bool CheckAttack(UnitController target = null)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (Target == null && target == null)
+        {
+            Log("No target found");
+            Log("----------------------------------------");
             return false;
+        }
 
         if (target != null)
             Target = target;
@@ -134,16 +152,20 @@ public class UnitController : MonoBehaviour
         var dis = Position.GridDistance(Target.Position);
         if (Target != null && dis <= MaxAttackDistance && dis >= MinAttackDistance)
         {
+            Log("Target found");
             ReadyAttack(Target.Position);
+            Log("----------------------------------------");
             return true;
         }
 
+        Log("Target not the right distance to attack");
+        Log("----------------------------------------");
         return false;
     }
 
     public void EnterAttackState()
     {
-        PlayerUnitLog($"{gameObject.name} enters attack state");
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         LookAt(_attackPos);
         _unitState = Enums.UnitState.Attacking;
         Attacked = true;
@@ -158,24 +180,30 @@ public class UnitController : MonoBehaviour
         var tmpDir = _attackPos - transform.position.V2();
         tmpDir.Normalize();
         tmpProjectile.Launch(tmpDir, AttackSpeed, MaxAttackDistance);
+        Log("----------------------------------------");
     }
 
     public void ExitAttackState()
     {
-        PlayerUnitLog($"{gameObject.name} exits attack state");
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _unitState = Enums.UnitState.Idle;
+        Log("----------------------------------------");
     }
 
     public void EnterHurtState()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _unitState = Enums.UnitState.Hurt;
+        Log("----------------------------------------");
     }
 
     public void ExitHurtState()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _unitState = Enums.UnitState.Idle;
         if (!Attacked)
             CollisionClear();
+        Log("----------------------------------------");
     }
 
     public bool IsEnemy(Enums.Player player)
@@ -186,15 +214,17 @@ public class UnitController : MonoBehaviour
 
     public void DamageResults(bool enemyDestroyed)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (_blocked)
             FindGoodPreviousSpot();
 
         _blocked = false;
+        Log("----------------------------------------");
     }
 
     public void Reset()
     {
-        PlayerUnitLog($"{gameObject.name} Reset");
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Select(false);
         Hover(false);
         _nextPoint = null;
@@ -205,6 +235,7 @@ public class UnitController : MonoBehaviour
         Target = null;
         _bC.size = ColliderSizeIdle;
         ResetLook();
+        Log("----------------------------------------");
     }
 
     void Awake()
@@ -262,28 +293,42 @@ public class UnitController : MonoBehaviour
             transform.position = moveVector;
             if (transform.position.V2() == _nextPoint.Position)
             {
+                Log("Arrived at point");
                 _pastPositions.Push(_nextPoint);
                 if (!_movePositions.IsEmpty())
                 {
+                    Log("Get next point");
                     _nextPoint = _movePositions.Dequeue();
+                    Log("Check if last move is empty");
                     if (_nextPoint.CurrentUnit != null && _movePositions.IsEmpty())
                     {
+                        Log("Next point is not empty");
                         if (CurrentGridBlock.CurrentUnit == this)
+                        {
+                            Log("Stop at current spot");
                             _nextPoint = null;
+                        }
                         else
+                        {
+                            Log("Find a better previous spot");
                             FindGoodPreviousSpot();
+                        }
                     }
                     else
+                    {
+                        Log("Next point is not last point or last point is empty");
                         LookAt(_nextPoint.Position);
+                    }
                 }
                 else
                 {
+                    Log("Last move");
                     _nextPoint = null;
                 }
 
                 if (_movePositions.IsEmpty() && _nextPoint == null)
                 {
-                    PlayerUnitLog($": {gameObject.name} ends move");
+                    Log($"Ends move");
                     Moving = false;
                     Moved = true;
                 }
@@ -292,7 +337,7 @@ public class UnitController : MonoBehaviour
 
         if(Target != null && _movePositions.IsEmpty() && _nextPoint == null)
         {
-            PlayerUnitLog($": {gameObject.name} checks for attack");
+            Log($"checks for attack");
             CheckAttack();
         }
          
@@ -301,7 +346,7 @@ public class UnitController : MonoBehaviour
 
         if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch"))
         {
-            PlayerUnitLog($": {gameObject.name} attacks");
+            Log($"attacks");
             _attack = false;
             Attack();
             if (_blocked)
@@ -309,17 +354,18 @@ public class UnitController : MonoBehaviour
         }
 
         if(Attacked)
-        PlayerUnitLog($"{gameObject.name} Cooldown Conditions - " +
+            Log($"Cooldown Conditions - " +
             $"State Idle = {_unitState} | " +
             $"Moved = {Moved} | " +
             $"Attacked = {Attacked}");
+
         if (Cooldown > 0)
         {
             Cooldown -= Time.deltaTime;
             _animator.speed = Mathf.Clamp((1 - Cooldown / CooldownTimer), .2f, 1) * 3 + .1f;
             if (Cooldown <= 0)
             {
-                PlayerUnitLog($": {gameObject.name} ends move");
+                Log($"Come of cooldwon");
                 
                 _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
@@ -332,40 +378,52 @@ public class UnitController : MonoBehaviour
 
                 if (OffCooldownObject != null)
                 {
-                    Debug.Log("Create cooldown object");
+                    Log("Create cooldown object");
                     Instantiate(OffCooldownObject, transform.position, Quaternion.identity);
                 }
 
-                if(Player != Enums.Player.Player1)
-                UnitManager?.AddUnit(this);
+                if (Player != Enums.Player.Player1) // This is for non player units to make sure all units are looped through
+                    UnitManager?.AddUnit(this);
             }
         }
         else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
         {
-            PlayerUnitLog($": {gameObject.name} goes on cooldown");
+            Log($"goes on cooldown");
             GoOnCooldown();
         }
         else if (Player != Enums.Player.Player1 && _nextPoint == null && _unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
         {
-            UnitManager.AddUnit(this);
+            if (!UnitManager.PlayerInfo.Units.Contains(this))
+            {
+                Log($"added to unit list");
+                UnitManager.AddUnit(this);
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         var gO = collision.gameObject;
         GridBlock gB = gO.GetComponent<GridBlock>();
         UnitController uC = gO.GetComponent<UnitController>();
-        CursorController cc = gO.GetComponent<CursorController>();
 
         if(gB != null)
         {
+            Log("Gridblock entered");
+            if (CurrentGridBlock?.CurrentUnit == this)
+            {
+                Log("Updating last Gridblock");
+                CurrentGridBlock.CurrentUnit = null;
+            }
+
             CurrentGridBlock = gB;
             if (_originalPoint == null)
                 _originalPoint = gB;
         }
         else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MinAttackDistance == 1)
         {
+            Log("Collided with enemy unit");
             _blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;
             if(Mathf.Abs(colDir.x) > Mathf.Abs(colDir.y))
@@ -377,70 +435,68 @@ public class UnitController : MonoBehaviour
                 UnitCollision(collision.gameObject.transform.position, colDir.y, _lookY);
             }
         }
-        else if(cc != null)
-        {
-            _cC = cc;
-        }
+        Log("----------------------------------------");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //CursorController cc = collision.gameObject.GetComponent<CursorController>();
-        //if (cc != null && !_selected && !Moving && !Attacked)
-        //{
-        //    if (cc.CurrentUnit == this)
-        //    {
-        //        cc.CurrentUnit = null;
-        //        Debug.Log("Current Unit Null");
-        //    }
-        //    _cC = null;
-        //    Reset();
-        //}
-
-        if(_cC != null && collision.gameObject == _cC.gameObject && !_selected && !Moving && !Moved && !Attacked)
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        if (_cC != null && collision.gameObject == _cC.gameObject && !_selected && !Moving && !Moved && !Attacked)
         {
             Hover(false);
         }
+        Log("----------------------------------------");
     }
 
     private void OnDestroy()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         UnitManager.RemoveUnit(this);
         if (_cC != null)
             _cC.OnCursorMoveEvent -= OnCursorMove;
+        Log("----------------------------------------");
     }
 
     private void OnCursorMove(object sender, CursorMoveEventArgs e)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         DistanceFromCursor = transform.position.GridDistance(e.Position);
+        Log("----------------------------------------");
     }
 
     private void UnitCollision(Vector3 attackPos, float colDir, float lookDir)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         float dirRound = Mathf.Round(colDir);
         if (dirRound == lookDir)
         {
             CollisionClear();
             ReadyAttack(attackPos);
         }
+        Log("----------------------------------------");
     }
 
     private void CollisionClear()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Target = null;
         _movePositions.Clear();
         DamageResults(false);
+        Log("----------------------------------------");
     }
 
     private void Attack()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Target = null;
         _unitState = Enums.UnitState.Attacking;
         _animator.SetTrigger("Launch");
+        Log("----------------------------------------");
     }
 
     private void FindGoodPreviousSpot()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         foreach (var pos in _pastPositions)
         {
             _movePositions.Enqueue(pos);
@@ -450,25 +506,31 @@ public class UnitController : MonoBehaviour
                 break;
             }
         }
+        Log("----------------------------------------");
     }
 
     private void GoOnCooldown()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Reset();
         //_pM?.PlayerUnitMoveDown(this);
         _originalPoint = CurrentGridBlock;
-        Cooldown = CooldownTimer * (!Attacked ? .6f : 1);
+        Cooldown = CooldownTimer * (!Attacked ? 1 : 1.4f);
         _animator.SetBool("Cooldown", OnCooldown = true);
+        Log("----------------------------------------");
     }
 
     private void ResetLook()
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _animator.SetFloat("Look X", _defaultLook);
         _animator.SetFloat("Look Y", 0);
+        Log("----------------------------------------");
     }
 
     private void LookAt(Vector2 lookAt)
     {
+        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         float x = lookAt.x - transform.position.x;
         float y = lookAt.y - transform.position.y;
         if (x != y)
@@ -476,11 +538,11 @@ public class UnitController : MonoBehaviour
             _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
             _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
         }
+        Log("----------------------------------------");
     }
 
-    private void PlayerUnitLog(string msg)
+    public void Log(string msg)
     {
-        //if (Player == Enums.Player.Player1)
-        //    Debug.Log(msg);
+        UnitManager.Log($"{gameObject.name} | {msg}");
     }
 }

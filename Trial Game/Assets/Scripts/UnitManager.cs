@@ -7,8 +7,11 @@ using UnityEngine;
 public abstract class UnitManager : MonoBehaviour
 {
     public Enums.Player Player;
+    public PolygonCollider2D CursorBoundaries;
     public List<UnitController> StartingUnits;
-    public GridBlock[,] FullGrid;
+    public bool DebugLog;
+    
+    [HideInInspector] public GridBlock[,] FullGrid;
 
     private int _gridSizeX;
     private int _gridSizeY;
@@ -17,58 +20,29 @@ public abstract class UnitManager : MonoBehaviour
 
     public abstract IEnumerable<GridBlock> CreatePath(GridBlock startPos, GridBlock endPos);
 
-    public bool IsGridActive(Vector2 gridPos)
-    {
-        return PlayerInfo.BlockGrid[(int)gridPos.x, (int)gridPos.y] != null;
-    }
-
-    public void UpdateBlockGrid(Vector2 pos, GridBlock gB)
-    {
-        var grid = PlayerInfo.BlockGrid;
-        if (pos.x < grid.GetLength(0) && pos.y < grid.GetLength(0))
-        {
-            if (gB != null)
-                PlayerInfo.ActiveGrids.Add(gB);
-            else
-                PlayerInfo.ActiveGrids.Remove(gB);
-
-            PlayerInfo.BlockGrid[(int)pos.x, (int)pos.y] = gB;
-        }
-    }
-
     public void ResetBlockGrid()
     {
-        PlayerInfo.ActiveGrids.ForEach(aG => aG.Disable(Player));
-        PlayerInfo.ActiveGrids.Clear();
+        PlayerInfo.ActiveGrid.ToList().ForEach(aG => aG.Disable(Player));
+        PlayerInfo.ActiveGrid.Clear();
         PlayerInfo.BlockGrid = new GridBlock[_gridSizeX, _gridSizeY];
     }
 
-    public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
-    {
-        ResetBlockGrid();
-        yield return new WaitUntil(() => true);
-        gridBlock.CreateGrid(
-            start,
-            this,
-            moveDistance,
-            moveDistance > 0 ? maxAttackDistance : maxAttackDistance + 1
-        );
-        //PrintPlayerGrid(player);
-    }
-
-    public void CreateGrid(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistnace, int attackDistance)
-    {
-        ResetBlockGrid();
-        gridBlock.CreateGrid(
-            start,
-            this,
-            moveDistance,
-            moveDistance > 0 ? attackDistance : attackDistance + 1
-        );
-    }
+    //public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
+    //{
+    //    ResetBlockGrid();
+    //    yield return new WaitUntil(() => true);
+    //    gridBlock.CreateGrid(
+    //        start,
+    //        moveDistance,
+    //        moveDistance > 0 ? maxAttackDistance : maxAttackDistance + 1
+    //    );
+    //}
 
     public virtual void AddUnit(UnitController unit, bool addAtRandom = false)
     {
+        if (PlayerInfo.Units.Contains(unit))
+            return;
+
         if (addAtRandom)
         {
             var r = new System.Random();
@@ -84,6 +58,12 @@ public abstract class UnitManager : MonoBehaviour
         PlayerInfo.Units.Remove(unit);
     }
 
+    public void Log(string msg)
+    {
+        if (DebugLog)
+            Debug.Log(msg);
+    }
+
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
@@ -96,13 +76,12 @@ public abstract class UnitManager : MonoBehaviour
 
     private IEnumerator GetGridBlocks()
     {
-        yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0);
+        yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0); // This is to wait until the GridBlock scripts are available to use
 
-        var allGridBlocks = FindObjectsOfType<GridBlock>();
-        float minX = allGridBlocks.Min(gb => gb.Position.x);
-        float maxX = allGridBlocks.Max(gb => gb.Position.x);
-        float minY = allGridBlocks.Min(gb => gb.Position.y);
-        float maxY = allGridBlocks.Max(gb => gb.Position.y);
+        float minX = CursorBoundaries.points[1].x;
+        float maxX = CursorBoundaries.points[3].x;
+        float minY = CursorBoundaries.points[1].y;
+        float maxY = CursorBoundaries.points[3].y;
 
         _gridSizeX = (int)(maxX - minX) + 1;
         _gridSizeY = (int)(maxY - minY) + 1;
@@ -114,15 +93,21 @@ public abstract class UnitManager : MonoBehaviour
         maxX = Mathf.Max(maxX, Mathf.Abs(minX));
         maxY = Mathf.Max(maxY, Mathf.Abs(minY));
 
+        var allGridBlocks = FindObjectsOfType<GridBlock>();
         foreach (GridBlock gb in allGridBlocks)
         {
-            int posX = (int)(gb.Position.x + maxX);
-            int posY = (int)(gb.Position.y + maxY);
+            if (gb != null && gb.Position.InsideSquare(new Vector2(minX, minY), new Vector2(maxX, maxY)))
+            {
+                int posX = (int)(gb.Position.x + maxX);
+                int posY = (int)(gb.Position.y + maxY);
 
-            gb.GridPosition = new Vector2(posX, posY);
+                gb.GridPosition = new Vector2(posX, posY);
 
-            FullGrid[posX, posY] = gb.Unpassable ? null : gb;
+                FullGrid[posX, posY] = gb.Unpassable ? null : gb;
+            }
         }
+
+        ResetBlockGrid();
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public static class Extensions
@@ -92,6 +93,12 @@ public static class Extensions
             return Enums.PathDirection.Right;
         else
             return Enums.PathDirection.Start;
+    }
+
+    public static bool InsideSquare(this Vector2 check, Vector2 minCorner, Vector2 maxCorner)
+    {
+        return check.x >= minCorner.x && check.x <= maxCorner.x &&
+               check.y >= minCorner.y && check.y <= maxCorner.y;
     }
     #endregion -----------------------------------------------------------------------------------------
 

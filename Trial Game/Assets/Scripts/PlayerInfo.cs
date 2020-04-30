@@ -3,7 +3,7 @@
 public class PlayerInfo
 {
     public GridBlock[,] BlockGrid;
-    public List<GridBlock> ActiveGrids;
+    public HashSet<GridBlock> ActiveGrid;
     public List<GridBlock> MovementPath;
     public List<UnitController> Units;
     public bool DeleteMoveSpace;
@@ -11,7 +11,7 @@ public class PlayerInfo
 
     public PlayerInfo()
     {
-        ActiveGrids = new List<GridBlock>();
+        ActiveGrid = new HashSet<GridBlock>();
         MovementPath = new List<GridBlock>();
         Units = new List<UnitController>();
     }

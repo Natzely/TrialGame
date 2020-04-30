@@ -52,9 +52,9 @@ public class Enums : MonoBehaviour
 
     public enum ActiveSpace
     {
-        Inactive = -1,
-        Move     = 0,
-        Attack   = 1,
+        Inactive = 0,
+        Move     = 1,
+        Attack   = 2,
     }
 
     public enum GridBlockType

@@ -112,10 +112,10 @@ public class MoveSpace : GridSpace
     {
         ResetRotation();
         PathDirection = Enums.PathDirection.Start;
-        _animator.SetBool("Head", false);
-        _animator.SetBool("Straight", false);
-        _animator.SetBool("Curve", false);
-        _animator.SetBool("Start", false);
+        _animator?.SetBool("Head", false);
+        _animator?.SetBool("Straight", false);
+        _animator?.SetBool("Curve", false);
+        _animator?.SetBool("Start", false);
     }
     
     private Animator _animator;
