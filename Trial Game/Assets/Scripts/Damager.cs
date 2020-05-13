@@ -14,6 +14,7 @@ public class Damager : MonoBehaviour
     {
         _sR = GetComponent<SpriteRenderer>();
     }
+
     private void Start()
     {
         if(Parent.MaxAttackDistance == 1)
@@ -28,9 +29,9 @@ public class Damager : MonoBehaviour
         Damageable damageable = tmpObj.GetComponent<Damageable>();
         UnitController uC = tmpObj.GetComponent<UnitController>();
         
-        if(uC != null && damageable != null && uC.Player != Player && !uC.AlliedWith.Contains(Player))
+        if(uC != null && damageable != null && uC.Player != Player)// && !uC.AlliedWith.Contains(Player))
         {
-            Parent.DamageResults(damageable.Damage(Damage));
+            Parent.DamageResults(damageable.Damage(this));
             Destroy(gameObject);
         }
     }

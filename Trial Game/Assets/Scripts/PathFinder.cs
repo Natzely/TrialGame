@@ -108,12 +108,12 @@ public class PathFinder
                 dir = gB.Position - pB.Position;
                 // Since the first lastDir is null, it will create an arrow spacefd
                 if (player == Enums.Player.Player1)
-                    gB.UpdateMoveSpaceState(player, dir.Value, lastDir);
+                    gB.UpdateMoveSpaceState(dir.Value, lastDir);
             }
             else if (player == Enums.Player.Player1)
             {
                 // Reached the first space, make it the start
-                gB.UpdateMoveSpaceState(player, new Vector2(0, 0), lastDir);
+                gB.UpdateMoveSpaceState(new Vector2(0, 0), lastDir);
             }
 
             lastDir = dir;

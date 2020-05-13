@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -49,12 +47,29 @@ public class EnemyController : MonoBehaviour
             if (UnitController.CheckAttack(target))
                 return true;
 
-            var gbTarget = target.CurrentGridBlock.GetRangedSpaces(UnitController.CurrentGridBlock, minAttackRange);
+            GridBlock gbTarget = null;
+            List<GridBlock> moves = null;
+            var gbTargets = target.CurrentGridBlock.GetRangedSpaces(UnitController.CurrentGridBlock, minAttackRange);
+
+            if (gbTargets != null)
+            {
+                int pathLength = 99;
+                foreach (var gB in gbTargets)
+                {
+                    var tempMoves = UnitManager.CreatePath(UnitController.CurrentGridBlock, gB);
+                    if (tempMoves.Count() < pathLength)
+                    {
+                        pathLength = tempMoves.Count();
+                        moves = tempMoves.ToList();
+                        gbTarget = gB;
+                    }
+                }
+            }
 
             if (gbTarget != null)
             {
                 UnitController.Target = target;
-                return MoveToNextSpace(gbTarget, target);
+                return MoveToNextSpace(gbTarget, target, moves);
             }
         }
 
@@ -69,12 +84,11 @@ public class EnemyController : MonoBehaviour
         UnitController.EnemyController = this;
     }
 
-    private bool MoveToNextSpace(GridBlock gbTarget, UnitController ucTarget)
+    private bool MoveToNextSpace(GridBlock gbTarget, UnitController ucTarget, List<GridBlock> moves)
     {
         if (UnitController.CurrentGridBlock != null)
         {
             // Try to create a path to target unit. Path returns 0, then the unit is stuck and can't move, so don't put it on cooldown.
-            var _moves = UnitManager.CreatePath(UnitController.CurrentGridBlock, gbTarget).ToList();
 
             List<GridBlock> backupSpaces = null;
             double dis = 9999;
@@ -88,26 +102,26 @@ public class EnemyController : MonoBehaviour
                 UnitController.CheckAttack(gbTarget.CurrentUnit);
                 return true;
             }
-            else if (_moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
+            else if (moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
             {
-                _moves = MaxMovementPath(_moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
+                moves = MaxMovementPath(moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
                 UnitManager.ResetBlockGrid();
                 bool action = false;
                 if (UnitController.Target != null)
                 {
-                    if (_moves.Last().Position.GridDistance(ucTarget.Position) < UnitController.MaxAttackDistance)
+                    if (moves.Last().Position.GridDistance(ucTarget.Position) < UnitController.MaxAttackDistance)
                     {
-                        var lastGrid = _moves.Last();
+                        var lastGrid = moves.Last();
                         var newTargetGrid = lastGrid.Neighbors.OrderByDistance(UnitController.CurrentGridBlock, true).ToList().FirstOrDefault();
 
-                        if (newTargetGrid != null && _moves.Contains(newTargetGrid))
+                        if (newTargetGrid != null && moves.Contains(newTargetGrid))
                         {
-                            int index = _moves.IndexOf(newTargetGrid);
-                            _moves.RemoveRange(index, _moves.Count() - index - 1); // the -1 is to acount for index being 0 based and Count() being 1 based.
+                            int index = moves.IndexOf(newTargetGrid);
+                            moves.RemoveRange(index, moves.Count() - index - 1); // the -1 is to acount for index being 0 based and Count() being 1 based.
                         }
                         else if (newTargetGrid != null)
                         {
-                            _moves.Add(newTargetGrid);
+                            moves.Add(newTargetGrid);
                         }
                         else if (newTargetGrid == null)
                         {
@@ -116,9 +130,9 @@ public class EnemyController : MonoBehaviour
                         }
                     }
                 }
-                if (_moves.Count > 0)
+                if (moves.Count > 0)
                 {
-                    UnitController.MoveTo(_moves);
+                    UnitController.MoveTo(moves);
                     action = true;
                 }
 
@@ -134,15 +148,6 @@ public class EnemyController : MonoBehaviour
             {
                 UnitController.Target = null;
             }
-
-            //if (path.Count > 1)
-            //{
-            //    path = MaxMovementPath(path, _unitController.MoveDistance + _unitController.CurrentGridBlock.MovementCost).ToList();
-            //    _pM.ResetPathMatrix(_player);
-            //    _unitController.MoveTo(path);
-            //    return true;
-            //}
-            //return false;
         }
 
         Debug.Log("Unit Controller no GridBlock");

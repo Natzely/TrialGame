@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ecaaac7a22b8b74db7ebb31d849bdc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: 0
+  Player: 1
   CursorBoundaries: {fileID: 0}
   StartingUnits: []
   DebugLog: 0

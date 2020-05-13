@@ -7,13 +7,12 @@ using UnityEngine;
 public class UnitController : MonoBehaviour, ILog
 {
     public delegate void OnDeath();
-    public OnDeath OnUnitDeath;
+    public OnDeath OnUnitInterupt;
 
     public AudioSource AttackAudioSource;
     public AudioSource HurtAudioSource;
     public AudioSource WalkingAudioSource;
 
-    public List<Enums.Player> AlliedWith;
     public Enums.Player Player = Enums.Player.Player1;
     public GameObject OffCooldownObject;
     public GameObject Projectile;
@@ -25,38 +24,41 @@ public class UnitController : MonoBehaviour, ILog
     public float CooldownTimer;
     public float Cooldown;
     public float Speed;
+    public float Damage;
+    public float Defense;
     public int MaxAttackDistance;
     public int MinAttackDistance;
     public int MoveDistance;
 
-    public UnitManager UnitManager {get;set;}
+    public UnitManager UnitManager { get; set; }
     public UnitController Target { get; set; }
     public GridBlock CurrentGridBlock { get; private set; }
     public double DistanceFromCursor { get; private set; }
-
-
-
     public bool Attacked { get; private set; }
     public bool Moved { get; private set; }
     public bool Moving { get; private set; }
+    public bool Blocked { get; private set; }
 
-    Enums.UnitState _unitState;
-    CursorController _cC;
-    Animator _animator;
-    SpriteRenderer _sR;
-    BoxCollider2D _bC;
-    Queue<GridBlock> _movePositions;
-    Stack<GridBlock> _pastPositions;
-    GridBlock _nextPoint;
-    GridBlock _originalPoint;
-    Vector2 _attackPos;
+    public bool TookAction { get { return OnCooldown || Moving || Moved || Attacked; } }
 
-    bool _selected;
-    bool _attack;
-    bool _blocked;
-    float _defaultLook;
-    float _lookX;
-    float _lookY;
+    private Enums.UnitState _unitState;
+    private CursorController _cC;
+    private Animator _animator;
+    private SpriteRenderer _sR;
+    private BoxCollider2D _bC;
+    private Queue<GridBlock> _movePositions;
+    private Stack<GridBlock> _pastPositions;
+    private GridBlock _nextPoint;
+    private GridBlock _originalPoint;
+    private Damageable _damagable;
+    private Vector2 _attackPos;
+
+    private bool _tasked;
+    private bool _selected;
+    private bool _attack;
+    private float _defaultLook;
+    private float _lookX;
+    private float _lookY;
 
     public Vector3 Position
     {
@@ -105,6 +107,8 @@ public class UnitController : MonoBehaviour, ILog
         Log($"Number of moves: {movePoints.Count}");
         if (Cooldown <= 0 && !Moved && movePoints.Count > 0)
         {
+            _tasked = true; // Task has been given
+
             for (int x = 0; x < movePoints.Count; x++)
             {
                 var point = movePoints[x];
@@ -147,7 +151,10 @@ public class UnitController : MonoBehaviour, ILog
         }
 
         if (target != null)
+        {
             Target = target;
+            _tasked = true;
+        }
 
         var dis = Position.GridDistance(Target.Position);
         if (Target != null && dis <= MaxAttackDistance && dis >= MinAttackDistance)
@@ -166,15 +173,19 @@ public class UnitController : MonoBehaviour, ILog
     public void EnterAttackState()
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        if (_selected)
+            OnUnitInterupt?.Invoke();
+
         LookAt(_attackPos);
         _unitState = Enums.UnitState.Attacking;
         Attacked = true;
         Vector2 dir = _attackPos - transform.position.V2();
         dir.Normalize();
-        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position/* + (dir * .5f)*/, Quaternion.identity);
+        GameObject projObj = Instantiate(Projectile, (Vector2)transform.position, Quaternion.identity);
         Damager damager = projObj.GetComponent<Damager>();
         damager.Player = Player;
         damager.Parent = this;
+        damager.Damage = Mathf.Max(1, Mathf.FloorToInt(Damage * (_damagable.Health / Damageable.MAXHEALTH)));
 
         Projectile tmpProjectile = projObj.GetComponent<Projectile>();
         var tmpDir = _attackPos - transform.position.V2();
@@ -193,6 +204,8 @@ public class UnitController : MonoBehaviour, ILog
     public void EnterHurtState()
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        if (_selected)
+            OnUnitInterupt?.Invoke();
         _unitState = Enums.UnitState.Hurt;
         Log("----------------------------------------");
     }
@@ -201,24 +214,26 @@ public class UnitController : MonoBehaviour, ILog
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _unitState = Enums.UnitState.Idle;
-        if (!Attacked)
+        if (Blocked)
             CollisionClear();
+        if (!TookAction && !_tasked)
+            CheckAttack();
         Log("----------------------------------------");
     }
 
     public bool IsEnemy(Enums.Player player)
     {
-        return Player != player && 
-               !AlliedWith.Contains(player);
+        return Player != player;// && 
+               //!AlliedWith.Contains(player);
     }
 
     public void DamageResults(bool enemyDestroyed)
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        if (_blocked)
+        if (Blocked)
             FindGoodPreviousSpot();
 
-        _blocked = false;
+        Blocked = false;
         Log("----------------------------------------");
     }
 
@@ -229,6 +244,7 @@ public class UnitController : MonoBehaviour, ILog
         Hover(false);
         _nextPoint = null;
         _pastPositions.Clear();
+        _tasked = false;
         Moved = false;
         Moving = false;
         Attacked = false;
@@ -240,20 +256,20 @@ public class UnitController : MonoBehaviour, ILog
 
     void Awake()
     {
+        _animator = GetComponent<Animator>();
+        _sR = GetComponent<SpriteRenderer>();
+        _bC = GetComponent<BoxCollider2D>();
+        _damagable = GetComponent<Damageable>();
+
         _unitState = Enums.UnitState.Idle;
-        Moved = false;
-        _nextPoint = null;
         _movePositions = new Queue<GridBlock>();
         _pastPositions = new Stack<GridBlock>();
+        _nextPoint = null;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _animator = GetComponent<Animator>();
-        _sR = GetComponent<SpriteRenderer>();
-        _bC = GetComponent<BoxCollider2D>();
-
         if (Player == Enums.Player.Player1)
         {
             _cC = FindObjectOfType<CursorController>();
@@ -271,7 +287,6 @@ public class UnitController : MonoBehaviour, ILog
                 break;
             default:
                 _defaultLook = 1; 
-                _sR.color = Colors.Player1;
                 break;
         }
 
@@ -300,7 +315,7 @@ public class UnitController : MonoBehaviour, ILog
                     Log("Get next point");
                     _nextPoint = _movePositions.Dequeue();
                     Log("Check if last move is empty");
-                    if (_nextPoint.CurrentUnit != null && _movePositions.IsEmpty())
+                    if (_nextPoint.CurrentUnit != null && _nextPoint.CurrentUnit.Player == Player && _movePositions.IsEmpty())
                     {
                         Log("Next point is not empty");
                         if (CurrentGridBlock.CurrentUnit == this)
@@ -349,15 +364,15 @@ public class UnitController : MonoBehaviour, ILog
             Log($"attacks");
             _attack = false;
             Attack();
-            if (_blocked)
+            if (Blocked)
                 FindGoodPreviousSpot();
         }
 
-        if(Attacked)
-            Log($"Cooldown Conditions - " +
-            $"State Idle = {_unitState} | " +
-            $"Moved = {Moved} | " +
-            $"Attacked = {Attacked}");
+        //if(Attacked)
+        //    Log($"Cooldown Conditions - " +
+        //    $"State Idle = {_unitState} | " +
+        //    $"Moved = {Moved} | " +
+        //    $"Attacked = {Attacked}");
 
         if (Cooldown > 0)
         {
@@ -386,7 +401,7 @@ public class UnitController : MonoBehaviour, ILog
                     UnitManager?.AddUnit(this);
             }
         }
-        else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && (Moved || Attacked))// && _nextPoint == null)))
+        else if (_nextPoint == null && _unitState == Enums.UnitState.Idle && _tasked && (Moved || Attacked))// && _nextPoint == null)))
         {
             Log($"goes on cooldown");
             GoOnCooldown();
@@ -421,13 +436,14 @@ public class UnitController : MonoBehaviour, ILog
             if (_originalPoint == null)
                 _originalPoint = gB;
         }
-        else if(uC != null && uC.Player != Player && !uC.AlliedWith.Contains(Player) && MinAttackDistance == 1)
+        else if(uC != null && uC.Player != Player && MinAttackDistance == 1)// && !uC.AlliedWith.Contains(Player))
         {
             Log("Collided with enemy unit");
-            _blocked = true;
+            Blocked = true;
             var colDir = collision.gameObject.transform.position - transform.position;
             if(Mathf.Abs(colDir.x) > Mathf.Abs(colDir.y))
             {
+
                 UnitCollision(collision.gameObject.transform.position, colDir.x, _lookX);
             }
             else
@@ -535,7 +551,8 @@ public class UnitController : MonoBehaviour, ILog
         float y = lookAt.y - transform.position.y;
         if (x != y)
         {
-            _animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1));
+            //_animator.SetFloat("Look X", _lookX = (x == 0 ? _defaultLook / 2 : x > 0 ? 1 : -1)); // I do the "default / 2" to make sure they en 
+            _animator.SetFloat("Look X", _lookX = (x == 0 ? 0 : x > 0 ? 1 : -1)); // I do the "default / 2" to make sure they en 
             _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
         }
         Log("----------------------------------------");

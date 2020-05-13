@@ -2,43 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingBehaivor : StateMachineBehaviour
+public class Behaivor_Hurt : StateMachineBehaviour
 {
-    public AudioClip WalkingStone;
-    public AudioClip WalkingGrass;
-
-    Enums.GridBlockType gbT;
-    AudioSource aS;
-    UnitController uC;
-    GridBlock gB;
-    
+    public List<AudioClip> HitSounds;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        uC = animator.GetComponent<UnitController>();
-        gB = uC.CurrentGridBlock;
-        aS = uC.WalkingAudioSource;
-        gbT = gB.Type;
-        PlayProperClip();
+        var uC = animator.GetComponent<UnitController>();
+        var hurtSoundIndex = (int)(Time.time % HitSounds.Count);
+        var hurtClip = HitSounds[hurtSoundIndex];
+        uC?.HurtAudioSource.Play(hurtClip);
+        uC?.EnterHurtState();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if(uC.CurrentGridBlock.Type != gbT)
-        {
-            gbT = uC.CurrentGridBlock.Type;
-            aS.Stop();
-            PlayProperClip();
-        }
-    }
+    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        aS.Stop();
-        aS = null;
+        var uC = animator.GetComponent<UnitController>();
+        uC?.ExitHurtState();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
@@ -52,13 +40,4 @@ public class MovingBehaivor : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
-
-    private void PlayProperClip()
-    {
-        if (gbT == Enums.GridBlockType.Stone)
-            aS.clip = WalkingStone;
-        else
-            aS.clip = WalkingGrass;
-        //aS.Play();
-    }
 }

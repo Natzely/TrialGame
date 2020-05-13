@@ -50,6 +50,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -99,12 +100,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: 11
   Boundaries: {fileID: 0}
-  SoundSelect: {fileID: 8300000, guid: 9570c955a29a7344ba8edc5817236b34, type: 3}
-  SoundDeselect: {fileID: 8300000, guid: 813c439adf0455a4a966a4d3289ce57b, type: 3}
-  SoundMove: {fileID: 8300000, guid: 2e7463fad1e5a654cb4a3ff216cd7e27, type: 3}
-  SoundAttack: {fileID: 8300000, guid: 5640917f83339a94aa96df7d2fa476fa, type: 3}
+  Sound_Select: {fileID: 8300000, guid: 9570c955a29a7344ba8edc5817236b34, type: 3}
+  Sound_Deselect: {fileID: 8300000, guid: 813c439adf0455a4a966a4d3289ce57b, type: 3}
+  Sound_Move: {fileID: 8300000, guid: 2e7463fad1e5a654cb4a3ff216cd7e27, type: 3}
+  Sound_Attack: {fileID: 8300000, guid: 5640917f83339a94aa96df7d2fa476fa, type: 3}
   MoveTimer: 0.1
-  ActionTimer: 0.1
   CurrentMove: 0
 --- !u!50 &1230999480
 Rigidbody2D:

@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitBehaivor : StateMachineBehaviour
+public class Behaivor_Launch : StateMachineBehaviour
 {
-    public List<AudioClip> HitSounds;
+    public AudioClip LaunchSound;
+
+    UnitController uC;
+    AudioSource aS;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        var uC = animator.GetComponent<UnitController>();
-        var hurtSoundIndex = (int)(Time.time % HitSounds.Count);
-        var hurtClip = HitSounds[hurtSoundIndex];
-        uC?.HurtAudioSource.Play(hurtClip);
-        uC?.EnterHurtState();
+        uC = animator.GetComponent<UnitController>();
+        aS = uC.AttackAudioSource;
+
+        uC?.EnterAttackState();
+
+        aS.loop = false;
+        aS?.Play(LaunchSound);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -25,8 +30,8 @@ public class HitBehaivor : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        var uC = animator.GetComponent<UnitController>();
-        uC?.ExitHurtState();
+        uC?.ExitAttackState();
+        uC = null;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
@@ -40,4 +45,6 @@ public class HitBehaivor : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+
+
 }

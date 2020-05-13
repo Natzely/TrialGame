@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Tilemaps;
 
 public class GridBlock : MonoBehaviour
 {
@@ -30,6 +22,7 @@ public class GridBlock : MonoBehaviour
 
     private PlayerManager _pM;
     private PlayerParams _gridParams;
+    private CursorController _cursor;
     private GridBlock _bestNeighbor;
     private bool _gotNeighbors;
 
@@ -106,141 +99,12 @@ public class GridBlock : MonoBehaviour
         _pM.UpdateBlockGrid(GridPosition, this, saveParams);
     }
 
-    //public void CreateNonPlayerGrid(GridBlock start, UnitManager uM, int moveDistance, int maxAttackDistance)
-    //{
-    //    moveDistance -= MovementCost;
-
-    //    if (CurrentUnit != null && this != start && !(uM.Player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// TODO: Figure out how to not allow enemy units how to stack on each other.
-    //        moveDistance = -1;
-
-    //    if (uM.IsGridActive(GridPosition) && _gridParams.ContainsKey(uM.Player) && _gridParams[uM.Player].MoveDistance > moveDistance)
-    //        return;
-
-    //    _gridParams[uM.Player].GridStart = start;
-
-    //    if (moveDistance < 0)
-    //    {
-    //        _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Attack;
-    //        --maxAttackDistance;
-    //    }
-    //    else
-    //        _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Move;
-
-    //    _gridParams[uM.Player].MoveDistance = moveDistance;
-    //    _gridParams[uM.Player].MaxAttackDistance = maxAttackDistance;
-
-    //    if (moveDistance >= 0)
-    //        uM.UpdateBlockGrid(GridPosition, this);
-
-    //    // If there aren't any more move or attack spaces, dont ask neighbors to do anything
-    //    if (moveDistance > 0)
-    //    {
-    //        Neighbors.Up?.CreateGrid(start, uM, moveDistance, maxAttackDistance);
-    //        Neighbors.Down?.CreateGrid(start, uM, moveDistance, maxAttackDistance);
-    //        Neighbors.Right?.CreateGrid(start, uM, moveDistance, maxAttackDistance);
-    //        Neighbors.Left?.CreateGrid(start, uM, moveDistance, maxAttackDistance);
-    //    }
-    //}
-
-    //public void CreateGrid()
-    //{
-    //    foreach (GridBlock neighbor in Neighbors)
-    //    {
-    //        neighbor?.CreateGrid(this,
-    //            _gridParams[Enums.Player.Player1].UnitManager,
-    //            _gridParams[Enums.Player.Player1].MoveDistance,
-    //            _gridParams[Enums.Player.Player1].MaxAttackDistance,
-    //            true);
-    //    }
-    //}
-
-    //public void CreateGrid(GridBlock start, UnitManager uM, int moveDistance, int maxAttackDistance, bool update = false)
-    //{
-    //    if (this.transform.position.x == 3.5 && this.transform.position.y == -6.5)
-    //        Console.WriteLine("");
-
-    //     moveDistance -= MovementCost;
-
-    //    if (CurrentUnit != null && this != start && !(uM.Player == Enums.Player.Player1 && CurrentUnit.Player == Enums.Player.Player1))// && CurrentUnit.Player != player) TODO: Figure out how to not allow enemy units how to stack on each other.
-    //        moveDistance = -1;
-
-    //    if (_gridParams[uM.Player].MoveDistance > moveDistance && !(_gridParams[uM.Player].MoveDistance ==  moveDistance && update))
-    //        return;
-
-    //    _gridParams[uM.Player].GridStart = start;
-    //    _gridParams[uM.Player].UnitManager = uM;
-
-    //    if (moveDistance < 0)
-    //    {
-    //        _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Attack;
-    //        --maxAttackDistance;
-    //    }
-    //    else
-    //        _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Move;
-
-    //    _gridParams[uM.Player].MoveDistance = moveDistance;
-    //    _gridParams[uM.Player].MaxAttackDistance = maxAttackDistance;
-
-    //    if (uM.Player == Enums.Player.Player1)
-    //    {
-    //        // if the space is visited again through a better path, reset it.
-    //        if (_gridParams[uM.Player].MoveDistance < moveDistance && _gridParams[uM.Player].ActiveSpace == Enums.ActiveSpace.Attack)
-    //            _gridParams[uM.Player].AttackSpace?.Disable();
-    //        else if (_gridParams[uM.Player].MoveDistance < moveDistance && _gridParams[uM.Player].ActiveSpace == Enums.ActiveSpace.Move)
-    //            _gridParams[uM.Player].MoveSpace?.Disable();
-    //        //else if (_gridParams[uM.Player].ActiveSpace == Enums.ActiveSpace.Move)
-    //        //    return;
-
-    //        if (moveDistance >= 0)
-    //        {
-    //            _gridParams[uM.Player].AttackSpace?.Disable();
-
-    //            if (_gridParams[uM.Player].MoveSpace == null)
-    //                _gridParams[uM.Player].CreateMoveSpace(this, MoveSpace);
-    //            _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Move;
-    //            _gridParams[uM.Player].MoveSpace?.Enable();
-
-    //        }
-    //        else if (_gridParams[uM.Player].ActiveSpace == Enums.ActiveSpace.Attack)
-    //        {
-    //            if (_gridParams[uM.Player].AttackSpace == null)
-    //                _gridParams[uM.Player].CreateAttackSpace(this, AttackSpace);
-    //            _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Attack;
-    //            _gridParams[uM.Player].AttackSpace?.Enable();
-    //        }
-    //        else
-    //            _gridParams[uM.Player].ActiveSpace = Enums.ActiveSpace.Inactive;
-    //    }
-
-    //    uM.UpdateBlockGrid(GridPosition, this);
-
-    //    // If there aren't any more move or attack spaces, dont ask neighbors to do anything
-    //    if (moveDistance > 0 || maxAttackDistance > 0) 
-    //    {
-    //        Neighbors.Up?.CreateGrid(start, uM, moveDistance, maxAttackDistance, update);
-    //        Neighbors.Down?.CreateGrid(start, uM, moveDistance, maxAttackDistance, update);
-    //        Neighbors.Right?.CreateGrid(start, uM, moveDistance, maxAttackDistance, update);
-    //        Neighbors.Left?.CreateGrid(start, uM, moveDistance, maxAttackDistance, update);
-    //    }
-    //}
-
-    //public void UpdatePlayerGrid(Enums.Player player = Enums.Player.Player1)
-    //{
-    //    if (_gridParams[player].ActiveSpace == Enums.ActiveSpace.Move)
-    //        CreateGrid(_gridParams[player].GridStart, _gridParams[player].UnitManager, 1, _gridParams[player].MaxAttackDistance, true);
-    //    else
-    //    {
-    //        var values = Neighbors.GetBestMoveNeighbor();
-    //        CreateGrid(_gridParams[player].GridStart, _gridParams[player].UnitManager, values.Item1, values.Item2, true);
-    //    }
-    //}
-
     public void Disable(Enums.Player player)
     {
         _gridParams.Reset();
     }
 
-    public GridBlock GetRangedSpaces(GridBlock start, int minDis, GridBlock target = null, List<OrderedGridBlock> gridDis = null)
+    public IEnumerable<GridBlock> GetRangedSpaces(GridBlock start, int minDis, GridBlock target = null, List<OrderedGridBlock> gridDis = null)
     {
         bool org = false;
         if (gridDis == null)
@@ -267,14 +131,12 @@ public class GridBlock : MonoBehaviour
             }
         }
 
-        if (org)
+        if (org && gridDis != null && gridDis.Count > 0)
         {
             var orderedList = gridDis.OrderBy(g => g.OrderedValue).ToList();
-            var lowestVal = orderedList.First().OrderedValue;
-            var trimmedList = orderedList.Where(x => x.OrderedValue == lowestVal).ToList();
-            System.Random random = new System.Random();
-            var randomN = random.Next(trimmedList.Count() - 1);
-            return trimmedList[randomN].GridBlock;
+            var lowestVal = orderedList.FirstOrDefault().OrderedValue;
+            var trimmedList = orderedList.Where(x => x.OrderedValue == lowestVal);
+            return trimmedList.Select(tL => tL.GridBlock);
         }
         else
             return null;
@@ -283,11 +145,11 @@ public class GridBlock : MonoBehaviour
     public bool IsCurrentUnitEnemy(Enums.Player player)
     {
         return CurrentUnit != null &&
-                CurrentUnit.Player != player &&
-                !CurrentUnit.AlliedWith.Contains(player);
+                CurrentUnit.Player != player;// &&
+                //!CurrentUnit.AlliedWith.Contains(player);
     }
 
-    public void UpdateMoveSpaceState(Enums.Player player, Vector2 cDir, Vector2? nDir)
+    public void UpdateMoveSpaceState(Vector2 cDir, Vector2? nDir)
     {
         _gridParams.UpdateMoveSpaceState(cDir, nDir);
     }
@@ -302,6 +164,7 @@ public class GridBlock : MonoBehaviour
     {
         var cursorBoundaries = GameObject.Find("CursorBoundaries");
         var pCollider = cursorBoundaries.GetComponent<PolygonCollider2D>();
+        _cursor = FindObjectOfType<CursorController>();
         if (!Position.InsideSquare(pCollider.points[1], pCollider.points[3]))
             Destroy(gameObject);
 
@@ -320,7 +183,7 @@ public class GridBlock : MonoBehaviour
             _gotNeighbors = true;
         }
 
-        if (!_pM.PlayerInfo.MovementPath.Contains(this))
+        if (!_pM.PlayerInfo.MovementPath.Contains(this) )
         {
             _gridParams.ResetSpace();
         }
@@ -337,9 +200,11 @@ public class GridBlock : MonoBehaviour
         if (unitCon != null && CurrentUnit == null)
         {
             CurrentUnit = unitCon;
-
             if (_gridParams.MoveSpace.Active && unitCon.Player != Enums.Player.Player1)
             {
+                if (_pM.PlayerInfo.MovementPath.Contains(this))
+                    _cursor.EnemyInPath(this);
+
                 UpdateGrid();
                 _pM.UpdateActiveGrid(this);
             }
