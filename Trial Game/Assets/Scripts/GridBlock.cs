@@ -34,12 +34,12 @@ public class GridBlock : MonoBehaviour
             return Enums.ActiveSpace.Move;
     }
 
-    public (int MoveDistance, int MinAttackDis, int MaxAttackDis) GetPlayerMoveParams()
+    public (List<Enums.GridBlockType> FavorableTerrain, int MoveDistance, int MinAttackDis, int MaxAttackDis) GetPlayerMoveParams()
     {
         if (_gridParams == null)
-            return (-1, -1, -1);
+            return (new List<Enums.GridBlockType>(),-1, -1, -1);
         else
-            return (_gridParams.MoveDistance, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
+            return (_gridParams.FavorableTerrain, _gridParams.MoveDistance, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
     }
 
     public IEnumerable<GridBlock> AvailableAttackSpace(GridBlock behindGrid, int unitAttackDistance)
@@ -60,17 +60,17 @@ public class GridBlock : MonoBehaviour
 
         if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
         {
-            SetGrid(moveFrom, pParams.MoveDistance, pParams.MinAttackDis, pParams.MaxAttackDis);
+            SetGrid(moveFrom, pParams.FavorableTerrain, pParams.MoveDistance, pParams.MinAttackDis, pParams.MaxAttackDis);
         }
     }
 
-    public void SetGrid(GridBlock moveFrom, int moveDistance, int minAttackDistance, int maxAttackDistance)
+    public void SetGrid(GridBlock moveFrom, List<Enums.GridBlockType> favTerrain, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         bool saveParams = true;
         if (Unpassable || CurrentUnit != null && CurrentUnit.Player != Enums.Player.Player1)
             moveDistance = -1;
 
-        moveDistance = Mathf.Clamp(moveDistance - MovementCost, -1, 9999);
+        moveDistance = Mathf.Clamp(moveDistance - (favTerrain.Contains(this.Type) ? 1 : MovementCost), -1, 9999); // If this terrain is favorable to the unit, only subtract one.
 
         if (moveDistance >= 0)
         {
@@ -91,6 +91,7 @@ public class GridBlock : MonoBehaviour
 
         if (saveParams)
         {
+            _gridParams.FavorableTerrain = favTerrain;
             _gridParams.MoveDistance = moveDistance;
             _gridParams.MinAttackDistance = minAttackDistance;
             _gridParams.MaxAttackDistance = maxAttackDistance;
@@ -238,7 +239,7 @@ public class GridBlock : MonoBehaviour
 
     private void UpdateGrid()
     {
-        SetGrid(null, -1, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
+        SetGrid(null, _gridParams.FavorableTerrain, -1, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
     }
 
     private void CreateAttackSpace(GameObject space)
@@ -268,6 +269,7 @@ public class GridBlock : MonoBehaviour
         public UnitManager UnitManager { get; set; }
         public AttackSpace AttackSpace { get; set; }
         public MoveSpace MoveSpace { get; set; }
+        public List<Enums.GridBlockType> FavorableTerrain { get; set; }
         public int MoveDistance { get; set; }
         public int MaxAttackDistance { get; set; }
         public int MinAttackDistance { get; set; }

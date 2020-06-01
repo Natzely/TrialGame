@@ -47,7 +47,7 @@ public class GridNeighbors : IEnumerable<GridBlock>
     public GridBlock GetBestMoveNeighbor()
     {
         GridBlock rGB = null;
-        (int move, int min, int max) param = (-1, -1, -1);
+        (List<Enums.GridBlockType> faveTerrain, int move, int min, int max) param = (new List<Enums.GridBlockType>(), -1, -1, -1);
 
         foreach(var gB in _neighbors.Values)
         {

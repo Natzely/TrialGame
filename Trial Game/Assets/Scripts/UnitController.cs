@@ -9,14 +9,16 @@ public class UnitController : MonoBehaviour, ILog
     public delegate void OnDeath();
     public OnDeath OnUnitInterupt;
 
+    public Enums.Player Player = Enums.Player.Player1;
+
     public AudioSource AttackAudioSource;
     public AudioSource HurtAudioSource;
     public AudioSource WalkingAudioSource;
 
-    public Enums.Player Player = Enums.Player.Player1;
     public GameObject OffCooldownObject;
     public GameObject Projectile;
     public EnemyController EnemyController;
+    public List<Enums.GridBlockType> FavorableTerrain;
     public Vector2 ColliderSizeMoving;
     public Vector2 ColliderSizeIdle;
     public bool OnCooldown = false;

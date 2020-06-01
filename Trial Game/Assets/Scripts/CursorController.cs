@@ -293,22 +293,28 @@ public class CursorController : MonoBehaviour, ILog
 
                 _aS.Play(Sound_Select);
 
-                _currGridBlock.SetGrid(null, _currUnit.MoveDistance + _currGridBlock.MovementCost, _currUnit.MinAttackDistance, _currUnit.MaxAttackDistance);
+                _currGridBlock.SetGrid(
+                    null,
+                    _currUnit.FavorableTerrain,
+                    _currUnit.MoveDistance + (_currUnit.FavorableTerrain.Contains(_currGridBlock.Type) ? 1 : _currGridBlock.MovementCost),
+                    _currUnit.MinAttackDistance,
+                    _currUnit.MaxAttackDistance
+                );
 
                 _moves = new List<GridBlock>() { _currGridBlock };
             }
         }
-        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currGridBlock.ActivePlayerSpace != Enums.ActiveSpace.Inactive && 
+        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currGridBlock.ActivePlayerSpace != Enums.ActiveSpace.Inactive &&
             (_currGridBlock.IsCurrentUnitEnemy(Player) || (_currGridBlock.ActivePlayerSpace == Enums.ActiveSpace.Move && _currGridBlock.CurrentUnit == null)))
         {
             List<GridBlock> backupSpaces = null;
             var unit = _currGridBlock.CurrentUnit;
             double dis = 9999;
-            if(unit != null)
+            if (unit != null)
                 dis = unit.Position.GridDistance(_currUnit.Position);
             _currUnit.Target = unit;
 
-            if(unit == null && _moves?.Count > 1)
+            if (unit == null && _moves?.Count > 1)
             {
                 _currUnit.MoveTo(_moves);
             }
@@ -326,18 +332,18 @@ public class CursorController : MonoBehaviour, ILog
                     var orderedN = lastGrid.Neighbors.OrderByDistance(_orgGridBlock, true);
                     var canMoveTo = orderedN.Where(n => n.ActiveSpace(Player) == Enums.ActiveSpace.Move).ToList();
                     var newTargetGrid = canMoveTo.FirstOrDefault();
-                        
-                    if(newTargetGrid != null && _moves.Contains(newTargetGrid))
+
+                    if (newTargetGrid != null && _moves.Contains(newTargetGrid))
                     {
                         int index = _moves.IndexOf(newTargetGrid) + 1; // Erase everything higher than the selected grid
                         if (index <= _moves.Count())
                             _moves.RemoveRange(index, _moves.Count() - index);
                     }
-                    else if(newTargetGrid != null)
+                    else if (newTargetGrid != null)
                     {
                         _moves.Add(newTargetGrid);
                     }
-                    else if(newTargetGrid == null)
+                    else if (newTargetGrid == null)
                     {
                         _currUnit.Target = null;
                         return;

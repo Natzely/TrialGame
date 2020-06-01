@@ -95,11 +95,11 @@ public class PlayerManager : UnitManager
             if (bestN != null)
             { 
                 var mParams = bestN.GetPlayerMoveParams();
-                gB.SetGrid(null, mParams.Item1, mParams.Item2, mParams.Item3);
+                gB.SetGrid(null, mParams.FavorableTerrain, mParams.MoveDistance, mParams.MinAttackDis, mParams.MaxAttackDis);
             }
             else
             {
-                gB.SetGrid(null, -1, -1, -1);
+                gB.SetGrid(null, new List<Enums.GridBlockType>(), -1, -1, -1);
             }
         }
     }
