@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -55,7 +56,7 @@ public class GridBlock : MonoBehaviour
     public void CheckGrid(GridBlock moveFrom)
     {
         var pParams = moveFrom.GetPlayerMoveParams();
-        var tempMove = pParams.MoveDistance - MovementCost;
+        var tempMove = pParams.MoveDistance - (pParams.FavorableTerrain.Contains(this.Type) ?  1 : MovementCost);
         var tempAttack = pParams.MaxAttackDis - 1;
 
         if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
@@ -69,6 +70,9 @@ public class GridBlock : MonoBehaviour
         bool saveParams = true;
         if (Unpassable || CurrentUnit != null && CurrentUnit.Player != Enums.Player.Player1)
             moveDistance = -1;
+
+        if(moveFrom == null)
+            moveDistance += (favTerrain.Contains(this.Type) ? 1 : MovementCost);
 
         moveDistance = Mathf.Clamp(moveDistance - (favTerrain.Contains(this.Type) ? 1 : MovementCost), -1, 9999); // If this terrain is favorable to the unit, only subtract one.
 

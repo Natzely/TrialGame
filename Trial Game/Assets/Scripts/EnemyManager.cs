@@ -20,7 +20,7 @@ public class EnemyManager : UnitManager
         base.Awake();
         DealyTimer = MoveDelay;
 
-        var nonNullUnits = StartingUnits.Where(uC => uC != null).ToList();
+        var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach(UnitController uC in nonNullUnits)
         {
             uC.Player = Player;

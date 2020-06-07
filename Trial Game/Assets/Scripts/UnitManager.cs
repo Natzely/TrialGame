@@ -7,12 +7,14 @@ using UnityEngine;
 public abstract class UnitManager : MonoBehaviour
 {
     public Enums.Player Player;
+    public GameObject UnitHolder;
     public PolygonCollider2D CursorBoundaries;
-    public List<UnitController> StartingUnits;
     public bool DebugLog;
     
     [HideInInspector] public GridBlock[,] FullGrid;
 
+    protected List<UnitController> _startingUnits;
+    
     private int _gridSizeX;
     private int _gridSizeY;
 
@@ -26,17 +28,6 @@ public abstract class UnitManager : MonoBehaviour
         PlayerInfo.ActiveGrid.Clear();
         PlayerInfo.BlockGrid = new GridBlock[_gridSizeX, _gridSizeY];
     }
-
-    //public IEnumerator CreateGridAsync(GridBlock start, Enums.Player player, GridBlock gridBlock, int moveDistance, int minAttackDistance, int maxAttackDistance)
-    //{
-    //    ResetBlockGrid();
-    //    yield return new WaitUntil(() => true);
-    //    gridBlock.CreateGrid(
-    //        start,
-    //        moveDistance,
-    //        moveDistance > 0 ? maxAttackDistance : maxAttackDistance + 1
-    //    );
-    //}
 
     public virtual void AddUnit(UnitController unit, bool addAtRandom = false)
     {
@@ -67,6 +58,7 @@ public abstract class UnitManager : MonoBehaviour
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
+        _startingUnits = UnitHolder.GetComponentsInChildren<UnitController>().ToList();
     }
 
     private void Start()

@@ -6,14 +6,11 @@ using UnityEngine;
 
 public class PlayerManager : UnitManager
 {
-    public GameObject PauseScreen;
-    public float ActionTimer;    
+    public static float ACTIONTIMER = .1f; 
 
     private List<UnitController> _nextUnitList;
-    HashSet<GridBlock> _activeGrid;
     private bool _pause;
     private bool _isGamePaused;
-    private double _actionTimer;
     private double _lastRealTime;
 
     public bool GetDeleteMoveSpace()
@@ -95,7 +92,7 @@ public class PlayerManager : UnitManager
             if (bestN != null)
             { 
                 var mParams = bestN.GetPlayerMoveParams();
-                gB.SetGrid(null, mParams.FavorableTerrain, mParams.MoveDistance, mParams.MinAttackDis, mParams.MaxAttackDis);
+                gB.SetGrid(bestN, mParams.FavorableTerrain, mParams.MoveDistance, mParams.MinAttackDis, mParams.MaxAttackDis);
             }
             else
             {
@@ -155,49 +152,12 @@ public class PlayerManager : UnitManager
     {
         base.Awake();
 
-        _actionTimer = 0;
-
-        var nonNullUnits = StartingUnits.Where(uC => uC != null).ToList();
+        var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
             uC.Player = Player;
             uC.UnitManager = this;
         }
-    }
-
-    private void Update()
-    {
-        _pause = Input.GetButtonUp("Pause");
-
-        if (_actionTimer <= 0)
-        {
-            if (_pause)
-            {
-                if (_isGamePaused)
-                {
-                    Debug.Log("Unpause Game");
-                    Time.timeScale = 1;
-                    PauseScreen.SetActive(false);
-                    _isGamePaused = false;
-
-                }
-                else
-                {
-                    Debug.Log("Pause Game");
-                    Time.timeScale = 0;
-                    PauseScreen.SetActive(true);
-                    _isGamePaused = true;
-                }
-
-                _actionTimer = ActionTimer;
-            }
-        }
-        else
-        {
-            _actionTimer -= Time.realtimeSinceStartup - _lastRealTime;
-        }
-
-        _lastRealTime = Time.realtimeSinceStartup;
     }
 
     private UnitController GetNextUnitOnCooldown(UnitController afterUnit)

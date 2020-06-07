@@ -19,12 +19,11 @@ public class CursorController : MonoBehaviour, ILog
     public AudioClip Sound_Select;
     public float MoveTimer = 1;
     public int CurrentMove;
-
-    private UnitController _currUnit { get; set; }
+    public UnitController CurrentUnit { get; private set; }
+    public GridBlock CurrentGridBlock { get; private set; }
 
     Enums.CursorState _currState;
 
-    GridBlock _currGridBlock;
     GridBlock _orgGridBlock;
     PlayerManager _pM;
     UnitController _quickSelectUnit;
@@ -35,10 +34,11 @@ public class CursorController : MonoBehaviour, ILog
     List<GridBlock> _moves;
     Vector2 _startPos;
     Color _playerColor;
-    bool _select;
+    bool _attackSpace;
     bool _cancel;
-    bool _quickSelect;
     bool _getUnit;
+    bool _quickSelect;
+    bool _select;
     float _moveTimer;
     float _maxXClamp;
     float _minXClamp;
@@ -51,9 +51,9 @@ public class CursorController : MonoBehaviour, ILog
     public void EnemyInPath(GridBlock gB)
     {
         var enemyIndex = _pM.PlayerInfo.MovementPath.IndexOf(gB);
-        var playerIndex = _pM.PlayerInfo.MovementPath.IndexOf(_currUnit.CurrentGridBlock);
+        var playerIndex = _pM.PlayerInfo.MovementPath.IndexOf(CurrentUnit.CurrentGridBlock);
 
-        if(playerIndex > enemyIndex)
+         if(playerIndex > enemyIndex)
         {
             _aS.Play(Sound_Deselect);
             SelectUnit(false);
@@ -90,13 +90,14 @@ public class CursorController : MonoBehaviour, ILog
         _select = Input.GetButtonUp("P1_Select");
         _cancel = Input.GetButtonUp("P1_Cancel");
         _quickSelect = Input.GetButtonUp("NextUnit");
+        _attackSpace = Input.GetButtonUp("AttackSpace");
 
-        if (_currState == Enums.CursorState.Selected && _currUnit == null)
+        if (_currState == Enums.CursorState.Selected && CurrentUnit == null)
             _currState = Enums.CursorState.Default;
 
-        if (_getUnit && _currGridBlock != null)
+        if (_getUnit && CurrentGridBlock != null)
         {
-            GetUnit(_currGridBlock);
+            GetUnit(CurrentGridBlock);
             _getUnit = false;
         }
 
@@ -111,25 +112,25 @@ public class CursorController : MonoBehaviour, ILog
         Log("Cursor: Trigger Enter");
         if (grid != null)
         {
-            _currGridBlock = grid;
+            CurrentGridBlock = grid;
             GetUnit(grid);
 
-            if (grid.ActivePlayerSpace == Enums.ActiveSpace.Move && _currState == Enums.CursorState.Selected && (_currGridBlock.CurrentUnit == null || _currGridBlock.CurrentUnit == _currUnit) && !_currUnit.Moving && !_currUnit.Moved)
+            if (grid.ActivePlayerSpace == Enums.ActiveSpace.Move && _currState == Enums.CursorState.Selected && (CurrentGridBlock.CurrentUnit == null || CurrentGridBlock.CurrentUnit == CurrentUnit) && !CurrentUnit.Moving && !CurrentUnit.Moved)
             {
-                _moves = _pM.CreatePath(_orgGridBlock, _currGridBlock).ToList();
+                _moves = _pM.CreatePath(_orgGridBlock, CurrentGridBlock).ToList();
             }
         }
         else if (gO.name.StartsWith("UnitOff"))
         {
             Log("Cursor: Unit cooldown object detected");
-            if (_currGridBlock == null)
+            if (CurrentGridBlock == null)
             {
                 Log("Cursor: Get Unit after cooldown... later");
                 _getUnit = true;
             }
             else
             {
-                GetUnit(_currGridBlock);
+                GetUnit(CurrentGridBlock);
                 Log("Cursor: Get unit after cooldown");
             }
         }
@@ -148,9 +149,9 @@ public class CursorController : MonoBehaviour, ILog
 
     private bool CheckForObstacle(GameObject gO)
     {
-        if (_currUnit != null)
+        if (CurrentUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != _currUnit.transform.position);
+            return _currState == Enums.CursorState.Selected && (gO.tag == "Unit" && gO.transform.position != CurrentUnit.transform.position);
 
         return false;
     }
@@ -172,13 +173,13 @@ public class CursorController : MonoBehaviour, ILog
                 tmpUnit.Hover(true);
             }
 
-            _currUnit = tmpUnit;
+            CurrentUnit = tmpUnit;
         }
     }
 
     private void OnCurrentUnitInterupt()
     {
-        Log($"Current unit {_currUnit.name} was interupted");
+        Log($"Current unit {CurrentUnit.name} was interupted");
         ResetCursor();
     }
 
@@ -189,10 +190,10 @@ public class CursorController : MonoBehaviour, ILog
         _pM.ResetBlockGrid();
         _animator.SetBool("Attacking", false);
         _moves = null;
-        if (_currUnit != null && resetUnit)
+        if (CurrentUnit != null && resetUnit)
         {
-            _currUnit.OnUnitInterupt -= OnCurrentUnitInterupt;
-            _currUnit = null;
+            CurrentUnit.OnUnitInterupt -= OnCurrentUnitInterupt;
+            CurrentUnit = null;
             Log("Current Unit null");
         }
     }
@@ -204,17 +205,17 @@ public class CursorController : MonoBehaviour, ILog
             if (_quickSelect && _currState == Enums.CursorState.Default)
             {
                 QuickSelect();
-                _actionTimer = _pM.ActionTimer;
+                _actionTimer = PlayerManager.ACTIONTIMER;
             }
             if (_cancel)
             {
                 Cancel();
-                _actionTimer = _pM.ActionTimer;
+                _actionTimer = PlayerManager.ACTIONTIMER;
             }
-            else if (_select && _currUnit != null && !_currUnit.OnCooldown)
+            else if ((_select || _attackSpace) && CurrentUnit != null && !CurrentUnit.OnCooldown)
             {
                 Select();
-                _actionTimer = _pM.ActionTimer;
+                _actionTimer = PlayerManager.ACTIONTIMER;
             }
             // In order for the cursor to move it needs to meet the following conditions
             // - The action timer is off cooldown
@@ -227,7 +228,7 @@ public class CursorController : MonoBehaviour, ILog
             {
                 Move();
                 OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
-                _actionTimer = _pM.ActionTimer;
+                _actionTimer = PlayerManager.ACTIONTIMER;
             }
 
             //_actionTimer = ActionTimer;  Because CheckForAction is called every Update() frame DO NOT uncomment this. 
@@ -242,7 +243,7 @@ public class CursorController : MonoBehaviour, ILog
     // Selects the Unit closests to the cursor.
     private void QuickSelect()
     {
-        _quickSelectUnit = _pM.GetNextUnit(Player, _currUnit ?? _quickSelectUnit);
+        _quickSelectUnit = _pM.GetNextUnit(Player, CurrentUnit ?? _quickSelectUnit);
         if (_quickSelectUnit != null)
         {
             transform.position = _quickSelectUnit.transform.position;
@@ -254,9 +255,9 @@ public class CursorController : MonoBehaviour, ILog
     {
         if (_currState == Enums.CursorState.Selected)
         {
-            if (_currUnit.Moved || _currUnit.Moving)
+            if (CurrentUnit.Moved || CurrentUnit.Moving)
             {
-                _currUnit.CancelMove();
+                CurrentUnit.CancelMove();
                 _pM.PlayerInfo.MovementPath.Clear();
                 transform.position = _orgGridBlock.Position;
             }
@@ -280,11 +281,11 @@ public class CursorController : MonoBehaviour, ILog
         if (_currState == Enums.CursorState.Default)
         {
             _currState = Enums.CursorState.Selected;
-            _orgGridBlock = _currGridBlock;
+            _orgGridBlock = CurrentGridBlock;
 
-            if (transform.position == _currUnit.Position)
+            if (transform.position == CurrentUnit.Position)
             {
-                if (!_currUnit.Moved)
+                if (!CurrentUnit.Moved)
                 {
                     _startPos = transform.position;
                 }
@@ -293,94 +294,104 @@ public class CursorController : MonoBehaviour, ILog
 
                 _aS.Play(Sound_Select);
 
-                _currGridBlock.SetGrid(
+                CurrentGridBlock.SetGrid(
                     null,
-                    _currUnit.FavorableTerrain,
-                    _currUnit.MoveDistance + (_currUnit.FavorableTerrain.Contains(_currGridBlock.Type) ? 1 : _currGridBlock.MovementCost),
-                    _currUnit.MinAttackDistance,
-                    _currUnit.MaxAttackDistance
+                    CurrentUnit.FavorableTerrain,
+                    CurrentUnit.AdjustedMoveDistance,
+                    CurrentUnit.AdjustedMinAttackDistance,
+                    CurrentUnit.AdjustedMaxAttackDistance
                 );
 
-                _moves = new List<GridBlock>() { _currGridBlock };
+                _moves = new List<GridBlock>() { CurrentGridBlock };
             }
         }
-        else if (!_currUnit.Moving && !_currUnit.Moved && transform.position.V2() != _startPos && _currGridBlock.ActivePlayerSpace != Enums.ActiveSpace.Inactive &&
-            (_currGridBlock.IsCurrentUnitEnemy(Player) || (_currGridBlock.ActivePlayerSpace == Enums.ActiveSpace.Move && _currGridBlock.CurrentUnit == null)))
+        else if (!CurrentUnit.Moving && /*!CurrentUnit.Moved &&*/ transform.position.V2() != _startPos && CurrentGridBlock.ActivePlayerSpace != Enums.ActiveSpace.Inactive &&
+            (CurrentGridBlock.IsCurrentUnitEnemy(Player) || 
+            (CurrentGridBlock.ActivePlayerSpace == Enums.ActiveSpace.Move && CurrentGridBlock.CurrentUnit == null) ||
+            (_attackSpace && (CurrentGridBlock.CurrentUnit == null || CurrentGridBlock.IsCurrentUnitEnemy(Player)))
+            ))
         {
             List<GridBlock> backupSpaces = null;
-            var unit = _currGridBlock.CurrentUnit;
+            var target = CurrentGridBlock;
             double dis = 9999;
-            if (unit != null)
-                dis = unit.Position.GridDistance(_currUnit.Position);
-            _currUnit.Target = unit;
+            if (target.CurrentUnit != null || _attackSpace)
+            {
+                dis = target.Position.GridDistance(CurrentUnit.Position);
+                CurrentUnit.Target = target;
+            }
 
-            if (unit == null && _moves?.Count > 1)
+            if (target.CurrentUnit == null && !_attackSpace && _moves?.Count > 1)
             {
-                _currUnit.MoveTo(_moves);
+                CurrentUnit.MoveTo(_moves);
             }
-            else if (dis >= _currUnit.MinAttackDistance && dis <= _currUnit.MaxAttackDistance && _moves?.Count <= _currUnit.MaxAttackDistance) // If the unit is already in range of the target
-            {
-                _aS.Play(Sound_Attack);
-                _currUnit.CheckAttack(unit);
-            }
-            else if (unit != null && _moves?.Count > 1)// && dis >= _currUnit)// && (dis >= _currUnit.MaxAttackDistance))// If the unit needs to move to attack
-            {
-                double lastPosDis = _moves.Last().Position.GridDistance(unit.Position);
-                if (lastPosDis < _currUnit.MinAttackDistance)
+            else if (!CurrentUnit.Attacked) // If the unit has not attacked yet, check attack options
+            {                                                                                                                // If attacking an empty space, subtrack a move because the cursor created a move to reach that space
+                if (!CurrentUnit.Attacked && 
+                    ((dis >= CurrentUnit.MinAttackDistance && dis <= CurrentUnit.MaxAttackDistance) || (_attackSpace && dis <= CurrentUnit.MaxAttackDistance)) && 
+                    _moves?.Count - (_attackSpace ? 1 : 0) <= CurrentUnit.MaxAttackDistance) // If the unit is already in range of the target,
                 {
-                    var lastGrid = _moves.Last();
-                    var orderedN = lastGrid.Neighbors.OrderByDistance(_orgGridBlock, true);
-                    var canMoveTo = orderedN.Where(n => n.ActiveSpace(Player) == Enums.ActiveSpace.Move).ToList();
-                    var newTargetGrid = canMoveTo.FirstOrDefault();
+                    _aS.Play(Sound_Attack);
+                    CurrentUnit.CheckAttack(target, _attackSpace);
+                }
+                else if (_moves?.Count > 1) // If the unit needs to move to attack
+                {
+                    double lastPosDis = _moves.Last().Position.GridDistance(target.Position);
+                    if (lastPosDis < CurrentUnit.MinAttackDistance)
+                    {
+                        var lastGrid = _moves.Last();
+                        var orderedN = lastGrid.Neighbors.OrderByDistance(_orgGridBlock, true);
+                        var canMoveTo = orderedN.Where(n => n.ActiveSpace(Player) == Enums.ActiveSpace.Move).ToList();
+                        var newTargetGrid = canMoveTo.FirstOrDefault();
 
-                    if (newTargetGrid != null && _moves.Contains(newTargetGrid))
-                    {
-                        int index = _moves.IndexOf(newTargetGrid) + 1; // Erase everything higher than the selected grid
-                        if (index <= _moves.Count())
-                            _moves.RemoveRange(index, _moves.Count() - index);
+                        if (newTargetGrid != null && _moves.Contains(newTargetGrid))
+                        {
+                            int index = _moves.IndexOf(newTargetGrid) + 1; // Erase everything higher than the selected grid
+                            if (index <= _moves.Count())
+                                _moves.RemoveRange(index, _moves.Count() - index);
+                        }
+                        else if (newTargetGrid != null)
+                        {
+                            _moves.Add(newTargetGrid);
+                        }
+                        else if (newTargetGrid == null)
+                        {
+                            CurrentUnit.Target = null;
+                            return;
+                        }
                     }
-                    else if (newTargetGrid != null)
+
+                    if (_moves?.Count > 0)
                     {
-                        _moves.Add(newTargetGrid);
-                    }
-                    else if (newTargetGrid == null)
-                    {
-                        _currUnit.Target = null;
-                        return;
+                        CurrentUnit.MoveTo(_moves);
                     }
                 }
-
-                if (_moves?.Count > 0)
-                {
-                    _currUnit.MoveTo(_moves);
-                }
             }
-            else if ((backupSpaces = _orgGridBlock.AvailableAttackSpace(_currGridBlock, _currUnit.MaxAttackDistance).ToList()).Count > 0) // If the unit is too close to attack but there is room for it back up and attack
+            else if ((backupSpaces = _orgGridBlock.AvailableAttackSpace(CurrentGridBlock, CurrentUnit.MaxAttackDistance).ToList()).Count > 0) // If the unit is too close to attack but there is room for it back up and attack
             {
                 _aS.Play(Sound_Attack);
-                _currUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
+                CurrentUnit.MoveTo(new List<GridBlock>() { _orgGridBlock, backupSpaces.First() });
             }
             else // If non of the other conditions are met, then do nothing.
             {
-                _currUnit.Target = null;
+                CurrentUnit.Target = null;
                 return;
             }
 
-            if (_currUnit.Target != null && unit.IsEnemy(Player))
+            if (CurrentUnit.Target != null && ((target.CurrentUnit != null && target.CurrentUnit.IsEnemy(Player)) || _attackSpace))
             {
                 _aS.Play(Sound_Attack);
                 SelectUnit(false);
                 ResetCursor();
             }
         }
-        else if ((_currUnit.Moving || _currUnit.Moved) && _currGridBlock.IsCurrentUnitEnemy(Player))
+        else if ((CurrentUnit.Moving || CurrentUnit.Moved) && CurrentGridBlock.IsCurrentUnitEnemy(Player))
         {
             _aS.Play(Sound_Attack);
-            _currUnit.Target = _currGridBlock.CurrentUnit;
+            CurrentUnit.Target = CurrentGridBlock;
             SelectUnit(false);
             ResetCursor();
         }
-        else if ((_currUnit.Moving || _currUnit.Moved))
+        else if ((CurrentUnit.Moving || CurrentUnit.Moved))
         {
             _aS.Play(Sound_Attack);
             SelectUnit(false);
@@ -406,11 +417,11 @@ public class CursorController : MonoBehaviour, ILog
 
     private void SelectUnit(bool select)
     {
-        _currUnit.Select(select);
+        CurrentUnit.Select(select);
         if (select)
-            _currUnit.OnUnitInterupt += OnCurrentUnitInterupt;
+            CurrentUnit.OnUnitInterupt += OnCurrentUnitInterupt;
         else
-            _currUnit.OnUnitInterupt -= OnCurrentUnitInterupt;
+            CurrentUnit.OnUnitInterupt -= OnCurrentUnitInterupt;
     }
 
     public void Log(string msg)

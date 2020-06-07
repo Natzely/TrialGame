@@ -21,6 +21,9 @@ public class Damageable : MonoBehaviour
     {
         if (damager.Damage > 0)
         {
+            if (damager.Parent.Type == Enums.UnitType.Melee && _uC.Type == Enums.UnitType.Horse)
+                _uC.IncreaseMeeleAttackCount();
+
             int calcDamage = Mathf.FloorToInt(Mathf.Max(damager.Damage / _uC.Defense, 1));
             Health -= calcDamage;
             HealthText.text = Health.ToString();
@@ -41,7 +44,7 @@ public class Damageable : MonoBehaviour
             {
                 _animator.SetTrigger("Hit");
                 if (!_uC.TookAction && _uC.MinAttackDistance == damager.Parent.MinAttackDistance)
-                    _uC.Target = damager.Parent;
+                    _uC.Target = damager.Parent.CurrentGridBlock;
             }
         }
 

@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     public bool NextAction()
     {
         UnitController target = null;
-        var units = _pM.PlayerInfo.Units;
+        var units = _pM.PlayerInfo.Units;//.Where(u => u.gameObject.name != "P1_Unit_Melee (1)");
 
         int maxAttackRange = UnitController.MoveDistance + UnitController.MaxAttackDistance;
         int minAttackRange = UnitController.MinAttackDistance;
@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
         }
         else if(closeUnits.Count > 0)
         {
-            target = closeUnits.OrderBy(u => u.Position.GridDistance(UnitController.Position)).FirstOrDefault();
+             target = closeUnits.OrderBy(u => u.Position.GridDistance(UnitController.Position)).FirstOrDefault();
         }
         else if(targets.Count > 0)
         {
@@ -44,7 +44,7 @@ public class EnemyController : MonoBehaviour
 
         if (target != null)
         {
-            if (UnitController.CheckAttack(target))
+            if (UnitController.CheckAttack(target.CurrentGridBlock))
                 return true;
 
             GridBlock gbTarget = null;
@@ -68,7 +68,7 @@ public class EnemyController : MonoBehaviour
 
             if (gbTarget != null)
             {
-                UnitController.Target = target;
+                UnitController.Target = target.CurrentGridBlock;
                 return MoveToNextSpace(gbTarget, target, moves);
             }
         }
@@ -94,12 +94,12 @@ public class EnemyController : MonoBehaviour
             double dis = 9999;
             if (ucTarget != null)
                 dis = UnitController.Position.GridDistance(ucTarget.Position);
-            UnitController.Target = ucTarget;
+            UnitController.Target = ucTarget.CurrentGridBlock;
 
 
             if (dis <= UnitController.MaxAttackDistance && dis >= UnitController.MinAttackDistance)
             {
-                UnitController.CheckAttack(gbTarget.CurrentUnit);
+                UnitController.CheckAttack(gbTarget);
                 return true;
             }
             else if (moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
@@ -159,7 +159,7 @@ public class EnemyController : MonoBehaviour
         while(maxMovement > 0 && path.Count > 0)
         {
             var block = path.FirstOrDefault();
-            maxMovement -= block.MovementCost;
+            maxMovement -= UnitController.Type == Enums.UnitType.Horse ? 1 : block.MovementCost;
             if (maxMovement >= 0 && path.Count > 0)
             {
                 path.Remove(block);
