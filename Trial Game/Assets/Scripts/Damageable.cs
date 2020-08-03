@@ -9,6 +9,7 @@ public class Damageable : MonoBehaviour
     public const int MAXHEALTH = 10;
 
     public GameObject DeathSoundObject;
+    public Damage_TextEffect DamageText;
     public TextMeshProUGUI HealthText;
     public float Health = 2;
 
@@ -26,11 +27,12 @@ public class Damageable : MonoBehaviour
 
             int calcDamage = Mathf.FloorToInt(Mathf.Max(damager.Damage / _uC.Defense, 1));
             Health -= calcDamage;
+            HealthText.gameObject.SetActive(true);
             HealthText.text = Health.ToString();
-            if (Health / _maxHealth < .34)
-                HealthText.color = Colors.Health_Low;
-            else if (Health / _maxHealth < .67)
-                HealthText.color = Colors.Health_Half;
+            //if (Health / _maxHealth < .34)
+            //    HealthText.color = Colors.Health_Low;
+            //else if (Health / _maxHealth < .67)
+            //    HealthText.color = Colors.Health_Half;
             HealthText.havePropertiesChanged = true;
 
             if (Health <= 0)
@@ -43,6 +45,8 @@ public class Damageable : MonoBehaviour
             else
             {
                 _animator.SetTrigger("Hit");
+                DamageText.Text = calcDamage + "";
+                DamageText.gameObject.SetActive(true);
                 if (!_uC.TookAction && _uC.MinAttackDistance == damager.Parent.MinAttackDistance)
                     _uC.Target = damager.Parent.CurrentGridBlock;
             }

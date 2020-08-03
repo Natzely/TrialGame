@@ -11,6 +11,11 @@ public class PauseScreen : MonoBehaviour
     private float _actionTimer;
     private float _lastRealTime;
 
+    private void Start()
+    {
+        ShowPauseScreen(true);
+    }
+
     void Update()
     {
         bool _pause = Input.GetButtonUp("Pause");
@@ -20,20 +25,9 @@ public class PauseScreen : MonoBehaviour
             if (_pause)
             {
                 if (_isGamePaused)
-                {
-                    Debug.Log("Unpause Game");
-                    Time.timeScale = 1;
-                    PauseScreenPanel.SetActive(false);
-                    _isGamePaused = false;
-
-                }
+                    ShowPauseScreen(false);
                 else
-                {
-                    Debug.Log("Pause Game");
-                    Time.timeScale = 0;
-                    PauseScreenPanel.SetActive(true);
-                    _isGamePaused = true;
-                }
+                    ShowPauseScreen(true);
 
                 _actionTimer = PlayerManager.ACTIONTIMER;
             }
@@ -44,5 +38,13 @@ public class PauseScreen : MonoBehaviour
         }
 
         _lastRealTime = Time.realtimeSinceStartup;
+    }
+
+    private void ShowPauseScreen(bool pause)
+    {
+        Debug.Log(pause ? "Pause" : "Unpause" + " Game");
+        Time.timeScale = pause ? 0 : 1;
+        PauseScreenPanel.SetActive(pause);
+        _isGamePaused = pause;
     }
 }

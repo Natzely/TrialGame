@@ -24,6 +24,8 @@ public class EnemyManager : UnitManager
         foreach(UnitController uC in nonNullUnits)
         {
             uC.Player = Player;
+            uC.Speed *= _globalVariables.UnitSpeedModifier;
+            uC.Cooldown *= _globalVariables.UnitCooldownModifier;
             uC.UnitManager = this;
             var eC = uC?.gameObject.AddComponent<EnemyController>();
             eC.UnitManager = this;

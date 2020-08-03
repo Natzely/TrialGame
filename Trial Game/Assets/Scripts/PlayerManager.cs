@@ -155,6 +155,8 @@ public class PlayerManager : UnitManager
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
+            uC.Speed *= _globalVariables.UnitSpeedModifier;
+            uC.Cooldown *= _globalVariables.UnitCooldownModifier;
             uC.Player = Player;
             uC.UnitManager = this;
         }
@@ -165,7 +167,7 @@ public class PlayerManager : UnitManager
         var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.Moving && !u.Attacked);
         if (nextUnitPossible.Count() > 0)
         {
-            var orderByCooldownLeft = nextUnitPossible.OrderBy(u => u.Cooldown).ToList();
+            var orderByCooldownLeft = nextUnitPossible.OrderBy(u => u.CooldownTimer).ToList();
             if (afterUnit == null)
                 return nextUnitPossible.FirstOrDefault();
             else

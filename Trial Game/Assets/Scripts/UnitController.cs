@@ -31,8 +31,8 @@ public class UnitController : MonoBehaviour, ILog
     public Vector2 ColliderSizeIdle;
     public bool OnCooldown = false;
     public float AttackSpeed;
-    public float CooldownTime;
     public float Cooldown;
+    public float CooldownTimer;
     public float PlusAction;
     public float Speed;
     public float Damage;
@@ -110,7 +110,7 @@ public class UnitController : MonoBehaviour, ILog
     public void Select(bool select)
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        if (Cooldown <= 0)
+        if (CooldownTimer <= 0)
         {
             if (_unitState != Enums.UnitState.PlusAction)
                 _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
@@ -131,7 +131,7 @@ public class UnitController : MonoBehaviour, ILog
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Log($"Number of moves: {movePoints.Count}");
-        if (Cooldown <= 0 && !Moved && movePoints.Count > 0)
+        if (CooldownTimer <= 0 && !Moved && movePoints.Count > 0)
         {
             _tasked = true; // Task has been given
             MeleeAttackedCount = 0;
@@ -455,17 +455,15 @@ public class UnitController : MonoBehaviour, ILog
             Attack();
         }
 
-        if (Cooldown > 0)
+        if (CooldownTimer > 0)
         {
-            Cooldown -= Time.deltaTime;
-            _animator.speed = Mathf.Clamp((1 - Cooldown / CooldownTime), .2f, 1) * 3 + .1f;
-            if (Cooldown <= 0)
+            CooldownTimer -= Time.deltaTime;
+            if (CooldownTimer <= 0)
             {
                 Log($"Come of cooldwon");
                 if(Type == Enums.UnitType.Melee)
                     CooldownReduction?.gameObject.SetActive(false);
 
-                _animator.speed = 1;
                 _animator.SetBool("Cooldown", OnCooldown = false);
 
                 if (OffCooldownObject != null)
@@ -600,7 +598,7 @@ public class UnitController : MonoBehaviour, ILog
         //_pM?.PlayerUnitMoveDown(this);
         _originalPoint = CurrentGridBlock;
         var crc = CheckReducedCooldown();
-        Cooldown = CooldownTime * (!Attacked ? 1 : 1.4f) * crc;
+        CooldownTimer = Cooldown * (!Attacked ? 1 : 1.4f) * crc;
         _animator.SetBool("Cooldown", OnCooldown = true);
         Log("----------------------------------------");
     }

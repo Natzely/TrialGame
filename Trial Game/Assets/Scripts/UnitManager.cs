@@ -13,8 +13,9 @@ public abstract class UnitManager : MonoBehaviour
     
     [HideInInspector] public GridBlock[,] FullGrid;
 
+    protected GlobalVariables _globalVariables;
     protected List<UnitController> _startingUnits;
-    
+
     private int _gridSizeX;
     private int _gridSizeY;
 
@@ -59,6 +60,7 @@ public abstract class UnitManager : MonoBehaviour
     {
         PlayerInfo = new PlayerInfo();
         _startingUnits = UnitHolder.GetComponentsInChildren<UnitController>().ToList();
+        _globalVariables = FindObjectOfType<GlobalVariables>();
     }
 
     private void Start()
