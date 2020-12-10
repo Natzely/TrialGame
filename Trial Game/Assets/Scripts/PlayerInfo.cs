@@ -2,12 +2,13 @@
 
 public class PlayerInfo
 {
-    public GridBlock[,] BlockGrid;
-    public HashSet<GridBlock> ActiveGrid;
-    public List<GridBlock> MovementPath;
-    public List<UnitController> Units;
-    public bool DeleteMoveSpace;
-    public bool HideGrid;
+    public GridBlock[,] BlockGrid { get; set; }
+    public HashSet<GridBlock> ActiveGrid { get; set; }
+    public List<GridBlock> MovementPath { get; set; }
+    public List<UnitController> Units { get; set; }
+    public UnitController SelectedUnit { get; set; }
+    public bool DeleteMoveSpace { get; set; }
+    public bool HideGrid { get; set; }
 
     public PlayerInfo()
     {

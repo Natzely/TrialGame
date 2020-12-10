@@ -95,6 +95,14 @@ public static class Extensions
             return Enums.PathDirection.Start;
     }
 
+    public static Vector2 Clamp(this Vector2 org, Vector2 min, Vector2 max)
+    {
+        Vector3 tmp = Vector2.zero;
+        tmp.x = Mathf.Clamp(org.x, min.x, max.x);
+        tmp.y = Mathf.Clamp(org.y, min.y, max.y);
+        return tmp;
+    }
+
     public static bool InsideSquare(this Vector2 check, Vector2 minCorner, Vector2 maxCorner)
     {
         return check.x >= minCorner.x && check.x <= maxCorner.x &&
@@ -108,5 +116,21 @@ public static class Extensions
         source.clip = clip;
         source.Play();
     }
+    #endregion -----------------------------------------------------------------------------------------
+
+    #region Gameobject Extensions ----------------------------------------------------------------------
+    public static GameObject FindObject(this GameObject parent, string name)
+    {
+        Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
+        foreach (Transform t in trs)
+        {
+            if (t.name == name)
+            {
+                return t.gameObject;
+            }
+        }
+        return null;
+    }
+
     #endregion -----------------------------------------------------------------------------------------
 }

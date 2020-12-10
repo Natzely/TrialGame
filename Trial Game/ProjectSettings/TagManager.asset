@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cursor
   - Unit
+  - UI
   layers:
   - Default
   - TransparentFX

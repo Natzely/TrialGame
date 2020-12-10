@@ -2,29 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GridBlock : MonoBehaviour
 {
+    public UnitController CurrentUnit;
     public Enums.GridBlockType Type;
     public GameObject MoveSpace;
     public GameObject AttackSpace;
+    public GameObject PathBlock;
+    public Image MinimapTile;
     public int MovementCost = 0;
     public bool Unpassable = false;
     public bool IsDestination = false;
 
-    [HideInInspector] public UnitController CurrentUnit;
-    [HideInInspector] public bool IsSpaceActive { get { return _gridParams.IsSpaceActive; } }
-    [HideInInspector] public Vector2 GridPosition { get; set; }
-    [HideInInspector] public Vector2 Position { get { return transform.position; } }
-    [HideInInspector] public GridNeighbors Neighbors { get; private set; }
-    [HideInInspector] public Enums.ActiveSpace ActivePlayerSpace { get { return _gridParams.ActiveSpace; } }
-    [HideInInspector] public int PlayerMoveDistance { get { return _gridParams.MoveDistance; } }
-    [HideInInspector] public int PlayerAttackDistance { get { return _gridParams.MaxAttackDistance; } }
+    public bool isOccupied { get { return CurrentUnit != null; } }
+    public bool IsSpaceActive { get { return _gridParams.IsSpaceActive; } }
+    public Vector2 GridPosition { get; set; }
+    public Vector2 Position { get { return transform.position; } }
+    public GridNeighbors Neighbors { get; private set; }
+    public Enums.ActiveSpace ActivePlayerSpace { get { return _gridParams.ActiveSpace; } }
+    public int PlayerMoveDistance { get { return _gridParams.MoveDistance; } }
+    public int PlayerAttackDistance { get { return _gridParams.MaxAttackDistance; } }
 
     private PlayerManager _pM;
     private PlayerParams _gridParams;
     private CursorController _cursor;
     private GridBlock _bestNeighbor;
+    private Dictionary<UnitController, PathBlock> _pathBlocks;
+    private PathBlock _currentPathBlock;
     private bool _gotNeighbors;
 
     public Enums.ActiveSpace ActiveSpace(Enums.Player player)
@@ -109,7 +115,7 @@ public class GridBlock : MonoBehaviour
         _gridParams.Reset();
     }
 
-    public IEnumerable<GridBlock> GetRangedSpaces(GridBlock start, int minDis, GridBlock target = null, List<OrderedGridBlock> gridDis = null)
+    public IEnumerable<GridBlock> GetRangeSpaces(GridBlock start, int minDis, GridBlock target = null, List<OrderedGridBlock> gridDis = null)
     {
         bool org = false;
         if (gridDis == null)
@@ -132,7 +138,7 @@ public class GridBlock : MonoBehaviour
             minDis--;
             foreach (GridBlock g in nonUsedNeighbors)
             {
-                g.GetRangedSpaces(start, minDis, g, gridDis);
+                g.GetRangeSpaces(start, minDis, g, gridDis);
             }
         }
 
@@ -154,9 +160,25 @@ public class GridBlock : MonoBehaviour
                 //!CurrentUnit.AlliedWith.Contains(player);
     }
 
-    public void UpdateMoveSpaceState(Vector2 cDir, Vector2? nDir)
+    public void UpdatePathState(UnitController unit, Vector2 cDir, Vector2? nDir)
     {
-        _gridParams.UpdateMoveSpaceState(cDir, nDir);
+        if (!_pathBlocks.ContainsKey(unit))
+        {
+            _pathBlocks[unit] = CreatePathBlock();
+        }
+
+        _pathBlocks[unit].UpdatePathState(cDir, nDir);
+        _currentPathBlock.UpdatePathState(cDir, nDir);
+        _currentPathBlock.Show = true;
+    }
+
+    public void ClearUnitPath(UnitController unit)
+    {
+        if(_pathBlocks.ContainsKey(unit))
+        {
+            Destroy(_pathBlocks[unit].gameObject);
+            _pathBlocks.Remove(unit);
+        }
     }
 
     void Awake()
@@ -167,17 +189,32 @@ public class GridBlock : MonoBehaviour
 
     void Start()
     {
+        _currentPathBlock = CreatePathBlock();
         var cursorBoundaries = GameObject.Find("CursorBoundaries");
         var pCollider = cursorBoundaries.GetComponent<PolygonCollider2D>();
         _cursor = FindObjectOfType<CursorController>();
+
         if (!Position.InsideSquare(pCollider.points[1], pCollider.points[3]))
             Destroy(gameObject);
+        else
+        {
+            try
+            {
+                var uiParent = GameObject.FindGameObjectWithTag("UI");
+                var minimapObject = uiParent.FindObject("MapTileIcons");
+                var uiTile = Instantiate(MinimapTile);
+                uiTile.rectTransform.SetParent(minimapObject.transform);
+                uiTile.rectTransform.anchoredPosition = new Vector2(MinimapTile.rectTransform.rect.width * (transform.position.x - .5f), MinimapTile.rectTransform.rect.height * (transform.position.y - .5f));
+            }
+            catch { Debug.Log("failed gridblock minimap"); }
 
-        _pM = FindObjectOfType<PlayerManager>();
+            _pM = FindObjectOfType<PlayerManager>();
 
-        CreateAttackSpace(AttackSpace);
-        CreateMoveSpace(MoveSpace);
-        _gridParams.Reset();
+            _pathBlocks = new Dictionary<UnitController, PathBlock>();
+            CreateAttackSpace(AttackSpace);
+            CreateMoveSpace(MoveSpace);
+            _gridParams.Reset();
+        }
     }
 
     void Update()
@@ -188,10 +225,12 @@ public class GridBlock : MonoBehaviour
             _gotNeighbors = true;
         }
 
-        if (!_pM.PlayerInfo.MovementPath.Contains(this) )
+        if (!_pM.PlayerInfo.MovementPath.Contains(this) && _currentPathBlock.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
         {
-            _gridParams.ResetSpace();
+            _currentPathBlock.Show = false;
         }
+
+
 
         var bestNeighbor = Neighbors?.GetBestMoveNeighbor();
         if (bestNeighbor != null)
@@ -248,19 +287,26 @@ public class GridBlock : MonoBehaviour
 
     private void CreateAttackSpace(GameObject space)
     {
-        _gridParams.AttackSpace = GetSpaceScript<AttackSpace>(this, space);
+        _gridParams.AttackSpace = GetGridBlockItemScript<AttackSpace>(this, space);
         _gridParams.AttackSpace.Player = Enums.Player.Player1;
         _gridParams.AttackSpace.ParentGridBlock = this;
     }
 
     private void CreateMoveSpace(GameObject space)
     {
-        _gridParams.MoveSpace = GetSpaceScript<MoveSpace>(this, space);
+        _gridParams.MoveSpace = GetGridBlockItemScript<MoveSpace>(this, space);
         _gridParams.MoveSpace.Player = Enums.Player.Player1;
         _gridParams.MoveSpace.ParentGridBlock = this;
     }
 
-    private T GetSpaceScript<T>(GridBlock parent, GameObject gO)
+    private PathBlock CreatePathBlock()
+    {
+        var newPB = GetGridBlockItemScript<PathBlock>(this, PathBlock);
+        newPB.ParentGridBlock = this;
+        return newPB;
+    }
+
+    private T GetGridBlockItemScript<T>(GridBlock parent, GameObject gO)
     {
         var o = Instantiate(gO, parent.transform.position, Quaternion.identity);
         return o.GetComponent<T>();
@@ -287,7 +333,6 @@ public class GridBlock : MonoBehaviour
         {
             ActiveSpace = Enums.ActiveSpace.Inactive;
             GridStart = null;
-            ResetSpace();
             AttackSpace?.Disable();
             MoveSpace?.Disable();
             MoveDistance = -1;
@@ -302,7 +347,6 @@ public class GridBlock : MonoBehaviour
 
         public void ShowAttackSpace(Vector2? moveFrom)
         {
-            MoveSpace.ResetSpace();
             ShowSpace(AttackSpace, MoveSpace, moveFrom);
         }
 
@@ -313,16 +357,6 @@ public class GridBlock : MonoBehaviour
                 dSpace.Disable();
                 eSpace.Enable(moveFrom);
             }
-        }
-
-        public void ResetSpace()
-        {
-            MoveSpace?.ResetSpace();
-        }
-
-        public void UpdateMoveSpaceState(Vector2 cDir, Vector2? nDir)
-        {
-            MoveSpace.MoveState(cDir, nDir);
         }
 
         public override bool Equals(object obj)

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GridSpace : MonoBehaviour
+public class GridSpace : GridBlockItem
 {
     public float MoveAnimationSpeed;
 
@@ -41,21 +39,6 @@ public class GridSpace : MonoBehaviour
 
             gameObject.SetActive(true);
         }
-    }
-
-    public void Disable()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public bool Active
-    {
-        get { return gameObject.activeSelf; }
-    }
-
-    public GridBlock ParentGridBlock
-    {
-        get; set;
     }
 
     protected SpriteRenderer _sR;

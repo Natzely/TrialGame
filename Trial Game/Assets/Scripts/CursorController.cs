@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class CursorController : MonoBehaviour, ILog
 {
@@ -17,36 +19,40 @@ public class CursorController : MonoBehaviour, ILog
     public AudioClip Sound_Deselect;
     public AudioClip Sound_Move;
     public AudioClip Sound_Select;
+    [SerializeField] private Image MinimapCursor;
     public float MoveTimer = 1;
     public int CurrentMove;
-    public UnitController CurrentUnit { get; private set; }
+    public UnitController CurrentUnit 
+    { 
+        get { return _pM.PlayerInfo.SelectedUnit; }
+        private set { _pM.PlayerInfo.SelectedUnit = value; }
+    }
     public GridBlock CurrentGridBlock { get; private set; }
 
-    Enums.CursorState _currState;
+    private Enums.CursorState _currState;
 
-    GridBlock _orgGridBlock;
-    PlayerManager _pM;
-    UnitController _quickSelectUnit;
+    private GridBlock _orgGridBlock;
+    private PlayerManager _pM;
+    private UnitController _quickSelectUnit;
 
-    Animator _animator;
-    SpriteRenderer _sR;
-    AudioSource _aS;
-    List<GridBlock> _moves;
-    Vector2 _startPos;
-    Color _playerColor;
-    bool _attackSpace;
-    bool _cancel;
-    bool _getUnit;
-    bool _quickSelect;
-    bool _select;
-    float _moveTimer;
-    float _maxXClamp;
-    float _minXClamp;
-    float _minYClamp;
-    float _maxYClamp;
-    float _actionTimer;
-    int _vert;
-    int _horz;
+    private Animator _animator;
+    private SpriteRenderer _sR;
+    private AudioSource _aS;
+    private Image _minimapCursor;
+    private List<GridBlock> _moves;
+    private Vector2 _startPos;
+    private Vector2 _moveVector;
+    private Vector2 _maxClamp;
+    private Vector2 _minClamp;
+    private Color _playerColor;
+    private bool _getUnit;
+    private bool _attackSpace;
+    private float _moveTimer;
+    private float _maxXClamp;
+    private float _minXClamp;
+    private float _minYClamp;
+    private float _maxYClamp;
+    private float _actionTimer;
 
     public void EnemyInPath(GridBlock gB)
     {
@@ -74,10 +80,19 @@ public class CursorController : MonoBehaviour, ILog
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
-        _minXClamp = Boundaries.points[1].x + .5f;
-        _minYClamp = Boundaries.points[1].y + .5f;
-        _maxXClamp = Boundaries.points[3].x - .5f;
-        _maxYClamp = Boundaries.points[3].y - .5f;
+        _minClamp = new Vector2(_minXClamp = Boundaries.points[1].x + .5f, _minYClamp = Boundaries.points[1].y + .5f);
+        _maxClamp = new Vector2(_maxXClamp = Boundaries.points[3].x - .5f, _maxYClamp = Boundaries.points[3].y - .5f); 
+        
+        try
+        {
+            var uiParent = GameObject.FindGameObjectWithTag("UI");
+            var minimapPanel = uiParent.FindObject("UnitIcons");
+            _minimapCursor = Instantiate(MinimapCursor);
+            _minimapCursor.rectTransform.SetParent(minimapPanel.transform);
+            _minimapCursor.rectTransform.anchoredPosition = new Vector2(MinimapCursor.rectTransform.rect.width * (transform.position.x - .5f), MinimapCursor.rectTransform.rect.height * (transform.position.y - .5f));
+        }
+        catch { Debug.Log("failed cursor minimap"); }
+
         _startPos = transform.position;
         _playerColor = _sR.color = Colors.Player1;
     }
@@ -85,13 +100,6 @@ public class CursorController : MonoBehaviour, ILog
     // Update is called once per frame
     void Update()
     {
-        _vert = Mathf.RoundToInt(Input.GetAxis("P1_Vertical"));
-        _horz = Mathf.RoundToInt(Input.GetAxis("P1_Horizontal"));
-        _select = Input.GetButtonUp("P1_Select");
-        _cancel = Input.GetButtonUp("P1_Cancel");
-        _quickSelect = Input.GetButtonUp("NextUnit");
-        _attackSpace = Input.GetButtonUp("AttackSpace");
-
         if (_currState == Enums.CursorState.Selected && CurrentUnit == null)
             _currState = Enums.CursorState.Default;
 
@@ -101,7 +109,23 @@ public class CursorController : MonoBehaviour, ILog
             _getUnit = false;
         }
 
-        CheckForAction();
+        if (_moveTimer <= 0 && _moveVector != Vector2.zero)
+        {
+            Vector2 tmpPos = transform.position.V2() + _moveVector;
+            tmpPos = tmpPos.Clamp(_minClamp, _maxClamp);
+
+            if (tmpPos != transform.position.V2())
+            {
+                OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
+                transform.position = tmpPos;
+                _minimapCursor.rectTransform.anchoredPosition = new Vector2(MinimapCursor.rectTransform.rect.width * (transform.position.x - .5f), MinimapCursor.rectTransform.rect.height * (transform.position.y - .5f));
+                _aS.Play(Sound_Move);
+            }
+
+            _moveTimer = MoveTimer;
+        }
+        else
+            _moveTimer -= Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -198,61 +222,84 @@ public class CursorController : MonoBehaviour, ILog
         }
     }
 
-    private void CheckForAction()
+    //private void CheckForAction()
+    //{
+    //    if (_actionTimer <= 0)
+    //    {
+    //        if (_quickSelect && _currState == Enums.CursorState.Default)
+    //        {
+    //            //QuickSelect();
+    //            _actionTimer = PlayerManager.ACTIONTIMER;
+    //        }
+    //        if (_cancel)
+    //        {
+    //            //Cancel();
+    //            _actionTimer = PlayerManager.ACTIONTIMER;
+    //        }
+    //        else if ((_select || _attackSpace) && CurrentUnit != null && !CurrentUnit.OnCooldown)
+    //        {
+    //            //Select();
+    //            _actionTimer = PlayerManager.ACTIONTIMER;
+    //        }
+    //        // In order for the cursor to move it needs to meet the following conditions
+    //        // - The action timer is off cooldown
+    //        // - There is horizontal or vertical movement
+    //        // - There isn't a unit selected
+    //        // - If there is a unit selected
+    //        //   - It hasn't moved or isn't moving
+    //        //   - The cursor is in attack state
+    //        else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
+    //        {
+    //            //Move();
+    //            OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
+    //            _actionTimer = PlayerManager.ACTIONTIMER;
+    //        }
+
+    //        //_actionTimer = ActionTimer;  Because CheckForAction is called every Update() frame DO NOT uncomment this. 
+    //    }
+
+    //    if (_actionTimer > 0)
+    //        _actionTimer -= Time.deltaTime;
+    //    if (_moveTimer > 0)
+    //        _moveTimer -= Time.deltaTime;
+    //}
+
+    public void Move_UpDown(InputAction.CallbackContext context)
     {
-        if (_actionTimer <= 0)
-        {
-            if (_quickSelect && _currState == Enums.CursorState.Default)
-            {
-                QuickSelect();
-                _actionTimer = PlayerManager.ACTIONTIMER;
-            }
-            if (_cancel)
-            {
-                Cancel();
-                _actionTimer = PlayerManager.ACTIONTIMER;
-            }
-            else if ((_select || _attackSpace) && CurrentUnit != null && !CurrentUnit.OnCooldown)
-            {
-                Select();
-                _actionTimer = PlayerManager.ACTIONTIMER;
-            }
-            // In order for the cursor to move it needs to meet the following conditions
-            // - The action timer is off cooldown
-            // - There is horizontal or vertical movement
-            // - There isn't a unit selected
-            // - If there is a unit selected
-            //   - It hasn't moved or isn't moving
-            //   - The cursor is in attack state
-            else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
-            {
-                Move();
-                OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
-                _actionTimer = PlayerManager.ACTIONTIMER;
-            }
+        //Debug.Log($"UpDown | Started: {context.started} | Performed: {context.performed} | Canceled: {context.canceled} | MoveVec: {context.ReadValue<Vector2>()}");
 
-            //_actionTimer = ActionTimer;  Because CheckForAction is called every Update() frame DO NOT uncomment this. 
-        }
+        _moveVector.y = context.ReadValue<Vector2>().y;
+    }
 
-        if (_actionTimer > 0)
-            _actionTimer -= Time.deltaTime;
-        if (_moveTimer > 0)
-            _moveTimer -= Time.deltaTime;
+    public void Move_LefRight(InputAction.CallbackContext context)
+    {
+        //Debug.Log($"LeftRight | Started: {context.started} | Performed: {context.performed} | Canceled: {context.canceled} | MoveVec: {context.ReadValue<Vector2>()}");
+
+        _moveVector.x = context.ReadValue<Vector2>().x;
     }
 
     // Selects the Unit closests to the cursor.
-    private void QuickSelect()
+    public void QuickSelect(InputAction.CallbackContext context)
     {
-        _quickSelectUnit = _pM.GetNextUnit(Player, CurrentUnit ?? _quickSelectUnit);
-        if (_quickSelectUnit != null)
+        Debug.Log("Quick Select");
+
+        if (context.performed)
         {
-            transform.position = _quickSelectUnit.transform.position;
-            _aS.Play(Sound_Move);
+            Debug.Log("Quick Select Performed");
+            _quickSelectUnit = _pM.GetNextUnit(Player, CurrentUnit ?? _quickSelectUnit);
+            if (_quickSelectUnit != null)
+            {
+                transform.position = _quickSelectUnit.transform.position;
+                _aS.Play(Sound_Move);
+            }
         }
     }
 
-    private void Cancel()
+    public  void Cancel(InputAction.CallbackContext context)
     {
+        if (!context.performed)
+            return;
+
         if (_currState == Enums.CursorState.Selected)
         {
             if (CurrentUnit.Moved || CurrentUnit.Moving)
@@ -276,8 +323,11 @@ public class CursorController : MonoBehaviour, ILog
         }
     }
 
-    private void Select()
+    public void Select(InputAction.CallbackContext context)
     {
+        if (!context.performed)
+            return;
+
         if (_currState == Enums.CursorState.Default)
         {
             _currState = Enums.CursorState.Selected;
@@ -399,22 +449,6 @@ public class CursorController : MonoBehaviour, ILog
         }
     }
 
-    private void Move()
-    {
-        Vector2 tmpPos = transform.position.Copy();
-
-        tmpPos.x = Mathf.Clamp(tmpPos.x + _horz, _minXClamp, _maxXClamp);
-        tmpPos.y = Mathf.Clamp(tmpPos.y + _vert, _minYClamp, _maxYClamp);
-
-        if (tmpPos != transform.position.V2())
-        {
-            transform.position = tmpPos;
-            _aS.Play(Sound_Move);
-        }
-
-        _moveTimer = MoveTimer;
-    }
-
     private void SelectUnit(bool select)
     {
         CurrentUnit.Select(select);
@@ -427,6 +461,11 @@ public class CursorController : MonoBehaviour, ILog
     public void Log(string msg)
     {
         _pM.Log($"{gameObject.name} | {msg}");
+    }
+
+    public void LogError(string msg)
+    {
+        throw new NotImplementedException();
     }
 }
 

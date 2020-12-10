@@ -49,7 +49,7 @@ public class EnemyController : MonoBehaviour
 
             GridBlock gbTarget = null;
             List<GridBlock> moves = null;
-            var gbTargets = target.CurrentGridBlock.GetRangedSpaces(UnitController.CurrentGridBlock, minAttackRange);
+            var gbTargets = target.CurrentGridBlock.GetRangeSpaces(UnitController.CurrentGridBlock, minAttackRange);
 
             if (gbTargets != null)
             {
@@ -104,10 +104,10 @@ public class EnemyController : MonoBehaviour
             }
             else if (moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
             {
-                moves = MaxMovementPath(moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
+                moves = VerifiedPath(moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
                 UnitManager.ResetBlockGrid();
                 bool action = false;
-                if (UnitController.Target != null)
+                if (moves.Count > 0 && UnitController.Target != null)
                 {
                     if (moves.Last().Position.GridDistance(ucTarget.Position) < UnitController.MaxAttackDistance)
                     {
@@ -130,6 +130,7 @@ public class EnemyController : MonoBehaviour
                         }
                     }
                 }
+
                 if (moves.Count > 0)
                 {
                     UnitController.MoveTo(moves);
@@ -137,7 +138,7 @@ public class EnemyController : MonoBehaviour
                 }
 
                 if (action)
-                    return true;
+                    return action;
             }
             else if ((backupSpaces = UnitController.CurrentGridBlock.AvailableAttackSpace(gbTarget, UnitController.MaxAttackDistance).ToList()).Count > 0)
             {
@@ -152,6 +153,18 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("Unit Controller no GridBlock");
         return false;
+    }
+
+    private List<GridBlock> VerifiedPath(List<GridBlock> path, int maxMovement)
+    {
+        var maxPath = MaxMovementPath(path, maxMovement).ToList();
+
+        while(maxPath.Last().isOccupied)
+        {
+            maxPath.Remove(maxPath.Last());
+        }
+
+        return maxPath;
     }
 
     private IEnumerable<GridBlock> MaxMovementPath(List<GridBlock> path, int maxMovement)

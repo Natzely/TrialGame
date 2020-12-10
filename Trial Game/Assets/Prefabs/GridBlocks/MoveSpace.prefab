@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1168837427428086728}
   - component: {fileID: 1168837427428086731}
   - component: {fileID: -7308799130660300109}
-  - component: {fileID: 2806234793978917358}
+  - component: {fileID: 4985637600885826183}
   m_Layer: 18
   m_Name: MoveSpace
   m_TagString: Untagged
@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 19b3e749ae2eddd4480ae9a536bbf432, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6, g: 1, b: 0.6, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -129,7 +130,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2806234793978917358
+--- !u!114 &4985637600885826183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1168837427428086730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8ea4ad1a10609a489362bdfc1758a93, type: 3}
+  m_Script: {fileID: 11500000, guid: af858cdd8215d3949b07f27d03600a10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveAnimationSpeed: 10
+  MoveAnimationSpeed: 7

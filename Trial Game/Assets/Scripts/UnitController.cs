@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System;
 
@@ -10,7 +11,6 @@ public class UnitController : MonoBehaviour, ILog
 {
     public int MAXMOVEAFTERATTACK = 3;
     public float PLUSACTIONTIME = 7.5f;
-
     public delegate void OnDeath();
     public OnDeath OnUnitInterupt;
 
@@ -23,6 +23,8 @@ public class UnitController : MonoBehaviour, ILog
 
     public GameObject OffCooldownObject;
     public GameObject Projectile;
+    public Image MinimapIconImage;
+    public Image MapTileImage;
     public EnemyController EnemyController;
     public TextMeshProUGUI PlusActionText;
     public TextMeshProUGUI CooldownReduction;
@@ -69,6 +71,7 @@ public class UnitController : MonoBehaviour, ILog
     private GridBlock _originalPoint;
     private Damageable _damagable;
     private Vector2 _attackPos;
+    private Image _minimapIcon;
 
     private bool _tasked;
     private bool _selected;
@@ -362,6 +365,18 @@ public class UnitController : MonoBehaviour, ILog
                 break;
         }
 
+        try
+        {
+            var uiParent = GameObject.FindGameObjectWithTag("UI");
+            var minimapPanel = uiParent.FindObject("UnitIcons");
+            _minimapIcon = Instantiate(MinimapIconImage);
+            _minimapIcon.color = Player == Enums.Player.Player1 ? Color.green : Color.red;
+            _minimapIcon.rectTransform.SetParent(minimapPanel.transform);
+            _minimapIcon.rectTransform.anchoredPosition = new Vector2(MapTileImage.rectTransform.rect.width * (transform.position.x - .5f), MapTileImage.rectTransform.rect.height * (transform.position.y - .5f));
+            _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
+        }
+        catch { Debug.Log("failed unit minimap"); }
+
         gameObject.name = $"P{((int)Player) + 1}_" + gameObject.name;
 
         _bC.size = ColliderSizeIdle;
@@ -385,11 +400,13 @@ public class UnitController : MonoBehaviour, ILog
         {
             if (_nextPoint == null && !_movePositions.IsEmpty())
             {
+                _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
                 _nextPoint = _movePositions.Dequeue();
                 LookAt(_nextPoint.Position);
             }
 
             Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * Time.deltaTime);
+            _minimapIcon.rectTransform.anchoredPosition = new Vector2(MapTileImage.rectTransform.rect.width * (transform.position.x - .5f), MapTileImage.rectTransform.rect.height * (transform.position.y - .5f));
 
             transform.position = moveVector;
             if (transform.position.V2() == _nextPoint.Position)
@@ -460,11 +477,12 @@ public class UnitController : MonoBehaviour, ILog
             CooldownTimer -= Time.deltaTime;
             if (CooldownTimer <= 0)
             {
-                Log($"Come of cooldwon");
+                Log($"Come of cooldown");
                 if(Type == Enums.UnitType.Melee)
                     CooldownReduction?.gameObject.SetActive(false);
 
                 _animator.SetBool("Cooldown", OnCooldown = false);
+                _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
 
                 if (OffCooldownObject != null)
                 {
@@ -505,6 +523,7 @@ public class UnitController : MonoBehaviour, ILog
             {
                 Log("Updating last Gridblock");
                 CurrentGridBlock.CurrentUnit = null;
+                CurrentGridBlock.ClearUnitPath(this);
             }
 
             CurrentGridBlock = gB;
@@ -595,6 +614,7 @@ public class UnitController : MonoBehaviour, ILog
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Reset();
+        _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Cooldown : Colors.Enemy_Cooldown;
         //_pM?.PlayerUnitMoveDown(this);
         _originalPoint = CurrentGridBlock;
         var crc = CheckReducedCooldown();
@@ -641,5 +661,10 @@ public class UnitController : MonoBehaviour, ILog
     public void Log(string msg)
     {
         UnitManager.Log($"{gameObject.name} | {msg}");
+    }
+
+    public void LogError(string msg)
+    {
+        throw new NotImplementedException();
     }
 }

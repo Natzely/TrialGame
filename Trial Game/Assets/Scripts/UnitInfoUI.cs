@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.Runtime.InteropServices;
 
 public class UnitInfoUI : MonoBehaviour
 {
+    [SerializeField] private PauseScreen PauseScreen;
     public Sprite[] UnitSprites;
     public RectTransform Transform;
     public Image UnitImage;
@@ -22,6 +24,33 @@ public class UnitInfoUI : MonoBehaviour
     private bool _showing;
     private UnitController _currentUnit;
 
+    public void ShowUnitInfo(InputAction.CallbackContext context)
+    {   
+        if (!PauseScreen.IsGamePaused)
+        {
+            if (_visible && context.performed)
+            {
+                Debug.Log("Show unit info");
+                Transform.anchoredPosition = new Vector2(Transform.rect.width, Transform.anchoredPosition.y);
+                _visible = false;
+            }
+            else if (!_visible && _cursor.CurrentGridBlock.CurrentUnit != null && context.performed)
+            {
+                Debug.Log("Hide unit info");
+                _currentUnit = _cursor.CurrentGridBlock.CurrentUnit;
+                int type = (int)(_currentUnit.Type);
+
+                UnitImage.sprite = UnitSprites[type];
+                UnitName.text = _unitName[type];
+                UnitInfo.text = _unitInfo[type];
+                UnitPros.text = _unitPros[type];
+                UnitCons.text = _unitCons[type];
+
+                _showing = true;
+            }
+        }
+    }
+
     void Awake()
     {
         _cursor = FindObjectOfType<CursorController>();
@@ -30,27 +59,6 @@ public class UnitInfoUI : MonoBehaviour
 
     void Update()
     {
-        bool activate = Input.GetButtonUp("UnitInfo");
-
-        if(activate && _visible)
-        {
-            Transform.anchoredPosition = new Vector2(Transform.rect.width, Transform.anchoredPosition.y);
-            _visible = false;
-        }
-        else if(activate && !_visible && _cursor.CurrentGridBlock.CurrentUnit != null)
-        {
-            _currentUnit = _cursor.CurrentGridBlock.CurrentUnit;
-            int type = (int)(_currentUnit.Type);
-
-            UnitImage.sprite = UnitSprites[type];
-            UnitName.text = _unitName[type];
-            UnitInfo.text = _unitInfo[type];
-            UnitPros.text = _unitPros[type];
-            UnitCons.text = _unitCons[type];
-
-            _showing = true;
-        }
-
         if(_visible && _cursor.CurrentGridBlock.CurrentUnit != _currentUnit)
         {
             _currentUnit = _cursor.CurrentGridBlock.CurrentUnit;

@@ -27,6 +27,7 @@ public abstract class UnitManager : MonoBehaviour
     {
         PlayerInfo.ActiveGrid.ToList().ForEach(aG => aG.Disable(Player));
         PlayerInfo.ActiveGrid.Clear();
+        PlayerInfo.MovementPath.Clear();
         PlayerInfo.BlockGrid = new GridBlock[_gridSizeX, _gridSizeY];
     }
 

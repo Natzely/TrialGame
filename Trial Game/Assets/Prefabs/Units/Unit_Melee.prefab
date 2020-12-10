@@ -334,6 +334,10 @@ MonoBehaviour:
     type: 3}
   Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
+  MinimapIconImage: {fileID: 6849667185187882453, guid: 7a70802fde0cebf41971027f9aa2f497,
+    type: 3}
+  MapTileImage: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
+    type: 3}
   EnemyController: {fileID: 0}
   PlusActionText: {fileID: 0}
   CooldownReduction: {fileID: 2322979426093693629}

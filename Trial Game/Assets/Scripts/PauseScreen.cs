@@ -1,50 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseScreen : MonoBehaviour
 {
-    public GameObject PauseScreenPanel;
+    public bool IsGamePaused { get; private set; }
 
+    [SerializeField] private GameObject PauseScreenPanel;
 
-    private bool _isGamePaused;
     private float _actionTimer;
     private float _lastRealTime;
 
+    public void ShowPauseScreen(InputAction.CallbackContext context)
+    {
+        ShowPauseScreen();
+    }
+
     private void Start()
     {
-        ShowPauseScreen(true);
+        //ShowPauseScreen();
     }
 
-    void Update()
+    private void ShowPauseScreen()
     {
-        bool _pause = Input.GetButtonUp("Pause");
-
-        if (_actionTimer <= 0)
-        {
-            if (_pause)
-            {
-                if (_isGamePaused)
-                    ShowPauseScreen(false);
-                else
-                    ShowPauseScreen(true);
-
-                _actionTimer = PlayerManager.ACTIONTIMER;
-            }
-        }
-        else
-        {
-            _actionTimer -= Time.realtimeSinceStartup - _lastRealTime;
-        }
-
-        _lastRealTime = Time.realtimeSinceStartup;
-    }
-
-    private void ShowPauseScreen(bool pause)
-    {
-        Debug.Log(pause ? "Pause" : "Unpause" + " Game");
-        Time.timeScale = pause ? 0 : 1;
-        PauseScreenPanel.SetActive(pause);
-        _isGamePaused = pause;
+        IsGamePaused = !IsGamePaused;
+        Time.timeScale = IsGamePaused ? 0 : 1;
+        PauseScreenPanel.SetActive(IsGamePaused);
+        Debug.Log(IsGamePaused ? "Pause" : "Unpause" + " Game");
     }
 }
