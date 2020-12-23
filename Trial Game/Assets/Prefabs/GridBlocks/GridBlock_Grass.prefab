@@ -50,7 +50,9 @@ MonoBehaviour:
     type: 3}
   AttackSpace: {fileID: 1168837427428086730, guid: 8f6ccdf6f94252849b1cf812e5d21dc4,
     type: 3}
-  PathBlock: {fileID: 6065125772764612160, guid: ef1b838a7c212d640b282805272d35de,
+  ActivePath: {fileID: 6065125772764612160, guid: ef1b838a7c212d640b282805272d35de,
+    type: 3}
+  SavedPath: {fileID: 324291076299296445, guid: b7befff5e38f19947b7378a4cd0189bb,
     type: 3}
   MinimapTile: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
     type: 3}

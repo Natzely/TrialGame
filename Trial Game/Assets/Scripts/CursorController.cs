@@ -213,56 +213,17 @@ public class CursorController : MonoBehaviour, ILog
         _currState = Enums.CursorState.Default;
         _pM.ResetBlockGrid();
         _animator.SetBool("Attacking", false);
-        _moves = null;
         if (CurrentUnit != null && resetUnit)
         {
             CurrentUnit.OnUnitInterupt -= OnCurrentUnitInterupt;
-            CurrentUnit = null;
             Log("Current Unit null");
+            var pathColor = Colors.GetPathColor();
+            var savedPath = _moves.Take(_moves.Count - 1).ToList();
+            savedPath.ForEach(m => m.SavePath(CurrentUnit, pathColor));
+            CurrentUnit = null;
         }
+        _moves = null;
     }
-
-    //private void CheckForAction()
-    //{
-    //    if (_actionTimer <= 0)
-    //    {
-    //        if (_quickSelect && _currState == Enums.CursorState.Default)
-    //        {
-    //            //QuickSelect();
-    //            _actionTimer = PlayerManager.ACTIONTIMER;
-    //        }
-    //        if (_cancel)
-    //        {
-    //            //Cancel();
-    //            _actionTimer = PlayerManager.ACTIONTIMER;
-    //        }
-    //        else if ((_select || _attackSpace) && CurrentUnit != null && !CurrentUnit.OnCooldown)
-    //        {
-    //            //Select();
-    //            _actionTimer = PlayerManager.ACTIONTIMER;
-    //        }
-    //        // In order for the cursor to move it needs to meet the following conditions
-    //        // - The action timer is off cooldown
-    //        // - There is horizontal or vertical movement
-    //        // - There isn't a unit selected
-    //        // - If there is a unit selected
-    //        //   - It hasn't moved or isn't moving
-    //        //   - The cursor is in attack state
-    //        else if (_moveTimer <= 0 && (_horz != 0 || _vert != 0))
-    //        {
-    //            //Move();
-    //            OnCursorMoveEvent?.Invoke(this, new CursorMoveEventArgs(transform.position));
-    //            _actionTimer = PlayerManager.ACTIONTIMER;
-    //        }
-
-    //        //_actionTimer = ActionTimer;  Because CheckForAction is called every Update() frame DO NOT uncomment this. 
-    //    }
-
-    //    if (_actionTimer > 0)
-    //        _actionTimer -= Time.deltaTime;
-    //    if (_moveTimer > 0)
-    //        _moveTimer -= Time.deltaTime;
-    //}
 
     public void Move_UpDown(InputAction.CallbackContext context)
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PathBlock: GridBlockItem
+public class Path_Active: GridBlockItem
 {
     public Enums.PathDirection PathDirection
     {
@@ -11,8 +11,6 @@ public class PathBlock: GridBlockItem
         get { return _sR.enabled; } 
         set { _sR.enabled = value; } 
     }
-
-    public bool ActivePath { get; set; }
 
     public void SavePath()
     {
@@ -124,7 +122,6 @@ public class PathBlock: GridBlockItem
     {
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
-        SelectedUnitPath = true;
     }
 
     private void Start()

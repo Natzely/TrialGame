@@ -10,7 +10,8 @@ public class GridBlock : MonoBehaviour
     public Enums.GridBlockType Type;
     public GameObject MoveSpace;
     public GameObject AttackSpace;
-    public GameObject PathBlock;
+    public GameObject ActivePath;
+    public GameObject SavedPath;
     public Image MinimapTile;
     public int MovementCost = 0;
     public bool Unpassable = false;
@@ -29,8 +30,8 @@ public class GridBlock : MonoBehaviour
     private PlayerParams _gridParams;
     private CursorController _cursor;
     private GridBlock _bestNeighbor;
-    private Dictionary<UnitController, PathBlock> _pathBlocks;
-    private PathBlock _currentPathBlock;
+    private Dictionary<UnitController, Path_Saved> _savedPaths;
+    private Path_Active _currentAcitvePath;
     private bool _gotNeighbors;
 
     public Enums.ActiveSpace ActiveSpace(Enums.Player player)
@@ -162,22 +163,25 @@ public class GridBlock : MonoBehaviour
 
     public void UpdatePathState(UnitController unit, Vector2 cDir, Vector2? nDir)
     {
-        if (!_pathBlocks.ContainsKey(unit))
-        {
-            _pathBlocks[unit] = CreatePathBlock();
-        }
-
-        _pathBlocks[unit].UpdatePathState(cDir, nDir);
-        _currentPathBlock.UpdatePathState(cDir, nDir);
-        _currentPathBlock.Show = true;
+        _currentAcitvePath.UpdatePathState(cDir, nDir);
+        _currentAcitvePath.Show = true;
     }
 
-    public void ClearUnitPath(UnitController unit)
+    public void SavePath(UnitController unit, Color color)
     {
-        if(_pathBlocks.ContainsKey(unit))
+        var savedPath = Instantiate(SavedPath, transform.position, Quaternion.identity);
+        var spScript = savedPath.GetComponent<Path_Saved>();
+        spScript.SetColor(color);
+        spScript.SetPathDirection(_currentAcitvePath.PathDirection);
+        _savedPaths.Add(unit, spScript);
+    }
+
+    public void DeletePath(UnitController unit)
+    {
+        if (_savedPaths.ContainsKey(unit))
         {
-            Destroy(_pathBlocks[unit].gameObject);
-            _pathBlocks.Remove(unit);
+            Destroy(_savedPaths[unit].gameObject);
+            _savedPaths.Remove(unit);
         }
     }
 
@@ -189,7 +193,7 @@ public class GridBlock : MonoBehaviour
 
     void Start()
     {
-        _currentPathBlock = CreatePathBlock();
+        _currentAcitvePath = CreatePathBlock();
         var cursorBoundaries = GameObject.Find("CursorBoundaries");
         var pCollider = cursorBoundaries.GetComponent<PolygonCollider2D>();
         _cursor = FindObjectOfType<CursorController>();
@@ -210,7 +214,7 @@ public class GridBlock : MonoBehaviour
 
             _pM = FindObjectOfType<PlayerManager>();
 
-            _pathBlocks = new Dictionary<UnitController, PathBlock>();
+            _savedPaths = new Dictionary<UnitController, Path_Saved>();
             CreateAttackSpace(AttackSpace);
             CreateMoveSpace(MoveSpace);
             _gridParams.Reset();
@@ -225,12 +229,10 @@ public class GridBlock : MonoBehaviour
             _gotNeighbors = true;
         }
 
-        if (!_pM.PlayerInfo.MovementPath.Contains(this) && _currentPathBlock.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
+        if (!_pM.PlayerInfo.MovementPath.Contains(this) && _currentAcitvePath.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
         {
-            _currentPathBlock.Show = false;
+            _currentAcitvePath.Show = false;
         }
-
-
 
         var bestNeighbor = Neighbors?.GetBestMoveNeighbor();
         if (bestNeighbor != null)
@@ -299,9 +301,9 @@ public class GridBlock : MonoBehaviour
         _gridParams.MoveSpace.ParentGridBlock = this;
     }
 
-    private PathBlock CreatePathBlock()
+    private Path_Active CreatePathBlock()
     {
-        var newPB = GetGridBlockItemScript<PathBlock>(this, PathBlock);
+        var newPB = GetGridBlockItemScript<Path_Active>(this, ActivePath);
         newPB.ParentGridBlock = this;
         return newPB;
     }

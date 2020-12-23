@@ -413,6 +413,7 @@ public class UnitController : MonoBehaviour, ILog
             {
                 CurrentGridBlock = _nextPoint;
                 Log("Arrived at point");
+                _pastPositions.FirstOrDefault()?.DeletePath(this);
                 _pastPositions.Push(_nextPoint);
                 if (!_movePositions.IsEmpty())
                 {
@@ -523,7 +524,6 @@ public class UnitController : MonoBehaviour, ILog
             {
                 Log("Updating last Gridblock");
                 CurrentGridBlock.CurrentUnit = null;
-                CurrentGridBlock.ClearUnitPath(this);
             }
 
             CurrentGridBlock = gB;
