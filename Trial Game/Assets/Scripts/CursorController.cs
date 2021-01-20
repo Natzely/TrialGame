@@ -46,13 +46,7 @@ public class CursorController : MonoBehaviour, ILog
     private Vector2 _minClamp;
     private Color _playerColor;
     private bool _getUnit;
-    private bool _attackSpace;
     private float _moveTimer;
-    private float _maxXClamp;
-    private float _minXClamp;
-    private float _minYClamp;
-    private float _maxYClamp;
-    private float _actionTimer;
 
     public void EnemyInPath(GridBlock gB)
     {
@@ -71,7 +65,6 @@ public class CursorController : MonoBehaviour, ILog
     {
         _currState = Enums.CursorState.Default;
         _moveTimer = 0;
-        _actionTimer = 0;
     }
     // Start is called before the first frame update
     void Start()
@@ -80,8 +73,8 @@ public class CursorController : MonoBehaviour, ILog
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
         _pM = FindObjectOfType<PlayerManager>();
-        _minClamp = new Vector2(_minXClamp = Boundaries.points[1].x + .5f, _minYClamp = Boundaries.points[1].y + .5f);
-        _maxClamp = new Vector2(_maxXClamp = Boundaries.points[3].x - .5f, _maxYClamp = Boundaries.points[3].y - .5f); 
+        _minClamp = new Vector2(Boundaries.points[1].x + .5f, Boundaries.points[1].y + .5f);
+        _maxClamp = new Vector2(Boundaries.points[3].x - .5f, Boundaries.points[3].y - .5f); 
         
         try
         {
@@ -318,31 +311,31 @@ public class CursorController : MonoBehaviour, ILog
         }
         else if (!CurrentUnit.Moving && /*!CurrentUnit.Moved &&*/ transform.position.V2() != _startPos && CurrentGridBlock.ActivePlayerSpace != Enums.ActiveSpace.Inactive &&
             (CurrentGridBlock.IsCurrentUnitEnemy(Player) || 
-            (CurrentGridBlock.ActivePlayerSpace == Enums.ActiveSpace.Move && CurrentGridBlock.CurrentUnit == null) ||
-            (_attackSpace && (CurrentGridBlock.CurrentUnit == null || CurrentGridBlock.IsCurrentUnitEnemy(Player)))
+            (CurrentGridBlock.ActivePlayerSpace == Enums.ActiveSpace.Move && CurrentGridBlock.CurrentUnit == null) //||
+            /*(_attackSpace && (CurrentGridBlock.CurrentUnit == null || CurrentGridBlock.IsCurrentUnitEnemy(Player)))*/
             ))
         {
             List<GridBlock> backupSpaces = null;
             var target = CurrentGridBlock;
             double dis = 9999;
-            if (target.CurrentUnit != null || _attackSpace)
+            if (target.CurrentUnit != null)// || _attackSpace)
             {
                 dis = target.Position.GridDistance(CurrentUnit.Position);
                 CurrentUnit.Target = target;
             }
 
-            if (target.CurrentUnit == null && !_attackSpace && _moves?.Count > 1)
+            if (target.CurrentUnit == null && _moves?.Count > 1)// && !_attackSpace)
             {
                 CurrentUnit.MoveTo(_moves);
             }
             else if (!CurrentUnit.Attacked) // If the unit has not attacked yet, check attack options
             {                                                                                                                // If attacking an empty space, subtrack a move because the cursor created a move to reach that space
                 if (!CurrentUnit.Attacked && 
-                    ((dis >= CurrentUnit.MinAttackDistance && dis <= CurrentUnit.MaxAttackDistance) || (_attackSpace && dis <= CurrentUnit.MaxAttackDistance)) && 
-                    _moves?.Count - (_attackSpace ? 1 : 0) <= CurrentUnit.MaxAttackDistance) // If the unit is already in range of the target,
+                    ((dis >= CurrentUnit.MinAttackDistance && dis <= CurrentUnit.MaxAttackDistance) /*|| (_attackSpace && dis <= CurrentUnit.MaxAttackDistance)*/) && 
+                    _moves?.Count /*- (_attackSpace ? 1 : 0)*/ <= CurrentUnit.MaxAttackDistance) // If the unit is already in range of the target,
                 {
                     _aS.Play(Sound_Attack);
-                    CurrentUnit.CheckAttack(target, _attackSpace);
+                    CurrentUnit.CheckAttack(target, false);// _attackSpace);
                 }
                 else if (_moves?.Count > 1) // If the unit needs to move to attack
                 {
@@ -388,7 +381,7 @@ public class CursorController : MonoBehaviour, ILog
                 return;
             }
 
-            if (CurrentUnit.Target != null && ((target.CurrentUnit != null && target.CurrentUnit.IsEnemy(Player)) || _attackSpace))
+            if (CurrentUnit.Target != null && ((target.CurrentUnit != null && target.CurrentUnit.IsEnemy(Player))))// || _attackSpace))
             {
                 _aS.Play(Sound_Attack);
                 SelectUnit(false);

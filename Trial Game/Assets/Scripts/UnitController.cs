@@ -46,7 +46,7 @@ public class UnitController : MonoBehaviour, ILog
     public UnitManager UnitManager { get; set; }
     public GridBlock Target { get; set; }
     public GridBlock CurrentGridBlock { get; private set; }
-    public Vector2 LookAtXY { get { return new Vector2(_lookX, _lookY); } }
+    public Vector2 LookDirVector { get { return new Vector2(_lookX, _lookY); } }
     public bool Attacked { get; private set; }
     public bool Moved { get; private set; }
     public bool Moving { get; private set; }
@@ -57,6 +57,16 @@ public class UnitController : MonoBehaviour, ILog
     public int AdjustedMaxAttackDistance { get { return _unitState == Enums.UnitState.PlusAction ? 0 : MaxAttackDistance; } }
     public int AdjustedMinAttackDistance { get { return _unitState == Enums.UnitState.PlusAction ? 0 : MinAttackDistance; } }
     public int MeleeAttackedCount { get; private set; }
+    public int LookDirIndex
+    {
+        get
+        {
+            if (_lookX != 0)
+                return 0;
+            else
+                return 1;
+        }
+    }
 
     private Enums.UnitState _unitState;
     private Enums.UnitState _prevState;

@@ -4,46 +4,29 @@ using UnityEngine;
 
 public class Path_Saved : GridBlockItem
 {
+    public SpriteRenderer SavedPathSprite;
 
-    public void SetPathDirection(Enums.PathDirection pathDirection)
+    public void SetPathDirection(Vector2 pathRotation)
     {
-        _pathDirection = pathDirection;
+        _pathRotation = pathRotation;
     }
 
     public void SetColor(Color color)
     {
-        _color = color;
-        if (_sR != null)
-            _sR.color = color;
+        if (SavedPathSprite != null)
+            SavedPathSprite.color = color;
     }
 
-    private SpriteRenderer _sR;
-    private Enums.PathDirection _pathDirection;
-
-    private Color _color;
-
-    private void Awake()
-    {
-        _sR = GetComponent<SpriteRenderer>();
-        _pathDirection = Enums.PathDirection.Right;
-    }
+    private Vector2 _pathRotation;
 
     // Start is called before the first frame update
     void Start()
     {
-        switch(_pathDirection)
-        {
-            case Enums.PathDirection.Left:
-                _sR.flipY = true;
-                break;
-            case Enums.PathDirection.Up:
-                transform.Rotate(0, 0, 90);
-                break;
-            case Enums.PathDirection.Down:
-                transform.Rotate(0, 0, -90);
-                break;
-            default:
-                break;
-        }
+        if (_pathRotation == Vector2.left)
+            transform.Rotate(0, 0, 180);
+        else if (_pathRotation == Vector2.up)
+            transform.Rotate(0, 0, 90);
+        else if (_pathRotation == Vector2.down)
+            transform.Rotate(0, 0, -90);
     }
 }

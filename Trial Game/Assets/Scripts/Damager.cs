@@ -52,13 +52,13 @@ public class Damager : MonoBehaviour
             if (Parent.Moving)
             {
                 bonusDamageMult = 2;
-                if (uC.LookAtXY.x == Parent.LookAtXY.x && uC.LookAtXY.y == Parent.LookAtXY.y)
+                if (uC.LookDirVector.x == Parent.LookDirVector.x && uC.LookDirVector.y == Parent.LookDirVector.y)
                     bonusDamageMult = 2.5f;
             }
         }
         else if (Parent.Type == Enums.UnitType.Melee && uC.Type == Enums.UnitType.Horse)
         {
-            if (-uC.LookAtXY.x != Parent.LookAtXY.x || -uC.LookAtXY.y != Parent.LookAtXY.y)
+            if (-uC.LookDirVector.x != Parent.LookDirVector.x || -uC.LookDirVector.y != Parent.LookDirVector.y)
             {
                 bonusDamageMult = 1.5f;
                 if (uC.MeleeAttackedCount == 2)

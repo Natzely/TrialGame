@@ -171,8 +171,10 @@ public class GridBlock : MonoBehaviour
     {
         var savedPath = Instantiate(SavedPath, transform.position, Quaternion.identity);
         var spScript = savedPath.GetComponent<Path_Saved>();
+        var spmScript = savedPath.GetComponent<Path_Saved_Mask>();
         spScript.SetColor(color);
-        spScript.SetPathDirection(_currentAcitvePath.PathDirection);
+        spScript.SetPathDirection(unit.LookDirVector);
+        spmScript.Unit = unit;
         _savedPaths.Add(unit, spScript);
     }
 
