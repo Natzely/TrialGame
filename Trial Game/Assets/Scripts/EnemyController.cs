@@ -104,7 +104,11 @@ public class EnemyController : MonoBehaviour
             }
             else if (moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
             {
+                var prevMoveCount = moves.Count;
                 moves = VerifiedPath(moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
+                if (moves.Count == 0 && prevMoveCount > 0) // The unit doens't have enought movement to get out of it's spot, so move to the next unit
+                    return true;
+
                 UnitManager.ResetBlockGrid();
                 bool action = false;
                 if (moves.Count > 0 && UnitController.Target != null)
@@ -133,7 +137,7 @@ public class EnemyController : MonoBehaviour
 
                 if (moves.Count > 0)
                 {
-                    UnitController.MoveTo(moves);
+                    UnitController.MoveTo(moves, true);
                     action = true;
                 }
 
@@ -159,12 +163,13 @@ public class EnemyController : MonoBehaviour
     {
         var maxPath = MaxMovementPath(path, maxMovement).ToList();
 
-        while(maxPath.Last().isOccupied)
+        while (maxPath.Count > 0 && maxPath.Last().isOccupied)
         {
             maxPath.Remove(maxPath.Last());
         }
 
         return maxPath;
+
     }
 
     private IEnumerable<GridBlock> MaxMovementPath(List<GridBlock> path, int maxMovement)

@@ -4,7 +4,7 @@ public class GridSpace : GridBlockItem
 {
     public float MoveAnimationSpeed;
 
-    private bool _activate;
+    public PlayerManager PlayerManager { get; set; }
 
     public Vector2 Position
     {
@@ -27,7 +27,7 @@ public class GridSpace : GridBlockItem
     {
         if (!gameObject.activeSelf)
         {
-            if (moveFrom != null)
+            if (moveFrom != null && ParentGridBlock.UseMoveAnimation)
             {
                 var newT = transform.position.Copy();
 
@@ -44,6 +44,8 @@ public class GridSpace : GridBlockItem
     protected SpriteRenderer _sR;
     protected Enums.Player _player;
     protected PlayerManager _pM;
+
+    private bool _activate;
 
     Vector2 _gridPos;
 

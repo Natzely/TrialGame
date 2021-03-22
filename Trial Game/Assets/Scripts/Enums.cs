@@ -7,14 +7,17 @@ public class Enums : MonoBehaviour
     public enum ActiveSpace
     {
         Inactive = 0,
-        Move = 1,
-        Attack = 2,
+        Move     = 1,
+        Attack   = 2,
     }
 
     public enum CursorState
     {
-        Default  = 0,
-        Selected = 1,
+        Default    = 0,
+        Selected   = 1,
+        Attack     = 2,
+        Null       = 3,
+        OnlyAttack = 4,
     }
 
     public enum GridBlockType
@@ -26,9 +29,9 @@ public class Enums : MonoBehaviour
 
     public enum NeighborDirection
     {
-        Up = 0,
-        Down = 1,
-        Left = 2,
+        Up    = 0,
+        Down  = 1,
+        Left  = 2,
         Right = 3,
         Error = -1,
     }
@@ -44,10 +47,10 @@ public class Enums : MonoBehaviour
 
     public enum PathState
     {
-        Start = 0,
-        Head = 1,
+        Start    = 0,
+        Head     = 1,
         Straight = 2,
-        Curve = 3,
+        Curve    = 3,
     }
 
     public enum Player
@@ -67,11 +70,13 @@ public class Enums : MonoBehaviour
 
     public enum UnitState
     {
-        Idle = 0,
-        Selected = 1,
-        Attacking = 2,
-        Hurt = 3,
-        PlusAction = 4,
+        Idle       = 0,
+        Selected   = 1,
+        Moving     = 2,
+        Attacking  = 3,
+        Hurt       = 4,
+        PlusAction = 5,
+        Cooldown   = 6,
     }
 
     public enum UnitType

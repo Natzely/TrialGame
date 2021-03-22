@@ -16,6 +16,7 @@ public class Damageable : MonoBehaviour
     private PlayerManager _pM;
     private Animator _animator;
     private UnitController _uC;
+    private Vector2 _damageTextOrgPos;
     private float _maxHealth;
 
     public bool Damage(Damager damager)
@@ -45,6 +46,7 @@ public class Damageable : MonoBehaviour
             else
             {
                 _animator.SetTrigger("Hit");
+                DamageText.gameObject.SetActive(false);
                 DamageText.Text = calcDamage + "";
                 DamageText.gameObject.SetActive(true);
                 if (!_uC.TookAction && _uC.MinAttackDistance == damager.Parent.MinAttackDistance)
@@ -65,5 +67,6 @@ public class Damageable : MonoBehaviour
         if (_uC.Player != Enums.Player.Player1)
             HealthText.alignment = TextAlignmentOptions.TopRight;
         HealthText.havePropertiesChanged = true;
+        _damageTextOrgPos = DamageText.transform.position;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,6 +30,17 @@ public static class Extensions
     }
     #endregion -------------------------------------------------------------------------------------------
 
+    #region Stack Extensions -----------------------------------------------------------------------------
+
+    public static bool IsEmpty<T>(this Stack<T> q)
+    {
+        if (q == null)
+            return true;
+        return q.Count == 0;
+    }
+
+    #endregion -------------------------------------------------------------------------------------------
+
     #region List Extensions ------------------------------------------------------------------------------
     public static T Dequeue<T>(this List<T> list)
     {
@@ -50,6 +62,30 @@ public static class Extensions
         list.RemoveAt(index);
         return obj;
     }
+
+    /// <summary>
+    /// Removes all items from the list AFTER the given item
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="item">The item after which all items will be deleted</param>
+    public static void RemoveAllAfter<T>(this List<T> list, T item)
+    {
+        int startIndex = list.IndexOf(item) + 1;
+        int length = list.Count;
+        int trimCount = length - startIndex;
+        list.RemoveRange(startIndex, trimCount);
+    }    
+
+    public static IEnumerable<T> UnionNull<T>(this IEnumerable<T> list1, IEnumerable<T> list2)
+    {
+        if (list1 == null)
+            return list2;
+        else if (list2 == null)
+            return list1;
+        else
+            return list1.Union(list2);
+    }
     #endregion -----------------------------------------------------------------------------------------
 
     #region Vector Extensions --------------------------------------------------------------------------
@@ -60,6 +96,9 @@ public static class Extensions
 
     public static double GridDistance(this Vector3 v, Vector3 distanceTo)
     {
+        if (v == null || distanceTo == null)
+            return 9999999;
+
         double disX = Mathf.Abs(distanceTo.x - v.x);
         double disY = Mathf.Abs(distanceTo.y - v.y);
         double totalDis = disX + disY;
@@ -67,13 +106,22 @@ public static class Extensions
         return totalDis;
     }
 
-    public static double GridDistance(this Vector2 v, Vector3 distanceTo)
+    public static int GridDistance(this Vector2 v, Vector3 distanceTo)
     {
         double disX = Mathf.Abs(distanceTo.x - v.x);
         double disY = Mathf.Abs(distanceTo.y - v.y);
         double totalDis = disX + disY;
 
-        return totalDis;
+        return (int)totalDis;
+    }
+
+    public static int GridDistance(this Vector2 v, Vector2 distanceTo)
+    {
+        double disX = Mathf.Abs(distanceTo.x - v.x);
+        double disY = Mathf.Abs(distanceTo.y - v.y);
+        double totalDis = disX + disY;
+
+        return (int)totalDis;
     }
 
     public static Vector3 Copy(this Vector3 v)
@@ -130,6 +178,14 @@ public static class Extensions
             }
         }
         return null;
+    }
+
+    #endregion -----------------------------------------------------------------------------------------
+
+    #region Float Extensions ---------------------------------------------------------------------------
+    public static bool InRange(this float value, float start, float end)
+    {
+        return value >= Mathf.Min(start, end) && value <= Mathf.Max(start, end);
     }
 
     #endregion -----------------------------------------------------------------------------------------

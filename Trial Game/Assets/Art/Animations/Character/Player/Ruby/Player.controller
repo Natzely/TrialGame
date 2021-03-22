@@ -775,7 +775,7 @@ AnimatorStateTransition:
   m_CanTransitionToSelf: 1
 --- !u!1102 &1102187854326728622
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -803,7 +803,7 @@ AnimatorState:
   m_TimeParameter: Speed
 --- !u!1102 &1102404238628940926
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -832,7 +832,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102570009937435386
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -864,7 +864,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102660983900649076
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -895,7 +895,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &1107874658956180954
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1000,7 +1000,7 @@ AnimatorStateTransition:
   m_CanTransitionToSelf: 1
 --- !u!1102 &3809841434034725748
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1110,7 +1110,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1102 &5578507626007430933
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1154,6 +1154,7 @@ MonoBehaviour:
   Effect_Ready: {fileID: 2434710721782761504, guid: 50f8fe2816d6fa2478e1f8c78c2ba827,
     type: 3}
   MinDarkness: 0.3
+  MaxCooldownColor: 0.9
 --- !u!114 &6473934483449077740
 MonoBehaviour:
   m_ObjectHideFlags: 1

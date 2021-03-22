@@ -6,6 +6,7 @@ public class Damage_TextEffect : MonoBehaviour
     public TextMeshProUGUI DamageText;
     public float MoveDistance;
     public float MoveSpeed;
+    public float MinMoveSpeed;
     public float MovePercentage;
 
     public string Text { get; set; }
@@ -14,6 +15,7 @@ public class Damage_TextEffect : MonoBehaviour
     private Vector2 _startPos;
     private Vector2 _endPos;
     private bool _initialize;
+    private float _maxMoveSpeed;
     private float _percentToHide;
 
 
@@ -25,6 +27,7 @@ public class Damage_TextEffect : MonoBehaviour
             _startPos = transform.position;
             _endPos = _startPos + (Vector2.up * MoveDistance);
             _initialize = true;
+            _maxMoveSpeed = MoveSpeed;
             gameObject.SetActive(false);
         }
     }
@@ -44,6 +47,7 @@ public class Damage_TextEffect : MonoBehaviour
 
         var disMoved = _endPos.y - newPos.y;
         var percentLeft = disMoved / MoveDistance;
+        MoveSpeed = Mathf.Clamp(_maxMoveSpeed * percentLeft, MinMoveSpeed, _maxMoveSpeed);
         if (percentLeft <= MovePercentage)
         { 
             var alphaPercent = percentLeft / MovePercentage;

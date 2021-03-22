@@ -19,20 +19,27 @@ public static class Colors
     public static Color Enemy_Moving =    new Color(1, 0, 0);
     public static Color Enemy_Cooldown =  new Color(.5f, 0, 0);
 
+    //Unit Info Colors
+    public static Color UnitInfo_Blank    = new Color(0, 0, 0, .4f);
+    public static Color UnitInfo_Friendly = new Color(0, .5f, 0, .4f);
+    public static Color UnitInfo_Enemy    = new Color(.5f, 0, 0, .4f);
+
     // Path Colors
     private static List<Color> PathColors = new List<Color>()
     {
-        new Color(0, 1, 0),
-        new Color(0, 0, 1),
-        new Color(1, 0, 0),
+        new Color(0, 1, 0, .5f),
+        new Color(0, 0, 1, .5f),
+        new Color(1, 0, 0, .5f),
     };
     public static int pathColorCount = 0;
 
     public static Color GetPathColor()
     {
-        if (pathColorCount > PathColors.Count)
+        if (pathColorCount >= PathColors.Count)
             pathColorCount = 0;
 
-        return PathColors[pathColorCount++];
+        var color = PathColors[pathColorCount];
+        pathColorCount++;
+        return color;
     }
 }

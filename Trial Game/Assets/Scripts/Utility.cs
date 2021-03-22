@@ -15,4 +15,13 @@ public static class Utility
             return Math.Floor(f);
         return f;
     }
+    public static Vector2 UITilePosition(RectTransform rT, Transform t)
+    {
+        return new Vector2(rT.rect.width * (t.position.x) * rT.localScale.x, rT.rect.height * (t.position.y) * rT.localScale.y);
+    }
+
+    public static bool TrueNull(UnitController uC)
+    {
+        return uC == null || uC.IsDestroyed;
+    }
 }

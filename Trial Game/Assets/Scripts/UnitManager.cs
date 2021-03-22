@@ -9,12 +9,14 @@ public abstract class UnitManager : MonoBehaviour
     public Enums.Player Player;
     public GameObject UnitHolder;
     public PolygonCollider2D CursorBoundaries;
-    public bool DebugLog;
+    public static bool DebugLog = false;
     
     [HideInInspector] public GridBlock[,] FullGrid;
 
+    public int AvailableUnits { get { return PlayerInfo.Units.Where(u => u.Available).Count(); } }
+
     protected GlobalVariables _globalVariables;
-    protected List<UnitController> _startingUnits;
+    protected HashSet<UnitController> _startingUnits;
 
     private int _gridSizeX;
     private int _gridSizeY;
@@ -51,7 +53,7 @@ public abstract class UnitManager : MonoBehaviour
         PlayerInfo.Units.Remove(unit);
     }
 
-    public void Log(string msg)
+    public static void Log(string msg)
     {
         if (DebugLog)
             Debug.Log(msg);
@@ -60,7 +62,7 @@ public abstract class UnitManager : MonoBehaviour
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
-        _startingUnits = UnitHolder.GetComponentsInChildren<UnitController>().ToList();
+        _startingUnits = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
         _globalVariables = FindObjectOfType<GlobalVariables>();
     }
 

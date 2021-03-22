@@ -6,12 +6,11 @@ using UnityEngine;
 
 public class PlayerManager : UnitManager
 {
-    public static float ACTIONTIMER = .1f; 
+    public static float ACTIONTIMER = .1f;
+
+    public bool HideActiveGrid { get; private set; }
 
     private List<UnitController> _nextUnitList;
-    private bool _pause;
-    private bool _isGamePaused;
-    private double _lastRealTime;
 
     public bool GetDeleteMoveSpace()
     {
@@ -76,7 +75,7 @@ public class PlayerManager : UnitManager
         }
     }
 
-    public void UpdateActiveGrid(GridBlock updateFrom)
+    public void ActiveGrid_Update(GridBlock updateFrom)
     {
         var orderList = PlayerInfo.ActiveGrid
             .OrderByDescending(p => p.PlayerMoveDistance)
@@ -101,7 +100,19 @@ public class PlayerManager : UnitManager
         }
     }
 
-    public UnitController GetNextUnit(Enums.Player player, UnitController unit)
+    // When player selects a space to move to, hide the current move grid to show an attack grid
+    public void ActiveGrid_Hide()
+    {
+        HideActiveGrid = true;
+    }
+
+    // If a player cancels after the above, show the move grid again.
+    public void ActiveGrid_Show()
+    {
+        HideActiveGrid = false;
+    }
+
+    public UnitController GetNextUnit(UnitController unit)
     {
         if(_nextUnitList == null) // Grab all units that are already in the map at the start.
         {
@@ -114,6 +125,9 @@ public class PlayerManager : UnitManager
                 _nextUnitList.Insert(insertAt, u);
             }
         }
+
+        if (AvailableUnits <= 0)
+            return null;
 
         if (unit == null) // Select first available unit in the list 
         {
@@ -162,6 +176,8 @@ public class PlayerManager : UnitManager
         }
     }
 
+
+
     private UnitController GetNextUnitOnCooldown(UnitController afterUnit)
     {
         var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.Moving && !u.Attacked);
@@ -192,10 +208,4 @@ public class PlayerManager : UnitManager
 
         base.AddUnit(unit);
     }
-
-    //public void PlayerUnitMoveDown(UnitController unit)
-    //{
-    //    PlayerInfo.Units.Remove(unit);
-    //    PlayerInfo.Units.Add(unit);
-    //}
 }

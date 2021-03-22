@@ -19,10 +19,11 @@ public class UnitInfoUI : MonoBehaviour
     public float Speed;
 
     private CursorController _cursor;
+    private Image _image;
+    private UnitController _currentUnit;
     private Vector2 _shownVector;
     private bool _visible;
     private bool _showing;
-    private UnitController _currentUnit;
 
     public void ShowUnitInfo(InputAction.CallbackContext context)
     {   
@@ -30,16 +31,17 @@ public class UnitInfoUI : MonoBehaviour
         {
             if (_visible && context.performed)
             {
-                Debug.Log("Show unit info");
+                Debug.Log("Hide unit info");
                 Transform.anchoredPosition = new Vector2(Transform.rect.width, Transform.anchoredPosition.y);
                 _visible = false;
             }
             else if (!_visible && _cursor.CurrentGridBlock.CurrentUnit != null && context.performed)
             {
-                Debug.Log("Hide unit info");
+                Debug.Log("Show unit info");
                 _currentUnit = _cursor.CurrentGridBlock.CurrentUnit;
                 int type = (int)(_currentUnit.Type);
 
+                _image.color = _currentUnit == null ? Colors.UnitInfo_Blank : _currentUnit.Player == Enums.Player.Player1 ? Colors.UnitInfo_Friendly : Colors.UnitInfo_Enemy;
                 UnitImage.sprite = UnitSprites[type];
                 UnitName.text = _unitName[type];
                 UnitInfo.text = _unitInfo[type];
@@ -53,6 +55,7 @@ public class UnitInfoUI : MonoBehaviour
 
     void Awake()
     {
+        _image = GetComponent<Image>();
         _cursor = FindObjectOfType<CursorController>();
         _shownVector = new Vector2(0, Transform.anchoredPosition.y);
     }
@@ -64,6 +67,7 @@ public class UnitInfoUI : MonoBehaviour
             _currentUnit = _cursor.CurrentGridBlock.CurrentUnit;
             int type = (_currentUnit == null ? UnitSprites.Length - 1 : (int)_currentUnit.Type);
 
+            _image.color = _currentUnit == null ? Colors.UnitInfo_Blank : _currentUnit.Player == Enums.Player.Player1 ? Colors.UnitInfo_Friendly : Colors.UnitInfo_Enemy;
             UnitImage.sprite = UnitSprites[type];
             UnitName.text = _unitName[type];
             UnitInfo.text = _unitInfo[type];

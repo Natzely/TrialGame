@@ -144,8 +144,8 @@ public class PathFinder
             var gridBlock = map[loc.X, loc.Y];
             if (gridBlock == null)
                 continue;
-            var aS = gridBlock.ActiveSpace(player);
-            if (aS != Enums.ActiveSpace.Move)
+            var aS = gridBlock.ActiveSpace;
+            if (player == Enums.Player.Player1 && aS != Enums.ActiveSpace.Move)
                 continue;
             if (gridBlock.Unpassable)
                 continue;

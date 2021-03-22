@@ -7,6 +7,11 @@ public class Path_Active: GridBlockItem
         get; private set;
     }
 
+    public Enums.PathDirection NextDirection
+    {
+        get; private set;
+    }
+
     public bool Show { 
         get { return _sR.enabled; } 
         set { _sR.enabled = value; } 
@@ -21,18 +26,23 @@ public class Path_Active: GridBlockItem
     {
         ResetRotation();
         PathDirection = cDir.ToPathDirection();
-        Enums.PathDirection nextDir = (nDir ??  new Vector2(0,0)).ToPathDirection();
+        NextDirection = (nDir ??  new Vector2(0,0)).ToPathDirection();
+
+        _animator.SetBool("Start", false);
+        _animator.SetBool("Head", false);
+        _animator.SetBool("Straight", false);
+        _animator.SetBool("Curve", false);
 
         if (PathDirection == Enums.PathDirection.Start)
         {
             _animator.SetBool("Start", true);
-            switch (nextDir)
+            switch (NextDirection)
             {
-                case Enums.PathDirection.Down:
-                    transform.Rotate(0, 0, -90);
-                    break;
                 case Enums.PathDirection.Up:
                     transform.Rotate(0, 0, 90);
+                    break;
+                case Enums.PathDirection.Down:
+                    transform.Rotate(0, 0, -90);
                     break;
                 case Enums.PathDirection.Left:
                     transform.Rotate(0, 0, 180);
@@ -44,8 +54,6 @@ public class Path_Active: GridBlockItem
         else if (nDir == null)
         {
             _animator.SetBool("Head", true);
-            _animator.SetBool("Straight", false);
-            _animator.SetBool("Curve", false);
             switch (PathDirection)
             {
                 case Enums.PathDirection.Up:
@@ -59,31 +67,27 @@ public class Path_Active: GridBlockItem
                     break;
             }
         }
-        else if (PathDirection == nextDir)
+        else if (PathDirection == NextDirection)
         {
             _animator.SetBool("Straight", true);
-            _animator.SetBool("Head", false);
-            _animator.SetBool("Curve", false);
-            if (PathDirection == Enums.PathDirection.Up || nextDir == Enums.PathDirection.Down)
+            if (PathDirection == Enums.PathDirection.Up || NextDirection == Enums.PathDirection.Down)
                 transform.Rotate(0, 0, 90);
         }
         else
         {
             _animator.SetBool("Curve", true);
-            _animator.SetBool("Head", false);
-            _animator.SetBool("Straight", false);
-            if ((PathDirection == Enums.PathDirection.Right && nextDir == Enums.PathDirection.Up) ||
-               (PathDirection == Enums.PathDirection.Down && nextDir == Enums.PathDirection.Left))
+            if ((PathDirection == Enums.PathDirection.Right && NextDirection == Enums.PathDirection.Up) ||
+               (PathDirection == Enums.PathDirection.Down && NextDirection == Enums.PathDirection.Left))
             {
                 _sR.flipY = true;
             }
-            else if ((PathDirection == Enums.PathDirection.Up && nextDir == Enums.PathDirection.Right) ||
-                    (PathDirection == Enums.PathDirection.Left && nextDir == Enums.PathDirection.Down))
+            else if ((PathDirection == Enums.PathDirection.Up && NextDirection == Enums.PathDirection.Right) ||
+                    (PathDirection == Enums.PathDirection.Left && NextDirection == Enums.PathDirection.Down))
             {
                 _sR.flipX = true;
             }
-            else if ((PathDirection == Enums.PathDirection.Left && nextDir == Enums.PathDirection.Up) ||
-                    (PathDirection == Enums.PathDirection.Down && nextDir == Enums.PathDirection.Right))
+            else if ((PathDirection == Enums.PathDirection.Left && NextDirection == Enums.PathDirection.Up) ||
+                    (PathDirection == Enums.PathDirection.Down && NextDirection == Enums.PathDirection.Right))
             {
                 _sR.flipX = true;
                 _sR.flipY = true;

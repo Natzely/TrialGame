@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MinimapController : MonoBehaviour, ILog
@@ -19,10 +16,6 @@ public class MinimapController : MonoBehaviour, ILog
             LogError(_errorMessage);
         else
             MapIcons.SetActive(false);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     public void ShowMinimap(InputAction.CallbackContext context)
@@ -48,12 +41,6 @@ public class MinimapController : MonoBehaviour, ILog
                 Log("Hide minimap");
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void Log(string msg)

@@ -70,6 +70,18 @@ public class GridNeighbors : IEnumerable<GridBlock>
         return rGB;
     }
 
+    public int GetAlliedUnits(Enums.Player player)
+    {
+        var rUnits = Right?.GetAlliedUnits(player).ToList();
+        var lUnits = Left?.GetAlliedUnits(player).ToList();
+        var uUnits = Up?.GetAlliedUnits(player).ToList();
+        var dUnits = Down?.GetAlliedUnits(player).ToList();
+
+        var totalUnits = rUnits.UnionNull(lUnits).UnionNull(uUnits).UnionNull(dUnits).ToList();
+        int count = totalUnits.Count;
+        return count;
+    }
+
     public IEnumerable<GridBlock> OrderByDistance(GridBlock from, bool onlyAvailable = false)
     {
         if (from == null)
