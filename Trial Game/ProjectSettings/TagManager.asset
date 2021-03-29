@@ -7,6 +7,7 @@ TagManager:
   - Cursor
   - Unit
   - UI
+  - DebugText
   layers:
   - Default
   - TransparentFX
