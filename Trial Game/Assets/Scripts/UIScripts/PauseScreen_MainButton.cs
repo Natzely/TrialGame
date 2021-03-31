@@ -12,10 +12,14 @@ public class PauseScreen_MainButton : UIUnityObject, ISelectHandler, IDeselectHa
     const float TEXTSIZESPEED = 100f;
 
     public Enums.UI_PauseButtonType ButtonType;
-    public PauseScreen PauseScreen;
     public TextMeshProUGUI ButtonText;
 
+    [SerializeField] private AudioClip SoundMove;
+
+    private AudioSource _aS;
+    private PauseScreen _pauseScreen;
     private Button _button;
+    private Image _image;
     private bool _selected;
     private float _savedFontSize;
 
@@ -33,7 +37,8 @@ public class PauseScreen_MainButton : UIUnityObject, ISelectHandler, IDeselectHa
     public void MoveToNextUIObject(Vector3 move)
     {
         DebugLog($"{gameObject.name} move to next UI object");
-        if(move.x != 0)
+        _aS.Play(SoundMove);
+        if (move.x != 0)
         {
             if (move.x > 0)
                 _button.navigation.selectOnLeft?.Select();
@@ -52,20 +57,22 @@ public class PauseScreen_MainButton : UIUnityObject, ISelectHandler, IDeselectHa
     public void Submit()
     {
         DebugLog($"{gameObject.name} Submit");
-        PauseScreen.OnMainButtonClick(this);
     }
 
     public override void Awake()
     {
         base.Awake();
+        _pauseScreen = GetComponentInParent<PauseScreen>();
         _button = GetComponent<Button>();
+        _aS = GetComponent<AudioSource>();
+        _image = GetComponent<Image>();
         _savedFontSize = MINTEXTSIZE;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        PauseScreen.AddButtonToList(this);
+
     }
 
     // Update is called once per frame
@@ -86,37 +93,40 @@ public class PauseScreen_MainButton : UIUnityObject, ISelectHandler, IDeselectHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         DebugLog($"{gameObject.name} Pointer Enter");
+        if (_pauseScreen.CurrentButton != this.gameObject)
+            _aS.Play(SoundMove);
         _button.Select();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         DebugLog($"{gameObject.name} OnPointerClick");
-        PauseScreen.OnMainButtonClick(this);
+        _pauseScreen.OnMainButtonClick(this);
     }
 
     public void OnSubmit(BaseEventData eventData)
     {
         DebugLog($"{gameObject.name} OnSubmit");
-        PauseScreen.OnMainButtonClick(this);
+        _pauseScreen.OnMainButtonClick(this);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
         DebugLog($"{gameObject.name} OnSelect");
         Selected();
-        PauseScreen.OnItemSelected(this);
+        _image.color = Colors.Button_Selected;
+        _pauseScreen.OnItemSelected(this);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         DebugLog($"{gameObject.name} OnDeselect");
+        _image.color = Colors.Button_Deselected;
         Deselect();
     }
 
     public void OnMove(AxisEventData eventData)
     {
         DebugLog($"{gameObject.name} OnMove to {eventData.selectedObject.name}");
-        //selectable.Select();
     }
 }

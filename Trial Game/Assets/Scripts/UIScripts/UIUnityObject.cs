@@ -8,18 +8,24 @@ using TMPro;
 public class UIUnityObject : MonoBehaviour, IDebugLog
 {
     private TextMeshProUGUI _debugText;
+    private Scrollbar _debugScroll;
 
     public virtual void Awake()
     {
         var debugObject = GameObject.FindGameObjectWithTag("DebugText");
         _debugText = debugObject?.GetComponent<TextMeshProUGUI>();
+        var scrollObject = GameObject.FindGameObjectWithTag("DebugScroll");
+        _debugScroll = scrollObject?.GetComponent<Scrollbar>();
         _debugText.text = "";
         _debugText.fontSize = 20;
     }
 
     public void DebugLog(string msg)
     {
-        if(_debugText != null)
+        if (_debugText != null)
+        {
             _debugText.text += msg + "\n";
+            _debugScroll.value = 0;
+        }
     }
 }

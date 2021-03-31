@@ -92,6 +92,7 @@ public class Enums : MonoBehaviour
         Restart = 1,
         Controls = 2,
         Quit = 3,
+        Controls_OK = 4,
     }
 
     public enum PauseState
