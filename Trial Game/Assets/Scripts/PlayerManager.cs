@@ -9,6 +9,26 @@ public class PlayerManager : UnitManager
     public static float ACTIONTIMER = .1f;
 
     public bool HideActiveGrid { get; private set; }
+    public float MinimapSquareSize
+    {
+        get 
+        {
+            float x = 0;
+            float y = 0;
+            if(Camera.main.aspect >= 1.7f)
+            {
+                x = 16;
+                y = 9;
+            }
+
+            float x2 = FullGrid.GetLength(0);
+            float y2 = FullGrid.GetLength(1);
+
+            float x1 = x / x2 / 1.1f;
+            float y1 = y / y2 / 1.1f;
+            return Mathf.Min(x1, y1);
+        }
+    }
 
     private List<UnitController> _nextUnitList;
 
@@ -38,7 +58,7 @@ public class PlayerManager : UnitManager
         return false;
     }
 
-    public void PrintPlayerGrid(Enums.Player player)
+    public void PrintPlayerGrid()
     {
         GridBlock[,] grid;
 

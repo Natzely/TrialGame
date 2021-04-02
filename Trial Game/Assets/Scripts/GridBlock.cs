@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -262,17 +263,9 @@ public class GridBlock : MonoBehaviour, ILog
         }
         else
         {
-            try
-            {
-                var uiParent = GameObject.FindGameObjectWithTag("UI");
-                var minimapObject = uiParent.FindObject("MapTileIcons");
-                var _miniMapIcon = Instantiate(MinimapTile);
-                _miniMapIcon.rectTransform.SetParent(minimapObject.transform);
-                _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
-            }
-            catch { Debug.Log("failed gridblock minimap"); }
-
             _pM = FindObjectOfType<PlayerManager>();
+
+            StartCoroutine(CreateMinimapIcon());
 
             _savedPaths = new Dictionary<UnitController, Path_Saved>();
             CreateAttackSpace(AttackSpace);
@@ -350,6 +343,20 @@ public class GridBlock : MonoBehaviour, ILog
                 _unitsMovingThrough.Remove(uC);
             //ResetLock(uC);
         }
+    }
+
+    private IEnumerator CreateMinimapIcon()
+    {
+        yield return new WaitUntil(() => _pM.FullGrid != null);
+
+        var uiParent = GameObject.FindGameObjectWithTag("UI");
+        var minimapObject = uiParent.FindObject("MapTileIcons");
+        var _miniMapIcon = Instantiate(MinimapTile);
+        _miniMapIcon.rectTransform.SetParent(minimapObject.transform);
+        float squareSize = _pM.MinimapSquareSize;
+        _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
+        _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
+        _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
     }
 
     private void GetNeighbors()

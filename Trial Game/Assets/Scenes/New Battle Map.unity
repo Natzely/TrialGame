@@ -622,7 +622,7 @@ PrefabInstance:
     - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
         type: 3}
@@ -12442,11 +12442,6 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4653365649538091596, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 4653365649538091597, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -12650,7 +12645,7 @@ PrefabInstance:
     - target: {fileID: 6654421522528968507, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000049114227
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 7109584721282550588, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
         type: 3}
@@ -12726,7 +12721,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PauseScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1130390252}
     - target: {fileID: 7915133911522174919, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -12741,7 +12736,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PauseScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1130390252}
     - target: {fileID: 8845226562951460736, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
         type: 3}
       propertyPath: m_SizeDelta.y

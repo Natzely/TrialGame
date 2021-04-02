@@ -104,6 +104,7 @@ public abstract class UnitManager : MonoBehaviour
             }
         }
 
+        Debug.Log($"{FullGrid.GetLength(0)}, {FullGrid.GetLength(1)}");
         ResetBlockGrid();
     }
 }

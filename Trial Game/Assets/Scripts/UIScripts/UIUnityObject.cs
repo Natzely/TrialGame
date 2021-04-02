@@ -13,8 +13,8 @@ public class UIUnityObject : MonoBehaviour, IDebugLog
     public virtual void Awake()
     {
         var debugObject = GameObject.FindGameObjectWithTag("DebugText");
-        _debugText = debugObject?.GetComponent<TextMeshProUGUI>();
         var scrollObject = GameObject.FindGameObjectWithTag("DebugScroll");
+        _debugText = debugObject?.GetComponent<TextMeshProUGUI>();
         _debugScroll = scrollObject?.GetComponent<Scrollbar>();
         _debugText.text = "";
         _debugText.fontSize = 20;
@@ -22,7 +22,7 @@ public class UIUnityObject : MonoBehaviour, IDebugLog
 
     public void DebugLog(string msg)
     {
-        if (_debugText != null)
+        if (_debugText != null && Application.isEditor)
         {
             _debugText.text += msg + "\n";
             _debugScroll.value = 0;
