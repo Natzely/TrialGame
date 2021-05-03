@@ -43,3 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d7d6c1ff7aeac448396e4a60cb6371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FadeMusicSpeed: 10

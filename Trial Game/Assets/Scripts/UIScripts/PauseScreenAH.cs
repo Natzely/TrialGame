@@ -2,32 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class PauseScreen : UIUnityObject
+public class PauseScreenAH : UIActionHandler
 {
     public Enums.PauseState State;
-    public PauseScreen_MainButton FirstSelected;
 
-    [SerializeField] private EventSystem EventSystem;
     [SerializeField] private PlayerInput PlayerInput;
-    [SerializeField] private Scene_Manager SceneManager;
     [SerializeField] private GameObject HightLightPanel;
     [SerializeField] private GameObject MainButtonPanel;
     [SerializeField] private GameObject ControlsPanel;
     [SerializeField] private GameObject Controls_FirstSelected;
-    [SerializeField] private AudioClip Sound_Enter;
-    [SerializeField] private AudioClip Sound_Exit;
 
     public bool IsGamePaused { get; private set; }
     public bool IsSubMenuOpened { get; private set; }
-    public GameObject CurrentButton { get { return EventSystem.currentSelectedGameObject; } }
 
-    private PauseScreen_MainButton _currentButton;
-    private PauseScreen_MainButton _prevButton;
     private RectTransform _rectTransform;
-    private AudioSource _aS;
     private Vector2 _moveValue;
     private Vector2 _orgPos;
     private float _soundTime;
@@ -42,7 +31,6 @@ public class PauseScreen : UIUnityObject
                     ShowPauseScreen();
                     break;
                 case Enums.PauseState.Controls:
-                    State = Enums.PauseState.Main;
                     ShowControlsPanel();
                     break;
                 default:
@@ -51,26 +39,20 @@ public class PauseScreen : UIUnityObject
         }
     }
 
-    public void OnItemSelected(PauseScreen_MainButton button)
-    {
-        if (button != _currentButton)
-        {
-            _currentButton = button;
-            //HightLightPanel.transform.localPosition = _currentButton.transform.localPosition;
-        }
-    }
 
-    public void OnMainButtonClick(PauseScreen_MainButton button)
+    public override void HandleButtonSubmit(UIButton button)
     {
-        _aS.Play(Sound_Enter);
-        switch (button.ButtonType)
+        var pauseButton = (PauseScreen_Button)button;
+        _audioSource.Play(Sound_Enter);
+
+        switch (pauseButton.Type)
         {
             case Enums.UI_PauseButtonType.Continue:
                 DebugLog("Continue");
                 ShowPauseScreen();
                 break;
             case Enums.UI_PauseButtonType.Restart:
-                SceneManager.RestartScene(_aS.clip.length);
+                _sceneManager.RestartScene(_audioSource.clip.length);
                 break;
             case Enums.UI_PauseButtonType.Controls:
                 State = Enums.PauseState.Controls;
@@ -78,7 +60,7 @@ public class PauseScreen : UIUnityObject
                 break;
             case Enums.UI_PauseButtonType.Quit:
                 DebugLog("Quit");
-                SceneManager.QuitGame(_aS.clip.length);
+                _sceneManager.QuitGame(_audioSource.clip.length);
                 break;
             case Enums.UI_PauseButtonType.Controls_OK:
                 State = Enums.PauseState.Main;
@@ -92,8 +74,7 @@ public class PauseScreen : UIUnityObject
     {
         if (context.performed)
         {
-            _currentButton.Submit();
-            OnMainButtonClick(_currentButton);
+            HandleButtonSubmit(_currentButton);
         }
     }
 
@@ -113,8 +94,6 @@ public class PauseScreen : UIUnityObject
     public override void Awake()
     {
         base.Awake();
-        _aS = GetComponent<AudioSource>();
-        _currentButton = FirstSelected;
         _orgPos = new Vector2(0, 1450);
     }
 
@@ -143,13 +122,13 @@ public class PauseScreen : UIUnityObject
 
         if (IsGamePaused)
         {
-            _aS.Play(Sound_Enter);
+            _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
-            EventSystem.SetSelectedGameObject(EventSystem.firstSelectedGameObject);
+            _eventSystem.SetSelectedGameObject(_eventSystem.firstSelectedGameObject);
         }
         else
         {
-            _aS.Play(Sound_Exit);
+            _audioSource.Play(Sound_Exit);
             PlayerInput.SwitchCurrentActionMap("Player");
         }
 
@@ -159,19 +138,21 @@ public class PauseScreen : UIUnityObject
 
     private void ShowControlsPanel()
     {
-        if (State == Enums.PauseState.Controls)
+        if (State == Enums.PauseState.Main)
         {
             _prevButton = _currentButton;
             ControlsPanel.transform.localPosition = Vector2.zero;
             MainButtonPanel.transform.localPosition = _orgPos;
-            EventSystem.SetSelectedGameObject(Controls_FirstSelected.gameObject);
+            _eventSystem.SetSelectedGameObject(Controls_FirstSelected.gameObject);
+            State = Enums.PauseState.Controls;
         }
         else
         {
-            _aS.Play(Sound_Exit);
+            _audioSource.Play(Sound_Exit);
             ControlsPanel.transform.localPosition = _orgPos;
             MainButtonPanel.transform.localPosition = Vector2.zero;
-            EventSystem.SetSelectedGameObject(_prevButton.gameObject);
+            _eventSystem.SetSelectedGameObject(_prevButton.gameObject);
+            State = Enums.PauseState.Main;
         }
     }
 

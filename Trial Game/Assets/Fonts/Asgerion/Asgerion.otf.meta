@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: b99a6ca7671d5ce48b14cbcdbff0c8eb
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Asgerion
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f1a000b1cc890034282ed2aa4c431b17, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

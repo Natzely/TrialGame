@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 public class UnitInfoUI : MonoBehaviour
 {
-    [SerializeField] private PauseScreen PauseScreen;
+    [SerializeField] private PauseScreenAH PauseScreen;
     public Sprite[] UnitSprites;
     public RectTransform Transform;
     public Image UnitImage;

@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 477645777109331510}
   - component: {fileID: 7909673811386046609}
   m_Layer: 5
-  m_Name: PauseScreen_MainButton
+  m_Name: PauseScreen_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,9 +281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6705a3bd7d4da204fa7f822a5224ef90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonType: 0
   ButtonText: {fileID: 7966306608276190411}
-  SoundMove: {fileID: 8300000, guid: 0539590a2a4cb4e47a702eaa67224108, type: 3}
+  Sound_Select: {fileID: 8300000, guid: 9570c955a29a7344ba8edc5817236b34, type: 3}
+  Type: 0
 --- !u!82 &7909673811386046609
 AudioSource:
   m_ObjectHideFlags: 0

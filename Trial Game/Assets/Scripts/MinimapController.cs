@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class MinimapController : MonoBehaviour, ILog
 {
-    [SerializeField] private PauseScreen PauseScreen;
+    [SerializeField] private PauseScreenAH PauseScreen;
     [SerializeField] private GameObject MapIcons;
 
     private bool _showingMap;

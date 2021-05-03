@@ -9,6 +9,7 @@ TagManager:
   - UI
   - DebugText
   - DebugScroll
+  - TitleScreen_Buttons
   layers:
   - Default
   - TransparentFX

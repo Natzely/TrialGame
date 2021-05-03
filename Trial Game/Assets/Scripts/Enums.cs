@@ -95,10 +95,24 @@ public class Enums : MonoBehaviour
         Controls_OK = 4,
     }
 
+    public enum UI_TitleButtonType
+    {
+        Load = 0,
+        Quit = 1,
+        Level_Done = 2,
+        Level_Development = 3,
+    }
+
     public enum PauseState
     {
         Main = 0,
         Controls = 1,
+    }
+
+    public enum TitleState
+    {
+        Main = 0,
+        Levels = 1,
     }
 }
 
