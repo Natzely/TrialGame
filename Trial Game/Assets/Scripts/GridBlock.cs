@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GridBlock : MonoBehaviour, ILog
 {
@@ -36,6 +37,9 @@ public class GridBlock : MonoBehaviour, ILog
     private List<UnitController> _unitsMovingThrough;
     private Path_Active _currentActivePath;
     private bool _gotNeighbors;
+
+
+    private TextMeshProUGUI text;
 
     public (List<Enums.GridBlockType> FavorableTerrain, int MoveDistance, int MinAttackDis, int MaxAttackDis) GetPlayerMoveParams()
     {
@@ -95,6 +99,10 @@ public class GridBlock : MonoBehaviour, ILog
             _gridParams.Reset();
             saveParams = false;
         }
+
+        //if (moveFrom == null)
+        //    text.text = "";
+        //text.text += $"{gameObject.name}::: moveDis:{moveDistance}, minAttack:{minAttackDistance}, maxAttack:{maxAttackDistance}, neighbors:{Neighbors.Count()} |||||| ";
 
         if (saveParams)
         {
@@ -178,7 +186,7 @@ public class GridBlock : MonoBehaviour, ILog
     {
         if (_savedPaths.ContainsKey(unit))
         {
-            Destroy(_savedPaths[unit].gameObject);
+            Destroy(_savedPaths[unit]?.gameObject);
             _savedPaths[unit] = null;
             _savedPaths.Remove(unit);
         }
@@ -196,41 +204,6 @@ public class GridBlock : MonoBehaviour, ILog
             CurrentUnit = null;
     }
 
-    //public void UnitLock(UnitController uC)
-    //{
-    //    if(uC != null && !IsUnitLocked(uC.Player) && CurrentUnit != uC)
-    //    {
-    //        Debug.Log($"{gameObject.name} locks on {uC.name}");
-    //        Log($"Locking on {uC.gameObject.name}");
-    //        CurrentUnit = uC;
-    //    }
-    //}
-
-    //public bool IsUnitLocked(Enums.Player player)
-    //{
-    //    return _unitLocks.Keys.Contains(player) && !Utility.TrueNull(_unitLocks[player]);
-    //}
-
-    //public bool HasUnitLock(UnitController uC)
-    //{
-    //    return _unitLocks.Keys.Contains(uC.Player) && _unitLocks[uC.Player] == uC;
-    //}
-
-    //public void ResetLock(UnitController uC)
-    //{
-    //    if (!Utility.TrueNull(uC) && HasUnitLock(uC) && CurrentUnit == uC)
-    //    {
-    //        Debug.Log($"{gameObject?.name} unlocks from {uC?.name}");
-    //        _unitLocks[uC.Player] = null;
-    //        CurrentUnit = null;
-    //        _unitsMovingThrough.Add(uC);
-    //    }
-    //    else if(CurrentUnit == uC)
-    //    {
-    //        CurrentUnit = null;
-    //    }
-    //}
-
     public IEnumerable<UnitController> GetAlliedUnits(Enums.Player player)
     {
         var alliedUnits = _unitsMovingThrough.Where(u => u.Player == player).ToList();
@@ -244,8 +217,9 @@ public class GridBlock : MonoBehaviour, ILog
         Neighbors = new GridNeighbors(this);
         _gridParams = new PlayerParams();
         _unitsMovingThrough = new List<UnitController>();
-        //_unitLocks = new Dictionary<Enums.Player, UnitController>();
         _bC = GetComponent<BoxCollider2D>();
+        var textObj = GameObject.FindGameObjectWithTag("test");
+        text = textObj.GetComponent<TextMeshProUGUI>();
     }
 
     void Start()

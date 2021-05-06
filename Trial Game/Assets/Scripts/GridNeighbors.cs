@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using TMPro;
 
 public class GridNeighbors : IEnumerable<GridBlock>
 {
@@ -49,7 +50,7 @@ public class GridNeighbors : IEnumerable<GridBlock>
         GridBlock rGB = null;
         (List<Enums.GridBlockType> faveTerrain, int move, int min, int max) param = (new List<Enums.GridBlockType>(), -1, -1, -1);
 
-        foreach(var gB in _neighbors.Values)
+        foreach (var gB in _neighbors.Values)
         {
             if (gB != null)
             {

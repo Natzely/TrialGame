@@ -55,7 +55,6 @@ public class PauseScreenAH : UIActionHandler
                 _sceneManager.RestartScene(_audioSource.clip.length);
                 break;
             case Enums.UI_PauseButtonType.Controls:
-                State = Enums.PauseState.Controls;
                 ShowControlsPanel();
                 break;
             case Enums.UI_PauseButtonType.Quit:
@@ -63,7 +62,6 @@ public class PauseScreenAH : UIActionHandler
                 _sceneManager.QuitGame(_audioSource.clip.length);
                 break;
             case Enums.UI_PauseButtonType.Controls_OK:
-                State = Enums.PauseState.Main;
                 DebugLog("Controls_OK");
                 ShowControlsPanel();
                 break;
