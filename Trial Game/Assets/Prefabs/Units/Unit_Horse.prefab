@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 347991490560029868}
   - component: {fileID: 783470378874735502}
   - component: {fileID: 3097757917150243156}
+  - component: {fileID: 493018922610457404}
   - component: {fileID: 4877884251898067759}
   - component: {fileID: 2635142902251534675}
   - component: {fileID: 5224534530976703657}
@@ -219,6 +220,26 @@ MonoBehaviour:
   DamageText: {fileID: 1518579525694844865}
   HealthText: {fileID: 7466798685341615900}
   Health: 10
+--- !u!114 &493018922610457404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530291345336432978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1f0af9b9d2de2408356c023e99df5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrassSpeedMultiplyer: 1
+  RoadSpeedMultiplyer: 1.2
+  TreeSpeedMultiplyer: 0.25
+  WaterSpeedMultiplyer: 0
+  GrassMoveCost: 1
+  RoadMoveCost: 1
+  TreeMoveCost: 3
+  WaterMoveCost: 99999
 --- !u!82 &4877884251898067759
 AudioSource:
   m_ObjectHideFlags: 0

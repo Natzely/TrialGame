@@ -49,7 +49,6 @@ public class TitleTextMove : MonoBehaviour
 
         if (AfterMoveEvent != null && _perDone >= EventActivation && !_eventTriggered)
         {
-            Debug.Log("Done");
             _eventTriggered = true;
             AfterMoveEvent.Invoke();
         }

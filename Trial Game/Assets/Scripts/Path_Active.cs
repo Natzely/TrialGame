@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Path_Active: GridBlockItem
 {
     public Enums.PathDirection PathDirection
@@ -107,11 +109,13 @@ public class Path_Active: GridBlockItem
         _sR.enabled = false;
         ResetRotation();
         PathDirection = Enums.PathDirection.Start;
-        _animator?.SetBool("Head", false);
-        _animator?.SetBool("Straight", false);
-        _animator?.SetBool("Curve", false);
-        _animator?.SetBool("Start", false);
-        
+        if (_animator != null)
+        {
+            _animator.SetBool("Head", false);
+            _animator.SetBool("Straight", false);
+            _animator.SetBool("Curve", false);
+            _animator.SetBool("Start", false);
+        }
     }
 
     private void OnDestroy()

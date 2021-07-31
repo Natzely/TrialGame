@@ -110,8 +110,8 @@ public class PlayerManager : UnitManager
             var bestN = gB.Neighbors.GetBestMoveNeighbor();
             if (bestN != null)
             { 
-                var mParams = bestN.GetPlayerMoveParams();
-                gB.SetGrid(bestN, mParams.FavorableTerrain, mParams.MoveDistance, mParams.MinAttackDis, mParams.MaxAttackDis);
+                var (favorableTerrain, moveDistance, minAttackDis, maxAttackDis) = bestN.GetPlayerMoveParams();
+                gB.SetGrid(bestN, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
             }
             else
             {
@@ -174,7 +174,7 @@ public class PlayerManager : UnitManager
         }
     }
 
-    public override IEnumerable<GridBlock> CreatePath(GridBlock startPos, GridBlock endPos)
+    public override IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos)
     {
         var pathList = PathFinder.CreatePath(Player, startPos, endPos, GetGridMatrix());
         PlayerInfo.MovementPath = pathList.ToList();

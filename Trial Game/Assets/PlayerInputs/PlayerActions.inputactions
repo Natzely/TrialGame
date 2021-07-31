@@ -229,7 +229,7 @@
             "id": "e23ae9c4-015c-4985-959b-fa62a1570dd4",
             "actions": [
                 {
-                    "name": "Cancel",
+                    "name": "Unpause/Back",
                     "type": "Button",
                     "id": "c6b5fee1-8ff1-45dc-96d5-c377a494b9fa",
                     "expectedControlType": "Button",
@@ -293,7 +293,7 @@
                     "interactions": "Press(pressPoint=1E-05,behavior=1)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cancel",
+                    "action": "Unpause/Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

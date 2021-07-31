@@ -20,6 +20,7 @@ public class PauseScreenAH : UIActionHandler
     private Vector2 _moveValue;
     private Vector2 _orgPos;
     private float _soundTime;
+    private bool _hidePauseScreen;
 
     public void EscapeKeyPress(InputAction.CallbackContext context)
     {
@@ -110,15 +111,19 @@ public class PauseScreenAH : UIActionHandler
     private void Update()
     {
         if (_soundTime > 0)
-            _soundTime -= Time.fixedDeltaTime;
+            _soundTime -= Time.unscaledDeltaTime;
+
+        if (_hidePauseScreen)
+        {
+            _audioSource.Play(Sound_Exit);
+            PlayerInput.SwitchCurrentActionMap("Player");
+            _hidePauseScreen = false;
+        }
     }
 
     private void ShowPauseScreen()
     {
-        IsGamePaused = !IsGamePaused;
-        Time.timeScale = IsGamePaused ? 0 : 1;
-
-        if (IsGamePaused)
+        if (!IsGamePaused)
         {
             _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
@@ -126,9 +131,13 @@ public class PauseScreenAH : UIActionHandler
         }
         else
         {
-            _audioSource.Play(Sound_Exit);
-            PlayerInput.SwitchCurrentActionMap("Player");
+            _hidePauseScreen = true;
+            //_audioSource.Play(Sound_Exit);
+            //PlayerInput.SwitchCurrentActionMap("Player");
         }
+
+        IsGamePaused = !IsGamePaused;
+        Time.timeScale = IsGamePaused ? 0 : 1;
 
         _rectTransform.anchoredPosition = IsGamePaused ? Vector2.zero : _orgPos;
         DebugLog(IsGamePaused ? "Pause" : "Unpause" + " Game");
@@ -141,7 +150,7 @@ public class PauseScreenAH : UIActionHandler
             _prevButton = _currentButton;
             ControlsPanel.transform.localPosition = Vector2.zero;
             MainButtonPanel.transform.localPosition = _orgPos;
-            _eventSystem.SetSelectedGameObject(Controls_FirstSelected.gameObject);
+            _eventSystem.SetSelectedGameObject(Controls_FirstSelected);
             State = Enums.PauseState.Controls;
         }
         else

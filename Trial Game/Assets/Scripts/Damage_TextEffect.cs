@@ -11,6 +11,7 @@ public class Damage_TextEffect : MonoBehaviour
 
     public string Text { get; set; }
 
+    private RectTransform _rectTrans;
     private Color _color;
     private Vector2 _startPos;
     private Vector2 _endPos;
@@ -24,17 +25,22 @@ public class Damage_TextEffect : MonoBehaviour
         if (!_initialize)
         {
             _color = DamageText.color;
-            _startPos = transform.position;
             _endPos = _startPos + (Vector2.up * MoveDistance);
-            _initialize = true;
             _maxMoveSpeed = MoveSpeed;
+            _rectTrans = GetComponent<RectTransform>();
             gameObject.SetActive(false);
+            _initialize = true;
         }
+    }
+
+    private void Start()
+    {
+        _startPos = _rectTrans.anchoredPosition;
     }
 
     private void OnEnable()
     {
-        transform.position = _startPos;
+        _rectTrans.anchoredPosition = _startPos;
         DamageText.text = Text;
         DamageText.color = new Color(_color.r, _color.g, _color.b, 255);
         _percentToHide = 1 - MovePercentage;
@@ -42,8 +48,8 @@ public class Damage_TextEffect : MonoBehaviour
 
     private void Update()
     {
-        var newPos = Vector2.MoveTowards(transform.position, _endPos, MoveSpeed * Time.deltaTime);
-        transform.position = newPos;
+        var newPos = Vector2.MoveTowards(_rectTrans.anchoredPosition, _endPos, MoveSpeed * Time.deltaTime);
+        _rectTrans.anchoredPosition = newPos;
 
         var disMoved = _endPos.y - newPos.y;
         var percentLeft = disMoved / MoveDistance;

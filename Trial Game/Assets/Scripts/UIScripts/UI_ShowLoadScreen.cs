@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_ShowLoadScreen : UIUnityObject
+public class UI_ShowLoadScreen : UIObject
 {
     [SerializeField] private float ExpandSpeed;
     [SerializeField] private UI_PanelFade Panel;

@@ -8,30 +8,30 @@ public class PauseScreen_Button : UIButton
     public override void OnSelect(BaseEventData eventData)
     {
         _selected = true;
-        _image.color = Colors.Button_Selected;
-        _handler.OnItemSelected(this);
+        Image.color = Colors.Button_Selected;
+        UIHandler.OnItemSelected(this);
     }
 
     public override void OnDeselect(BaseEventData eventData)
     {
-        _image.color = Colors.Button_Deselected;
+        Image.color = Colors.Button_Deselected;
         Deselect();
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (_handler.CurrentButton != this.gameObject)
-            _audioSource.Play(Sound_Select);
-        _button.Select();
+        if (UIHandler.CurrentButton != this.gameObject)
+            AudioSource.Play(Sound_Select);
+        Button.Select();
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 
     public override void OnSubmit(BaseEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 }

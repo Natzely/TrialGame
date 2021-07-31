@@ -4,9 +4,4 @@ using UnityEngine;
 
 public class Cooldown_Effect : MonoBehaviour
 {
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

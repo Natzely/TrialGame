@@ -6,9 +6,9 @@ using TMPro;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(Button))]
-public abstract class UIButton : UIUnityObject, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, ISubmitHandler
+public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, ISubmitHandler
 {
-    public float ClipLength { get { return _audioSource.clip.length; } }
+    public float ClipLength { get { return AudioSource.clip.length; } }
 
     [SerializeField] internal TextMeshProUGUI ButtonText;
     [SerializeField] internal AudioClip Sound_Select;
@@ -17,10 +17,11 @@ public abstract class UIButton : UIUnityObject, ISelectHandler, IDeselectHandler
     internal const int MAXTEXTSIZE = 55;
     internal const float TEXTSIZESPEED = 100f;
 
-    internal UIActionHandler _handler;
-    internal AudioSource _audioSource;
-    internal Button _button;
-    internal Image _image;
+    internal UIActionHandler UIHandler { private set; get; }
+    internal AudioSource AudioSource { private set; get; }
+    internal Button Button { private set; get; }
+    internal Image Image { private set; get; }
+
     internal bool _selected;
     internal float _savedFontSize;
 
@@ -33,26 +34,26 @@ public abstract class UIButton : UIUnityObject, ISelectHandler, IDeselectHandler
     public void MoveToNextUIObject(Vector3 move)
     {
         DebugLog($"{gameObject.name} move to next UI object");
-        _audioSource.Play(Sound_Select);
+        AudioSource.Play(Sound_Select);
         if (move.x != 0)
         {
             if (move.x > 0)
-                _button.navigation.selectOnLeft?.Select();
+                Button.navigation.selectOnLeft?.Select();
             else
-                _button.navigation.selectOnRight?.Select();
+                Button.navigation.selectOnRight?.Select();
         }
         else if (move.y != 0)
         {
             if (move.y > 0)
-                _button.navigation.selectOnUp?.Select();
+                Button.navigation.selectOnUp?.Select();
             else
-                _button.navigation.selectOnDown?.Select();
+                Button.navigation.selectOnDown?.Select();
         }
     }
 
     public void Select()
     {
-        _button.Select();
+        Button.Select();
     }
 
     public void Deselect()
@@ -63,16 +64,16 @@ public abstract class UIButton : UIUnityObject, ISelectHandler, IDeselectHandler
 
     public void RaiseVolume()
     {
-        _audioSource.volume = 1;
+        AudioSource.volume = 1;
     }
 
     public override void Awake()
     {
         base.Awake();
-        _button = GetComponent<Button>();
-        _audioSource = GetComponent<AudioSource>();
-        _image = GetComponent<Image>();
-        _handler = FindObjectOfType<UIActionHandler>();
+        Button = GetComponent<Button>();
+        AudioSource = GetComponent<AudioSource>();
+        Image = GetComponent<Image>();
+        UIHandler = FindObjectOfType<UIActionHandler>();
         _savedFontSize = MINTEXTSIZE;
     }
 
@@ -83,7 +84,7 @@ public abstract class UIButton : UIUnityObject, ISelectHandler, IDeselectHandler
         {
             if (ButtonText.fontSize < MAXTEXTSIZE)
             {
-                _savedFontSize = _savedFontSize + TEXTSIZESPEED * Time.fixedDeltaTime;
+                _savedFontSize += TEXTSIZESPEED * Time.unscaledDeltaTime;
                 ButtonText.fontSize = Mathf.Clamp(_savedFontSize, MINTEXTSIZE, MAXTEXTSIZE);
             }
             else

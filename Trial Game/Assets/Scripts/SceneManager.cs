@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 [RequireComponent(typeof(AudioSource))]
-public class Scene_Manager : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     [SerializeField] private float FadeMusicSpeed;
 
@@ -55,7 +55,7 @@ public class Scene_Manager : MonoBehaviour
 
     private void Start()
     {
-        _currentScene = SceneManager.GetActiveScene().name;
+        _currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
     }
 
     private void Update()
@@ -75,13 +75,13 @@ public class Scene_Manager : MonoBehaviour
 
         if(_fadeMusic && _audioSource.volume > 0)
         {
-            _audioSource.volume -= Time.fixedDeltaTime * FadeMusicSpeed;
+            _audioSource.volume -= Time.unscaledDeltaTime * FadeMusicSpeed;
         }
     }
 
     public IEnumerator LoadScene(string sceneName)
     {
-        AsyncOperation asynLoad = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation asynLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
 
         while (!asynLoad.isDone)
         {

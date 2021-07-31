@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIUnityObject : MonoBehaviour, IDebugLog
+public class UIObject : MonoBehaviour, IDebugLog
 {
     private TextMeshProUGUI _debugText;
     private Scrollbar _debugScroll;

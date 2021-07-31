@@ -10,7 +10,7 @@ public static class Extensions
     public static void RemoveLast(Queue q)
     {
         object first = q.Peek();
-        object current = null;
+        object current;
         while (true)
         {
             current = q.Dequeue();
@@ -71,7 +71,10 @@ public static class Extensions
     /// <param name="item">The item after which all items will be deleted</param>
     public static void RemoveAllAfter<T>(this List<T> list, T item)
     {
-        int startIndex = list.IndexOf(item) + 1;
+        int startIndex = list.IndexOf(item);
+        if (startIndex == -1)
+            throw new System.Exception("Item not found in list");
+        startIndex += 1;
         int length = list.Count;
         int trimCount = length - startIndex;
         list.RemoveRange(startIndex, trimCount);
@@ -86,12 +89,42 @@ public static class Extensions
         else
             return list1.Union(list2);
     }
+
+    public static T NextAfter<T>(this List<T> list, T item, int direction)
+    {
+        if (list == null)
+            return item;
+        else if (item == null)
+            throw new System.Exception("Initial item can't be null");
+        else if (!list.Contains(item))
+            throw new System.Exception("Item not in given list");
+        else if (list.Count == 1)
+            return item;
+
+        int itemIndex = list.IndexOf(item) + direction;
+        if (itemIndex == list.Count())
+            itemIndex = 0;
+        else if (itemIndex < 0)
+            itemIndex = list.Count - 1;
+    
+        return list[itemIndex];
+    }
     #endregion -----------------------------------------------------------------------------------------
 
     #region Vector Extensions --------------------------------------------------------------------------
     public static Vector2 V2(this Vector3 v)
     {
         return v;
+    }
+
+    public static bool IsDefault(this Vector2 v)
+    {
+        return v == Vector2.zero;
+    }
+
+    public static bool IsDefulat(this Vector3 v)
+    {
+        return v == Vector3.zero;
     }
 
     public static double GridDistance(this Vector3 v, Vector3 distanceTo)

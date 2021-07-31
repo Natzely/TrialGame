@@ -9,18 +9,18 @@ using TMPro;
 public class GridBlock : MonoBehaviour, ILog
 {
     public Enums.GridBlockType Type;
-    [SerializeField] public UnitController CurrentUnit { get; private set; }
+    public UnitController CurrentUnit { get; private set; }
     public GameObject MoveSpace;
     public GameObject AttackSpace;
     public GameObject ActivePath;
     public GameObject SavedPath;
     public Image MinimapTile;
-    public int MovementCost = 0;
+    public int SpeedCost = 0;
     public bool Unpassable = false;
     public bool IsDestination = false;
 
     public bool UseMoveAnimation { get; set; }
-    public bool isOccupied { get { return !Utility.TrueNull(CurrentUnit); } }
+    public bool IsOccupied { get { return CurrentUnit; } }
     public bool IsSpaceActive { get { return _gridParams.IsSpaceActive; } }
     public Vector2 GridPosition { get; set; }
     public Vector2 Position { get { return transform.position; } }
@@ -28,6 +28,8 @@ public class GridBlock : MonoBehaviour, ILog
     public Enums.ActiveSpace ActiveSpace { get { return _gridParams.ActiveSpace; } }
     public int PlayerMoveDistance { get { return _gridParams.MoveDistance; } }
     public int PlayerAttackDistance { get { return _gridParams.MaxAttackDistance; } }
+
+    private int MovementCost { get { return _cursor.CurrentUnit.CheckGridMoveCost(Type); } }
 
     private PlayerManager _pM;
     private PlayerParams _gridParams;
@@ -37,9 +39,6 @@ public class GridBlock : MonoBehaviour, ILog
     private List<UnitController> _unitsMovingThrough;
     private Path_Active _currentActivePath;
     private bool _gotNeighbors;
-
-
-    private TextMeshProUGUI text;
 
     public (List<Enums.GridBlockType> FavorableTerrain, int MoveDistance, int MinAttackDis, int MaxAttackDis) GetPlayerMoveParams()
     {
@@ -61,37 +60,43 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void CheckGrid(GridBlock moveFrom)
     {
-        var pParams = moveFrom.GetPlayerMoveParams();
-        var tempMove = pParams.MoveDistance - (pParams.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost);
-        var tempAttack = pParams.MaxAttackDis - 1;
+        var (favorableTerrain, moveDistance, minAttackDis, maxAttackDis) = moveFrom.GetPlayerMoveParams();
+        var tempMove = moveDistance - (favorableTerrain.Contains(this.Type) ? 1 : MovementCost);
+        var tempAttack = maxAttackDis - 1;
         UseMoveAnimation = moveFrom.UseMoveAnimation;
 
         if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
         {
-            SetGrid(moveFrom, pParams.FavorableTerrain, pParams.MoveDistance, pParams.MinAttackDis, pParams.MaxAttackDis);
+            SetGrid(moveFrom, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
+            if (_cursor.CurrentGridBlock == this || _pM.PlayerInfo.MovementPathContains(this))
+                _cursor.CurrentGridUpdate();
         }
     }
 
     public void SetGrid(GridBlock moveFrom, List<Enums.GridBlockType> favTerrain, int moveDistance, int minAttackDistance, int maxAttackDistance)
     {
         bool saveParams = true;
-        if (Unpassable || (!Utility.TrueNull(CurrentUnit) && CurrentUnit.IsEnemy(Enums.Player.Player1)) || _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
+
+        if (Unpassable || (CurrentUnit && CurrentUnit.IsEnemy(Enums.Player.Player1)) || _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
             moveDistance = -1;
 
         if (moveFrom == null)
+        {
             moveDistance += (favTerrain.Contains(this.Type) ? 1 : MovementCost);
+        }
 
         moveDistance = Mathf.Clamp(moveDistance - (favTerrain.Contains(this.Type) ? 1 : MovementCost), -1, 9999); // If this terrain is favorable to the unit, only subtract one.
 
         if (moveDistance >= 0)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Move;
-            _gridParams.ShowMoveSpace(moveFrom?.Position);
+
+            _gridParams.ShowMoveSpace(moveFrom);
         }
         else if (maxAttackDistance > 0)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Attack;
-            _gridParams.ShowAttackSpace(moveFrom?.Position);
+            _gridParams.ShowAttackSpace(moveFrom);
             maxAttackDistance--;
         }
         else
@@ -115,7 +120,7 @@ public class GridBlock : MonoBehaviour, ILog
         _pM.UpdateBlockGrid(GridPosition, this, saveParams);
     }
 
-    public void Disable(Enums.Player player)
+    public void Disable()
     {
         _gridParams.Reset();
     }
@@ -160,12 +165,12 @@ public class GridBlock : MonoBehaviour, ILog
 
     public bool IsCurrentUnitEnemy(Enums.Player player)
     {
-        return !Utility.TrueNull(CurrentUnit) &&
+        return CurrentUnit &&
                CurrentUnit.Player != player;// &&
                                             //!CurrentUnit.AlliedWith.Contains(player);
     }
 
-    public void UpdatePathState(UnitController unit, Vector2 cDir, Vector2? nDir)
+    public void UpdatePathState(Vector2 cDir, Vector2? nDir)
     {
         _currentActivePath.UpdatePathState(cDir, nDir);
         _currentActivePath.Show = true;
@@ -186,9 +191,12 @@ public class GridBlock : MonoBehaviour, ILog
     {
         if (_savedPaths.ContainsKey(unit))
         {
-            Destroy(_savedPaths[unit]?.gameObject);
-            _savedPaths[unit] = null;
-            _savedPaths.Remove(unit);
+            if (_savedPaths[unit])
+            {
+                Destroy(_savedPaths[unit].gameObject);
+                _savedPaths[unit] = null;
+                _savedPaths.Remove(unit);
+            }
         }
     }
 
@@ -212,19 +220,21 @@ public class GridBlock : MonoBehaviour, ILog
         return alliedUnits;
     }
 
+    public MovePoint ToMovePoint(bool hide = false)
+    {
+        return new MovePoint(this, hide);
+    }
+
     void Awake()
     {
-        Neighbors = new GridNeighbors(this);
         _gridParams = new PlayerParams();
         _unitsMovingThrough = new List<UnitController>();
         _bC = GetComponent<BoxCollider2D>();
-        var textObj = GameObject.FindGameObjectWithTag("test");
-        text = textObj.GetComponent<TextMeshProUGUI>();
     }
 
     void Start()
     {
-        gameObject.name = gameObject.name.Replace("Clone", $"X:{Position.x},Y:{Position.y}");
+        gameObject.name = String.Format(Strings.GridblockName, Position.x, Position.y);
 
         _currentActivePath = CreatePathBlock();
         var cursorBoundaries = GameObject.Find("CursorBoundaries");
@@ -252,13 +262,13 @@ public class GridBlock : MonoBehaviour, ILog
     {
         if (!_gotNeighbors)
         {
-            GetNeighbors();
+            Neighbors = new GridNeighbors(this);
             _gotNeighbors = true;
         }
 
         CleanUpUnits();
 
-        if (!_pM.PlayerInfo.MovementPath.Contains(this) && _currentActivePath.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
+        if (!_pM.PlayerInfo.MovementPathContains(this) && _currentActivePath.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
         {
             _currentActivePath.Show = false;
         }
@@ -276,7 +286,7 @@ public class GridBlock : MonoBehaviour, ILog
         var unitsCopy = new List<UnitController>(_unitsMovingThrough);
         foreach(UnitController uC in unitsCopy)
         {
-            if (Utility.TrueNull(uC) || uC.IsDestroyed || !_bC.IsTouching(uC.BoxCollider))
+            if (!uC || uC.IsDestroyed || !_bC.IsTouching(uC.BoxCollider))
                 _unitsMovingThrough.Remove(uC);
         }
     }
@@ -298,7 +308,7 @@ public class GridBlock : MonoBehaviour, ILog
 
             if (_gridParams.MoveSpace.Active && uC.Player != Enums.Player.Player1)
             {
-                if (_pM.PlayerInfo.MovementPath.Contains(this))
+                if (_pM.PlayerInfo.MovementPathContains(this))
                     _cursor.EnemyInPath(this);
 
                 UpdateGrid();
@@ -331,31 +341,6 @@ public class GridBlock : MonoBehaviour, ILog
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
         _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
-    }
-
-    private void GetNeighbors()
-    {
-        Neighbors.SetNeighbors(
-            GetNeighbor(Vector2.up),
-            GetNeighbor(Vector2.down),  
-            GetNeighbor(Vector2.left),
-            GetNeighbor(Vector2.right)
-        );
-    }
-
-    private GridBlock GetNeighbor(Vector2 dir)
-    {
-        Vector2 startPos = transform.position.V2();
-        RaycastHit2D hit = Physics2D.Raycast(startPos, dir, 1f, LayerMask.GetMask("GridBlock"));
-        if (hit.collider != null)
-        {
-            GameObject rhgo = hit.transform.gameObject;
-            GridBlock grid = rhgo.GetComponent<GridBlock>();
-
-            return grid;
-        }
-
-        return null;
     }
 
     private void UpdateGrid()
@@ -421,24 +406,33 @@ public class GridBlock : MonoBehaviour, ILog
         {
             ActiveSpace = Enums.ActiveSpace.Inactive;
             GridStart = null;
-            AttackSpace?.Disable();
-            MoveSpace?.Disable();
+            if(AttackSpace) AttackSpace.Disable();
+            if(MoveSpace) MoveSpace.Disable();
             MoveDistance = -1;
             MinAttackDistance = -1;
             MaxAttackDistance = -1;
         }
 
-        public void ShowMoveSpace(Vector2? moveFrom)
+        public void ShowMoveSpace(GridBlock moveFrom)
         {
+            Vector2 moveFromPos;
             if (moveFrom == null)
-                moveFrom = MoveSpace.transform.position;
+                moveFromPos = MoveSpace.transform.position;
+            else
+                moveFromPos = moveFrom.Position;
 
-            ShowSpace(MoveSpace, AttackSpace, moveFrom);
+            ShowSpace(MoveSpace, AttackSpace, moveFromPos);
         }
 
-        public void ShowAttackSpace(Vector2? moveFrom)
+        public void ShowAttackSpace(GridBlock moveFrom)
         {
-            ShowSpace(AttackSpace, MoveSpace, moveFrom);
+            Vector2 moveFromPos;
+            if (moveFrom == null)
+                moveFromPos = MoveSpace.transform.position;
+            else
+                moveFromPos = moveFrom.Position;
+
+            ShowSpace(AttackSpace, MoveSpace, moveFromPos);
         }
 
         public void ShowSpace(GridSpace eSpace, GridSpace dSpace, Vector2? moveFrom)

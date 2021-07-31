@@ -18,6 +18,7 @@ public class Enums : MonoBehaviour
         Attack = 2,
         Null = 3,
         OnlyAttack = 4,
+        CursorMenu = 5,
     }
 
     public enum GridBlockType
@@ -25,6 +26,7 @@ public class Enums : MonoBehaviour
         Stone = 0,
         Grass = 1,
         Water = 2,
+        Tree = 3,
     }
 
     public enum NeighborDirection
@@ -59,13 +61,6 @@ public class Enums : MonoBehaviour
         Player2 = 1,
         Player3 = 2,
         Player4 = 3,
-    }
-
-    public enum TileType
-    {
-        Grass = 0,
-        Rock = 1,
-        Water = 2,
     }
 
     public enum UnitState
@@ -113,6 +108,16 @@ public class Enums : MonoBehaviour
     {
         Main = 0,
         Levels = 1,
+    }
+
+    [System.Serializable, System.Flags]
+    public enum CursorMenuState
+    {
+        None = 0,
+        Move = 1,
+        Attack = 2,
+        Hide = 4,
+        Reveal = 8,
     }
 }
 

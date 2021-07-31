@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c8e4747021ad148acaa83d5537eb52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentUnit: {fileID: 0}
   Type: 1
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
@@ -56,7 +55,8 @@ MonoBehaviour:
     type: 3}
   MinimapTile: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
     type: 3}
-  MovementCost: 2
+  MovementCost: 1
+  SpeedCost: 1
   Unpassable: 0
   IsDestination: 0
 --- !u!61 &5570947507939381739

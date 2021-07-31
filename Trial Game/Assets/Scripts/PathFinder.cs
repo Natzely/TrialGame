@@ -8,7 +8,7 @@ public class PathFinder
 {
     private const int MOVEMENTCOSTMODIFIER = 1;
 
-    public static IEnumerable<GridBlock> CreatePath(Enums.Player player, GridBlock gbStart, GridBlock gbTarget, GridBlock[,] map)
+    public static IEnumerable<MovePoint> CreatePath(Enums.Player player, GridBlock gbStart, GridBlock gbTarget, GridBlock[,] map)
     {
         Location current = null;
         Location start = null;
@@ -19,7 +19,8 @@ public class PathFinder
 
         var openList = new List<Location>();
         var closedList = new List<Location>();
-        var pathList = new List<GridBlock>();
+        var gridList = new List<GridBlock>();
+        var pathList = new List<MovePoint>();
         int g = 0;
 
         // start by adding the original position to the open list
@@ -71,7 +72,7 @@ public class PathFinder
                     // compute its score, set the parent
                     adjacentSquare.G = g;
                     adjacentSquare.H = ComputeHScore(asX, asY, target.X, target.Y);
-                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (map[asX, asY].MovementCost * MOVEMENTCOSTMODIFIER);
+                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (gbStart.CurrentUnit.CheckGridMoveCost(map[asX, asY].Type) * MOVEMENTCOSTMODIFIER);
                     adjacentSquare.Parent = current;
 
                     // and add it to the open list
@@ -99,7 +100,7 @@ public class PathFinder
         {
             GridBlock gB = map[current.X, current.Y];
 
-            pathList.Add(gB);
+            gridList.Add(gB);
 
             if (current.Parent != null)
             {
@@ -108,19 +109,22 @@ public class PathFinder
                 dir = gB.Position - pB.Position;
                 // Since the first lastDir is null, it will create an arrow spacefd
                 if (player == Enums.Player.Player1)
-                    gB.UpdatePathState(gbStart.CurrentUnit, dir.Value, lastDir);
+                    gB.UpdatePathState(dir.Value, lastDir);
             }
             else if (player == Enums.Player.Player1)
             {
                 // Reached the first space, make it the start
-                gB.UpdatePathState(gbStart.CurrentUnit, new Vector2(0, 0), lastDir);
+                gB.UpdatePathState(new Vector2(0, 0), lastDir);
             }
 
             lastDir = dir;
             current = current.Parent;
         }
 
-        pathList.Reverse();
+        gridList.Reverse();
+        foreach(GridBlock gB in gridList)
+            pathList.Add(gB.ToMovePoint());
+        
         return pathList;
     }
 

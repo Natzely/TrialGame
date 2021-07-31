@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 
 public class EnemyManager : UnitManager
 {
+    [Tooltip("How long to wait until the EnemyManager moves another unit")]
     public float MoveDelay;
+    [Tooltip("Active timer until the next enemy move")]
     public float DealyTimer;
 
-    public override IEnumerable<GridBlock> CreatePath(GridBlock startPos, GridBlock endPos)
+    public override IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos)
     {
         var pathList = PathFinder.CreatePath(Player, startPos, endPos, FullGrid);
 
@@ -21,15 +24,18 @@ public class EnemyManager : UnitManager
         DealyTimer = MoveDelay;
 
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
-        foreach(UnitController uC in nonNullUnits)
+        foreach (UnitController uC in nonNullUnits)
         {
-            uC.Player = Player;
-            uC.Speed *= _globalVariables.UnitSpeedModifier;
-            uC.Cooldown *= _globalVariables.UnitCooldownModifier;
-            uC.UnitManager = this;
-            var eC = uC?.gameObject.AddComponent<EnemyController>();
-            eC.UnitManager = this;
-            eC.UnitController = uC;
+            if (uC)
+            {
+                uC.Player = Player;
+                uC.Speed *= _globalVariables.UnitSpeedModifier;
+                uC.Cooldown *= _globalVariables.UnitCooldownModifier;
+                uC.UnitManager = this;
+                var eC = uC.gameObject.AddComponent<EnemyController>();
+                eC.UnitManager = this;
+                eC.UnitController = uC;
+            }
         }
     }
 

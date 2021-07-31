@@ -12,28 +12,28 @@ public class TitleScreen_LevelButton : TitleScreen_Button
 
     public override void OnSelect(BaseEventData eventData)
     {
-        _audioSource.Play(Sound_Select);
-        _image.color = new Color(1, 1, 1, SelectedOpacity);
+        AudioSource.Play(Sound_Select);
+        Image.color = new Color(1, 1, 1, SelectedOpacity);
         _selected = true;
     }
     public override void OnDeselect(BaseEventData eventData)
     {
-        _image.color = new Color(1, 1, 1, 0);
+        Image.color = new Color(1, 1, 1, 0);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (_handler.CurrentButton != this.gameObject)
-            _button.Select();
+        if (UIHandler.CurrentButton != this.gameObject)
+            Button.Select();
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 
     public override void OnSubmit(BaseEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 }

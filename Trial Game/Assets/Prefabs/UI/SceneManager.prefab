@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 658830795545423470}
-  - component: {fileID: 7570970297472659558}
   - component: {fileID: 3856188918595345935}
+  - component: {fileID: 3714788574785352804}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -32,19 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7570970297472659558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5879006651249477894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55d7d6c1ff7aeac448396e4a60cb6371, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FadeMusicSpeed: 10
 --- !u!82 &3856188918595345935
 AudioSource:
   m_ObjectHideFlags: 0
@@ -141,3 +128,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3714788574785352804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879006651249477894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67ba1f854c1e5548b80a66416b53343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeMusicSpeed: 1

@@ -23,11 +23,11 @@ public abstract class UnitManager : MonoBehaviour
 
     public PlayerInfo PlayerInfo { get; private set; }
 
-    public abstract IEnumerable<GridBlock> CreatePath(GridBlock startPos, GridBlock endPos);
+    public abstract IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos);
 
     public void ResetBlockGrid()
     {
-        PlayerInfo.ActiveGrid.ToList().ForEach(aG => aG.Disable(Player));
+        PlayerInfo.ActiveGrid.ToList().ForEach(aG => aG.Disable());
         PlayerInfo.ActiveGrid.Clear();
         PlayerInfo.MovementPath.Clear();
         PlayerInfo.BlockGrid = new GridBlock[_gridSizeX, _gridSizeY];
@@ -50,7 +50,8 @@ public abstract class UnitManager : MonoBehaviour
 
     public void RemoveUnit(UnitController unit)
     {
-        PlayerInfo.Units.Remove(unit);
+        if (unit)
+            PlayerInfo.Units.Remove(unit);
     }
 
     public static void Log(string msg)
@@ -104,7 +105,6 @@ public abstract class UnitManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"{FullGrid.GetLength(0)}, {FullGrid.GetLength(1)}");
         ResetBlockGrid();
     }
 }

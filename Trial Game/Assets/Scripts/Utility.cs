@@ -19,9 +19,4 @@ public static class Utility
     {
         return new Vector2(rT.rect.width * (t.position.x) * rT.localScale.x, rT.rect.height * (t.position.y) * rT.localScale.y);
     }
-
-    public static bool TrueNull(UnitController uC)
-    {
-        return uC == null || uC.IsDestroyed;
-    }
 }

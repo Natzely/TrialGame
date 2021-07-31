@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
                 return true;
 
             GridBlock gbTarget = null;
-            List<GridBlock> moves = null;
+            List<MovePoint> moves = null;
             var gbTargets = target.CurrentGridBlock.GetRangeSpaces(UnitController.CurrentGridBlock, minAttackRange);
 
             if (gbTargets != null)
@@ -68,7 +68,7 @@ public class EnemyController : MonoBehaviour
 
             if (gbTarget != null)
             {
-                UnitController.Target = target.CurrentGridBlock;
+                UnitController.Target = target.CurrentGridBlock.ToMovePoint();
                 return MoveToNextSpace(gbTarget, target, moves);
             }
         }
@@ -84,17 +84,17 @@ public class EnemyController : MonoBehaviour
         UnitController.EnemyController = this;
     }
 
-    private bool MoveToNextSpace(GridBlock gbTarget, UnitController ucTarget, List<GridBlock> moves)
+    private bool MoveToNextSpace(GridBlock gbTarget, UnitController ucTarget, List<MovePoint> moves)
     {
         if (UnitController.CurrentGridBlock != null)
         {
             // Try to create a path to target unit. Path returns 0, then the unit is stuck and can't move, so don't put it on cooldown.
 
-            List<GridBlock> backupSpaces = null;
+            List<GridBlock> backupSpaces;
             double dis = 9999;
             if (ucTarget != null)
                 dis = UnitController.Position.GridDistance(ucTarget.Position);
-            UnitController.Target = ucTarget.CurrentGridBlock;
+            UnitController.Target = ucTarget.CurrentGridBlock.ToMovePoint();
 
 
             if (dis <= UnitController.MaxAttackDistance && dis >= UnitController.MinAttackDistance)
@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour
             else if (moves?.Count > 0 && dis > UnitController.MaxAttackDistance)
             {
                 var prevMoveCount = moves.Count;
-                moves = VerifiedPath(moves, UnitController.MoveDistance + UnitController.CurrentGridBlock.MovementCost).ToList();
+                moves = VerifiedPath(moves, UnitController.MoveDistance + UnitController.CurentGridMoveCost).ToList();
                 if (moves.Count == 0 && prevMoveCount > 0) // The unit doens't have enought movement to get out of it's spot, so move to the next unit
                     return true;
 
@@ -115,17 +115,19 @@ public class EnemyController : MonoBehaviour
                 {
                     if (moves.Last().Position.GridDistance(ucTarget.Position) < UnitController.MaxAttackDistance)
                     {
-                        var lastGrid = moves.Last();
+                        var lastMovePoint = moves.Last();
+                        var lastGrid = lastMovePoint.GridBlock;
                         var newTargetGrid = lastGrid.Neighbors.OrderByDistance(UnitController.CurrentGridBlock, true).ToList().FirstOrDefault();
+                        var newTargetMovePoint = newTargetGrid.ToMovePoint();
 
-                        if (newTargetGrid != null && moves.Contains(newTargetGrid))
+                        if (newTargetGrid != null && moves.Contains(newTargetMovePoint))
                         {
-                            int index = moves.IndexOf(newTargetGrid);
+                            int index = moves.IndexOf(newTargetMovePoint);
                             moves.RemoveRange(index, moves.Count() - index - 1); // the -1 is to acount for index being 0 based and Count() being 1 based.
                         }
                         else if (newTargetGrid != null)
                         {
-                            moves.Add(newTargetGrid);
+                            moves.Add(newTargetMovePoint);
                         }
                         else if (newTargetGrid == null)
                         {
@@ -146,7 +148,7 @@ public class EnemyController : MonoBehaviour
             }
             else if ((backupSpaces = UnitController.CurrentGridBlock.AvailableAttackSpace(gbTarget, UnitController.MaxAttackDistance).ToList()).Count > 0)
             {
-                UnitController.MoveTo(new List<GridBlock>() { UnitController.CurrentGridBlock, backupSpaces.First() });
+                UnitController.MoveTo(new List<MovePoint>() { UnitController.CurrentGridBlock.ToMovePoint(), backupSpaces.First().ToMovePoint() });
                 return true;
             }
             else
@@ -159,11 +161,11 @@ public class EnemyController : MonoBehaviour
         return false;
     }
 
-    private List<GridBlock> VerifiedPath(List<GridBlock> path, int maxMovement)
+    private List<MovePoint> VerifiedPath(List<MovePoint> path, int maxMovement)
     {
         var maxPath = MaxMovementPath(path, maxMovement).ToList();
 
-        while (maxPath.Count > 0 && maxPath.Last().isOccupied)
+        while (maxPath.Count > 0 && maxPath.Last().IsOccupied)
         {
             maxPath.Remove(maxPath.Last());
         }
@@ -172,12 +174,12 @@ public class EnemyController : MonoBehaviour
 
     }
 
-    private IEnumerable<GridBlock> MaxMovementPath(List<GridBlock> path, int maxMovement)
+    private IEnumerable<MovePoint> MaxMovementPath(List<MovePoint> path, int maxMovement)
     {
         while(maxMovement > 0 && path.Count > 0)
         {
             var block = path.FirstOrDefault();
-            maxMovement -= UnitController.Type == Enums.UnitType.Horse ? 1 : block.MovementCost;
+            maxMovement -= UnitController.Type == Enums.UnitType.Horse ? 1 : UnitController.CurentGridMoveCost;
             if (maxMovement >= 0 && path.Count > 0)
             {
                 path.Remove(block);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -8,42 +9,38 @@ public class CameraController : MonoBehaviour
     public float ZoomOut;
     public float ZoomSpeed;
 
-    private Camera _camera;
+    private CinemachineVirtualCamera _camera;
     private float _goalZoom;
 
     public void UpdateZoom(Enums.CursorState state)
     {
-        switch(state)
+        _goalZoom = state switch
         {
-            case Enums.CursorState.Default:
-                _goalZoom = ZoomOut;
-                break;
-            default:
-                _goalZoom = ZoomIn;
-                break;
-        }
+            Enums.CursorState.Default => ZoomOut,
+            _ => ZoomIn,
+        };
     }
 
     private void Awake()
     {
-        _camera = GetComponent<Camera>();
+        _camera = GetComponent<CinemachineVirtualCamera>();
         _goalZoom = ZoomOut;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _camera.orthographicSize = ZoomOut;
+        _camera.m_Lens.OrthographicSize = ZoomOut;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_camera.orthographicSize != _goalZoom)
+        if (_camera.m_Lens.OrthographicSize != _goalZoom)
         {
-            var dif = _goalZoom - _camera.orthographicSize;
-            var newZoom = Mathf.Clamp(_camera.orthographicSize + (dif * Time.deltaTime * ZoomSpeed), ZoomIn, ZoomOut);
-            _camera.orthographicSize = newZoom;
+            var dif = _goalZoom - _camera.m_Lens.OrthographicSize;
+            var newZoom = Mathf.Clamp(_camera.m_Lens.OrthographicSize + (dif * Time.deltaTime * ZoomSpeed), ZoomIn, ZoomOut);
+            _camera.m_Lens.OrthographicSize = newZoom;
         }
     }
 }

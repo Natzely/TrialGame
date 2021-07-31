@@ -8,21 +8,49 @@ using TMPro;
 
 public class GridNeighbors : IEnumerable<GridBlock>
 {
-    Dictionary<Enums.NeighborDirection, GridBlock> _neighbors;
-    GridBlock MidGridBlock;
+    private readonly Dictionary<Enums.NeighborDirection, GridBlock> _neighbors;
+    private readonly GridBlock _midGridBlock;
 
     public GridNeighbors(GridBlock midGrid)
     {
         _neighbors = new Dictionary<Enums.NeighborDirection, GridBlock>();
-        MidGridBlock = midGrid;
+        _midGridBlock = midGrid;
+        SetNeighbors();
     }
 
-    public void SetNeighbors(GridBlock up, GridBlock down, GridBlock left, GridBlock right)
+    public void SetNeighbors()// GridBlock up, GridBlock down, GridBlock left, GridBlock right)
     {
-        _neighbors.Add(Enums.NeighborDirection.Up, up);
-        _neighbors.Add(Enums.NeighborDirection.Down, down);
-        _neighbors.Add(Enums.NeighborDirection.Left, left);
-        _neighbors.Add(Enums.NeighborDirection.Right, right);
+        _neighbors.Add(Enums.NeighborDirection.Up, GetNeighbor(Vector2.up));// up);
+        _neighbors.Add(Enums.NeighborDirection.Down, GetNeighbor(Vector2.down));// down);
+        _neighbors.Add(Enums.NeighborDirection.Left, GetNeighbor(Vector2.left));// left);
+        _neighbors.Add(Enums.NeighborDirection.Right, GetNeighbor(Vector2.right));// right);
+    }
+
+    //private void GetNeighbors()
+    //{
+    //    _neighbors.SetNeighbors(
+    //        GetNeighbor(Vector2.up),
+    //        GetNeighbor(Vector2.down),
+    //        GetNeighbor(Vector2.left),
+    //        GetNeighbor(Vector2.right)
+    //    );
+    //}
+
+    private GridBlock GetNeighbor(Vector2 dir)
+    {
+        var neighborPostion = _midGridBlock.Position + dir;
+        var neighborName = String.Format(Strings.GridblockName, neighborPostion.x, neighborPostion.y);
+        var neighbor = GameObject.Find(neighborName);
+        //Vector2 startPos = _midGridBlock.transform.position.V2();
+        //RaycastHit2D hit = Physics2D.Raycast(startPos, dir, 1f, LayerMask.GetMask("GridBlock"));
+        //if (hit.collider != null)
+        if(neighbor != null)
+        {
+            GridBlock grid = neighbor.GetComponent<GridBlock>();
+            return grid;
+        }
+
+        return null;
     }
 
     public GridBlock Up
@@ -73,14 +101,22 @@ public class GridNeighbors : IEnumerable<GridBlock>
 
     public int GetAlliedUnits(Enums.Player player)
     {
-        var rUnits = Right?.GetAlliedUnits(player).ToList();
-        var lUnits = Left?.GetAlliedUnits(player).ToList();
-        var uUnits = Up?.GetAlliedUnits(player).ToList();
-        var dUnits = Down?.GetAlliedUnits(player).ToList();
+        var rUnits = CheckAlliedUnits(Right, player).ToList();
+        var lUnits = CheckAlliedUnits(Left, player).ToList();
+        var uUnits = CheckAlliedUnits(Up, player).ToList();
+        var dUnits = CheckAlliedUnits(Down, player).ToList();
 
         var totalUnits = rUnits.UnionNull(lUnits).UnionNull(uUnits).UnionNull(dUnits).ToList();
         int count = totalUnits.Count;
         return count;
+    }
+
+    private IEnumerable<UnitController> CheckAlliedUnits(GridBlock gB, Enums.Player player)
+    {
+        if (gB)
+            return gB.GetAlliedUnits(player);
+        else
+            return Enumerable.Empty<UnitController>();
     }
 
     public IEnumerable<GridBlock> OrderByDistance(GridBlock from, bool onlyAvailable = false)
@@ -108,7 +144,7 @@ public class GridNeighbors : IEnumerable<GridBlock>
         else
         {
             // behindGrid is used to show which grid the unit is trying to move away from
-            var behindDir = GridDirections.GetDirection(MidGridBlock.Position, behindGrid.Value);
+            var behindDir = GridDirections.GetDirection(_midGridBlock.Position, behindGrid.Value);
             var oppDir = GridDirections.OppositeOff(behindDir);
             List<GridBlock> aNeighbors = new List<GridBlock>();
             // Put the opposite direction first if available
@@ -142,19 +178,14 @@ public class GridNeighbors : IEnumerable<GridBlock>
     {
         public static Enums.NeighborDirection OppositeOff(Enums.NeighborDirection direction)
         {
-            switch(direction)
+            return direction switch
             {
-                case Enums.NeighborDirection.Up:
-                    return Enums.NeighborDirection.Down;
-                case Enums.NeighborDirection.Down:
-                    return Enums.NeighborDirection.Up;
-                case Enums.NeighborDirection.Right:
-                    return Enums.NeighborDirection.Left;
-                case Enums.NeighborDirection.Left:
-                    return Enums.NeighborDirection.Right;
-                default:
-                    return Enums.NeighborDirection.Error;
-            }
+                Enums.NeighborDirection.Up    => Enums.NeighborDirection.Down,
+                Enums.NeighborDirection.Down  => Enums.NeighborDirection.Up,
+                Enums.NeighborDirection.Right => Enums.NeighborDirection.Left,
+                Enums.NeighborDirection.Left  => Enums.NeighborDirection.Right,
+                _                             => Enums.NeighborDirection.Error,
+            };
         }
 
         public static Enums.NeighborDirection GetDirection(Vector2 main, Vector2 offset)

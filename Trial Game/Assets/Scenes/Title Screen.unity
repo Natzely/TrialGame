@@ -123,6 +123,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16811621 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5879006651249477894, guid: 77d77cf3949842d4a9ba316cf18aafe2,
+    type: 3}
+  m_PrefabInstance: {fileID: 829817358486218205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &16811624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16811621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67ba1f854c1e5548b80a66416b53343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeMusicSpeed: 1
 --- !u!1001 &38771490
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -836,7 +855,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 7103697386209416635}
+      objectReference: {fileID: 16811624}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -865,7 +884,7 @@ PrefabInstance:
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Scene_Manager, Assembly-CSharp
+      value: SceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -3295,7 +3314,8 @@ PrefabInstance:
       propertyPath: FadeMusicSpeed
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7570970297472659558, guid: 77d77cf3949842d4a9ba316cf18aafe2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 77d77cf3949842d4a9ba316cf18aafe2, type: 3}
 --- !u!1001 &1710906591465643877
 PrefabInstance:
@@ -3613,18 +3633,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db452665e22b21843b5feacd3aacf795, type: 3}
---- !u!114 &7103697386209416635 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7570970297472659558, guid: 77d77cf3949842d4a9ba316cf18aafe2,
-    type: 3}
-  m_PrefabInstance: {fileID: 829817358486218205}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55d7d6c1ff7aeac448396e4a60cb6371, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7526784778745046508 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9208417142222191241, guid: e3a9dd2f1a30a1843bae05380eabf4d5,

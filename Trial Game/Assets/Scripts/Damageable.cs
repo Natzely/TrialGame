@@ -50,7 +50,7 @@ public class Damageable : MonoBehaviour
                 DamageText.Text = calcDamage + "";
                 DamageText.gameObject.SetActive(true);
                 if (!_uC.TookAction && _uC.MinAttackDistance == damager.Parent.MinAttackDistance)
-                    _uC.Target = damager.Parent.CurrentGridBlock;
+                    _uC.Target = damager.Parent.CurrentGridBlock.ToMovePoint();
             }
         }
 

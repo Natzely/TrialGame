@@ -12,8 +12,11 @@ public class Behaivor_Hurt : StateMachineBehaviour
         var uC = animator.GetComponent<UnitController>();
         var hurtSoundIndex = (int)(Time.time % HitSounds.Count);
         var hurtClip = HitSounds[hurtSoundIndex];
-        uC?.HurtAudioSource.Play(hurtClip);
-        uC?.EnterHurtState();
+        if (uC)
+        {
+            uC.HurtAudioSource.Play(hurtClip);
+            uC.EnterHurtState();
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,7 +29,8 @@ public class Behaivor_Hurt : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         var uC = animator.GetComponent<UnitController>();
-        uC?.ExitHurtState();
+        if(uC)
+            uC.ExitHurtState();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

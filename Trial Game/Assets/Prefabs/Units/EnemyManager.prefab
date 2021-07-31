@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: 1
+  UnitHolder: {fileID: 0}
   CursorBoundaries: {fileID: 0}
-  StartingUnits: []
-  DebugLog: 0
-  MoveDelay: 3.5
-  DealyTimer: 0
+  MoveDelay: 5.5
+  DealyTimer: 2.5

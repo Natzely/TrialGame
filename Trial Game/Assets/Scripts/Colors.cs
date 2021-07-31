@@ -29,7 +29,7 @@ public static class Colors
     public static Color Button_Deselected = new Color(0, 0, 0, 0);
 
     // Path Colors
-    private static List<Color> PathColors = new List<Color>()
+    private readonly static List<Color> PathColors = new List<Color>()
     {
         new Color(0, 1, 0, .5f),
         new Color(0, 0, 1, .5f),

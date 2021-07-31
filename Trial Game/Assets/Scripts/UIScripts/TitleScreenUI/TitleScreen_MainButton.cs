@@ -5,9 +5,9 @@ public class TitleScreen_MainButton : TitleScreen_Button
 {
     public override void OnSelect(BaseEventData eventData)
     {
-        _audioSource.Play(Sound_Select);
+        AudioSource.Play(Sound_Select);
         _selected = true;
-        _handler.OnItemSelected(this);
+        UIHandler.OnItemSelected(this);
     }
 
     public override void OnDeselect(BaseEventData eventData)
@@ -18,17 +18,17 @@ public class TitleScreen_MainButton : TitleScreen_Button
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (_handler.CurrentButton != this.gameObject)
-        _button.Select();
+        if (UIHandler.CurrentButton != this.gameObject)
+        Button.Select();
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 
     public override void OnSubmit(BaseEventData eventData)
     {
-        _handler.HandleButtonSubmit(this);
+        UIHandler.HandleButtonSubmit(this);
     }
 }
