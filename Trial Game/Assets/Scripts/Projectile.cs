@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     private SpriteRenderer _sR;
     private Vector2 _startPos;
     private float _maxDis;
+    private bool _destroy;
 
     public void Launch(Vector2 direction, float force, float maxDistance)
     {
@@ -30,7 +31,13 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(Vector2.Distance(_startPos, transform.position)) > _maxDis)
+        if (Mathf.Abs(Vector2.Distance(_startPos, transform.position)) > _maxDis ||
+            _destroy)
             Destroy(gameObject);
+    }
+
+    public void Destroy()
+    {
+        _destroy = true;
     }
 }

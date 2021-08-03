@@ -88,6 +88,7 @@ public class UnitController : MonoBehaviour, ILog
                    OnCooldown;
         }
     }
+
     public bool IsHidden { get; private set; }
     public double DistanceFromCursor { get; private set; }
     public int AdjustedMoveDistance { get { return _unitState == Enums.UnitState.PlusAction ? Mathf.Clamp(MoveDistance - _prevPositions.Count, 1, 3) : MoveDistance; } }
@@ -667,6 +668,7 @@ public class UnitController : MonoBehaviour, ILog
         _unitState = Enums.UnitState.Moving;
         BoxCollider.size = ColliderSizeMoving;
         _animator.SetBool("Moving", true);
+        IsHidden = false;
         LookAt(possiblePoint.Position);
     }
 
@@ -735,6 +737,9 @@ public class UnitController : MonoBehaviour, ILog
         Reset();
         _unitState = Enums.UnitState.Cooldown;
         _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Cooldown : Colors.Enemy_Cooldown;
+        if (Position == CurrentGridBlock.ToMovePoint(true).Position)
+            IsHidden = true;
+
         //_pM?.PlayerUnitMoveDown(this);
         var crc = CheckReducedCooldown();
         CooldownTimer = Cooldown * (!Attacked ? 1 : 1.4f) * crc;

@@ -218,7 +218,7 @@ public class CursorController : MonoBehaviour, ILog
                     newState = Enums.CursorMenuState.Move | CheckForDistanceAttack();
                 if ((!CurrentGridBlock.IsOccupied || CurrentGridBlock.CurrentUnit == CurrentUnit) && CurrentGridBlock.Type == Enums.GridBlockType.Tree)
                 {
-                    if (CurrentUnit.IsHidden)
+                    if (CurrentUnit.IsHidden && !newState.HasFlag(Enums.CursorMenuState.Move))
                         newState |= Enums.CursorMenuState.Reveal;
                     else
                         newState |= Enums.CursorMenuState.Hide;
@@ -402,15 +402,15 @@ public class CursorController : MonoBehaviour, ILog
         }
         else if (_cursorMenu.VisiblePanels == 1)
         {
-            Debug.Log("2");
             _cursorMenu.SelectFirstPanel();
             if (CursorState == Enums.CursorState.Selected && CurrentGridBlock.ActiveSpace == Enums.ActiveSpace.Move && (CurrentGridBlock.CurrentUnit == null || !CurrentGridBlock.CurrentUnit.AtDestination))
             {
                 SetAfterMoveAction();
             }
-            else if (_cursorMenu.SelectedPanel.ActiveState == Enums.CursorMenuState.Hide)
+            else if (_cursorMenu.SelectedPanel.ActiveState == Enums.CursorMenuState.Hide ||
+                     _cursorMenu.SelectedPanel.ActiveState == Enums.CursorMenuState.Reveal)
             {
-                UnitMove(true);
+                UnitMove(_cursorMenu.SelectedPanel.ActiveState);
             }
             else if (CursorState == Enums.CursorState.OnlyAttack && CurrentGridBlock.ActiveSpace == Enums.ActiveSpace.Move)
             {
@@ -432,7 +432,6 @@ public class CursorController : MonoBehaviour, ILog
         }
         else if (_cursorMenu.Active)
         {
-            Debug.Log("3");
             switch (_cursorMenu.SelectedPanel.ActiveState)
             {
                 case Enums.CursorMenuState.Move:
@@ -442,24 +441,26 @@ public class CursorController : MonoBehaviour, ILog
                     MoveToAttack();
                     break;
                 case Enums.CursorMenuState.Hide:
-                    UnitMove(true);
+                case Enums.CursorMenuState.Reveal:
+                    UnitMove(_cursorMenu.SelectedPanel.ActiveState);
                     break;
             }
         }
         else if (CursorState != Enums.CursorState.Default && CursorState != Enums.CursorState.CursorMenu)
         {
-            Debug.Log("4");
             CursorState = Enums.CursorState.CursorMenu;
             _cursorMenu.SelectFirstPanel();
         }
-
     }
 
-    private void UnitMove(bool treeAction = false)
+    private void UnitMove(Enums.CursorMenuState state = Enums.CursorMenuState.None)
     {
-        // TODO: REVEAL UNIT 
-        if (treeAction)
-            _moves.Add(CurrentGridBlock.ToMovePoint(treeAction));
+
+        if (state == Enums.CursorMenuState.Hide)
+            _moves.Add(CurrentGridBlock.ToMovePoint(true));
+        else if (state == Enums.CursorMenuState.Reveal)
+            _moves.Add(CurrentGridBlock.ToMovePoint(false));
+
 
         CurrentUnit.MoveTo(_moves);
 

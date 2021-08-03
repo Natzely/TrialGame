@@ -10,7 +10,7 @@ TagManager:
   - DebugText
   - DebugScroll
   - TitleScreen_Buttons
-  - test
+  - Projectile
   layers:
   - Default
   - TransparentFX
