@@ -192,6 +192,7 @@ public class PlayerManager : UnitManager
             uC.Speed *= _globalVariables.UnitSpeedModifier;
             uC.Cooldown *= _globalVariables.UnitCooldownModifier;
             uC.Player = Player;
+            uC.Overlay = true;
             uC.UnitManager = this;
         }
     }

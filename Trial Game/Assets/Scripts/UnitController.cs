@@ -35,6 +35,7 @@ public class UnitController : MonoBehaviour, ILog
     public bool OnCooldown = false;
     public bool HiddenByObstacle;
     public bool Hide;
+    public bool Overlay;
     public float AttackSpeed;
     public float Cooldown;
     public float CooldownTimer;

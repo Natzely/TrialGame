@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BehindTreeShader_Material
-  m_Shader: {fileID: -6465566751694194690, guid: 1d855085cfefe08419be2c4fce3bef5a,
+  m_Name: Shader Graphs_Checkered Shader
+  m_Shader: {fileID: -6465566751694194690, guid: ade98fa12fa6f4749a632e20c6bb6b26,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -24,7 +24,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MainTexture:
+    - _MainText:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -41,8 +41,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_6c6e6023408244d59dd2c4d174549947: 0.003
-    - _isVisible: 0
-    m_Colors:
-    - Color_5b5c6f603bfd4f9199dd5164b7bbb455: {r: 4, g: 4, b: 4, a: 1}
+    - Vector1_ed544d0a9f194b66a6172f57e633ee68: 50
+    m_Colors: []
   m_BuildTextureStacks: []
