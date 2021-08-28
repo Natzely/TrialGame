@@ -13,11 +13,8 @@ public class Damageable : MonoBehaviour
     public TextMeshProUGUI HealthText;
     public float Health = 2;
 
-    private PlayerManager _pM;
     private Animator _animator;
     private UnitController _uC;
-    private Vector2 _damageTextOrgPos;
-    private float _maxHealth;
 
     public bool Damage(Damager damager)
     {
@@ -63,10 +60,8 @@ public class Damageable : MonoBehaviour
         _uC = GetComponent<UnitController>();
         HealthText.text = Health.ToString();
         HealthText.color = Colors.Health_Full;
-        _maxHealth = Health;
         if (_uC.Player != Enums.Player.Player1)
             HealthText.alignment = TextAlignmentOptions.TopRight;
         HealthText.havePropertiesChanged = true;
-        _damageTextOrgPos = DamageText.transform.position;
     }
 }

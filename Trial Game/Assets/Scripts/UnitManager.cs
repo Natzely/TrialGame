@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -9,9 +10,9 @@ public abstract class UnitManager : MonoBehaviour
     public Enums.Player Player;
     public GameObject UnitHolder;
     public PolygonCollider2D CursorBoundaries;
-    public static bool DebugLog = false;
+    public static bool DebugLog = true;
     
-    [HideInInspector] public GridBlock[,] FullGrid;
+    public GridBlock[,] FullGrid { get; set; }
 
     public int AvailableUnits { get { return PlayerInfo.Units.Where(u => u.Available).Count(); } }
 
@@ -20,6 +21,7 @@ public abstract class UnitManager : MonoBehaviour
 
     private int _gridSizeX;
     private int _gridSizeY;
+    private static string _debugFilePath;
 
     public PlayerInfo PlayerInfo { get; private set; }
 
@@ -57,7 +59,12 @@ public abstract class UnitManager : MonoBehaviour
     public static void Log(string msg)
     {
         if (DebugLog)
-            Debug.Log(msg);
+        {
+            using (StreamWriter writer = File.AppendText(_debugFilePath))
+            {
+                writer.WriteLine(msg);
+            }
+        }
     }
 
     protected virtual void Awake()
@@ -65,6 +72,7 @@ public abstract class UnitManager : MonoBehaviour
         PlayerInfo = new PlayerInfo();
         _startingUnits = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
         _globalVariables = FindObjectOfType<GlobalVariables>();
+        _debugFilePath = Application.persistentDataPath + "/Debug.txt";
     }
 
     private void Start()

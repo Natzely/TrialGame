@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -8759568799060084045}
   - component: {fileID: -3149483576824186934}
   - component: {fileID: 4087219882481239950}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: UnitOffCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}

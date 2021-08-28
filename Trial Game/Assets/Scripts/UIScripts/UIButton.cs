@@ -37,17 +37,17 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         AudioSource.Play(Sound_Select);
         if (move.x != 0)
         {
-            if (move.x > 0)
-                Button.navigation.selectOnLeft?.Select();
-            else
-                Button.navigation.selectOnRight?.Select();
+            if (move.x > 0 && Button.navigation.selectOnLeft)
+                Button.navigation.selectOnLeft.Select();
+            else if(Button.navigation.selectOnRight)
+                Button.navigation.selectOnRight.Select();
         }
         else if (move.y != 0)
         {
-            if (move.y > 0)
-                Button.navigation.selectOnUp?.Select();
-            else
-                Button.navigation.selectOnDown?.Select();
+            if (move.y > 0 && Button.navigation.selectOnUp)
+                Button.navigation.selectOnUp.Select();
+            else if(Button.navigation.selectOnDown)
+                Button.navigation.selectOnDown.Select();
         }
     }
 

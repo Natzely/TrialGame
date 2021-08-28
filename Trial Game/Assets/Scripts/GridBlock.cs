@@ -61,15 +61,18 @@ public class GridBlock : MonoBehaviour, ILog
     public void CheckGrid(GridBlock moveFrom)
     {
         var (favorableTerrain, moveDistance, minAttackDis, maxAttackDis) = moveFrom.GetPlayerMoveParams();
-        var tempMove = moveDistance - (favorableTerrain.Contains(this.Type) ? 1 : MovementCost);
-        var tempAttack = maxAttackDis - 1;
-        UseMoveAnimation = moveFrom.UseMoveAnimation;
-
-        if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
+        if (favorableTerrain != null)
         {
-            SetGrid(moveFrom, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
-            if (_cursor.CurrentGridBlock == this || _pM.PlayerInfo.MovementPathContains(this))
-                _cursor.CurrentGridUpdate();
+            var tempMove = moveDistance - (favorableTerrain.Contains(this.Type) ? 1 : MovementCost);
+            var tempAttack = maxAttackDis - 1;
+            UseMoveAnimation = moveFrom.UseMoveAnimation;
+
+            if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
+            {
+                SetGrid(moveFrom, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
+                if (_cursor.CurrentGridBlock == this || _pM.PlayerInfo.MovementPathContains(this))
+                    _cursor.CurrentGridUpdate();
+            }
         }
     }
 
@@ -297,12 +300,12 @@ public class GridBlock : MonoBehaviour, ILog
         var uC = colObj.GetComponent<UnitController>();
         if (uC != null)
         {
-            Log($"{uC.gameObject.name} has entered");
+            //Log($"{uC.gameObject.name} has entered");
             //if (!IsUnitLocked(uC) && uC.AtDestination)
             //    UnitLock(uC);
             //else
             //{
-                Log($"Block unit locked");
+                //Log($"Block unit locked");
                 _unitsMovingThrough.Add(uC);
             //}
 
@@ -333,10 +336,9 @@ public class GridBlock : MonoBehaviour, ILog
     {
         yield return new WaitUntil(() => _pM.FullGrid != null);
 
-        var uiParent = GameObject.FindGameObjectWithTag("UI");
-        var minimapObject = uiParent.FindObject("MapTileIcons");
+
         var _miniMapIcon = Instantiate(MinimapTile);
-        _miniMapIcon.rectTransform.SetParent(minimapObject.transform);
+        _miniMapIcon.rectTransform.SetParent(_pM.Minimap_TileIcons.transform);
         float squareSize = _pM.MinimapSquareSize;
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);

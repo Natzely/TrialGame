@@ -9,6 +9,7 @@ public class CursorMenuManager : MonoBehaviour
     public Enums.CursorMenuState State;
     public bool Active { get; private set; }
 
+    public bool IsPanelSelected { get { return _curPanel != null; } }
     public CursorPanel SelectedPanel { get { return _curPanel; } }
     public int VisiblePanels { get { return _panels.Where(panel => panel.Showing).ToList().Count; } }
 
@@ -55,11 +56,5 @@ public class CursorMenuManager : MonoBehaviour
     void Start()
     {
         _panels = GetComponentsInChildren<CursorPanel>().ToList();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

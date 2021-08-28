@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayerManager : UnitManager
 {
     public static float ACTIONTIMER = .1f;
+    public GameObject Minimap_UnitIcons;
+    public GameObject Minimap_TileIcons;
 
     public bool HideActiveGrid { get; private set; }
     public float MinimapSquareSize
@@ -186,13 +188,13 @@ public class PlayerManager : UnitManager
     {
         base.Awake();
 
+        Log("\n|||||||||||||||||||||| NEW SESSION ||||||||||||||||||||||||\n");
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
             uC.Speed *= _globalVariables.UnitSpeedModifier;
             uC.Cooldown *= _globalVariables.UnitCooldownModifier;
             uC.Player = Player;
-            uC.Overlay = true;
             uC.UnitManager = this;
         }
     }

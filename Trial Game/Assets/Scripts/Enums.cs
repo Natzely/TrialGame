@@ -17,8 +17,7 @@ public class Enums : MonoBehaviour
         Selected = 1,
         Attack = 2,
         Null = 3,
-        OnlyAttack = 4,
-        CursorMenu = 5,
+        CursorMenu = 4,
     }
 
     public enum GridBlockType

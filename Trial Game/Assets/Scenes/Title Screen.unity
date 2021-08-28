@@ -129,6 +129,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 829817358486218205}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &16811622 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3714788574785352804, guid: 77d77cf3949842d4a9ba316cf18aafe2,
+    type: 3}
+  m_PrefabInstance: {fileID: 829817358486218205}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16811621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67ba1f854c1e5548b80a66416b53343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &16811624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +313,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -312,9 +329,7 @@ PrefabInstance:
     - target: {fileID: 6744689917002750503, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_text
-      value: 'Level 1
-
-'
+      value: Level 1 (Intro, but not an introduction)
       objectReference: {fileID: 0}
     - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
@@ -343,6 +358,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8040480668589259312, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 37538aa692d10cd41b6ce34e328c7173,
+        type: 3}
     - target: {fileID: 8040480668589259312, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_Enabled
@@ -795,6 +816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Title_(here)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862441, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -1875,7 +1901,12 @@ PrefabInstance:
     - target: {fileID: 3771767413046564479, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: Type
-      value: 3
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771767413046564479, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: LevelName
+      value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 4292898155007423574, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
@@ -1904,18 +1935,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6744689917002750503, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_text
-      value: Level 2
+      value: Level 2 (You're with the trees aren't you?)
       objectReference: {fileID: 0}
     - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_text
-      value: This level isn't ready yet. It'll hopefully be ready soon.
+      value: Similar to level one, but with more units. Trees have been added, use
+        them to hide or for cover.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129249660437273077, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7769501480955507006, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
@@ -1929,8 +1971,14 @@ PrefabInstance:
       objectReference: {fileID: 511386963}
     - target: {fileID: 8040480668589259312, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ab0dc48349099d45a5806d9a0a1ee98,
+        type: 3}
+    - target: {fileID: 8040480668589259312, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68e1b48bd9ddff743ba485a0dd4d043d, type: 3}
@@ -1985,7 +2033,7 @@ PrefabInstance:
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 123.82
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -2030,12 +2078,12 @@ PrefabInstance:
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 90
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -2055,27 +2103,27 @@ PrefabInstance:
     - target: {fileID: 2411629980565862441, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_Name
-      value: Title_game
+      value: Title_Ompa
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: MoveTo.x
-      value: 0
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: MoveTo.y
-      value: 90
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: StartAt.x
-      value: -480
+      value: -550
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: StartAt.y
-      value: 90
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -2085,7 +2133,7 @@ PrefabInstance:
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -2094,21 +2142,85 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 806611617}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 16811622}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
       propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TitleScreen_WhiteOut, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SceneManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: AfterMoveEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_text
-      value: 'Game
-
-'
+      value: Ompa
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d144ccbcae8217645a620c1e5890035d,
+        type: 2}
+    - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -6240297219241909637, guid: 4ec6299f05fe5764f9cb446b65a34b36,
+      objectReference: {fileID: 6840984625011129522, guid: d144ccbcae8217645a620c1e5890035d,
         type: 2}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -2907,6 +3019,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Title_name
       objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862441, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: MoveTo.x
@@ -3189,7 +3306,7 @@ PrefabInstance:
     - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_text
-      value: ??
+      value: '?'
       objectReference: {fileID: 0}
     - target: {fileID: 4905219008845422743, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
@@ -3216,8 +3333,23 @@ PrefabInstance:
     - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
       propertyPath: m_text
-      value: This level isn't ready yet. It'll hopefully be ready soon, but later
-        than level 2.
+      value: This level isn't ready yet. It'll hopefully be ready soon now that Level
+        2 is out!
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: m_isRightToLeft
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063445002678372118, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 7769501480955507006, guid: 68e1b48bd9ddff743ba485a0dd4d043d,
         type: 3}
@@ -3521,7 +3653,7 @@ PrefabInstance:
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 123.82
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862440, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -3591,7 +3723,7 @@ PrefabInstance:
     - target: {fileID: 2411629980565862441, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_Name
-      value: Title_insert
+      value: Title_Ocachi
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862442, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
@@ -3601,20 +3733,29 @@ PrefabInstance:
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_text
-      value: 'Insert
-
-'
+      value: Ocachi
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
+      propertyPath: m_fontSize
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d144ccbcae8217645a620c1e5890035d,
+        type: 2}
+    - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
+        type: 3}
       propertyPath: m_fontSizeBase
-      value: 50
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -6240297219241909637, guid: 4ec6299f05fe5764f9cb446b65a34b36,
+      objectReference: {fileID: 6840984625011129522, guid: d144ccbcae8217645a620c1e5890035d,
         type: 2}
     - target: {fileID: 2411629980565862443, guid: db452665e22b21843b5feacd3aacf795,
         type: 3}

@@ -197,7 +197,6 @@ MonoBehaviour:
   OnCooldown: 0
   HiddenByObstacle: 0
   Hide: 0
-  Overlay: 0
   AttackSpeed: 500
   Cooldown: 30
   CooldownTimer: 0
@@ -222,11 +221,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GrassSpeedMultiplyer: 0.9
   RoadSpeedMultiplyer: 1
-  TreeSpeedMultiplyer: 0.5
+  TreeSpeedMultiplyer: 0.8
   WaterSpeedMultiplyer: 0
   GrassMoveCost: 1
   RoadMoveCost: 1
-  TreeMoveCost: 1
+  TreeMoveCost: 2
   WaterMoveCost: 9999
 --- !u!114 &3097757917150243156
 MonoBehaviour:

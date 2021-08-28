@@ -11,6 +11,8 @@ TagManager:
   - DebugScroll
   - TitleScreen_Buttons
   - Projectile
+  - Minimap_Units
+  - Minimap_Grid
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - Player2
   - Player3
   - Player4
-  - Projectile
+  - Projectile_Range
   - GridBlock
   - SpawnPoint
   - MoveSpace
@@ -36,7 +38,7 @@ TagManager:
   - Health
   - SavedPath
   - Tree
-  - 
+  - Projectile_Melee
   - 
   - 
   - 

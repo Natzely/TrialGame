@@ -35,7 +35,6 @@ public class UnitController : MonoBehaviour, ILog
     public bool OnCooldown = false;
     public bool HiddenByObstacle;
     public bool Hide;
-    public bool Overlay;
     public float AttackSpeed;
     public float Cooldown;
     public float CooldownTimer;
@@ -112,8 +111,15 @@ public class UnitController : MonoBehaviour, ILog
         get { return _currentGridMoveCost; }
     }
 
+
+    public bool Overlay
+    {
+        get { return Player == Enums.Player.Player1; }
+    }
+
     private Enums.UnitState _unitState;
     private Enums.UnitState _prevState;
+    private PlayerManager _pM;
     private UnitController _collisionTarget;
     private UnitController _attackTarget;
     private CursorController _cC;
@@ -126,7 +132,7 @@ public class UnitController : MonoBehaviour, ILog
     private MovePoint _moveTarget;
     private Damageable _damagable;
     private Vector2 _attackPos;
-    private Image _minimapIcon;
+    private Image _miniMapIcon;
 
     private bool _tasked;
     private bool _selected;
@@ -138,7 +144,7 @@ public class UnitController : MonoBehaviour, ILog
     private float _lookY;
     private float _gridblockSpeedModifyer;
 
-    private float[,] _bonusDamageLookup = new float[,]
+    private readonly float[,] _bonusDamageLookup = new float[,]
     {             //Meele   Ranged   Horse
         /*Melee*/  {  1,      1,       1 },
         /*Ranged*/ {  1,      1,     1.5f},
@@ -375,16 +381,9 @@ public class UnitController : MonoBehaviour, ILog
                 break;
         }
 
-        try
-        {
-            var uiParent = GameObject.FindGameObjectWithTag("UI");
-            var minimapPanel = uiParent.FindObject("UnitIcons");
-            _minimapIcon = Instantiate(MinimapIconImage);
-            _minimapIcon.rectTransform.SetParent(minimapPanel.transform);
-            _minimapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_minimapIcon.rectTransform, transform);
-            _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
-        }
-        catch { Debug.Log("failed unit minimap"); }
+
+        _pM = FindObjectOfType<PlayerManager>();
+        StartCoroutine(CreateMinimapIcon());
 
         gameObject.name = $"P{((int)Player) + 1}_" + gameObject.name;
 
@@ -416,7 +415,7 @@ public class UnitController : MonoBehaviour, ILog
                     GetNextPoint();
 
                 Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * _gridblockSpeedModifyer * Time.deltaTime);
-                _minimapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_minimapIcon.rectTransform, transform);
+                _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
 
                 transform.position = moveVector;
                 if (transform.position.V2() == _nextPoint.Position)
@@ -505,7 +504,7 @@ public class UnitController : MonoBehaviour, ILog
                     _cC.SetPosition(CurrentGridBlock.Position);
 
                 _animator.SetBool("Cooldown", OnCooldown = false);
-                _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
+                _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
 
                 if (OffCooldownObject != null)
                 {
@@ -532,17 +531,17 @@ public class UnitController : MonoBehaviour, ILog
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         var gO = collision.gameObject;
         GridBlock gB = gO.GetComponent<GridBlock>();
         UnitController uC = gO.GetComponent<UnitController>();
 
         if (gB != null)
         {
-            Log("Gridblock entered");
+            //Log("Gridblock entered");
             if (gB.CurrentUnit != null && _movePositions.IsEmpty() && !gB.CurrentUnit.IsEnemy(Player))
             {
-                Log("Destination block is occupied, find new block");
+                //Log("Destination block is occupied, find new block");
                 FindGoodPreviousSpot();
             }
 
@@ -568,30 +567,43 @@ public class UnitController : MonoBehaviour, ILog
                 ReadyAttack(collision.gameObject.transform.position);
             }
         }
-        Log("----------------------------------------");
+        //Log("----------------------------------------");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (_cC != null && collision.gameObject == _cC.gameObject && !_selected && !Moving && !Moved && !Attacked)
         {
             Hover(false);
         }
-        Log("----------------------------------------");
+        //Log("----------------------------------------");
     }
 
     private void OnDestroy()
     {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         UnitManager.RemoveUnit(this);
         DeleteSavedPath();
         if (CurrentGridBlock) CurrentGridBlock.ResetCurrentUnit(this);
-        Destroy(_minimapIcon);
+        Destroy(_miniMapIcon);
         if (_cC != null)
             _cC.OnCursorMoveEvent -= OnCursorMove;
         IsDestroyed = true;
-        Log("----------------------------------------");
+        //Log("----------------------------------------");
+    }
+
+    private IEnumerator CreateMinimapIcon()
+    {
+        yield return new WaitUntil(() => _pM.FullGrid != null);
+
+        _miniMapIcon = Instantiate(MinimapIconImage);
+        _miniMapIcon.rectTransform.SetParent(_pM.Minimap_UnitIcons.transform);
+        float squareSize = _pM.MinimapSquareSize;
+        _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
+        _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
+        _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
+        _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
     }
 
     private void OnCursorMove(object sender, CursorMoveEventArgs e)
@@ -665,7 +677,7 @@ public class UnitController : MonoBehaviour, ILog
 
         _nextPoint = possiblePoint;
         Moving = true;
-        _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+        _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
         _unitState = Enums.UnitState.Moving;
         BoxCollider.size = ColliderSizeMoving;
         _animator.SetBool("Moving", true);
@@ -734,10 +746,11 @@ public class UnitController : MonoBehaviour, ILog
 
     private void GoOnCooldown()
     {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Reset();
         _unitState = Enums.UnitState.Cooldown;
-        _minimapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Cooldown : Colors.Enemy_Cooldown;
+        if (_miniMapIcon)
+            _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Cooldown : Colors.Enemy_Cooldown;
         if (Position == CurrentGridBlock.ToMovePoint(true).Position)
             IsHidden = true;
 
@@ -745,7 +758,7 @@ public class UnitController : MonoBehaviour, ILog
         var crc = CheckReducedCooldown();
         CooldownTimer = Cooldown * (!Attacked ? 1 : 1.4f) * crc;
         _animator.SetBool("Cooldown", OnCooldown = true);
-        Log("----------------------------------------");
+        //Log("----------------------------------------");
     }
 
     private float CheckReducedCooldown()
@@ -767,10 +780,10 @@ public class UnitController : MonoBehaviour, ILog
 
     private void ResetLook()
     {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         _animator.SetFloat("Look X", _lookX = _defaultLook);
         _animator.SetFloat("Look Y", _lookY = 0);
-        Log("----------------------------------------");
+        //Log("----------------------------------------");
     }
 
     private void LookAt(Vector2 lookAt)

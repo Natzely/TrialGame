@@ -181,7 +181,7 @@ MonoBehaviour:
   WalkingAudioSource: {fileID: 4877884251898067759}
   OffCooldownObject: {fileID: 6984718576672131601, guid: 527e62d427a8a0f428ed52dbf3b3472c,
     type: 3}
-  Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
+  Projectile: {fileID: 6850689932613346955, guid: a1470483a96840d4c8f5f3eb5858d11c,
     type: 3}
   MinimapIconImage: {fileID: 6849667185187882453, guid: 7a70802fde0cebf41971027f9aa2f497,
     type: 3}
@@ -197,7 +197,6 @@ MonoBehaviour:
   OnCooldown: 0
   HiddenByObstacle: 0
   Hide: 0
-  Overlay: 0
   AttackSpeed: 500
   Cooldown: 40
   CooldownTimer: 0

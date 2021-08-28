@@ -1829,6 +1829,16 @@ PrefabInstance:
       objectReference: {fileID: 128501473}
     - target: {fileID: 3538441141034844254, guid: 2e12013ee509a4947a663c2cfb7c52fa,
         type: 3}
+      propertyPath: Minimap_TileIcons
+      value: 
+      objectReference: {fileID: 8561567606583808314}
+    - target: {fileID: 3538441141034844254, guid: 2e12013ee509a4947a663c2cfb7c52fa,
+        type: 3}
+      propertyPath: Minimap_UnitIcons
+      value: 
+      objectReference: {fileID: 8561567606583808315}
+    - target: {fileID: 3538441141034844254, guid: 2e12013ee509a4947a663c2cfb7c52fa,
+        type: 3}
       propertyPath: StartingUnits.Array.size
       value: 15
       objectReference: {fileID: 0}
@@ -12448,6 +12458,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d, type: 3}
+--- !u!1 &8561567606583808314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3959711704611232663, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8561567606583808313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8561567606583808315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9057758823569061139, guid: 1bd5f82606aa13f4f8e2e3a0c49c902d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8561567606583808313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8561609561124271100
 PrefabInstance:
   m_ObjectHideFlags: 0

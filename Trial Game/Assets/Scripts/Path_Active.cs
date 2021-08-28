@@ -19,11 +19,6 @@ public class Path_Active: GridBlockItem
         set { _sR.enabled = value; } 
     }
 
-    public void SavePath()
-    {
-        _animator.SetBool("Save", true);
-    }
-
     public void UpdatePathState(Vector2 cDir, Vector2? nDir)
     {
         ResetRotation();

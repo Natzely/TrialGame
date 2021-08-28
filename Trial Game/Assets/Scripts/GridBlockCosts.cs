@@ -39,7 +39,8 @@ public class GridBlockCosts : MonoBehaviour
 
     public float GetGridblockMultiplyer(Enums.GridBlockType gridType)
     {
-        _unitMultiplyers.TryGetValue(gridType, out float speedCost);
+        if (!_unitMultiplyers.TryGetValue(gridType, out float speedCost))
+            speedCost = 1;
         return speedCost;
     }
 

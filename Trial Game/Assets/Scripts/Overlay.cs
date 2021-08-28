@@ -22,27 +22,31 @@ public class Overlay : MonoBehaviour
     {
         _unitRenderer = transform.parent.GetComponent<SpriteRenderer>();
         _uC = transform.parent.GetComponent<UnitController>();
-        if (!_uC.Overlay)
+        if(_uC && !_uC.Overlay)
         {
             _sR.enabled = false;
-            SetRendereAlpha(_unitRenderer, 1);
         }
         if (_unitRenderer)
-            SetRendereAlpha(_unitRenderer, MainRenderAlpha);
+            SetRenderAlpha(_unitRenderer, MainRenderAlpha);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_unitRenderer)
+        if (gameObject.name == "Path_Active1")
+            Debug.Log("");
+
+        if (_unitRenderer && ((_uC && _uC.Overlay) || !_uC))
         {
+            _sR.enabled = _unitRenderer.enabled;
             _sR.sprite = _unitRenderer.sprite;
-            SetRendereAlpha(_sR, OverlayAlpha);
+            SetRenderAlpha(_sR, OverlayAlpha);
             _sR.flipX = _unitRenderer.flipX;
+            _sR.flipY = _unitRenderer.flipY;
         }
     }
 
-    private void SetRendereAlpha(SpriteRenderer sR, float alpha)
+    private void SetRenderAlpha(SpriteRenderer sR, float alpha)
     {
         sR.color = new Color(
             _unitRenderer.color.r,

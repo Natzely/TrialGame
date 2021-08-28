@@ -29,7 +29,6 @@ public class EnemyManager : UnitManager
             if (uC)
             {
                 uC.Player = Player;
-                uC.Overlay = false;
                 uC.Speed *= _globalVariables.UnitSpeedModifier;
                 uC.Cooldown *= _globalVariables.UnitCooldownModifier;
                 uC.UnitManager = this;
