@@ -11,15 +11,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Game Test Scene.unity
     guid: ab04f0f49a67c5846a3e2fad725eeccc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Title Screen.unity
     guid: fa94bb1568f9c1e42a2bf4adc74c3596
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 1.unity
     guid: 09db45b1a94f59c4fb3e34300bcea6ae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 2.unity
     guid: ab89e4155588cc34384aa106181ead8b
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: 3f24fb52c8975d24f99613c85c7c747a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 26e7916a42f6e2b4787bba9604792133,
       type: 2}

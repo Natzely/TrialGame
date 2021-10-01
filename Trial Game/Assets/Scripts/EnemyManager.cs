@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEditor;
 
 public class EnemyManager : UnitManager
 {
+    public PlayerManager PlayerManager;
     [Tooltip("How long to wait until the EnemyManager moves another unit")]
     public float MoveDelay;
     [Tooltip("Active timer until the next enemy move")]
@@ -13,9 +15,16 @@ public class EnemyManager : UnitManager
 
     public override IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos)
     {
-        var pathList = PathFinder.CreatePath(Player, startPos, endPos, FullGrid);
-
-        return pathList;
+        try
+        {
+            var pathList = PathFinder.CreatePath(Player, startPos, endPos, PlayerManager.FullGrid);
+            return pathList;
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("");
+        }
+        return null;
     }
 
     protected override void Awake()
@@ -41,7 +50,7 @@ public class EnemyManager : UnitManager
 
     void Update()
     {
-        if(DealyTimer <= 0 && PlayerInfo.Units.Count > 0)
+        if (DealyTimer <= 0 && PlayerInfo.Units.Count > 0)
         {
             var nextEnemy = PlayerInfo.Units[0];
             if (nextEnemy != null)

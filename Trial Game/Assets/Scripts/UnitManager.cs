@@ -19,11 +19,12 @@ public abstract class UnitManager : MonoBehaviour
     protected GlobalVariables _globalVariables;
     protected HashSet<UnitController> _startingUnits;
 
-    private int _gridSizeX;
-    private int _gridSizeY;
     private static string _debugFilePath;
 
     public PlayerInfo PlayerInfo { get; private set; }
+
+    protected private int _gridSizeX;
+    protected private int _gridSizeY;
 
     public abstract IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos);
 
@@ -60,10 +61,8 @@ public abstract class UnitManager : MonoBehaviour
     {
         if (DebugLog)
         {
-            using (StreamWriter writer = File.AppendText(_debugFilePath))
-            {
-                writer.WriteLine(msg);
-            }
+            using StreamWriter writer = File.AppendText(_debugFilePath);
+            writer.WriteLine(msg);
         }
     }
 
@@ -77,43 +76,7 @@ public abstract class UnitManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(GetGridBlocks());
-    }
 
-    private IEnumerator GetGridBlocks()
-    {
-        yield return new WaitUntil(() => FindObjectsOfType<GridBlock>().Length > 0); // This is to wait until the GridBlock scripts are available to use
-
-        float minX = CursorBoundaries.points[1].x;
-        float maxX = CursorBoundaries.points[3].x;
-        float minY = CursorBoundaries.points[1].y;
-        float maxY = CursorBoundaries.points[3].y;
-
-        _gridSizeX = (int)(maxX - minX) + 1;
-        _gridSizeY = (int)(maxY - minY) + 1;
-        FullGrid = new GridBlock[_gridSizeX, _gridSizeY];
-
-        // Use the highest ABS value between the min and max for the list math 
-        // I.E. - minX = -8.5 and maxX = 7.5, gridSizeX = 17 ((maxX - minX) + 1);
-        // the '0' index for the grid is -8.5 + 8.5 = 0 andthe '16' index is 7.5 + 8.5
-        maxX = Mathf.Max(maxX, Mathf.Abs(minX));
-        maxY = Mathf.Max(maxY, Mathf.Abs(minY));
-
-        var allGridBlocks = FindObjectsOfType<GridBlock>();
-        foreach (GridBlock gb in allGridBlocks)
-        {
-            if (gb != null && gb.Position.InsideSquare(new Vector2(minX, minY), new Vector2(maxX, maxY)))
-            {
-                int posX = (int)(gb.Position.x + maxX);
-                int posY = (int)(gb.Position.y + maxY);
-
-                gb.GridPosition = new Vector2(posX, posY);
-
-                FullGrid[posX, posY] = gb.Unpassable ? null : gb;
-            }
-        }
-
-        ResetBlockGrid();
     }
 }
 

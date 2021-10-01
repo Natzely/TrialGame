@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UnitController : MonoBehaviour, ILog
+public class UnitController: MonoBehaviour, ILog
 {
     public int MAXMOVEAFTERATTACK = 3;
     public float PLUSACTIONTIME = 7.5f;
@@ -66,11 +66,15 @@ public class UnitController : MonoBehaviour, ILog
         {
             _currentGridBlock = value;
             _currentGridMoveCost = _gridblockCosts.GetGridblockMoveCost(_currentGridBlock.Type);
-            _gridblockSpeedModifyer = _gridblockCosts.GetGridblockMultiplyer(_currentGridBlock.Type);
+            GridblockSpeedModifier = _gridblockCosts.GetGridblockMultiplyer(_currentGridBlock.Type);
         }
     }
     public BoxCollider2D BoxCollider { get; private set; }
-    public Vector2 Position { get { return transform.position; } }
+    public Vector2 Position 
+    { 
+        get { return transform.position; } 
+        set { transform.position = value; } 
+    }
     public Vector2 LookDirVector { get { return new Vector2(_lookX, _lookY); } }
     public bool Attacked { get; private set; }
     public bool Moved { get; private set; }
@@ -91,9 +95,9 @@ public class UnitController : MonoBehaviour, ILog
 
     public bool IsHidden { get; private set; }
     public double DistanceFromCursor { get; private set; }
-    public int AdjustedMoveDistance { get { return _unitState == Enums.UnitState.PlusAction ? Mathf.Clamp(MoveDistance - _prevPositions.Count, 1, 3) : MoveDistance; } }
-    public int AdjustedMaxAttackDistance { get { return _unitState == Enums.UnitState.PlusAction ? 0 : MaxAttackDistance; } }
-    public int AdjustedMinAttackDistance { get { return _unitState == Enums.UnitState.PlusAction ? 0 : MinAttackDistance; } }
+    public int AdjustedMoveDistance { get { return UnitState == Enums.UnitState.PlusAction ? Mathf.Clamp(MoveDistance - _prevPositions.Count, 1, 3) : MoveDistance; } }
+    public int AdjustedMaxAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MaxAttackDistance; } }
+    public int AdjustedMinAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MinAttackDistance; } }
     public int MeleeAttackedCount { get; private set; }
     public int LookDirIndex
     {
@@ -111,13 +115,13 @@ public class UnitController : MonoBehaviour, ILog
         get { return _currentGridMoveCost; }
     }
 
-
     public bool Overlay
     {
         get { return Player == Enums.Player.Player1; }
     }
+    public Enums.UnitState UnitState { get; set; }
 
-    private Enums.UnitState _unitState;
+
     private Enums.UnitState _prevState;
     private PlayerManager _pM;
     private UnitController _collisionTarget;
@@ -142,14 +146,7 @@ public class UnitController : MonoBehaviour, ILog
     private float _defaultLook;
     private float _lookX;
     private float _lookY;
-    private float _gridblockSpeedModifyer;
-
-    private readonly float[,] _bonusDamageLookup = new float[,]
-    {             //Meele   Ranged   Horse
-        /*Melee*/  {  1,      1,       1 },
-        /*Ranged*/ {  1,      1,     1.5f},
-        /*Horse*/  {  2,      2,       2 }
-    };
+    public float GridblockSpeedModifier { get; set; }
 
     public void Hover(bool hover)
     {
@@ -163,8 +160,8 @@ public class UnitController : MonoBehaviour, ILog
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (CooldownTimer <= 0)
         {
-            if (_unitState != Enums.UnitState.PlusAction)
-                _unitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
+            if (UnitState != Enums.UnitState.PlusAction)
+                UnitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
             _selected = select;
         }
         Log("----------------------------------------");
@@ -246,8 +243,8 @@ public class UnitController : MonoBehaviour, ILog
             OnUnitInterupt?.Invoke();
 
         LookAt(_attackPos);
-        _prevState = _unitState;
-        _unitState = Enums.UnitState.Attacking;
+        _prevState = UnitState;
+        UnitState = Enums.UnitState.Attacking;
         Log("----------------------------------------");
     }
 
@@ -275,7 +272,7 @@ public class UnitController : MonoBehaviour, ILog
         if (Type == Enums.UnitType.Horse && _prevPositions.Count < MoveDistance && !Blocked && _tasked)
         {
             Moved = false;
-            _unitState = Enums.UnitState.PlusAction;
+            UnitState = Enums.UnitState.PlusAction;
             PlusAction = PLUSACTIONTIME;
             PlusActionText.alpha = 1;
             PlusActionText.gameObject.SetActive(true);
@@ -289,7 +286,7 @@ public class UnitController : MonoBehaviour, ILog
             if (Blocked && (Target?.CurrentUnit != null) || _collisionTarget != null)
                 CollisionClear();
 
-            _unitState = _prevState == Enums.UnitState.Attacking ? Enums.UnitState.Idle : _prevState; // DO NOT reassign Attacking as a state
+            UnitState = _prevState == Enums.UnitState.Attacking ? Enums.UnitState.Idle : _prevState; // DO NOT reassign Attacking as a state
             _attackWhenInRange = false;
             _attack = false;
             Target = null;
@@ -307,8 +304,8 @@ public class UnitController : MonoBehaviour, ILog
         if (_selected)
             OnUnitInterupt?.Invoke();
 
-        _prevState = _unitState;
-        _unitState = Enums.UnitState.Hurt;
+        _prevState = UnitState;
+        UnitState = Enums.UnitState.Hurt;
         Log("----------------------------------------");
     }
 
@@ -319,12 +316,12 @@ public class UnitController : MonoBehaviour, ILog
         if ((Blocked || Moving) && !Attacked)
             CollisionClear();
 
-        if (!TookAction && (!_tasked || _unitState == Enums.UnitState.Attacking) && _collisionTarget != null)
+        if (!TookAction && (!_tasked || UnitState == Enums.UnitState.Attacking) && _collisionTarget != null)
         {
             CheckAttack(_collisionTarget.CurrentGridBlock, true);
         }
 
-        _unitState = _prevState == Enums.UnitState.Hurt ? Enums.UnitState.Idle : _prevState; // DO NOT reassign Attacking as a state;
+        UnitState = _prevState == Enums.UnitState.Hurt ? Enums.UnitState.Idle : _prevState; // DO NOT reassign Attacking as a state;
         Log("----------------------------------------");
     }
 
@@ -343,6 +340,11 @@ public class UnitController : MonoBehaviour, ILog
         return _gridblockCosts.GetGridblockMoveCost(gridType);
     }
 
+    public void UpdateMinimapIcon()
+    {
+        _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
+    }
+
     void Awake()
     {
         BoxCollider = GetComponent<BoxCollider2D>();
@@ -351,11 +353,11 @@ public class UnitController : MonoBehaviour, ILog
         _damagable = GetComponent<Damageable>();
         _gridblockCosts = GetComponent<GridBlockCosts>();
 
-        _unitState = Enums.UnitState.Idle;
+        UnitState = Enums.UnitState.Idle;
         _movePositions = new Queue<MovePoint>();
         _prevPositions = new Stack<MovePoint>();
         _nextPoint = null;
-        _gridblockSpeedModifyer = 1;
+        GridblockSpeedModifier = 1;
     }
 
     // Start is called before the first frame update
@@ -403,18 +405,15 @@ public class UnitController : MonoBehaviour, ILog
                 PlusAction -= Time.deltaTime;
                 PlusActionText.alpha = PlusAction / PLUSACTIONTIME;
             }
-            else if (PlusAction <= 0 && _unitState == Enums.UnitState.PlusAction && !_selected)
-                _unitState = Enums.UnitState.Idle;
+            else if (PlusAction <= 0 && UnitState == Enums.UnitState.PlusAction && !_selected)
+                UnitState = Enums.UnitState.Idle;
 
-            //if (_unitState == Enums.UnitState.Idle && CurrentGridBlock != null && CurrentGridBlock.CurrentUnit != this) // This is a redundency in case the gridblock is out of sync with the current unit
-            //    CurrentGridBlock.CurrentUnit = this;
-
-            if ((_nextPoint != null || _movePositions.Count > 0) && _unitState != Enums.UnitState.Attacking && _unitState != Enums.UnitState.Hurt)
+            if ((_nextPoint != null || _movePositions.Count > 0) && UnitState != Enums.UnitState.Attacking && UnitState != Enums.UnitState.Hurt)
             {
                 if (_nextPoint == null)
                     GetNextPoint();
 
-                Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * _gridblockSpeedModifyer * Time.deltaTime);
+                Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * GridblockSpeedModifier * Time.deltaTime);
                 _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
 
                 transform.position = moveVector;
@@ -452,7 +451,7 @@ public class UnitController : MonoBehaviour, ILog
                             Moved = true;
 
                             CurrentGridBlock.SetCurrentUnit(this);
-                            _unitState = Enums.UnitState.Idle;
+                            UnitState = Enums.UnitState.Idle;
                         }
                         else
                         {
@@ -477,7 +476,7 @@ public class UnitController : MonoBehaviour, ILog
                 Attack();
             }
 
-            if (_nextPoint == null && _unitState == Enums.UnitState.Idle && _tasked && !Moving && !_attack && (Moved || Attacked))
+            if (_nextPoint == null && UnitState == Enums.UnitState.Idle && _tasked && !Moving && !_attack && (Moved || Attacked))
             {
                 Log($"goes on cooldown");
                 if (CurrentGridBlock.CurrentUnit && CurrentGridBlock.CurrentUnit != this)
@@ -515,11 +514,11 @@ public class UnitController : MonoBehaviour, ILog
                 if (Player != Enums.Player.Player1 && UnitManager) // This is for non player units to make sure all units are looped through
                     UnitManager.AddUnit(this);
 
-                _unitState = Enums.UnitState.Idle;
+                UnitState = Enums.UnitState.Idle;
             }
         }
 
-        if (Player != Enums.Player.Player1 && _nextPoint == null && _unitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
+        if (Player != Enums.Player.Player1 && _nextPoint == null && UnitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
         {
             if (!UnitManager.PlayerInfo.Units.Contains(this))
             {
@@ -549,7 +548,7 @@ public class UnitController : MonoBehaviour, ILog
                 gB.SetCurrentUnit(this);
 
             CurrentGridBlock = gB;
-            _gridblockSpeedModifyer = _gridblockCosts.GetGridblockMultiplyer(gB.Type);
+            GridblockSpeedModifier = _gridblockCosts.GetGridblockMultiplyer(gB.Type);
         }
         else if (!OnCooldown && uC != null && uC.IsEnemy(Player)) // Collided with an enemy
         {
@@ -641,49 +640,49 @@ public class UnitController : MonoBehaviour, ILog
             return Position.GridDistance(Target.Position);
     }
 
-    private void GetNextPoint()
-    {
-        var currentPoint = _nextPoint;
-        var possiblePoint = _movePositions.Peek();
-        if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
+        private void GetNextPoint()
         {
-            var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
-            foreach (GridBlock gB in orderedNeighbors)
+            var currentPoint = _nextPoint;
+            var possiblePoint = _movePositions.Peek();
+            if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
             {
-                if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
+                var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
+                foreach (GridBlock gB in orderedNeighbors)
                 {
-                    possiblePoint = gB.ToMovePoint();
-                    break;
+                    if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
+                    {
+                        possiblePoint = gB.ToMovePoint();
+                        break;
+                    }
                 }
             }
-        }
-        else
-            _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
+            else
+                _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
 
-        if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
-        {
-            if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
+            if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
             {
-                _nextPoint = null;
-                return;
+                if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
+                {
+                    _nextPoint = null;
+                    return;
+                }
+                else // current spot isn't safe so find a new spot
+                {
+                    FindGoodPreviousSpot();
+                    GetNextPoint();
+                    return;
+                }
             }
-            else // current spot isn't safe so find a new spot
-            {
-                FindGoodPreviousSpot();
-                GetNextPoint();
-                return;
-            }
-        }
 
-        _nextPoint = possiblePoint;
-        Moving = true;
-        _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
-        _unitState = Enums.UnitState.Moving;
-        BoxCollider.size = ColliderSizeMoving;
-        _animator.SetBool("Moving", true);
-        IsHidden = false;
-        LookAt(possiblePoint.Position);
-    }
+            _nextPoint = possiblePoint;
+            Moving = true;
+            _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+            UnitState = Enums.UnitState.Moving;
+            BoxCollider.size = ColliderSizeMoving;
+            _animator.SetBool("Moving", true);
+            IsHidden = false;
+            LookAt(possiblePoint.Position);
+        }
 
     private void DeleteSavedPath()
     {
@@ -702,7 +701,7 @@ public class UnitController : MonoBehaviour, ILog
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         if (!_movingBack)
         {
-            _unitState = Enums.UnitState.Idle;
+            UnitState = Enums.UnitState.Idle;
             Target = null;
             DeleteSavedPath();
             _attackWhenInRange = false;
@@ -744,11 +743,11 @@ public class UnitController : MonoBehaviour, ILog
         Log("----------------------------------------");
     }
 
-    private void GoOnCooldown()
+    public void GoOnCooldown()
     {
         //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
         Reset();
-        _unitState = Enums.UnitState.Cooldown;
+        UnitState = Enums.UnitState.Cooldown;
         if (_miniMapIcon)
             _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Cooldown : Colors.Enemy_Cooldown;
         if (Position == CurrentGridBlock.ToMovePoint(true).Position)

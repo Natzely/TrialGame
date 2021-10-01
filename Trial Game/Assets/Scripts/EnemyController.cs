@@ -56,7 +56,7 @@ public class EnemyController : MonoBehaviour
                 int pathLength = 99;
                 foreach (var gB in gbTargets)
                 {
-                    var tempMoves = UnitManager.CreatePath(UnitController.CurrentGridBlock, gB);
+                    var tempMoves = UnitManager.CreatePath((GridBlock)UnitController.CurrentGridBlock, (GridBlock)gB);
                     if (tempMoves.Count() < pathLength)
                     {
                         pathLength = tempMoves.Count();

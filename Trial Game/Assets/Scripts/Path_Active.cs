@@ -16,7 +16,7 @@ public class Path_Active: GridBlockItem
 
     public bool Show { 
         get { return _sR.enabled; } 
-        set { _sR.enabled = value; } 
+        set { _sR.enabled = _animator.enabled = value; } 
     }
 
     public void UpdatePathState(Vector2 cDir, Vector2? nDir)
@@ -24,6 +24,8 @@ public class Path_Active: GridBlockItem
         ResetRotation();
         PathDirection = cDir.ToPathDirection();
         NextDirection = (nDir ??  new Vector2(0,0)).ToPathDirection();
+
+        Show = true;
 
         _animator.SetBool("Start", false);
         _animator.SetBool("Head", false);
@@ -102,6 +104,7 @@ public class Path_Active: GridBlockItem
     public void Reset()
     {
         _sR.enabled = false;
+        _animator.enabled = false;
         ResetRotation();
         PathDirection = Enums.PathDirection.Start;
         if (_animator != null)
@@ -129,6 +132,5 @@ public class Path_Active: GridBlockItem
 
     private void Start()
     {
-        Reset();
     }
 }

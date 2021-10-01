@@ -33,9 +33,6 @@ public class Overlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.name == "Path_Active1")
-            Debug.Log("");
-
         if (_unitRenderer && ((_uC && _uC.Overlay) || !_uC))
         {
             _sR.enabled = _unitRenderer.enabled;

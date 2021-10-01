@@ -145,6 +145,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3690227930067573988, guid: c9c51b615ff32ef4a95f4d8a8f0763fc,
+        type: 3}
+      propertyPath: PauseScreen
+      value: 
+      objectReference: {fileID: 5699196304293631685}
     - target: {fileID: 4184434133847062915, guid: c9c51b615ff32ef4a95f4d8a8f0763fc,
         type: 3}
       propertyPath: m_Name
@@ -185,6 +190,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_Minimap
       objectReference: {fileID: 0}
+    - target: {fileID: 3129530643680581575, guid: afbaf6ad4c9699b47832642a5b40d4ea,
+        type: 3}
+      propertyPath: PauseScreen
+      value: 
+      objectReference: {fileID: 5699196304293631685}
     - target: {fileID: 4356336065985829901, guid: afbaf6ad4c9699b47832642a5b40d4ea,
         type: 3}
       propertyPath: m_Pivot.x
@@ -858,3 +868,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8561567608435037762}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5699196304293631685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4163385128038875271, guid: 55f81d92dda686b42a0d98a9f60267d2,
+    type: 3}
+  m_PrefabInstance: {fileID: 8561567608435037762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdbfb578460a6384d9e14601da304950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -43,7 +43,6 @@ public class GridSpace : GridBlockItem
 
     protected SpriteRenderer _sR;
     protected Enums.Player _player;
-    protected PlayerManager _pM;
 
     private bool _activate;
 
@@ -52,7 +51,6 @@ public class GridSpace : GridBlockItem
     void Awake()
     {
         _sR = GetComponent<SpriteRenderer>();
-        _pM = FindObjectOfType<PlayerManager>();
     }
 
     private void Update()

@@ -19,6 +19,8 @@ public class GridBlock : MonoBehaviour, ILog
     public bool Unpassable = false;
     public bool IsDestination = false;
 
+    public PlayerManager PlayerManager { get; set; }
+    public CursorController Cursor { get; set; }
     public bool UseMoveAnimation { get; set; }
     public bool IsOccupied { get { return CurrentUnit; } }
     public bool IsSpaceActive { get { return _gridParams.IsSpaceActive; } }
@@ -29,11 +31,9 @@ public class GridBlock : MonoBehaviour, ILog
     public int PlayerMoveDistance { get { return _gridParams.MoveDistance; } }
     public int PlayerAttackDistance { get { return _gridParams.MaxAttackDistance; } }
 
-    private int MovementCost { get { return _cursor.CurrentUnit.CheckGridMoveCost(Type); } }
+    private int MovementCost { get { return Cursor.CurrentUnit.CheckGridMoveCost(Type); } }
 
-    private PlayerManager _pM;
     private PlayerParams _gridParams;
-    private CursorController _cursor;
     private BoxCollider2D _bC;
     private Dictionary<UnitController, Path_Saved> _savedPaths;
     private List<UnitController> _unitsMovingThrough;
@@ -70,8 +70,8 @@ public class GridBlock : MonoBehaviour, ILog
             if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
             {
                 SetGrid(moveFrom, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
-                if (_cursor.CurrentGridBlock == this || _pM.PlayerInfo.MovementPathContains(this))
-                    _cursor.CurrentGridUpdate();
+                if (Cursor.CurrentGridBlock == this || PlayerManager.PlayerInfo.MovementPathContains(this))
+                    Cursor.CurrentGridUpdate();
             }
         }
     }
@@ -120,7 +120,7 @@ public class GridBlock : MonoBehaviour, ILog
             _gridParams.MaxAttackDistance = maxAttackDistance;
         }
 
-        _pM.UpdateBlockGrid(GridPosition, this, saveParams);
+        PlayerManager.UpdateBlockGrid(GridPosition, this, saveParams);
     }
 
     public void Disable()
@@ -175,8 +175,10 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void UpdatePathState(Vector2 cDir, Vector2? nDir)
     {
+        if (!_currentActivePath)
+            CreatePathBlock();
+
         _currentActivePath.UpdatePathState(cDir, nDir);
-        _currentActivePath.Show = true;
     }
 
     public void Path_Save(UnitController unit, Color color)
@@ -230,7 +232,6 @@ public class GridBlock : MonoBehaviour, ILog
 
     void Awake()
     {
-        _gridParams = new PlayerParams();
         _unitsMovingThrough = new List<UnitController>();
         _bC = GetComponent<BoxCollider2D>();
     }
@@ -239,10 +240,8 @@ public class GridBlock : MonoBehaviour, ILog
     {
         gameObject.name = String.Format(Strings.GridblockName, Position.x, Position.y);
 
-        _currentActivePath = CreatePathBlock();
         var cursorBoundaries = GameObject.Find("CursorBoundaries");
         var pCollider = cursorBoundaries.GetComponent<PolygonCollider2D>();
-        _cursor = FindObjectOfType<CursorController>();
 
         if (!Position.InsideSquare(pCollider.points[1], pCollider.points[3]))
         {
@@ -250,13 +249,11 @@ public class GridBlock : MonoBehaviour, ILog
         }
         else
         {
-            _pM = FindObjectOfType<PlayerManager>();
+            _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
 
             StartCoroutine(CreateMinimapIcon());
 
             _savedPaths = new Dictionary<UnitController, Path_Saved>();
-            CreateAttackSpace(AttackSpace);
-            CreateMoveSpace(MoveSpace);
             _gridParams.Reset();
         }
     }
@@ -271,7 +268,7 @@ public class GridBlock : MonoBehaviour, ILog
 
         CleanUpUnits();
 
-        if (!_pM.PlayerInfo.MovementPathContains(this) && _currentActivePath.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
+        if (PlayerManager && !PlayerManager.PlayerInfo.MovementPathContains(this) && _currentActivePath && _currentActivePath.Show)// && _pM.PlayerInfo.SelectedUnit == null)// && PathBlocks.ContainsKey(_pM.PlayerInfo.SelectedUnit))
         {
             _currentActivePath.Show = false;
         }
@@ -300,22 +297,18 @@ public class GridBlock : MonoBehaviour, ILog
         var uC = colObj.GetComponent<UnitController>();
         if (uC != null)
         {
-            //Log($"{uC.gameObject.name} has entered");
-            //if (!IsUnitLocked(uC) && uC.AtDestination)
-            //    UnitLock(uC);
-            //else
-            //{
-                //Log($"Block unit locked");
-                _unitsMovingThrough.Add(uC);
-            //}
+            _unitsMovingThrough.Add(uC);
+
+            if (!_gridParams.MoveSpace)
+                _gridParams.CreateSpaces();
 
             if (_gridParams.MoveSpace.Active && uC.Player != Enums.Player.Player1)
             {
-                if (_pM.PlayerInfo.MovementPathContains(this))
-                    _cursor.EnemyInPath(this);
+                if (PlayerManager.PlayerInfo.MovementPathContains(this))
+                    Cursor.EnemyInPath(this);
 
                 UpdateGrid();
-                _pM.ActiveGrid_Update(this);
+                PlayerManager.ActiveGrid_Update(this);
             }
         }
     }
@@ -328,18 +321,16 @@ public class GridBlock : MonoBehaviour, ILog
         {
             if (_unitsMovingThrough.Contains(uC))
                 _unitsMovingThrough.Remove(uC);
-            //ResetLock(uC);
         }
     }
 
     private IEnumerator CreateMinimapIcon()
     {
-        yield return new WaitUntil(() => _pM.FullGrid != null);
-
+        yield return new WaitUntil(() => PlayerManager && PlayerManager.FullGrid != null);
 
         var _miniMapIcon = Instantiate(MinimapTile);
-        _miniMapIcon.rectTransform.SetParent(_pM.Minimap_TileIcons.transform);
-        float squareSize = _pM.MinimapSquareSize;
+        _miniMapIcon.rectTransform.SetParent(PlayerManager.Minimap_TileIcons.transform);
+        float squareSize = PlayerManager.MinimapSquareSize;
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
         _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
@@ -350,25 +341,11 @@ public class GridBlock : MonoBehaviour, ILog
         SetGrid(null, _gridParams.FavorableTerrain, -1, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
     }
 
-    private void CreateAttackSpace(GameObject space)
+    private void CreatePathBlock()
     {
-        _gridParams.AttackSpace = GetGridBlockItemScript<AttackSpace>(this, space);
-        _gridParams.AttackSpace.ParentGridBlock = this;
-        _gridParams.AttackSpace.PlayerManager = _pM;
-    }
-
-    private void CreateMoveSpace(GameObject space)
-    {
-        _gridParams.MoveSpace = GetGridBlockItemScript<MoveSpace>(this, space);
-        _gridParams.MoveSpace.ParentGridBlock = this;
-        _gridParams.MoveSpace.PlayerManager = _pM;
-    }
-
-    private Path_Active CreatePathBlock()
-    {
-        var newPB = GetGridBlockItemScript<Path_Active>(this, ActivePath);
-        newPB.ParentGridBlock = this;
-        return newPB;
+        var o = Instantiate(ActivePath, this.transform.position, Quaternion.identity);
+        _currentActivePath = o.GetComponent<Path_Active>();
+        _currentActivePath.ParentGridBlock = this;
     }
 
     private T GetGridBlockItemScript<T>(GridBlock parent, GameObject gO)
@@ -399,6 +376,11 @@ public class GridBlock : MonoBehaviour, ILog
         public int MaxAttackDistance { get; set; }
         public int MinAttackDistance { get; set; }
 
+        private GridBlock _parent;
+        private PlayerManager _pM;
+        private GameObject _object_AS;
+        private GameObject _object_MS;
+
         public bool IsSpaceActive
         {
             get { return ActiveSpace != Enums.ActiveSpace.Inactive; }
@@ -423,6 +405,9 @@ public class GridBlock : MonoBehaviour, ILog
             else
                 moveFromPos = moveFrom.Position;
 
+            if (!MoveSpace || !AttackSpace)
+                CreateSpaces();
+
             ShowSpace(MoveSpace, AttackSpace, moveFromPos);
         }
 
@@ -433,6 +418,9 @@ public class GridBlock : MonoBehaviour, ILog
                 moveFromPos = MoveSpace.transform.position;
             else
                 moveFromPos = moveFrom.Position;
+
+            if (!MoveSpace || !AttackSpace)
+                CreateSpaces();
 
             ShowSpace(AttackSpace, MoveSpace, moveFromPos);
         }
@@ -446,6 +434,26 @@ public class GridBlock : MonoBehaviour, ILog
             }
         }
 
+        public void CreateSpaces()
+        {
+            if (!MoveSpace)
+            {
+                var o = Instantiate(_object_MS, _parent.transform.position, Quaternion.identity);
+                MoveSpace = o.GetComponent<MoveSpace>();
+                MoveSpace.ParentGridBlock = _parent;
+                MoveSpace.PlayerManager = _pM;
+                MoveSpace.Disable();
+            }
+            if (!AttackSpace)
+            {
+                var o = Instantiate(_object_AS, _parent.transform.position, Quaternion.identity);
+                AttackSpace = o.GetComponent<AttackSpace>();
+                AttackSpace.ParentGridBlock = _parent;
+                AttackSpace.PlayerManager = _pM;
+                AttackSpace.Disable();
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var checkP = ((int, int, int))obj;
@@ -455,6 +463,14 @@ public class GridBlock : MonoBehaviour, ILog
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public PlayerParams(GridBlock parent, PlayerManager playerManager, GameObject AttackSpace, GameObject MoveSpace)
+        {
+            _parent = parent;
+            _pM = playerManager;
+            _object_AS = AttackSpace;
+            _object_MS = MoveSpace;
         }
     }
 }
