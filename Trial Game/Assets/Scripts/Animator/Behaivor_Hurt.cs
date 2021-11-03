@@ -17,6 +17,10 @@ public class Behaivor_Hurt : StateMachineBehaviour
             uC.HurtAudioSource.Play(hurtClip);
             uC.EnterHurtState();
         }
+
+        var deathID = Animator.StringToHash("Death");
+        if (animator.HasState(0, deathID))
+            animator.SetBool("Death", true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -29,7 +33,7 @@ public class Behaivor_Hurt : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         var uC = animator.GetComponent<UnitController>();
-        if(uC)
+        if(uC && uC.CurrentHealth > 0)
             uC.ExitHurtState();
     }
 

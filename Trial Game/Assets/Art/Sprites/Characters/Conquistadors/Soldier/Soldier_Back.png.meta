@@ -1,0 +1,636 @@
+fileFormatVersion: 2
+guid: 846e6661d0cae7e469337facc01a7dd5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5597158482565900490
+    second: Soldier_Back_0
+  - first:
+      213: -8901308823398271605
+    second: Soldier_Back_1
+  - first:
+      213: -4837886400242183347
+    second: Soldier_Back_2
+  - first:
+      213: -8196557503001043181
+    second: Soldier_Back_3
+  - first:
+      213: 8098253545423044381
+    second: Soldier_Back_4
+  - first:
+      213: -5626150295117914245
+    second: Soldier_Back_5
+  - first:
+      213: -3535431921767448785
+    second: Soldier_Back_6
+  - first:
+      213: -4747039639913149176
+    second: Soldier_Back_7
+  - first:
+      213: 5050070663446174630
+    second: Soldier_Back_8
+  - first:
+      213: -1130500486041476886
+    second: Soldier_Back_9
+  - first:
+      213: -4341436196501338149
+    second: Soldier_Back_10
+  - first:
+      213: 5771387729930617173
+    second: Soldier_Back_11
+  - first:
+      213: -2640501585750670162
+    second: Soldier_Back_12
+  - first:
+      213: -7200424351047649089
+    second: Soldier_Back_13
+  - first:
+      213: 4243009227651931554
+    second: Soldier_Back_14
+  - first:
+      213: 805142703736121232
+    second: Soldier_Back_15
+  - first:
+      213: -3356527247026471377
+    second: Soldier_Back_16
+  - first:
+      213: -5753412008758650307
+    second: Soldier_Back_17
+  - first:
+      213: 4689485355871493434
+    second: Soldier_Back_18
+  - first:
+      213: 630219743695986579
+    second: Soldier_Back_19
+  - first:
+      213: -7262007277562983110
+    second: Soldier_Back_20
+  - first:
+      213: 9107879785285463050
+    second: Soldier_Back_21
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1550
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Soldier_Back_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac8a7e02cf91dad40800000000000000
+      internalID: 5597158482565900490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_1
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b85bb4949c2387480800000000000000
+      internalID: -8901308823398271605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_2
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d431fd183ff5cdcb0800000000000000
+      internalID: -4837886400242183347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_3
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31f5f84d06aff3e80800000000000000
+      internalID: -8196557503001043181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1ffcf371b6c26070800000000000000
+      internalID: 8098253545423044381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_5
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7f998e7d16ebe1b0800000000000000
+      internalID: -5626150295117914245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_6
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2f797f066f9feec0800000000000000
+      internalID: -3535431921767448785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_7
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80d474039902f1eb0800000000000000
+      internalID: -4747039639913149176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_8
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ab94511384751640800000000000000
+      internalID: 5050070663446174630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae0671f2cc7af40f0800000000000000
+      internalID: -1130500486041476886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_10
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd7c38cf7ce10c3c0800000000000000
+      internalID: -4341436196501338149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_11
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 551009fef86181050800000000000000
+      internalID: 5771387729930617173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_12
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea4c9783ccd0b5bd0800000000000000
+      internalID: -2640501585750670162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb87bb3c334f21c90800000000000000
+      internalID: -7200424351047649089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_14
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2add5e0896232ea30800000000000000
+      internalID: 4243009227651931554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_15
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09760b1f5017c2b00800000000000000
+      internalID: 805142703736121232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_16
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2e3112a0483b61d0800000000000000
+      internalID: -3356527247026471377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3a597bc246c720b0800000000000000
+      internalID: -5753412008758650307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_18
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3ddd10d516641140800000000000000
+      internalID: 4689485355871493434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_19
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39fdf61948dfeb800800000000000000
+      internalID: 630219743695986579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_20
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3d8e885bda283b90800000000000000
+      internalID: -7262007277562983110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Back_21
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0ca6eab860b56e70800000000000000
+      internalID: 9107879785285463050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

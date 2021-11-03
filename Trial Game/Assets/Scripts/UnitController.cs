@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[RequireComponent(typeof(Rigidbody), typeof(SpriteRenderer), typeof(BoxCollider2D))]
+[RequireComponent(typeof(Animator), typeof(Damageable), typeof(GridBlockCosts))]
+[RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
 public class UnitController: MonoBehaviour, ILog
 {
     public int MAXMOVEAFTERATTACK = 3;
@@ -113,6 +116,10 @@ public class UnitController: MonoBehaviour, ILog
     public int CurentGridMoveCost
     {
         get { return _currentGridMoveCost; }
+    }
+    public float CurrentHealth
+    {
+        get { return _damagable.Health; }
     }
 
     public bool Overlay

@@ -25,8 +25,15 @@ public class Damageable : MonoBehaviour
 
             int calcDamage = Mathf.FloorToInt(Mathf.Max(damager.Damage / _uC.Defense, 1));
             Health -= calcDamage;
-            HealthText.gameObject.SetActive(true);
-            HealthText.text = Health.ToString();
+            if (Health > 0)
+            {
+                HealthText.gameObject.SetActive(true);
+                HealthText.text = Health.ToString();
+            }
+            else
+            {
+                HealthText.enabled = false;
+            }
             //if (Health / _maxHealth < .34)
             //    HealthText.color = Colors.Health_Low;
             //else if (Health / _maxHealth < .67)
@@ -35,9 +42,10 @@ public class Damageable : MonoBehaviour
 
             if (Health <= 0)
             {
-                Instantiate(DeathSoundObject, transform.position, Quaternion.identity);
+                //Instantiate(DeathSoundObject, transform.position, Quaternion.identity);
+                _animator.SetTrigger("Hit");
                 _uC.OnUnitInterupt?.Invoke();
-                Destroy(gameObject);
+                //Destroy(gameObject);
                 return true;
             }
             else

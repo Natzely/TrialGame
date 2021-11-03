@@ -1,0 +1,636 @@
+fileFormatVersion: 2
+guid: 4d492019b93a6a24ab4e8df31e6795f6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5701539132542302668
+    second: Soldier_Front_0
+  - first:
+      213: -5056403482025673559
+    second: Soldier_Front_1
+  - first:
+      213: -7634749030119071730
+    second: Soldier_Front_2
+  - first:
+      213: 7036548409421070599
+    second: Soldier_Front_3
+  - first:
+      213: 9158492148428135808
+    second: Soldier_Front_4
+  - first:
+      213: 6286183215142868638
+    second: Soldier_Front_5
+  - first:
+      213: -4745976479105308547
+    second: Soldier_Front_6
+  - first:
+      213: 723882717241742354
+    second: Soldier_Front_7
+  - first:
+      213: 5203611808608139509
+    second: Soldier_Front_8
+  - first:
+      213: 5179862087492342257
+    second: Soldier_Front_9
+  - first:
+      213: 684312705241730509
+    second: Soldier_Front_10
+  - first:
+      213: 4888560223616814112
+    second: Soldier_Front_11
+  - first:
+      213: 4824551098105707402
+    second: Soldier_Front_12
+  - first:
+      213: 8587259558793237715
+    second: Soldier_Front_13
+  - first:
+      213: 4330902177927189330
+    second: Soldier_Front_14
+  - first:
+      213: -6400641781378682726
+    second: Soldier_Front_15
+  - first:
+      213: 2586713539561452406
+    second: Soldier_Front_16
+  - first:
+      213: -5750953202866048226
+    second: Soldier_Front_17
+  - first:
+      213: 6901072451901681768
+    second: Soldier_Front_18
+  - first:
+      213: 924755207749075410
+    second: Soldier_Front_19
+  - first:
+      213: -8342954616498095248
+    second: Soldier_Front_20
+  - first:
+      213: -7686331284735629680
+    second: Soldier_Front_21
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 1550
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Soldier_Front_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc93c2c02afef1f40800000000000000
+      internalID: 5701539132542302668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_1
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9acbfc4b2db04d9b0800000000000000
+      internalID: -5056403482025673559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_2
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e00ae7e253ceb0690800000000000000
+      internalID: -7634749030119071730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_3
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 8644
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70102644f77d6a160800000000000000
+      internalID: 7036548409421070599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08d5341d510891f70800000000000000
+      internalID: 9158492148428135808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_5
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e961d9b14520d3750800000000000000
+      internalID: 6286183215142868638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_6
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d78a19a9987e22eb0800000000000000
+      internalID: -4745976479105308547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_7
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2141d3cfe7fbb0a00800000000000000
+      internalID: 723882717241742354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_8
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 6483
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f8bd19be51f63840800000000000000
+      internalID: 5203611808608139509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f19e7edf1192e740800000000000000
+      internalID: 5179862087492342257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_10
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcd483f97ca2f7900800000000000000
+      internalID: 684312705241730509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_11
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02cc8c76f97a7d340800000000000000
+      internalID: 4888560223616814112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_12
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 4322
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8bbf4389af34f240800000000000000
+      internalID: 4824551098105707402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d4d2fb42131c2770800000000000000
+      internalID: 8587259558793237715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_14
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 253d050b5947a1c30800000000000000
+      internalID: 4330902177927189330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_15
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a90766e363a5c27a0800000000000000
+      internalID: -6400641781378682726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_16
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 2161
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 673f04d524ad5e320800000000000000
+      internalID: 2586713539561452406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e13364728828030b0800000000000000
+      internalID: -5750953202866048226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_18
+      rect:
+        serializedVersion: 2
+        x: 2868
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86075d0e4d885cf50800000000000000
+      internalID: 6901072451901681768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_19
+      rect:
+        serializedVersion: 2
+        x: 5736
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d1831e36f365dc00800000000000000
+      internalID: 924755207749075410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_20
+      rect:
+        serializedVersion: 2
+        x: 8604
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07bfc6aaafed73c80800000000000000
+      internalID: -8342954616498095248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Front_21
+      rect:
+        serializedVersion: 2
+        x: 11472
+        y: 0
+        width: 2868
+        height: 2161
+      alignment: 9
+      pivot: {x: 0.63, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0966c53ab6aa45590800000000000000
+      internalID: -7686331284735629680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

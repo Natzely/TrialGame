@@ -217,3 +217,21 @@ The following packages were updated:
   com.unity.analytics from version 3.5.3 to 3.6.11
   com.unity.collab-proxy from version 1.7.1 to 1.9.0
   com.unity.test-framework from version 1.1.27 to 1.1.29
+
+=== Tue Oct 19 17:47:24 2021
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.collab-proxy from version 1.9.0 to 1.11.2
+  com.unity.ide.vscode from version 1.2.3 to 1.2.4
+
+=== Mon Oct 25 13:22:18 2021
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.collab-proxy from version 1.11.2 to 1.13.5
+  com.unity.purchasing from version 3.2.2 to 4.0.3
