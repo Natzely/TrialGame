@@ -169,7 +169,7 @@ public class UnitController: MonoBehaviour, ILog
         {
             if (UnitState != Enums.UnitState.PlusAction)
                 UnitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
-            _selected = select;
+            _animator.SetBool("Selected", _selected = select);
         }
         Log("----------------------------------------");
     }

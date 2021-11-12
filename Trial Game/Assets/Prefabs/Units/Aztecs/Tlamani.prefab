@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 2635142902251534675}
   - component: {fileID: 5224534530976703657}
   m_Layer: 20
-  m_Name: Tlamanih
+  m_Name: Tlamani
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
