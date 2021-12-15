@@ -14,12 +14,15 @@ public class UIObject : MonoBehaviour, IDebugLog
     {
         var debugObject = GameObject.FindGameObjectWithTag("DebugText");
         var scrollObject = GameObject.FindGameObjectWithTag("DebugScroll");
-        _debugScroll = scrollObject?.GetComponent<Scrollbar>();
-        _debugText = debugObject?.GetComponent<TextMeshProUGUI>();
-        if (_debugText != null)
+        if (debugObject && scrollObject)
         {
-            _debugText.text = "";
-            _debugText.fontSize = 20;
+            _debugScroll = scrollObject?.GetComponent<Scrollbar>();
+            _debugText = debugObject?.GetComponent<TextMeshProUGUI>();
+            if (_debugText != null)
+            {
+                _debugText.text = "";
+                _debugText.fontSize = 20;
+            }
         }
     }
 

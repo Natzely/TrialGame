@@ -167,7 +167,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7530291345336432978}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -236,8 +236,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
-  m_Sprite: {fileID: -8296385383580801948, guid: 61e9edcb21b1a964b94b6c820f8d8411,
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 4723107735738678597, guid: 2aba84308154ad04ca22fc724dcb1529,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -247,8 +247,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_MaskInteraction: 2
+  m_SpriteSortPoint: 1
 --- !u!61 &3319653760666354761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -265,8 +265,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 11.90224, y: 16.210001}
+    pivot: {x: 0.5, y: 0.21}
+    oldSize: {x: 1.2526315, y: 1.7064658}
     newSize: {x: 1.2806249, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -285,7 +285,7 @@ Animator:
   m_GameObject: {fileID: 7530291345336432978}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 28df300cc64879344a88d3aa2416ecb5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 87eaaed34d423aa42a26b649a08fb6b6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -917,7 +917,7 @@ PrefabInstance:
     - target: {fileID: 2785701438163789103, guid: 8fdb15e02374c45448b1ee5a0b9425b5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2785701438163789103, guid: 8fdb15e02374c45448b1ee5a0b9425b5,
         type: 3}
@@ -953,6 +953,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5470261892210803791, guid: 8fdb15e02374c45448b1ee5a0b9425b5,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6082778797229303892, guid: 8fdb15e02374c45448b1ee5a0b9425b5,
         type: 3}

@@ -17,6 +17,21 @@ TextureImporter:
   - first:
       213: -5649588693386349860
     second: Attkback sprite_4
+  - first:
+      213: 3827471490420344502
+    second: AttackBack_0
+  - first:
+      213: -4323601339852204422
+    second: AttackBack_1
+  - first:
+      213: -6045671413757781051
+    second: AttackBack_2
+  - first:
+      213: -3494236780316218606
+    second: AttackBack_3
+  - first:
+      213: -6804648759285829905
+    second: AttackBack_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -61,7 +76,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 105
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,7 +121,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Attkback sprite_0
+      name: AttackBack_0
       rect:
         serializedVersion: 2
         x: 0
@@ -114,20 +129,20 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.22}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74e7b08548e0e57f0800000000000000
-      internalID: -622043736954929593
+      spriteID: 6b6807eaa09ed1530800000000000000
+      internalID: 3827471490420344502
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attkback sprite_1
+      name: AttackBack_1
       rect:
         serializedVersion: 2
         x: 256
@@ -135,20 +150,20 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.22}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb5c812dff835a360800000000000000
-      internalID: 7180207852304778687
+      spriteID: a76d4b32d7b7ff3c0800000000000000
+      internalID: -4323601339852204422
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attkback sprite_2
+      name: AttackBack_2
       rect:
         serializedVersion: 2
         x: 512
@@ -156,20 +171,20 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.22}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d6998747ca5fc13b0800000000000000
-      internalID: -5540283320535312019
+      spriteID: 5cbdb3a61e5791ca0800000000000000
+      internalID: -6045671413757781051
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attkback sprite_3
+      name: AttackBack_3
       rect:
         serializedVersion: 2
         x: 768
@@ -177,20 +192,20 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.22}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee7f1d4e64e224500800000000000000
-      internalID: 378916200674097134
+      spriteID: 21ba52c592af18fc0800000000000000
+      internalID: -3494236780316218606
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attkback sprite_4
+      name: AttackBack_4
       rect:
         serializedVersion: 2
         x: 1024
@@ -198,14 +213,14 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.5, y: 0.22}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd2b4a32401a891b0800000000000000
-      internalID: -5649588693386349860
+      spriteID: fee277981080191a0800000000000000
+      internalID: -6804648759285829905
       vertices: []
       indices: 
       edges: []

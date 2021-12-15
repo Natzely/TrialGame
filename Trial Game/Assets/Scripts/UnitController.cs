@@ -177,6 +177,7 @@ public class UnitController: MonoBehaviour, ILog
     public void ReadyAttack(Vector2 pos)
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
+        LookAt(pos);
         _attack = true;
         _attackPos = pos;
         Log("----------------------------------------");
@@ -249,7 +250,6 @@ public class UnitController: MonoBehaviour, ILog
         if (_selected)
             OnUnitInterupt?.Invoke();
 
-        LookAt(_attackPos);
         _prevState = UnitState;
         UnitState = Enums.UnitState.Attacking;
         Log("----------------------------------------");
@@ -383,7 +383,6 @@ public class UnitController: MonoBehaviour, ILog
         {
             case Enums.Player.Player2:
                 _defaultLook = -1;
-                _sR.color = Colors.Player2;
                 break;
             default:
                 _defaultLook = 1;
@@ -795,8 +794,8 @@ public class UnitController: MonoBehaviour, ILog
     private void LookAt(Vector2 lookAt)
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        float x = lookAt.x - transform.position.x;
-        float y = lookAt.y - transform.position.y;
+        float x = Mathf.Round(lookAt.x - transform.position.x);
+        float y = Mathf.Round(lookAt.y - transform.position.y);
         _animator.SetFloat("Look X", _lookX = (x == 0 ? 0 : x > 0 ? 1 : -1));
         _animator.SetFloat("Look Y", _lookY = (y == 0 ? 0 : y > 0 ? 1 : -1));
         Log("----------------------------------------");

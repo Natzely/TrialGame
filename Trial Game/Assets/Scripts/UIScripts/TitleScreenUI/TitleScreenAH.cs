@@ -36,6 +36,9 @@ public class TitleScreenAH : UIActionHandler
 
         switch(titleButton.Type)
         {
+            case Enums.UI_TitleButtonType.Start:
+                LoadLevel("Level 3");
+                break;
             case Enums.UI_TitleButtonType.Load:
                 _state = Enums.TitleState.Levels;
                 _sls.Show = true;
@@ -46,10 +49,7 @@ public class TitleScreenAH : UIActionHandler
                 break;
             case Enums.UI_TitleButtonType.Level_Done:
                 var levelButton = (TitleScreen_LevelButton)titleButton;
-                _audioSource.Play(Sounds_LoadLevel[Random.Range(0,Sounds_LoadLevel.Length - 1)]);
-                _sceneManager.LoadScene(levelButton.LevelName, _audioSource.clip.length);
-                HideLoadPanel();
-                LevelLoadFade.StartFade(_audioSource.clip.length);
+                LoadLevel(levelButton.LevelName);
                 break;
         }
     }
@@ -67,5 +67,13 @@ public class TitleScreenAH : UIActionHandler
             _state = Enums.TitleState.Main;
             _sls.Show = false;
         }
+    }
+
+    private void LoadLevel(string sceneName)
+    {
+        _audioSource.Play(Sounds_LoadLevel[Random.Range(0, Sounds_LoadLevel.Length - 1)]);
+        _sceneManager.LoadScene(sceneName, _audioSource.clip.length);
+        HideLoadPanel();
+        LevelLoadFade.StartFade(_audioSource.clip.length);
     }
 }

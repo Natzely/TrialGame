@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public abstract class UIActionHandler : UIObject
 {
     public GameObject CurrentButton { get { return _eventSystem.currentSelectedGameObject; } }
+    [SerializeField] internal PlayerInput PlayerInput;
     [SerializeField] internal UIButton FirstSelected;
     [SerializeField] internal AudioClip Sound_Enter;
     [SerializeField] internal AudioClip Sound_Exit;

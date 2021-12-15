@@ -7,7 +7,6 @@ public class PauseScreenAH : UIActionHandler
 {
     public Enums.PauseState State;
 
-    [SerializeField] private PlayerInput PlayerInput;
     [SerializeField] private GameObject HightLightPanel;
     [SerializeField] private GameObject MainButtonPanel;
     [SerializeField] private GameObject ControlsPanel;

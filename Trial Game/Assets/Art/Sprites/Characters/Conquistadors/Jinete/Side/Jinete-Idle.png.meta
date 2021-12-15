@@ -1,0 +1,492 @@
+fileFormatVersion: 2
+guid: f22f1a3e1b73e0e4ebbfb2e2e4a9f43b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7655630555028755095
+    second: Mounted-Idle_0
+  - first:
+      213: -1410436905312660534
+    second: Mounted-Idle_1
+  - first:
+      213: -6642139569670311006
+    second: Mounted-Idle_2
+  - first:
+      213: -5723005372481683709
+    second: Mounted-Idle_3
+  - first:
+      213: 308078440022317546
+    second: Mounted-Idle_4
+  - first:
+      213: 3099744733822492950
+    second: Mounted-Idle_5
+  - first:
+      213: 63767925816791468
+    second: Mounted-Idle_6
+  - first:
+      213: -8707608653960010728
+    second: Mounted-Idle_7
+  - first:
+      213: -987001096162154391
+    second: Mounted-Idle_8
+  - first:
+      213: 1168401106002454577
+    second: Mounted-Idle_9
+  - first:
+      213: 588087575216044150
+    second: Mounted-Idle_10
+  - first:
+      213: 5727617717275922612
+    second: Mounted-Idle_11
+  - first:
+      213: -3158762637760668142
+    second: Mounted-Idle_12
+  - first:
+      213: 1859347100522513327
+    second: Mounted-Idle_13
+  - first:
+      213: -7399022661077760024
+    second: Jinete-Idle_0
+  - first:
+      213: 8317065306566843170
+    second: Jinete-Idle_1
+  - first:
+      213: 384417788766439561
+    second: Jinete-Idle_2
+  - first:
+      213: 5301785418605053913
+    second: Jinete-Idle_3
+  - first:
+      213: -2272659830832724243
+    second: Jinete-Idle_4
+  - first:
+      213: 7735253876308632314
+    second: Jinete-Idle_5
+  - first:
+      213: 4280617906508780986
+    second: Jinete-Idle_6
+  - first:
+      213: -3716612871269756852
+    second: Jinete-Idle_7
+  - first:
+      213: 2223910003121700872
+    second: Jinete-Idle_8
+  - first:
+      213: 7362031692956856706
+    second: Jinete-Idle_9
+  - first:
+      213: -8138013381464975899
+    second: Jinete-Idle_10
+  - first:
+      213: 4493060656169171432
+    second: Jinete-Idle_11
+  - first:
+      213: 5138011366805054403
+    second: Jinete-Idle_12
+  - first:
+      213: 516062955173239416
+    second: Jinete-Idle_13
+  - first:
+      213: 8642466827059938283
+    second: Jinete-Idle_14
+  - first:
+      213: 1517413344391990189
+    second: Jinete-Idle_15
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 900
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jinete-Idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8196
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e705696714615990800000000000000
+      internalID: -7399022661077760024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_1
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 8196
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22b54a3a4d62c6370800000000000000
+      internalID: 8317065306566843170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_2
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 8196
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 988c3c031f9b55500800000000000000
+      internalID: 384417788766439561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_3
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 8196
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d7cc478fb9b39940800000000000000
+      internalID: 5301785418605053913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5464
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de68ae7cce3e570e0800000000000000
+      internalID: -2272659830832724243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_5
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 5464
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af2e6d8da64295b60800000000000000
+      internalID: 7735253876308632314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_6
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 5464
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab5d1a86e4fc76b30800000000000000
+      internalID: 4280617906508780986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_7
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 5464
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c405258f840fb6cc0800000000000000
+      internalID: -3716612871269756852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2732
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 800c1847d5aecde10800000000000000
+      internalID: 2223910003121700872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_9
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 2732
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2817cdba1d03b2660800000000000000
+      internalID: 7362031692956856706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_10
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 2732
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e5976452f7ff0f80800000000000000
+      internalID: -8138013381464975899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_11
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 2732
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e93f3d8cde8a5e30800000000000000
+      internalID: 4493060656169171432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c3a552ad12ed4740800000000000000
+      internalID: 5138011366805054403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jinete-Idle_13
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 2048
+        height: 2732
+      alignment: 9
+      pivot: {x: 0.5, y: 0.22}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87ad6d4068c692700800000000000000
+      internalID: 516062955173239416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

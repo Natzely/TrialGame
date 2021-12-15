@@ -17,6 +17,21 @@ TextureImporter:
   - first:
       213: -7612900313820856468
     second: Hit_4
+  - first:
+      213: -2048800907179887802
+    second: Hurt_0
+  - first:
+      213: 490842205202310979
+    second: Hurt_1
+  - first:
+      213: -3720053754089064719
+    second: Hurt_2
+  - first:
+      213: 5649970053243570431
+    second: Hurt_3
+  - first:
+      213: -371187646486735994
+    second: Hurt_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -61,7 +76,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1400
+  spritePixelsToUnits: 950
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,7 +121,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hit_0
+      name: Hurt_0
       rect:
         serializedVersion: 2
         x: 0
@@ -114,20 +129,20 @@ TextureImporter:
         width: 1242
         height: 1621
       alignment: 9
-      pivot: {x: 0.5, y: 0.32}
+      pivot: {x: 0.5, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23c7f156a9dccdd30800000000000000
-      internalID: 4457663794195168306
+      spriteID: 6437b001e623193e0800000000000000
+      internalID: -2048800907179887802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit_1
+      name: Hurt_1
       rect:
         serializedVersion: 2
         x: 1242
@@ -135,20 +150,20 @@ TextureImporter:
         width: 1242
         height: 1621
       alignment: 9
-      pivot: {x: 0.5, y: 0.32}
+      pivot: {x: 0.5, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0d98829bc78ec85b0800000000000000
-      internalID: -5364657433725072944
+      spriteID: 3476ad19262dfc600800000000000000
+      internalID: 490842205202310979
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit_2
+      name: Hurt_2
       rect:
         serializedVersion: 2
         x: 2484
@@ -156,20 +171,20 @@ TextureImporter:
         width: 1242
         height: 1621
       alignment: 9
-      pivot: {x: 0.5, y: 0.32}
+      pivot: {x: 0.5, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b53a4fa757a55bb0800000000000000
-      internalID: -4947864620551752270
+      spriteID: 1f6b92202d6bf5cc0800000000000000
+      internalID: -3720053754089064719
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit_3
+      name: Hurt_3
       rect:
         serializedVersion: 2
         x: 0
@@ -177,20 +192,20 @@ TextureImporter:
         width: 1242
         height: 1621
       alignment: 9
-      pivot: {x: 0.5, y: 0.32}
+      pivot: {x: 0.5, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee2ca37cab7143970800000000000000
-      internalID: 8733631668352107246
+      spriteID: ff88d2f14d9b86e40800000000000000
+      internalID: 5649970053243570431
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit_4
+      name: Hurt_4
       rect:
         serializedVersion: 2
         x: 1242
@@ -198,14 +213,14 @@ TextureImporter:
         width: 1242
         height: 1621
       alignment: 9
-      pivot: {x: 0.5, y: 0.32}
+      pivot: {x: 0.5, y: 0.21}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6f7f3cdf7b895690800000000000000
-      internalID: -7612900313820856468
+      spriteID: 683152a5dc649daf0800000000000000
+      internalID: -371187646486735994
       vertices: []
       indices: 
       edges: []

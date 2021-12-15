@@ -95,6 +95,7 @@ public class Enums : MonoBehaviour
         Quit = 1,
         Level_Done = 2,
         Level_Development = 3,
+        Start = 4,
     }
 
     public enum PauseState
