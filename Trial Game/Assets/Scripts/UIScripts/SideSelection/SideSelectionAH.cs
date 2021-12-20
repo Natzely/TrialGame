@@ -6,6 +6,7 @@ public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISub
 {
     public RectMask2D AztecMask;
     public RectMask2D SpanishMask;
+    public Selectable CancelButton;
     public float MoveAcceleration;
     public float MoveSpeed;
     public float MaxMoveSpeed;
@@ -22,6 +23,30 @@ public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISub
     private float _maxWidth;
     private float _maxPadding;
     private float _maxSoftness;
+
+    public void HandleButtonSubmit(UIButton button)
+    {
+        var titleButton = (TitleScreen_Button)button;
+
+        switch (titleButton.Type)
+        {
+            case Enums.UI_TitleButtonType.Start:
+                LoadLevel("Level 3");
+                break;
+            case Enums.UI_TitleButtonType.Load:
+                _state = Enums.TitleState.Levels;
+                _sls.Show = true;
+                FirstLevel.Select();
+                break;
+            case Enums.UI_TitleButtonType.Quit:
+                _sceneManager.QuitGame(button.ClipLength);
+                break;
+            case Enums.UI_TitleButtonType.Level_Done:
+                var levelButton = (TitleScreen_LevelButton)titleButton;
+                LoadLevel(levelButton.LevelName);
+                break;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -93,5 +118,6 @@ public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISub
     {
         _selectedMask = mask.GetComponent<SideSelectionMask>();
         _selectedMask.Selected = true;
+        CancelButton.Select();
     }
 }

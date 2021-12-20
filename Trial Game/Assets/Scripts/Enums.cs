@@ -119,5 +119,17 @@ public class Enums : MonoBehaviour
         Hide = 4,
         Reveal = 8,
     }
+
+    public enum PlayerSides
+    {
+        Aztec = 0,
+        Spanish = 1,
+    }
+
+    public enum UI_SideSelectionButtonType
+    {
+        Ready = 0,
+        Cancel = 1,
+    }
 }
 

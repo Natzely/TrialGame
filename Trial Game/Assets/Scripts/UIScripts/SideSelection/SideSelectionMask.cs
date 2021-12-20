@@ -5,39 +5,31 @@ using TMPro;
 
 public class SideSelectionMask : MonoBehaviour
 {
-    public TextMeshProUGUI Text;
-    public float TextMoveToHeight;
-    public float MoveSpeed;
-    public float MaxTextSize;
+    public Enums.PlayerSides PlayerSides;
+
+    [SerializeField] private UIMoveToAndFontSize Text;
+    [SerializeField] private UIMoveTo UnitPanel;
+    [SerializeField] private UIMaskEditor UnitBackgroundMask;
+    [SerializeField] private ConfirmSelectionController ConfirmationPanel;
 
    [SerializeField]
-    public bool Selected { get; set; }
-
-    private RectTransform _textTrans;
-    private float _orgTextSize;
-    private float _orgY;
-
-    void Start()
+    public bool Selected 
     {
-        _textTrans = Text.rectTransform;
-        _orgY = _textTrans.anchoredPosition.y;
-        _orgTextSize = Text.fontSize;
+        set 
+        {
+            //Text.Edit = UnitPanel.Edit = UnitBackgroundMask.Edit = value;
+            Text.Edit(value);
+            UnitBackgroundMask.Edit(value);
+            UnitPanel.Edit(value);
+            ConfirmationPanel.Edit(value);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool Confirmed
     {
-        if(Selected && _textTrans.anchoredPosition.y != TextMoveToHeight)
+        set
         {
-            float newPosY = Mathf.MoveTowards(_textTrans.anchoredPosition.y, TextMoveToHeight, MoveSpeed * Time.deltaTime);
-            _textTrans.anchoredPosition = new Vector2(_textTrans.anchoredPosition.x, newPosY);
-            float newFontSize = _orgTextSize + (MaxTextSize - _orgTextSize) * (_textTrans.anchoredPosition.y / TextMoveToHeight);
-            Text.fontSize = newFontSize;
-        }
-        else if(!Selected  && _textTrans.anchoredPosition.y != _orgY)
-        {
-            _textTrans.anchoredPosition = new Vector2(_textTrans.anchoredPosition.x, _orgY);
-            Text.fontSize = _orgTextSize;
+            Debug.Log("Side chosen");
         }
     }
 }
