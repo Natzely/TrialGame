@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ConfirmSelectionController : MonoBehaviour
 {
-    [SerializeField] private SideSelectionAH ssAH;
     [SerializeField] private UIMaskEditor MaskEditor;
     [SerializeField] private UICanvasGroupEditor CanvasEditor;
 

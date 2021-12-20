@@ -2,7 +2,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISubmitHandler
+public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, ISubmitHandler
 {
     public RectMask2D AztecMask;
     public RectMask2D SpanishMask;
@@ -24,26 +24,16 @@ public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISub
     private float _maxPadding;
     private float _maxSoftness;
 
-    public void HandleButtonSubmit(UIButton button)
+    public override void HandleButtonSubmit(UIButton button)
     {
-        var titleButton = (TitleScreen_Button)button;
+        var sideSelButton = (TitleScreen_Button)button;
 
-        switch (titleButton.Type)
+        switch (sideSelButton.Type)
         {
-            case Enums.UI_TitleButtonType.Start:
-                LoadLevel("Level 3");
-                break;
-            case Enums.UI_TitleButtonType.Load:
-                _state = Enums.TitleState.Levels;
-                _sls.Show = true;
-                FirstLevel.Select();
-                break;
             case Enums.UI_TitleButtonType.Quit:
-                _sceneManager.QuitGame(button.ClipLength);
+                OnCancel(null);
                 break;
-            case Enums.UI_TitleButtonType.Level_Done:
-                var levelButton = (TitleScreen_LevelButton)titleButton;
-                LoadLevel(levelButton.LevelName);
+            case Enums.UI_TitleButtonType.Start:
                 break;
         }
     }
@@ -102,6 +92,9 @@ public class SideSelectionAH : MonoBehaviour, IMoveHandler, ICancelHandler, ISub
     public void OnCancel(BaseEventData eventData)
     {
         _selectedMask.Selected = false;
+        _sideSelected = false;
+        _eventSystem.SetSelectedGameObject(this.gameObject);
+        
     }
 
     private void EditMask(RectMask2D mask, float moveTowards, float moveSpeed)

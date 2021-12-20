@@ -220,30 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &905631437 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5892529995111658509, guid: ea58a5cab9469c240bca1fbbf8f9decd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1292022984}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb2c18445b69b249b757acdf35e13b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &905631439 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3586678429621413212, guid: ea58a5cab9469c240bca1fbbf8f9decd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1292022984}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c92682a25fab0f47a3ca4cf736c304e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1292022984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -443,6 +419,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3586678429621413212, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736662869490220868, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
       propertyPath: m_Name
@@ -482,11 +463,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Padding.y
       value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 4838576519091011840, guid: ea58a5cab9469c240bca1fbbf8f9decd,
-        type: 3}
-      propertyPath: m_Alpha
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5302651828880805456, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
@@ -555,24 +531,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5680119657297471983, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
+      propertyPath: m_Padding.w
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680119657297471983, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
       propertyPath: m_Padding.x
-      value: 0
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680119657297471983, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: m_Padding.y
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 5680119657297471983, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
       propertyPath: m_Padding.z
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
-    - target: {fileID: 5783245958843718353, guid: ea58a5cab9469c240bca1fbbf8f9decd,
-        type: 3}
-      propertyPath: MaskEditor
-      value: 
-      objectReference: {fileID: 905631439}
-    - target: {fileID: 5783245958843718353, guid: ea58a5cab9469c240bca1fbbf8f9decd,
-        type: 3}
-      propertyPath: CanvasEditor
-      value: 
-      objectReference: {fileID: 905631437}
     - target: {fileID: 5786225692444311001, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
       propertyPath: m_text
@@ -606,6 +582,21 @@ PrefabInstance:
     - target: {fileID: 5825828560385288643, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892529995111658509, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: Speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892529995111658509, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: AlphaEdit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892529995111658509, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5915558336105636759, guid: ea58a5cab9469c240bca1fbbf8f9decd,

@@ -31,8 +31,8 @@ public abstract class UIObjectEditor : MonoBehaviour
         else
             _edit = edit;
 
-        if (!edit)
-            Reset();
+        //if (!edit)
+        //    Reset();
     }
 
     /// <inheritdoc Make sure to set _curDistance and _distance to the difference of the main variable being edited/>>

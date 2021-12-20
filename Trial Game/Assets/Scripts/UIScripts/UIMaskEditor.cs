@@ -23,6 +23,7 @@ public class UIMaskEditor : UIObjectEditor
     {
         _mask.padding = _orgPadding;
         _mask.softness = _orgSoftness;
+        base.Reset();
     }
 
     // Start is called before the first frame update

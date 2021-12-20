@@ -20,7 +20,7 @@ public class UICanvasGroupEditor : UIObjectEditor
     {
         base.Start();
         _cGroup = GetComponent<CanvasGroup>();
-        _orgAlpha = AlphaEdit;
+        _orgAlpha = _cGroup.alpha;
         _distance = _curDistance = Mathf.Abs(AlphaEdit - _cGroup.alpha);
     }
 
@@ -45,5 +45,6 @@ public class UICanvasGroupEditor : UIObjectEditor
     internal override void Reset()
     {
         _cGroup.alpha = _orgAlpha;
+        base.Reset();
     }
 }

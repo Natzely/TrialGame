@@ -19,6 +19,7 @@ public class UIMoveTo : UIObjectEditor
     internal override void Reset()
     {
         _rectT.anchoredPosition = _orgPos;
+        base.Reset();
     }
 
     internal override void Start()

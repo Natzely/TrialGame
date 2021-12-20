@@ -22,6 +22,7 @@ public class UIMoveToAndFontSize : UIMoveTo
     internal override void Reset()
     {
         Text.fontSize = _orgFontSize;
+        base.Reset();
     }
 
     internal override void Start()
