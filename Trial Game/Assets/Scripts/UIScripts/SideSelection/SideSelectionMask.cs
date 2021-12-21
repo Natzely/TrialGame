@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -11,6 +12,9 @@ public class SideSelectionMask : MonoBehaviour
     [SerializeField] private UIMoveTo UnitPanel;
     [SerializeField] private UIMaskEditor UnitBackgroundMask;
     [SerializeField] private ConfirmSelectionController ConfirmationPanel;
+    [SerializeField] private GameObject UnitMover;
+
+    private List<Animator> _unitAnimators;
 
    [SerializeField]
     public bool Selected 
@@ -29,7 +33,13 @@ public class SideSelectionMask : MonoBehaviour
     {
         set
         {
-            Debug.Log("Side chosen");
+            _unitAnimators.ForEach(a => a.SetBool("Selected", value));
+            ConfirmationPanel.Confirm();
         }
+    }
+
+    private void Start()
+    {
+        _unitAnimators = UnitMover.GetComponentsInChildren<Animator>().ToList();
     }
 }

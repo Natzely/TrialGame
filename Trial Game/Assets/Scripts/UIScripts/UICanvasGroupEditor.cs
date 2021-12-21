@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UICanvasGroupEditor : UIObjectEditor
 {
-    [SerializeField][Range(0,1)] private float AlphaEdit;
+    [SerializeField][Range(0,1)] public float AlphaEdit;
 
     CanvasGroup _cGroup;
     private float _orgAlpha;

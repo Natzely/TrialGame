@@ -12,6 +12,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
     public float MaxMoveSpeed;
     public float MoveBackSpeed;
 
+    private UICanvasGroupEditor _cgEditor;
     private RectTransform _aztecTrans;
     private RectTransform _spanishTrans;
     private SideSelectionMask _selectedMask;
@@ -34,6 +35,8 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
                 OnCancel(null);
                 break;
             case Enums.UI_TitleButtonType.Start:
+                _selectedMask.Confirmed = true;
+                _cgEditor.Edit(true);
                 break;
         }
     }
@@ -41,6 +44,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
     // Start is called before the first frame update
     void Start()
     {
+        _cgEditor = GetComponent<UICanvasGroupEditor>();
         _moveSpeed = MoveSpeed;
         _aztecTrans = AztecMask.rectTransform;
         _spanishTrans = SpanishMask.rectTransform;

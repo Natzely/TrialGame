@@ -389,6 +389,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -1281
       objectReference: {fileID: 0}
+    - target: {fileID: 1678679031365062637, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: Decceleration
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678679031365062637, guid: ea58a5cab9469c240bca1fbbf8f9decd,
+        type: 3}
+      propertyPath: SlowDownPercent
+      value: 0.88
+      objectReference: {fileID: 0}
     - target: {fileID: 1934606604658936616, guid: ea58a5cab9469c240bca1fbbf8f9decd,
         type: 3}
       propertyPath: m_Type

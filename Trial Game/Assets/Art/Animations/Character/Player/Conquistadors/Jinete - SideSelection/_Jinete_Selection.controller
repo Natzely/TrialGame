@@ -204,7 +204,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: _Warrior_Selection
+  m_Name: _Jinete_Selection
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Selected
@@ -332,7 +332,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: be68c053d305fdf4b84bb97474ded65f, type: 2}
+  m_Motion: {fileID: 7400000, guid: 21aa84d35e830d845b3682e137d2970a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -359,7 +359,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7f7473e2eaa698749b642c7e05ed0960, type: 2}
+  m_Motion: {fileID: 7400000, guid: 1090eac08ae78eb46ab258ba20092eda, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -379,10 +379,10 @@ AnimatorStateMachine:
     m_Position: {x: 400, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102187854326728622}
-    m_Position: {x: 400, y: 130, z: 0}
+    m_Position: {x: 400, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3809841434034725748}
-    m_Position: {x: 100, y: 170, z: 0}
+    m_Position: {x: 100, y: 160, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -433,7 +433,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 99989738103e1d946aa27705d3b26d61, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6e46daab8d2777341ac1ca47a21ff0f8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

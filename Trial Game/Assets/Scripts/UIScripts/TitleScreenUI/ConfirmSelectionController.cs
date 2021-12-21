@@ -12,4 +12,9 @@ public class ConfirmSelectionController : MonoBehaviour
         MaskEditor.Edit(edit);
         CanvasEditor.Edit(edit);
     }
+
+    public void Confirm()
+    {
+        CanvasEditor.AlphaEdit = 0;
+    }
 }
