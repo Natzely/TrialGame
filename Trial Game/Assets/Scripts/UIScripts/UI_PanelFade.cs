@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
@@ -9,6 +10,7 @@ public class UI_PanelFade : MonoBehaviour
     [SerializeField] private bool StartHidden;
     [SerializeField] private bool BlockAction;
     [SerializeField] private float FadeSpeed;
+    [SerializeField] private UnityEvent AfterFade;
 
     private Image _image;
     private bool _start;
@@ -53,6 +55,8 @@ public class UI_PanelFade : MonoBehaviour
             if (_image.color.a <= 0 || _image.color.a >= 1)
             {
                 _start = false;
+                if (AfterFade != null)
+                    AfterFade.Invoke();
                 if (!StartHidden)
                     _image.enabled = false;
             }

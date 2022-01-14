@@ -31,6 +31,8 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
     public abstract void OnSelect(BaseEventData eventData);
     public abstract void OnSubmit(BaseEventData eventData);
 
+    private bool _silent;
+
     public void MoveToNextUIObject(Vector3 move)
     {
         DebugLog($"{gameObject.name} move to next UI object");
@@ -51,10 +53,15 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         }
     }
 
-    public void Select()
+    public void Select(bool silent = false)
     {
+        _silent = silent;
+        if (silent)
+            AudioSource.volume = 0;
         Button.Select();
     }
+
+
 
     public void Deselect()
     {
@@ -89,6 +96,12 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
             }
             else
                 _selected = false;
+        }
+        
+        if(_silent && !AudioSource.isPlaying)
+        {
+            _silent = false;
+            AudioSource.volume = 1;
         }
     }
 }

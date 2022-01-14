@@ -49,6 +49,7 @@ public class UnitController: MonoBehaviour, ILog
     public int MinAttackDistance;
     public int MoveDistance;
 
+    public Enums.UnitState UnitState { get; set; }
     public UnitManager UnitManager { get; set; }
     public MovePoint Target
     {
@@ -73,6 +74,7 @@ public class UnitController: MonoBehaviour, ILog
         }
     }
     public BoxCollider2D BoxCollider { get; private set; }
+    public SpriteRenderer SpriteRender { get { return _sR; } }
     public Vector2 Position 
     { 
         get { return transform.position; } 
@@ -97,7 +99,9 @@ public class UnitController: MonoBehaviour, ILog
     }
 
     public bool IsHidden { get; private set; }
+    public bool Overlay { get { return Player == Enums.Player.Player1; } }
     public double DistanceFromCursor { get; private set; }
+    public float CurrentHealth { get { return _damagable.Health; } }
     public int AdjustedMoveDistance { get { return UnitState == Enums.UnitState.PlusAction ? Mathf.Clamp(MoveDistance - _prevPositions.Count, 1, 3) : MoveDistance; } }
     public int AdjustedMaxAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MaxAttackDistance; } }
     public int AdjustedMinAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MinAttackDistance; } }
@@ -113,20 +117,12 @@ public class UnitController: MonoBehaviour, ILog
         }
     }
     private int _currentGridMoveCost;
-    public int CurentGridMoveCost
-    {
-        get { return _currentGridMoveCost; }
+    public int CurentGridMoveCost { get { return _currentGridMoveCost; } }
+    public int DefaultLook 
+    { 
+        get { return _defaultLook; } 
+        set { _defaultLook = value; } 
     }
-    public float CurrentHealth
-    {
-        get { return _damagable.Health; }
-    }
-
-    public bool Overlay
-    {
-        get { return Player == Enums.Player.Player1; }
-    }
-    public Enums.UnitState UnitState { get; set; }
 
 
     private Enums.UnitState _prevState;
@@ -150,9 +146,9 @@ public class UnitController: MonoBehaviour, ILog
     private bool _attack;
     private bool _movingBack;
     private bool _attackWhenInRange;
-    private float _defaultLook;
     private float _lookX;
     private float _lookY;
+    private int _defaultLook;
     public float GridblockSpeedModifier { get; set; }
 
     public void Hover(bool hover)
@@ -371,24 +367,10 @@ public class UnitController: MonoBehaviour, ILog
     void Start()
     {
         if (Player == Enums.Player.Player1)
-        {
             _cC = FindObjectOfType<CursorController>();
-            _cC.OnCursorMoveEvent += OnCursorMove;
-        }
 
         if (!OnCooldown && UnitManager)
             UnitManager.AddUnit(this, true);
-
-        switch (Player)
-        {
-            case Enums.Player.Player2:
-                _defaultLook = -1;
-                break;
-            default:
-                _defaultLook = 1;
-                break;
-        }
-
 
         _pM = FindObjectOfType<PlayerManager>();
         StartCoroutine(CreateMinimapIcon());
@@ -592,8 +574,6 @@ public class UnitController: MonoBehaviour, ILog
         DeleteSavedPath();
         if (CurrentGridBlock) CurrentGridBlock.ResetCurrentUnit(this);
         Destroy(_miniMapIcon);
-        if (_cC != null)
-            _cC.OnCursorMoveEvent -= OnCursorMove;
         IsDestroyed = true;
         //Log("----------------------------------------");
     }
@@ -609,13 +589,6 @@ public class UnitController: MonoBehaviour, ILog
         _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
         _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
         _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
-    }
-
-    private void OnCursorMove(object sender, CursorMoveEventArgs e)
-    {
-        Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        DistanceFromCursor = transform.position.GridDistance(e.Position);
-        Log("----------------------------------------");
     }
 
     private void Reset()

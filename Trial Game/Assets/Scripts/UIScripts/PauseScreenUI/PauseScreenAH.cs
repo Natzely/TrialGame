@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class PauseScreenAH : UIActionHandler
 {
     public Enums.PauseState State;
 
+    [SerializeField] private InputSystemUIInputModule InputSystem;
     [SerializeField] private GameObject HightLightPanel;
     [SerializeField] private GameObject MainButtonPanel;
     [SerializeField] private GameObject ControlsPanel;
@@ -99,11 +101,6 @@ public class PauseScreenAH : UIActionHandler
     {
         _rectTransform = GetComponent<RectTransform>();
         ControlsPanel.transform.localPosition = _orgPos;
-        IsGamePaused = _rectTransform.anchoredPosition == Vector2.zero;
-        if (IsGamePaused)
-            PlayerInput.SwitchCurrentActionMap("UI");
-        else
-            PlayerInput.SwitchCurrentActionMap("Player");
         Time.timeScale = IsGamePaused ? 0 : 1;
     }
 
@@ -126,7 +123,7 @@ public class PauseScreenAH : UIActionHandler
         {
             _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
-            _eventSystem.SetSelectedGameObject(_eventSystem.firstSelectedGameObject);
+            _eventSystem.SetSelectedGameObject(this.gameObject);
         }
         else
         {

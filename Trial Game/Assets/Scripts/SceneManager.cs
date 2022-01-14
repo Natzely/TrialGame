@@ -1,13 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(AudioSource))]
 public class SceneManager : MonoBehaviour
 {
-    [SerializeField] private float FadeMusicSpeed;
+    [SerializeField] internal EventSystem UIInput;
+    [SerializeField] internal float FadeMusicSpeed;
 
     private float WaitTime
     {
@@ -48,17 +48,17 @@ public class SceneManager : MonoBehaviour
         _quitGame = true;
     }
 
-    private void Awake()
+    internal virtual void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
+    internal virtual void Start()
     {
         _currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
     }
 
-    private void Update()
+    internal virtual void Update()
     {
         if (_waitTime > 0)
             _waitTime -= Time.unscaledDeltaTime;
@@ -79,13 +79,10 @@ public class SceneManager : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadScene(string sceneName)
+    private IEnumerator LoadScene(string sceneName)
     {
         AsyncOperation asynLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
 
-        while (!asynLoad.isDone)
-        {
-            yield return null;
-        }
+        yield return null;
     }
 }

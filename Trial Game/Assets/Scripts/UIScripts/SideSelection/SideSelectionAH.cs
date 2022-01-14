@@ -1,16 +1,21 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.UI;
 using UnityEngine;
 
-public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, ISubmitHandler
+public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
 {
-    public RectMask2D AztecMask;
-    public RectMask2D SpanishMask;
-    public Selectable CancelButton;
-    public float MoveAcceleration;
-    public float MoveSpeed;
-    public float MaxMoveSpeed;
-    public float MoveBackSpeed;
+    [SerializeField] private LevelManager LevelManager;
+    [SerializeField] private InputSystemUIInputModule InputSystem;
+    [SerializeField] private RectMask2D AztecMask;
+    [SerializeField] private RectMask2D SpanishMask;
+    [SerializeField] private UIButton CancelButton;
+    [SerializeField] private float MoveAcceleration;
+    [SerializeField] private float MoveSpeed;
+    [SerializeField] private float MaxMoveSpeed;
+    [SerializeField] private float MoveBackSpeed;
+
+    public Enums.PlayerSides ConfirmedSide { get { return _selectedMask.PlayerSides; } }
 
     private UICanvasGroupEditor _cgEditor;
     private RectTransform _aztecTrans;
@@ -69,7 +74,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
                 _sideSelected = true;
                 HighlightMask(_spanishTrans.sizeDelta.x == 0 ? AztecMask : SpanishMask);
             }
-            if (_holdTimer > .05)
+            if (_holdTimer > .1)
             {
                 _sideMove = 0;
                 MoveSpeed = _moveSpeed;
@@ -88,15 +93,12 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
         _holdTimer = 0;
     }
 
-    public void OnSubmit(BaseEventData eventData)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void OnCancel(BaseEventData eventData)
     {
         _selectedMask.Selected = false;
         _sideSelected = false;
+        InputSystem.moveRepeatDelay = 0;
+        InputSystem.moveRepeatRate = 0;
         _eventSystem.SetSelectedGameObject(this.gameObject);
         
     }
@@ -115,6 +117,8 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, IS
     {
         _selectedMask = mask.GetComponent<SideSelectionMask>();
         _selectedMask.Selected = true;
-        CancelButton.Select();
+        InputSystem.moveRepeatDelay = 2;
+        InputSystem.moveRepeatRate = .3f;
+        CancelButton.Select(true);
     }
 }

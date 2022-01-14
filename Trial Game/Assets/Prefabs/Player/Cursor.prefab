@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3209297823907827525}
   - component: {fileID: 4598893040404520710}
   - component: {fileID: 749338402399233006}
+  - component: {fileID: 6006786357570588135}
   - component: {fileID: 1230999480}
   - component: {fileID: 1230999481}
   - component: {fileID: -288886055735461569}
@@ -112,6 +113,23 @@ MonoBehaviour:
     type: 3}
   MoveTimer: 0.1
   CurrentMove: 0
+--- !u!114 &6006786357570588135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749338402399233005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ca45b53ec011142ab8cf903876abec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 749338402399233006}
+  Boundaries: {fileID: 0}
+  MoveSound: {fileID: 8300000, guid: 2e7463fad1e5a654cb4a3ff216cd7e27, type: 3}
+  AudioSource: {fileID: 3804145181817776958}
+  ActionTime: 0.06
 --- !u!50 &1230999480
 Rigidbody2D:
   serializedVersion: 4

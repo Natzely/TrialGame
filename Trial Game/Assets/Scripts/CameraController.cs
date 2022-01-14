@@ -27,19 +27,12 @@ public class CameraController : MonoBehaviour
         _goalZoom = ZoomOut;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _camera.m_Lens.OrthographicSize = ZoomOut;
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (_camera.m_Lens.OrthographicSize != _goalZoom)
         {
-            var dif = _goalZoom - _camera.m_Lens.OrthographicSize;
-            var newZoom = Mathf.Clamp(_camera.m_Lens.OrthographicSize + (dif * Time.deltaTime * ZoomSpeed), ZoomIn, ZoomOut);
+            float newZoom = Mathf.MoveTowards(_camera.m_Lens.OrthographicSize, _goalZoom, Time.deltaTime * ZoomSpeed);
             _camera.m_Lens.OrthographicSize = newZoom;
         }
     }

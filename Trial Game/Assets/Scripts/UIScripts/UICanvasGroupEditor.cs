@@ -40,6 +40,13 @@ public class UICanvasGroupEditor : UIObjectEditor
         _curDistance = Mathf.Abs(AlphaEdit - _cGroup.alpha);
         float newAlpha = Mathf.MoveTowards(_cGroup.alpha, AlphaEdit, Speed * Time.deltaTime);
         _cGroup.alpha = newAlpha;
+
+        if (_cGroup.alpha == AlphaEdit)
+        {
+            base.Edit(false);
+            if (EditEvent != null)
+                EditEvent.Invoke();
+        }
     }
 
     internal override void Reset()

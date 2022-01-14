@@ -22,21 +22,21 @@ public class EnemyManager : UnitManager
         }
         catch (Exception ex)
         {
-            Debug.Log("");
+            Debug.Log("Error creating path");
         }
         return null;
     }
 
-    protected override void Awake()
+    public override void InitializeUnits()
     {
-        base.Awake();
-        DealyTimer = MoveDelay;
+        base.InitializeUnits();
 
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
             if (uC)
             {
+                uC.enabled = true;
                 uC.Player = Player;
                 uC.Speed *= _globalVariables.UnitSpeedModifier;
                 uC.Cooldown *= _globalVariables.UnitCooldownModifier;
@@ -44,8 +44,22 @@ public class EnemyManager : UnitManager
                 var eC = uC.gameObject.AddComponent<EnemyController>();
                 eC.UnitManager = this;
                 eC.UnitController = uC;
+                uC.BoxCollider.enabled = true;
+                uC.DefaultLook = -1;
             }
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DealyTimer = MoveDelay;
+    }
+
+    protected void Start()
+    {
+        if (InitializeUnitsAtStart)
+            InitializeUnits();
     }
 
     void Update()

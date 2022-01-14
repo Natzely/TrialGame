@@ -10,6 +10,7 @@ public abstract class UnitManager : MonoBehaviour
     public Enums.Player Player;
     public GameObject UnitHolder;
     public PolygonCollider2D CursorBoundaries;
+    public bool InitializeUnitsAtStart;
     public static bool DebugLog = true;
     
     public GridBlock[,] FullGrid { get; set; }
@@ -27,6 +28,11 @@ public abstract class UnitManager : MonoBehaviour
     protected private int _gridSizeY;
 
     public abstract IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos);
+
+    public virtual void InitializeUnits()
+    {
+        _startingUnits = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
+    }
 
     public void ResetBlockGrid()
     {
@@ -69,14 +75,8 @@ public abstract class UnitManager : MonoBehaviour
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
-        _startingUnits = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
         _globalVariables = FindObjectOfType<GlobalVariables>();
         _debugFilePath = Application.persistentDataPath + "/Debug.txt";
-    }
-
-    private void Start()
-    {
-
     }
 }
 

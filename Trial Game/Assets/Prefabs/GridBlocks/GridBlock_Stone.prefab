@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5460475136893554025}
   - component: {fileID: 8282250386879923856}
   - component: {fileID: 824339820758328376}
+  - component: {fileID: 5734316648628245554}
   m_Layer: 16
   m_Name: GridBlock_Stone
   m_TagString: Untagged
@@ -55,7 +56,6 @@ MonoBehaviour:
     type: 3}
   MinimapTile: {fileID: 2971420630142139890, guid: be597c860735194458d38d7f431678dc,
     type: 3}
-  MovementCost: 1
   SpeedCost: 0
   Unpassable: 0
   IsDestination: 0
@@ -85,3 +85,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &5734316648628245554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5460475136893554027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299007c16330aac4e8f41a29e3aabbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GridBlock: {fileID: 8282250386879923856}
+  MinWaitTime: 0
+  MaxWaitTime: 0

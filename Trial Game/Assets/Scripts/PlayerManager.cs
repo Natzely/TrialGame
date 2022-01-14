@@ -185,25 +185,30 @@ public class PlayerManager : UnitManager
         return pathList;
     }
 
-    protected override void Awake()
+    public override void InitializeUnits()
     {
-        base.Awake();
-
-        Log("\n|||||||||||||||||||||| NEW SESSION ||||||||||||||||||||||||\n");
+        base.InitializeUnits();
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
+            uC.enabled = true;
+            uC.Player = Player;
             uC.Speed *= _globalVariables.UnitSpeedModifier;
             uC.Cooldown *= _globalVariables.UnitCooldownModifier;
-            uC.Player = Player;
             uC.UnitManager = this;
+            uC.BoxCollider.enabled = true;
+            uC.DefaultLook = 1;
         }
+
     }
 
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
         _cC = FindObjectOfType<CursorController>();
+
+        if (InitializeUnitsAtStart)
+            InitializeUnits();
     }
 
     private UnitController GetNextUnitOnCooldown(UnitController afterUnit)

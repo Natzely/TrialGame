@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5858393999434783991}
   - component: {fileID: 2462178244417493657}
   - component: {fileID: 5570947507939381739}
+  - component: {fileID: -6276013407425316549}
   m_Layer: 16
   m_Name: GridBlock_Grass
   m_TagString: Untagged
@@ -55,7 +56,6 @@ MonoBehaviour:
     type: 3}
   MinimapTile: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
     type: 3}
-  MovementCost: 1
   SpeedCost: 1
   Unpassable: 0
   IsDestination: 0
@@ -85,3 +85,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &-6276013407425316549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5858393999434783989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299007c16330aac4e8f41a29e3aabbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GridBlock: {fileID: 2462178244417493657}
+  MinWaitTime: 0
+  MaxWaitTime: 0

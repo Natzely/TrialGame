@@ -19,7 +19,7 @@ public class Behaivor_Hurt : StateMachineBehaviour
         }
 
         var deathID = Animator.StringToHash("Death");
-        if (animator.HasState(0, deathID))
+        if (animator.HasState(0, deathID) && uC.CurrentHealth <= 0)
             animator.SetBool("Death", true);
     }
 

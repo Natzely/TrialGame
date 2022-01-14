@@ -48,13 +48,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d299b0688e2b6d04f8142103554d19ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EditOnStart: 0
   Speed: 500
   Acceleration: 1.1
-  Decceleration: 0.97
-  SlowDownPercent: 0.87
+  Decceleration: 0.98
+  SlowDownPercent: 0.88
   MinSpeed: 50
   MaxSpeed: 500
   WaitTime: 1.2
+  EditEvent:
+    m_PersistentCalls:
+      m_Calls: []
   MoveTo: {x: 0, y: -20}
 --- !u!1 &982979869342489844
 GameObject:
@@ -106,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: 480, z: 0, w: 0}
+  m_Padding: {x: 0, y: 80, z: 0, w: 0}
   m_Softness: {x: 0, y: 180}
 --- !u!1 &1777569434611945397
 GameObject:
@@ -158,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Padding: {x: 650, y: 150, z: 650, w: 0}
   m_Softness: {x: 500, y: 320}
 --- !u!114 &2547448642591639425
 MonoBehaviour:
@@ -172,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c92682a25fab0f47a3ca4cf736c304e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EditOnStart: 0
   Speed: 1000
   Acceleration: 1.1
   Decceleration: 0.9
@@ -179,6 +184,9 @@ MonoBehaviour:
   MinSpeed: 20
   MaxSpeed: 1300
   WaitTime: 0.5
+  EditEvent:
+    m_PersistentCalls:
+      m_Calls: []
   PaddingEdit: {x: 0, y: 0, z: 0, w: 150}
   SoftnessEdit: {x: 500, y: 320}
 --- !u!1 &3233735837375832809
@@ -214,10 +222,10 @@ RectTransform:
   m_Father: {fileID: 7909404411027680948}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 120}
+  m_SizeDelta: {x: 1280, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6735882363441641576
 CanvasRenderer:
@@ -329,6 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7813a5f7e7b024588366360b874c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EditOnStart: 0
   Speed: 200
   Acceleration: 1.1
   Decceleration: 0.97
@@ -336,6 +345,9 @@ MonoBehaviour:
   MinSpeed: 100
   MaxSpeed: 350
   WaitTime: 0
+  EditEvent:
+    m_PersistentCalls:
+      m_Calls: []
   MoveTo: {x: 0, y: 425}
   ToFontSize: 200
   Text: {fileID: 6538780130333655922}
@@ -425,6 +437,7 @@ GameObject:
   - component: {fileID: 2243674824603470143}
   - component: {fileID: 6765338279239739708}
   - component: {fileID: 2496032508105589127}
+  - component: {fileID: 6182632664205643978}
   m_Layer: 0
   m_Name: flag
   m_TagString: Untagged
@@ -486,6 +499,30 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &6182632664205643978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5180490833551307169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61556ada2e9b7f48bb93112e2a29615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EditOnStart: 0
+  Speed: 2
+  Acceleration: 1.1
+  Decceleration: 1
+  SlowDownPercent: 1
+  MinSpeed: 1
+  MaxSpeed: 5
+  WaitTime: 2
+  EditEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  scaleEdit: {x: 5, y: 5, z: 1}
 --- !u!1 &5696435955387504562
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,3 +635,4 @@ MonoBehaviour:
   UnitBackgroundMask: {fileID: 2547448642591639425}
   ConfirmationPanel: {fileID: 0}
   UnitMover: {fileID: 111284447272033905}
+  Flag: {fileID: 5180490833551307169}

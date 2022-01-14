@@ -58,7 +58,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 97
   m_TargetDisplay: 0
 --- !u!114 &3910495600373390351
 MonoBehaviour:
@@ -191,11 +191,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdbfb578460a6384d9e14601da304950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerInput: {fileID: 0}
   FirstSelected: {fileID: 5791045409668472402}
   Sound_Enter: {fileID: 8300000, guid: 0539590a2a4cb4e47a702eaa67224108, type: 3}
   Sound_Exit: {fileID: 8300000, guid: 813c439adf0455a4a966a4d3289ce57b, type: 3}
   State: 0
-  PlayerInput: {fileID: 0}
+  InputSystem: {fileID: 0}
   HightLightPanel: {fileID: 8706607469899305934}
   MainButtonPanel: {fileID: 8444277483746247958}
   ControlsPanel: {fileID: 375433875024801788}

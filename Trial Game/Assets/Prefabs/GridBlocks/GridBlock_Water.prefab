@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1035513563995690849}
   - component: {fileID: 4677800291288723509}
   - component: {fileID: 7472597618557682154}
+  - component: {fileID: 468252028838469898}
   m_Layer: 16
   m_Name: GridBlock_Water
   m_TagString: Untagged
@@ -44,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c8e4747021ad148acaa83d5537eb52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentUnit: {fileID: 0}
   Type: 2
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
@@ -56,7 +56,7 @@ MonoBehaviour:
     type: 3}
   MinimapTile: {fileID: 2591678617079306126, guid: 077c205fa0c4e83418e93b6053a3b1f0,
     type: 3}
-  MovementCost: 99
+  SpeedCost: 0
   Unpassable: 1
   IsDestination: 0
 --- !u!61 &7472597618557682154
@@ -85,3 +85,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &468252028838469898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035513563995690863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299007c16330aac4e8f41a29e3aabbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GridBlock: {fileID: 4677800291288723509}
+  MinWaitTime: 0
+  MaxWaitTime: 0

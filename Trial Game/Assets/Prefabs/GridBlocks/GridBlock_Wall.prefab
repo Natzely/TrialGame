@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5460475136893554025}
   - component: {fileID: 8282250386879923856}
   - component: {fileID: 824339820758328376}
+  - component: {fileID: -3825919530045476461}
   m_Layer: 16
   m_Name: GridBlock_Wall
   m_TagString: Untagged
@@ -44,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c8e4747021ad148acaa83d5537eb52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 5
   MoveSpace: {fileID: 1168837427428086730, guid: c085b1083d2a4004ea7e2f0e839b8982,
     type: 3}
   AttackSpace: {fileID: 1168837427428086730, guid: 8f6ccdf6f94252849b1cf812e5d21dc4,
@@ -53,7 +54,7 @@ MonoBehaviour:
     type: 3}
   SavedPath: {fileID: 6727648032492768543, guid: 9f121c5ff0f76e346844cf4df09a72f7,
     type: 3}
-  MinimapTile: {fileID: 2971420630142139890, guid: be597c860735194458d38d7f431678dc,
+  MinimapTile: {fileID: 2971420630142139890, guid: 933757d21c674524c899f9e6bdb5a9cf,
     type: 3}
   SpeedCost: 0
   Unpassable: 1
@@ -84,3 +85,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &-3825919530045476461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5460475136893554027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299007c16330aac4e8f41a29e3aabbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GridBlock: {fileID: 8282250386879923856}
+  MinWaitTime: 0
+  MaxWaitTime: 0

@@ -26,6 +26,10 @@ public class Enums : MonoBehaviour
         Grass = 1,
         Water = 2,
         Tree = 3,
+        Ground = 4,
+        Wall = 5,
+        Bridge = 6,
+        Pathway = 7,
     }
 
     public enum NeighborDirection

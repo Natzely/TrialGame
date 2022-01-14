@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class UIObjectEditor : MonoBehaviour
 {
-    [SerializeField] internal float Speed;
+    [SerializeField] internal bool EditOnStart = false;
+    [SerializeField] internal float Speed = 1;
     [SerializeField] internal float Acceleration = 1;
     [SerializeField] internal float Decceleration = 1;
     [Tooltip("At what percent should you start slowing down")]
@@ -13,7 +15,8 @@ public abstract class UIObjectEditor : MonoBehaviour
     [SerializeField] internal float MaxSpeed;
     [Tooltip("Time to wait before edit begins in seconds")]
     [SerializeField] internal float WaitTime;
-    
+    [SerializeField] internal UnityEvent EditEvent;
+
     internal float DistancePer { get => 1 - (_curDistance / _distance); }
 
     internal bool _edit { get; private set; }
@@ -27,7 +30,10 @@ public abstract class UIObjectEditor : MonoBehaviour
     public virtual void Edit(bool edit = true)
     {
         if (edit && WaitTime > 0)
+        {
             _startWaitTimer = true;
+            _waitTimer = WaitTime;
+        }
         else
             _edit = edit;
 
@@ -43,6 +49,8 @@ public abstract class UIObjectEditor : MonoBehaviour
     {
         _waitTimer = WaitTime;
         _speed = Speed;
+        if (EditOnStart)
+            Edit();
     }
 
     internal virtual void Update()

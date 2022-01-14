@@ -26,6 +26,7 @@ public class Overlay : MonoBehaviour
         {
             _sR.enabled = false;
         }
+
         if (_unitRenderer)
             SetRenderAlpha(_unitRenderer, MainRenderAlpha);
     }
@@ -33,7 +34,8 @@ public class Overlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_unitRenderer && ((_uC && _uC.Overlay) || !_uC))
+        //if (_unitRenderer && ((_uC && _uC.Overlay) || !_uC))
+        if(_uC && _uC.enabled && _uC.Overlay)
         {
             _sR.enabled = _unitRenderer.enabled;
             _sR.sprite = _unitRenderer.sprite;
