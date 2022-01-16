@@ -9,24 +9,18 @@ public class Damager : MonoBehaviour
     public int Damage = 1;
 
     private SpriteRenderer _sR;
+    private Projectile_Straight _projectile;
 
     private void Awake()
     {
         _sR = GetComponent<SpriteRenderer>();
+        _projectile = GetComponent<Projectile_Straight>();
     }
 
     private void Start()
     {
-        if(Parent.MaxAttackDistance == 1)
-        {
+        if(_projectile && _projectile.MaxDistance == 1)
             _sR.enabled = false;
-        }
-    }
-
-    private void Update()
-    {
-        if (Vector2.Distance(Parent.Position, transform.position) >= Parent.MaxAttackDistance)
-            Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: -8342063920965958230}
   - component: {fileID: -4496432915204269968}
   - component: {fileID: 5243752479754259736}
-  - component: {fileID: 7025874482398687422}
-  m_Layer: 24
-  m_Name: Damager_Melee
+  - component: {fileID: -7562616754991587964}
+  m_Layer: 15
+  m_Name: Damager_Range_Arc
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
   Player: 0
   Parent: {fileID: 0}
   Damage: 1
---- !u!114 &7025874482398687422
+--- !u!114 &-7562616754991587964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,8 +157,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6850689932613346955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d59a4b11caece44a4e80d2191e5fd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d005c7b265865b4f8e5e0d424e52678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
-  MaxDistance: 1
+  Speed: 4
+  ArcHeight: 1
+  TempDestination: {x: 0, y: 0}
