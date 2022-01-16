@@ -264,7 +264,7 @@ public class UnitController: MonoBehaviour, ILog
             Projectile tmpProjectile = projObj.GetComponent<Projectile>();
             var tmpDir = _attackPos - transform.position.V2();
             tmpDir.Normalize();
-            tmpProjectile.Launch(tmpDir, AttackSpeed, MaxAttackDistance);
+            tmpProjectile.Launch(_attackPos);
             Attacked = true;
         }
     }
