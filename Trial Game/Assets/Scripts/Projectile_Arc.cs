@@ -7,6 +7,8 @@ public class Projectile_Arc : Projectile
     public float ArcHeight;
     public Vector2 TempDestination;
 
+    private float YDiff { get { return Mathf.Abs(_destination.y - _startPos.y); } }
+
     private Vector2 _arcVertex;
     private Vector2 _destination;
     private bool _launch;
@@ -18,7 +20,7 @@ public class Projectile_Arc : Projectile
         _destination = destination;
         _arcVertex = new Vector2(
             (_destination.x + _startPos.x) / 2,
-            _startPos.y + (ArcHeight + Mathf.Abs(_destination.y - _startPos.y)));
+            _startPos.y + (ArcHeight + YDiff));
 
         float x = transform.position.x;
         float y = transform.position.y;
@@ -47,7 +49,13 @@ public class Projectile_Arc : Projectile
         {
             float newX = Mathf.MoveTowards(transform.position.x, _destination.x, Speed * Time.deltaTime);
             float newY = _a * Mathf.Pow((newX - _arcVertex.x), 2) + (_arcVertex.y);
-            transform.position = new Vector2(newX, newY);
+            Vector2 newPos = new Vector2(newX, newY);
+
+            float xDiff = newX - transform.position.x;
+            float yDiff = newY - transform.position.y;
+            float rotation = Mathf.Atan2(yDiff, xDiff) * Mathf.Rad2Deg;
+
+            transform.SetPositionAndRotation(newPos, Quaternion.Euler(0, 0, rotation));
         }
     }
 }
