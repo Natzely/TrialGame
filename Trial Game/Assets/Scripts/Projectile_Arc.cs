@@ -13,20 +13,34 @@ public class Projectile_Arc : Projectile
     private Vector2 _destination;
     private bool _launch;
     private float _a;
-    private float _posHeightDif;
+    private float arc_a;
+    private float arc_b;
+    private float arc_c;
 
     public override void Launch(Vector2 destination)
     {
         _destination = destination;
         _arcVertex = new Vector2(
             (_destination.x + _startPos.x) / 2,
-            _startPos.y + (ArcHeight + YDiff));
+            Mathf.Max(_startPos.y, _destination.y) + ArcHeight);
 
-        float x = transform.position.x;
-        float y = transform.position.y;
-        _a = (y - _arcVertex.y) / Mathf.Pow((x - _arcVertex.x), 2);
+        float[,] matrix = new float[3, 4]
+        {
+            { Mathf.Pow(_startPos.x,2), _startPos.x, 1, _startPos.y },
+            { Mathf.Pow(_destination.x,2), _destination.x, 1, _destination.y },
+            { Mathf.Pow(_arcVertex.x,2), _arcVertex.x, 1, _arcVertex.y }
+        };
+
+        if(Utility.LinearEquationSolver.Solve(matrix))
+        {
+            arc_a = matrix[0, 3];
+            arc_b = matrix[1, 3];
+            arc_c = matrix[2, 3];
+        }
+        //float x = transform.position.x;
+        //float y = transform.position.y;
+        //_a = (y - _arcVertex.y) / Mathf.Pow((x - _arcVertex.x), 2);
         _launch = true;
-        _posHeightDif = Mathf.Abs(_destination.y - transform.position.y);
     }
 
     protected override void Awake()
@@ -48,7 +62,8 @@ public class Projectile_Arc : Projectile
         if (_launch)
         {
             float newX = Mathf.MoveTowards(transform.position.x, _destination.x, Speed * Time.deltaTime);
-            float newY = _a * Mathf.Pow((newX - _arcVertex.x), 2) + (_arcVertex.y);
+            float newY = (arc_a * Mathf.Pow(newX, 2)) + (arc_b * newX) + arc_c; 
+            //float newY = _a * Mathf.Pow((newX - _arcVertex.x), 2) + (_arcVertex.y);
             Vector2 newPos = new Vector2(newX, newY);
 
             float xDiff = newX - transform.position.x;
