@@ -85,7 +85,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
     }
 
     // Update is called once per frame
-    void Update()
+    internal virtual void Update()
     {
         if (_selected && ButtonText != null)
         {

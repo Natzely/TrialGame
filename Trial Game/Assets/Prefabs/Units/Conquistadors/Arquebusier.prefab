@@ -237,7 +237,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7399022661077760024, guid: f22f1a3e1b73e0e4ebbfb2e2e4a9f43b,
+  m_Sprite: {fileID: 3819265265992225281, guid: aa756aec1bace6741b0d37031e8a71d8,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -265,8 +265,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.22}
-    oldSize: {x: 2.2755556, y: 3.0360506}
+    pivot: {x: 0.5, y: 0.32}
+    oldSize: {x: 1.7808696, y: 2.3756528}
     newSize: {x: 2.2755556, y: 3.0360506}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -285,7 +285,7 @@ Animator:
   m_GameObject: {fileID: 7530291345336432978}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c0d8179d39f20d84c8aa6332dbb1af61, type: 2}
+  m_Controller: {fileID: 9100000, guid: b2cd6d18cb7add44a9789e2055125422, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
   WalkingAudioSource: {fileID: 4877884251898067759}
   OffCooldownObject: {fileID: 6984718576672131601, guid: 527e62d427a8a0f428ed52dbf3b3472c,
     type: 3}
-  Projectile: {fileID: 6850689932613346955, guid: a1470483a96840d4c8f5f3eb5858d11c,
+  Projectile: {fileID: 6850689932613346955, guid: 67258868e22826947847646127ef729a,
     type: 3}
   MinimapIconImage: {fileID: 6849667185187882453, guid: 7a70802fde0cebf41971027f9aa2f497,
     type: 3}

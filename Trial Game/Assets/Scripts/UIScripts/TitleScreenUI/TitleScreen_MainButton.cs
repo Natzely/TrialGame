@@ -3,10 +3,13 @@ using UnityEngine.EventSystems;
 
 public class TitleScreen_MainButton : TitleScreen_Button
 {
+    [SerializeField] internal UITextSizeEditor SizeEditor;
+
     public override void OnSelect(BaseEventData eventData)
     {
         AudioSource.Play(Sound_Select);
         _selected = true;
+        SizeEditor.Edit(true);
         UIHandler.OnItemSelected(this);
     }
 
@@ -14,6 +17,7 @@ public class TitleScreen_MainButton : TitleScreen_Button
     {
         //_image.color = Colors.Button_Deselected;
         Deselect();
+        SizeEditor.Edit(false);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

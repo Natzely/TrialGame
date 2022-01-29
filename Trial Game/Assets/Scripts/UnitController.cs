@@ -121,7 +121,8 @@ public class UnitController: MonoBehaviour, ILog
     public int DefaultLook 
     { 
         get { return _defaultLook; } 
-        set { _defaultLook = value; } 
+        set { _defaultLook = value;
+              ResetLook(); } 
     }
 
 
@@ -378,7 +379,6 @@ public class UnitController: MonoBehaviour, ILog
         gameObject.name = $"P{((int)Player) + 1}_" + gameObject.name;
 
         BoxCollider.size = ColliderSizeIdle;
-        ResetLook();
 
         if (OffCooldownObject != null)
             Instantiate(OffCooldownObject, transform.position, Quaternion.identity);

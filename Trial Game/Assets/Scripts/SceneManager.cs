@@ -14,7 +14,7 @@ public class SceneManager : MonoBehaviour
         set { _waitTime = value + .5f; }
     }
 
-    private AudioSource _audioSource;
+    internal AudioSource _audioSource;
     private bool _loadScene;
     private bool _quitGame;
     private bool _fadeMusic;
@@ -35,11 +35,6 @@ public class SceneManager : MonoBehaviour
         _loadScene = true;
         _fadeMusic = true;
         _sceneToLoad = sceneName;
-    }
-
-    public void StartMusic()
-    {
-        _audioSource.PlayDelayed(.5f);
     }
 
     public void QuitGame(float waitTime = 0)

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class GridBlock : MonoBehaviour, ILog
 {
@@ -34,6 +33,7 @@ public class GridBlock : MonoBehaviour, ILog
     private int MovementCost { get { return Cursor.CurrentUnit.CheckGridMoveCost(Type); } }
 
     private PlayerParams _gridParams;
+    private GameObject _triggerObject;
     private BoxCollider2D _bC;
     private Dictionary<UnitController, Path_Saved> _savedPaths;
     private List<UnitController> _unitsMovingThrough;
@@ -239,7 +239,8 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void Initialize()
     {
-        _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
+        if (_gridParams == null)
+            _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
 
         StartCoroutine(CreateMinimapIcon());
 
@@ -308,6 +309,10 @@ public class GridBlock : MonoBehaviour, ILog
     {
         var colObj = collision.gameObject;
         var uC = colObj.GetComponent<UnitController>();
+
+        if (_gridParams == null)
+            _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
+
         if (uC != null)
         {
             _unitsMovingThrough.Add(uC);

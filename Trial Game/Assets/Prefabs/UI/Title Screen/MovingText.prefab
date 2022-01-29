@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartAt: {x: -450, y: 140}
   MoveTo: {x: -35, y: 140}
-  MoveSpeed: 2500
+  MoveSpeed: 1500
   WaitTimer: 0
   EventActivation: 1
   AfterMoveEvent:

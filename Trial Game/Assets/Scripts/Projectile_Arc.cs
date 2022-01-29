@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile_Arc : Projectile
 {
     public float ArcHeight;
+    public float SizeScale;
     public Vector2 TempDestination;
 
     private float YDiff { get { return Mathf.Abs(_destination.y - _startPos.y); } }
@@ -13,9 +14,10 @@ public class Projectile_Arc : Projectile
     private Vector2 _destination;
     private bool _launch;
     private float _a;
-    private float arc_a;
-    private float arc_b;
-    private float arc_c;
+    private float _arc_a;
+    private float _arc_b;
+    private float _arc_c;
+    private float _arcDis;
 
     public override void Launch(Vector2 destination)
     {
@@ -23,6 +25,8 @@ public class Projectile_Arc : Projectile
         _arcVertex = new Vector2(
             (_destination.x + _startPos.x) / 2,
             Mathf.Max(_startPos.y, _destination.y) + ArcHeight);
+
+        _arcDis = Mathf.Abs(_arcVertex.x - transform.position.x);
 
         float[,] matrix = new float[3, 4]
         {
@@ -33,9 +37,9 @@ public class Projectile_Arc : Projectile
 
         if(Utility.LinearEquationSolver.Solve(matrix))
         {
-            arc_a = matrix[0, 3];
-            arc_b = matrix[1, 3];
-            arc_c = matrix[2, 3];
+            _arc_a = matrix[0, 3];
+            _arc_b = matrix[1, 3];
+            _arc_c = matrix[2, 3];
         }
         //float x = transform.position.x;
         //float y = transform.position.y;
@@ -62,7 +66,8 @@ public class Projectile_Arc : Projectile
         if (_launch)
         {
             float newX = Mathf.MoveTowards(transform.position.x, _destination.x, Speed * Time.deltaTime);
-            float newY = (arc_a * Mathf.Pow(newX, 2)) + (arc_b * newX) + arc_c; 
+            float newY = (_arc_a * Mathf.Pow(newX, 2)) + (_arc_b * newX) + _arc_c;
+            float sizeDif = (1 - Mathf.Abs(transform.position.x - _arcVertex.x) / _arcDis) * SizeScale;
             //float newY = _a * Mathf.Pow((newX - _arcVertex.x), 2) + (_arcVertex.y);
             Vector2 newPos = new Vector2(newX, newY);
 
@@ -71,6 +76,7 @@ public class Projectile_Arc : Projectile
             float rotation = Mathf.Atan2(yDiff, xDiff) * Mathf.Rad2Deg;
 
             transform.SetPositionAndRotation(newPos, Quaternion.Euler(0, 0, rotation));
+            transform.localScale = new Vector3(1 + sizeDif, 1 + sizeDif, 0);
         }
     }
 }
