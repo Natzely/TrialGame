@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,8 @@ using TMPro;
 [RequireComponent(typeof(Rigidbody), typeof(SpriteRenderer), typeof(BoxCollider2D))]
 [RequireComponent(typeof(Animator), typeof(Damageable), typeof(GridBlockCosts))]
 [RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
-public class UnitController: MonoBehaviour, ILog
+[RequireComponent(typeof(Unit_Movement))]
+public class Unit_Controller : MonoBehaviour, ILog
 {
     public int MAXMOVEAFTERATTACK = 3;
     public float PLUSACTIONTIME = 7.5f;
@@ -66,7 +67,7 @@ public class UnitController: MonoBehaviour, ILog
     public GridBlock CurrentGridBlock
     {
         get { return _currentGridBlock; }
-        set
+        private set
         {
             _currentGridBlock = value;
             _currentGridMoveCost = _gridblockCosts.GetGridblockMoveCost(_currentGridBlock.Type);
@@ -75,10 +76,10 @@ public class UnitController: MonoBehaviour, ILog
     }
     public BoxCollider2D BoxCollider { get; private set; }
     public SpriteRenderer SpriteRender { get { return _sR; } }
-    public Vector2 Position 
-    { 
-        get { return transform.position; } 
-        set { transform.position = value; } 
+    public Vector2 Position
+    {
+        get { return transform.position; }
+        set { transform.position = value; }
     }
     public Vector2 LookDirVector { get { return new Vector2(_lookX, _lookY); } }
     public bool Attacked { get; private set; }
@@ -118,11 +119,14 @@ public class UnitController: MonoBehaviour, ILog
     }
     private int _currentGridMoveCost;
     public int CurentGridMoveCost { get { return _currentGridMoveCost; } }
-    public int DefaultLook 
-    { 
-        get { return _defaultLook; } 
-        set { _defaultLook = value;
-              ResetLook(); } 
+    public int DefaultLook
+    {
+        get { return _defaultLook; }
+        set
+        {
+            _defaultLook = value;
+            ResetLook();
+        }
     }
 
 
@@ -396,59 +400,6 @@ public class UnitController: MonoBehaviour, ILog
             else if (PlusAction <= 0 && UnitState == Enums.UnitState.PlusAction && !_selected)
                 UnitState = Enums.UnitState.Idle;
 
-            if ((_nextPoint != null || _movePositions.Count > 0) && UnitState != Enums.UnitState.Attacking && UnitState != Enums.UnitState.Hurt)
-            {
-                if (_nextPoint == null)
-                    GetNextPoint();
-
-                Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * GridblockSpeedModifier * Time.deltaTime);
-                _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
-
-                transform.position = moveVector;
-                if (transform.position.V2() == _nextPoint.Position)
-                {
-                    Log("Arrived at point");
-                    var fod = _prevPositions.FirstOrDefault();
-                    fod?.Path_Delete(this);
-                    _prevPositions.Push(_nextPoint);
-
-                    if (CurrentGridBlock.CurrentUnit == null && _attackWhenInRange && AttackTargetDistance() <= MaxAttackDistance && CurrentGridBlock && CurrentGridBlock.CurrentUnit == this)
-                    {
-                        DeleteSavedPath();
-                        _nextPoint = null;
-                    }
-                    else if (!_movePositions.IsEmpty())
-                    {
-                        Log("Get next point");
-                        GetNextPoint();
-                    }
-                    else
-                    {
-                        if (CurrentGridBlock != _nextPoint.GridBlock) // Arrived at the last point, make sure it's the currentgridblock
-                            CurrentGridBlock = _nextPoint.GridBlock;
-                        Log("Last move");
-                        _nextPoint = null;
-                    }
-
-                    if (_movePositions.IsEmpty() && _nextPoint == null)
-                    {
-                        if (CurrentGridBlock.CurrentUnit == null)
-                        {
-                            Log($"Ends move");
-                            Moving = false;
-                            Moved = true;
-
-                            CurrentGridBlock.SetCurrentUnit(this);
-                            UnitState = Enums.UnitState.Idle;
-                        }
-                        else
-                        {
-                            FindGoodPreviousSpot();
-                        }
-                    }
-                }
-            }
-
             if (!_attack && Target != null && _movePositions.IsEmpty() && _nextPoint == null)
             {
                 Log($"checks for attack");
@@ -619,49 +570,49 @@ public class UnitController: MonoBehaviour, ILog
             return Position.GridDistance(Target.Position);
     }
 
-        private void GetNextPoint()
+    private void GetNextPoint()
+    {
+        var currentPoint = _nextPoint;
+        var possiblePoint = _movePositions.Peek();
+        if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
         {
-            var currentPoint = _nextPoint;
-            var possiblePoint = _movePositions.Peek();
-            if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
+            var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
+            foreach (GridBlock gB in orderedNeighbors)
             {
-                var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
-                foreach (GridBlock gB in orderedNeighbors)
+                if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
                 {
-                    if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
-                    {
-                        possiblePoint = gB.ToMovePoint();
-                        break;
-                    }
+                    possiblePoint = gB.ToMovePoint();
+                    break;
                 }
             }
-            else
-                _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
-
-            if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
-            {
-                if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
-                {
-                    _nextPoint = null;
-                    return;
-                }
-                else // current spot isn't safe so find a new spot
-                {
-                    FindGoodPreviousSpot();
-                    GetNextPoint();
-                    return;
-                }
-            }
-
-            _nextPoint = possiblePoint;
-            Moving = true;
-            _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
-            UnitState = Enums.UnitState.Moving;
-            BoxCollider.size = ColliderSizeMoving;
-            _animator.SetBool("Moving", true);
-            IsHidden = false;
-            LookAt(possiblePoint.Position);
         }
+        else
+            _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
+
+        if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
+        {
+            if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
+            {
+                _nextPoint = null;
+                return;
+            }
+            else // current spot isn't safe so find a new spot
+            {
+                FindGoodPreviousSpot();
+                GetNextPoint();
+                return;
+            }
+        }
+
+        _nextPoint = possiblePoint;
+        Moving = true;
+        _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+        UnitState = Enums.UnitState.Moving;
+        BoxCollider.size = ColliderSizeMoving;
+        _animator.SetBool("Moving", true);
+        IsHidden = false;
+        LookAt(possiblePoint.Position);
+    }
 
     private void DeleteSavedPath()
     {
