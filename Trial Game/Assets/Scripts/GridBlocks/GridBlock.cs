@@ -18,35 +18,37 @@ public class GridBlock : MonoBehaviour, ILog
     public bool Unpassable = false;
     public bool IsDestination = false;
 
+    public Enums.GridStatusEffect StatusEffects { get { return _statuses; } }
     public PlayerManager PlayerManager { get; set; }
     public CursorController Cursor { get; set; }
     public Vector2 GridPosition { get; set; }
-    public bool UseMoveAnimation { get; set; }
-    public bool IsOccupied { get { return CurrentUnit; } }
-    public bool IsSpaceActive { get { return _gridParams.IsSpaceActive; } }
     public Vector2 Position { get { return transform.position; } }
     public GridNeighbors Neighbors { get; private set; }
     public Enums.ActiveSpace ActiveSpace { get { return _gridParams.ActiveSpace; } }
+    public UnitController PlayerActiveUnit { get { return _gridParams.UnitController; } }
+    public MoveGridParams GridParams { get { return _gridParams; } }
+    public bool UseMoveAnimation { get; set; }
+    public bool IsOccupied { get { return CurrentUnit; } }
+    public bool IsSpaceActive { get { return _gridParams != null && _gridParams.IsSpaceActive; } }
     public int PlayerMoveDistance { get { return _gridParams.MoveDistance; } }
     public int PlayerAttackDistance { get { return _gridParams.MaxAttackDistance; } }
-
     private int MovementCost { get { return Cursor.CurrentUnit.CheckGridMoveCost(Type); } }
 
-    private PlayerParams _gridParams;
+    private Enums.GridStatusEffect _statuses;
+    private MoveGridParams _gridParams;
     private GameObject _triggerObject;
     private BoxCollider2D _bC;
     private Dictionary<UnitController, Path_Saved> _savedPaths;
     private List<UnitController> _unitsMovingThrough;
     private Path_Active _currentActivePath;
-    private bool _gotNeighbors;
     private bool _initialized;
 
-    public (List<Enums.GridBlockType> FavorableTerrain, int MoveDistance, int MinAttackDis, int MaxAttackDis) GetPlayerMoveParams()
+    public (UnitController uC, int MoveDistance) GetPlayerMoveParams()
     {
         if (_gridParams == null)
-            return (new List<Enums.GridBlockType>(), -1, -1, -1);
+            return (null, -1);
         else
-            return (_gridParams.FavorableTerrain, _gridParams.MoveDistance, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
+            return (_gridParams.UnitController, _gridParams.MoveDistance);
     }
 
     public IEnumerable<GridBlock> AvailableAttackSpace(GridBlock behindGrid, int unitAttackDistance)
@@ -61,67 +63,57 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void CheckGrid(GridBlock moveFrom)
     {
-        var (favorableTerrain, moveDistance, minAttackDis, maxAttackDis) = moveFrom.GetPlayerMoveParams();
-        if (favorableTerrain != null)
+        var (uC, moveDistance) = moveFrom.GetPlayerMoveParams();
+        if (uC && uC.FavorableTerrain != null)
         {
-            var tempMove = moveDistance - (favorableTerrain.Contains(this.Type) ? 1 : MovementCost);
-            var tempAttack = maxAttackDis - 1;
+            var tempMove = moveDistance - (uC.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost);
+            var tempAttack = uC.MaxAttackDistance - 1;
             UseMoveAnimation = moveFrom.UseMoveAnimation;
 
             if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
             {
-                SetGrid(moveFrom, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
+                SetGrid(moveFrom, uC);
                 if (Cursor.CurrentGridBlock == this || PlayerManager.PlayerInfo.MovementPathContains(this))
                     Cursor.CurrentGridUpdate();
             }
         }
     }
 
-    public void SetGrid(GridBlock moveFrom, List<Enums.GridBlockType> favTerrain, int moveDistance, int minAttackDistance, int maxAttackDistance)
+    private bool MovingFromRageBox(GridBlock moveFrom, UnitController uC)
     {
-        bool saveParams = true;
+        return moveFrom.StatusEffects.HasFlag(Enums.GridStatusEffect.Rage) &&
+               !_statuses.HasFlag(Enums.GridStatusEffect.Rage) &&
+               uC.StatusEffects.HasFlag(Enums.UnitStatusEffect.Rage);
+    }
 
-        if (Unpassable || (CurrentUnit && CurrentUnit.IsEnemy(Enums.Player.Player1)) || _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
-            moveDistance = -1;
+    public void SetGrid(GridBlock moveFrom, UnitController uC, bool onlyAttack = false)
+    {
+        _gridParams.Update(uC);
 
-        if (moveFrom == null)
-        {
-            moveDistance += (favTerrain.Contains(this.Type) ? 1 : MovementCost);
-        }
+        if (Unpassable || (CurrentUnit && CurrentUnit.IsEnemy(Enums.Player.Player1)) ||
+            MovingFromRageBox(moveFrom, uC) || onlyAttack ||
+            _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
+            _gridParams.MoveDistance = -1;
 
-        moveDistance = Mathf.Clamp(moveDistance - (favTerrain.Contains(this.Type) ? 1 : MovementCost), -1, 9999); // If this terrain is favorable to the unit, only subtract one.
+        if(moveFrom != this && _gridParams.MoveDistance >= 0)
+            _gridParams.MoveDistance = moveFrom.GridParams.MoveDistance - (uC.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost); // If this terrain is favorable to the unit, only subtract one.
 
-        if (moveDistance >= 0)
+        if (_gridParams.MoveDistance >= 0 || onlyAttack)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Move;
 
             _gridParams.ShowMoveSpace(moveFrom);
         }
-        else if (maxAttackDistance > 0)
+        else if (moveFrom.GridParams.MaxAttackDistance > 0)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Attack;
             _gridParams.ShowAttackSpace(moveFrom);
-            maxAttackDistance--;
+            _gridParams.MaxAttackDistance = moveFrom.GridParams.MaxAttackDistance - 1;
         }
         else
-        {
             _gridParams.Reset();
-            saveParams = false;
-        }
 
-        //if (moveFrom == null)
-        //    text.text = "";
-        //text.text += $"{gameObject.name}::: moveDis:{moveDistance}, minAttack:{minAttackDistance}, maxAttack:{maxAttackDistance}, neighbors:{Neighbors.Count()} |||||| ";
-
-        if (saveParams)
-        {
-            _gridParams.FavorableTerrain = favTerrain;
-            _gridParams.MoveDistance = moveDistance;
-            _gridParams.MinAttackDistance = minAttackDistance;
-            _gridParams.MaxAttackDistance = maxAttackDistance;
-        }
-
-        PlayerManager.UpdateBlockGrid(GridPosition, this, saveParams);
+        PlayerManager.UpdateBlockGrid(GridPosition, this, _gridParams.IsSpaceActive);
     }
 
     public void Disable()
@@ -240,7 +232,7 @@ public class GridBlock : MonoBehaviour, ILog
     public void Initialize()
     {
         if (_gridParams == null)
-            _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
+            _gridParams = new MoveGridParams(this, PlayerManager, AttackSpace, MoveSpace);
 
         StartCoroutine(CreateMinimapIcon());
 
@@ -248,7 +240,6 @@ public class GridBlock : MonoBehaviour, ILog
         _gridParams.Reset();
 
         Neighbors = new GridNeighbors(this);
-        _gotNeighbors = true;
 
         _initialized = true;
     }
@@ -264,15 +255,6 @@ public class GridBlock : MonoBehaviour, ILog
         {
             Destroy(gameObject);
         }
-        //else
-        //{
-        //    _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
-
-        //    StartCoroutine(CreateMinimapIcon());
-
-        //    _savedPaths = new Dictionary<UnitController, Path_Saved>();
-        //    _gridParams.Reset();
-        //}
     }
 
     void Update()
@@ -309,9 +291,10 @@ public class GridBlock : MonoBehaviour, ILog
     {
         var colObj = collision.gameObject;
         var uC = colObj.GetComponent<UnitController>();
+        var sG = colObj.GetComponent<StatusEffect_Giver>();
 
         if (_gridParams == null)
-            _gridParams = new PlayerParams(this, PlayerManager, AttackSpace, MoveSpace);
+            _gridParams = new MoveGridParams(this, PlayerManager, AttackSpace, MoveSpace);
 
         if (uC != null)
         {
@@ -329,6 +312,11 @@ public class GridBlock : MonoBehaviour, ILog
                 PlayerManager.ActiveGrid_Update(this);
             }
         }
+
+        if(sG)
+        {
+            _statuses = sG.GridStatusEffects;
+        }    
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -356,7 +344,7 @@ public class GridBlock : MonoBehaviour, ILog
 
     private void UpdateGrid()
     {
-        SetGrid(null, _gridParams.FavorableTerrain, -1, _gridParams.MinAttackDistance, _gridParams.MaxAttackDistance);
+        SetGrid(null, _gridParams.UnitController);
     }
 
     private void CreatePathBlock()
@@ -382,26 +370,49 @@ public class GridBlock : MonoBehaviour, ILog
         throw new NotImplementedException();
     }
 
-    public class PlayerParams
+    public class MoveGridParams
     {
         public Enums.ActiveSpace ActiveSpace { get; set; }
+        public UnitController UnitController { get { return _uC; } }
         public GridBlock GridStart { get; set; }
         public UnitManager UnitManager { get; set; }
         public AttackSpace AttackSpace { get; set; }
         public MoveSpace MoveSpace { get; set; }
-        public List<Enums.GridBlockType> FavorableTerrain { get; set; }
-        public int MoveDistance { get; set; }
-        public int MaxAttackDistance { get; set; }
-        public int MinAttackDistance { get; set; }
+        public List<Enums.GridBlockType> FavorableTerrain { get { return _uC.FavorableTerrain; } }
+        public int MoveDistance
+        {
+            get { return _uC ? _uC.MoveDistance - _moveMod : -1; }
+            set
+            {
+                _moveMod = (_uC ? _uC.MoveDistance : -1) - value;
+            }
+        }
+        public int MaxAttackDistance 
+        { 
+            get { return _uC ? _uC.MaxAttackDistance - _attackMod : -1; }
+            set
+            {
+                _attackMod = (_uC ? _uC.MaxAttackDistance : -1) - value;
+            }
+        }
+        public int MinAttackDistance { get { return _uC ? _uC.MinAttackDistance : -1; } }
 
         private GridBlock _parent;
         private PlayerManager _pM;
+        private UnitController _uC;
         private GameObject _object_AS;
         private GameObject _object_MS;
+        private int _moveMod;
+        private int _attackMod;
 
         public bool IsSpaceActive
         {
             get { return ActiveSpace != Enums.ActiveSpace.Inactive; }
+        }
+
+        public void Update(UnitController uc)
+        {
+            _uC = uc;
         }
 
         public void Reset()
@@ -411,8 +422,9 @@ public class GridBlock : MonoBehaviour, ILog
             if(AttackSpace) AttackSpace.Disable();
             if(MoveSpace) MoveSpace.Disable();
             MoveDistance = -1;
-            MinAttackDistance = -1;
-            MaxAttackDistance = -1;
+            _moveMod = 0;
+            _attackMod = 0;
+            _uC = null;
         }
 
         public void ShowMoveSpace(GridBlock moveFrom)
@@ -483,7 +495,7 @@ public class GridBlock : MonoBehaviour, ILog
             return base.GetHashCode();
         }
 
-        public PlayerParams(GridBlock parent, PlayerManager playerManager, GameObject AttackSpace, GameObject MoveSpace)
+        public MoveGridParams(GridBlock parent, PlayerManager playerManager, GameObject AttackSpace, GameObject MoveSpace)
         {
             _parent = parent;
             _pM = playerManager;

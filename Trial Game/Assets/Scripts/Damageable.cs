@@ -16,6 +16,12 @@ public class Damageable : MonoBehaviour
     private Animator _animator;
     private UnitController _uC;
 
+    /// <summary>
+    /// Handles damage given to a unit. Returns false if the unit still have health left and 
+    /// true when the unit is destroyed.
+    /// </summary>
+    /// <param name="damager"></param>
+    /// <returns></returns>
     public bool Damage(Damager damager)
     {
         if (damager.Damage > 0)
@@ -42,15 +48,12 @@ public class Damageable : MonoBehaviour
 
             if (Health <= 0)
             {
-                //Instantiate(DeathSoundObject, transform.position, Quaternion.identity);
                 Vector2 posDif = (transform.position - damager.transform.position) * -1; // Flip it because if its coming from top, the we would want to look up instead of down.
                 posDif.Normalize();
-                //_animator.SetLookAtPosition(posDif);
                 _animator.SetFloat("Look X", posDif.x);
                 _animator.SetFloat("Look Y", posDif.y);
                 _animator.SetTrigger("Hit");
                 _uC.OnUnitInterupt?.Invoke();
-                //Destroy(gameObject);
                 return true;
             }
             else

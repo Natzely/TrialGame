@@ -10,7 +10,7 @@ public class Projectile_Straight : Projectile
 
     public override void Launch(Vector2 destination)
     {
-        Vector2 direction = transform.position.V2() - destination;
+        Vector2 direction = destination - transform.position.V2();
         if (direction.y > 0)
             _sR.sortingOrder = 0;
         _rb2D.AddForce(Speed * direction);

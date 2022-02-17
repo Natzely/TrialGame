@@ -36,6 +36,7 @@ public class EnemyManager : UnitManager
         {
             if (uC)
             {
+                uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
                 uC.enabled = true;
                 uC.Player = Player;
                 uC.Speed *= _globalVariables.UnitSpeedModifier;

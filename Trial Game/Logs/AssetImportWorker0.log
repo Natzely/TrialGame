@@ -1,6 +1,6 @@
 Using pre-set license
 Built from '2020.3/staging' branch; Version is '2020.3.25f1 (9b9180224418) revision 10195328'; Using compiler version '192528614'; Build Type 'Release'
-OS: 'Windows 11  (10.0.22000) 64bit Core' Language: 'en' Physical Memory: 16231 MB
+OS: 'Windows 11  (10.0.22000) 64bit Core' Language: 'en' Physical Memory: 32710 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
 
 COMMAND LINE ARGUMENTS:
@@ -11,148 +11,113 @@ C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe
 -name
 AssetImportWorker0
 -projectPath
-C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
+A:/Development/Unity Projects/TrialGame/Trial Game
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-53316
-Successfully changed project path to: C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
-C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
+53127
+Successfully changed project path to: A:/Development/Unity Projects/TrialGame/Trial Game
+A:/Development/Unity Projects/TrialGame/Trial Game
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 129.66 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 108.90 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.25f1 (9b9180224418)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path C:/Users/drago/Desktop/Projects/TrialGame/Trial Game/Assets
+[Subsystems] Discovering subsystems at path A:/Development/Unity Projects/TrialGame/Trial Game/Assets
 GfxDevice: creating device client; threaded=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce GTX 1660 Ti (ID=0x2191)
+    Renderer: NVIDIA GeForce RTX 3080 Ti (ID=0x2208)
     Vendor:   
-    VRAM:     5991 MB
-    Driver:   30.0.14.9709
+    VRAM:     12108 MB
+    Driver:   30.0.15.1179
 Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56488
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56516
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001414 seconds.
+Registered in 0.001388 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 114.63 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 95.00 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.645 seconds
+- Completed reload, in  0.606 seconds
 Domain Reload Profiling:
-	ReloadAssembly (645ms)
-		BeginReloadAssembly (48ms)
+	ReloadAssembly (606ms)
+		BeginReloadAssembly (43ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (526ms)
-			LoadAssemblies (46ms)
+		EndReloadAssembly (493ms)
+			LoadAssemblies (41ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (145ms)
+			SetupTypeCache (159ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (34ms)
-			SetupLoadedEditorAssemblies (249ms)
+			RebuildScriptCaches (30ms)
+			SetupLoadedEditorAssemblies (210ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (115ms)
-				BeforeProcessingInitializeOnLoad (16ms)
-				ProcessInitializeOnLoadAttributes (83ms)
-				ProcessInitializeOnLoadMethodAttributes (31ms)
+				RefreshPlugins (95ms)
+				BeforeProcessingInitializeOnLoad (15ms)
+				ProcessInitializeOnLoadAttributes (73ms)
+				ProcessInitializeOnLoadMethodAttributes (23ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.011095 seconds.
+Registered in 0.007094 seconds.
 Begin MonoManager ReloadAssembly
-Error: Could not load signature of UnityEditor.TintBrushSmooth:get_generator due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.HexagonalRuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.IsometricRuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:get_overrideTile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOriginalRuleElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOverrideElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOriginalDefaultInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOverrideInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOverrideDefaultElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOverrideDefaultInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:GetRuleElementHeight due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.TintBrushSmooth:get_generator due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.TintBrushSmooth:GetGenerator due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Unloading broken assembly Library/ScriptAssemblies/Assembly-CSharp-Editor.dll, this assembly can cause crashes in the runtime
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 113.90 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 94.44 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.440 seconds
+- Completed reload, in  1.330 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1441ms)
-		BeginReloadAssembly (135ms)
+	ReloadAssembly (1331ms)
+		BeginReloadAssembly (132ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (18ms)
-		EndReloadAssembly (1245ms)
-			LoadAssemblies (96ms)
+			CreateAndSetChildDomain (17ms)
+		EndReloadAssembly (1145ms)
+			LoadAssemblies (81ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (360ms)
+			SetupTypeCache (338ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (68ms)
-			SetupLoadedEditorAssemblies (593ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (544ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
+				InitializePlatformSupportModulesInManaged (3ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (114ms)
-				BeforeProcessingInitializeOnLoad (115ms)
-				ProcessInitializeOnLoadAttributes (302ms)
-				ProcessInitializeOnLoadMethodAttributes (53ms)
-				AfterProcessingInitializeOnLoad (5ms)
+				RefreshPlugins (94ms)
+				BeforeProcessingInitializeOnLoad (106ms)
+				ProcessInitializeOnLoadAttributes (290ms)
+				ProcessInitializeOnLoadMethodAttributes (46ms)
+				AfterProcessingInitializeOnLoad (4ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
-Refreshing native plugins compatible for Editor in 1.31 ms, found 4 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Refreshing native plugins compatible for Editor in 1.28 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4026 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 162.5 MB.
-System memory in use after: 162.7 MB.
+Unloading 4029 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 181.6 MB.
+System memory in use after: 181.8 MB.
 
-Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 4460.
-Total: 6.009700 ms (FindLiveObjects: 0.329300 ms CreateObjectMapping: 0.236800 ms MarkObjects: 5.407800 ms  DeleteObjects: 0.035000 ms)
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 4480.
+Total: 5.667400 ms (FindLiveObjects: 0.235300 ms CreateObjectMapping: 0.168800 ms MarkObjects: 5.229700 ms  DeleteObjects: 0.032700 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -161,182 +126,486 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/Scenes/Game Test Scene.unity
-  artifactKey: Guid(ab04f0f49a67c5846a3e2fad725eeccc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/Game Test Scene.unity using Guid(ab04f0f49a67c5846a3e2fad725eeccc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f54aece356da30d85a0f073b7411d823') in 0.019212 seconds 
-  Import took 0.024513 seconds .
+  path: Assets/Prefabs/Units/Aztecs/Warrior.prefab
+  artifactKey: Guid(c20605e80594c724287953cd8c878d92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Units/Aztecs/Warrior.prefab using Guid(c20605e80594c724287953cd8c878d92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '70d09572b60d47317fe2b425b85aba2a') in 0.184342 seconds 
+  Import took 0.189809 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000307 seconds.
-  path: Assets/Scenes/Title Screen.unity
-  artifactKey: Guid(fa94bb1568f9c1e42a2bf4adc74c3596) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/Title Screen.unity using Guid(fa94bb1568f9c1e42a2bf4adc74c3596) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bff11527a3e53271cacd1fd7c1e0b011') in 0.007822 seconds 
-  Import took 0.013607 seconds .
+  Time since last request: 0.000276 seconds.
+  path: Assets/Prefabs/Units/Aztecs/Atlatl.prefab
+  artifactKey: Guid(bfd7fc0cd32b7a041b188f4668204139) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Units/Aztecs/Atlatl.prefab using Guid(bfd7fc0cd32b7a041b188f4668204139) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e568a834f433fb44302fe426fa53f5a0') in 0.045877 seconds 
+  Import took 0.056540 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 32.058012 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses
-  artifactKey: Guid(a4b67d9457b02ca4d8daf68bb18a697d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses using Guid(a4b67d9457b02ca4d8daf68bb18a697d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3f2213f320819c732010687fc7c3ddce') in 0.007812 seconds 
-  Import took 0.014569 seconds .
+  Time since last request: 0.000157 seconds.
+  path: Assets/Prefabs/Units/Aztecs/Tlamani.prefab
+  artifactKey: Guid(06ff8d88cde7d1f4fa67f06a13f5b1e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Units/Aztecs/Tlamani.prefab using Guid(06ff8d88cde7d1f4fa67f06a13f5b1e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fb94b56935b09218fc3d1f1f7d4b48dc') in 0.049572 seconds 
+  Import took 0.055615 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 249.136477 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4d27cfab0c35c6a439638ab4dffeb1bd') in 0.122743 seconds 
-  Import took 0.129952 seconds .
+  Time since last request: 8008.550997 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png
+  artifactKey: Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png using Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f4f3c32537ba3c1392f3483649ee0ac2') in 0.083018 seconds 
+  Import took 0.089954 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 8.921978 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7421c8e8f8c75b729c46533581ce5c09') in 0.022448 seconds 
-  Import took 0.028365 seconds .
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.010112 seconds.
-Could not load signature of UnityEditor.RuleOverrideTileEditor:get_overrideTile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOriginalRuleElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOverrideElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOriginalDefaultInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOverrideInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:DrawOverrideDefaultElement due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:RuleOverrideDefaultInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleOverrideTileEditor:GetRuleElementHeight due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.TintBrushSmooth:get_generator due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.TintBrushSmooth:GetGenerator due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.HexagonalRuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.IsometricRuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:get_tile due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleNeighborUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleTransformUpdate due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleMatrixOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:SpriteOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Could not load signature of UnityEditor.RuleTileEditor:RuleInspectorOnGUI due to: Could not load file or assembly 'Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies. assembly:Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null type:<unknown type> member:(null) signature:<none>
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 1.54 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.268 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1269ms)
-		BeginReloadAssembly (146ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (55ms)
-		EndReloadAssembly (1061ms)
-			LoadAssemblies (90ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (334ms)
-			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (68ms)
-			SetupLoadedEditorAssemblies (468ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (2ms)
-				BeforeProcessingInitializeOnLoad (120ms)
-				ProcessInitializeOnLoadAttributes (284ms)
-				ProcessInitializeOnLoadMethodAttributes (52ms)
-				AfterProcessingInitializeOnLoad (5ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.39 ms, found 4 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3950 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 158.7 MB.
-System memory in use after: 158.9 MB.
-
-Unloading 70 unused Assets to reduce memory usage. Loaded Objects now: 4468.
-Total: 6.105800 ms (FindLiveObjects: 0.281700 ms CreateObjectMapping: 0.176500 ms MarkObjects: 5.611300 ms  DeleteObjects: 0.035300 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 263.396702 seconds.
-  path: Assets/Prefabs/GridBlocks/GridBlock_Tree.prefab
-  artifactKey: Guid(22484f7092af31044b1df7753d42744e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/GridBlocks/GridBlock_Tree.prefab using Guid(22484f7092af31044b1df7753d42744e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '05f98d1e27203df9cb3fd30ea0156f14') in 0.056635 seconds 
-  Import took 0.065615 seconds .
+  Time since last request: 0.000168 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png
+  artifactKey: Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png using Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86d6cc25287f5108082e1795a63ade4c') in 0.025516 seconds 
+  Import took 0.034159 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 1461.391026 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3acc7c4977427e1a68a63fb0cc7baff4') in 0.044333 seconds 
-  Import took 0.051684 seconds .
+  Time since last request: 0.000183 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png
+  artifactKey: Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png using Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '83e3bd8306d822db8e43385c4b42065e') in 0.025307 seconds 
+  Import took 0.032148 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 7.841939 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1dd29c928a0b193556e10ce3a22df567') in 0.020047 seconds 
-  Import took 0.029287 seconds .
+  Time since last request: 0.000143 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png
+  artifactKey: Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png using Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38701cf6154744277295e0725669259d') in 0.024806 seconds 
+  Import took 0.031545 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 32.469797 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '54b5ec0f48fa7a8bf42ec706031512c7') in 0.022608 seconds 
-  Import took 0.030833 seconds .
+  Time since last request: 15.671948 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png
+  artifactKey: Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png using Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a07bb6e8973c52a767b866d9ce207eb9') in 0.074468 seconds 
+  Import took 0.081642 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 58.884406 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '312d9cf84579e2f7ac6a8b8044acd3dd') in 0.020264 seconds 
-  Import took 0.026655 seconds .
+  Time since last request: 0.000145 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png
+  artifactKey: Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png using Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '55378c21a52f732d6d2d55432e8c4168') in 0.030394 seconds 
+  Import took 0.036287 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 9.821756 seconds.
-  path: Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png
-  artifactKey: Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/UI/Unit Statuses/RageEmote.png using Guid(1b5b52cefeb2f98448c8f303c6f6ed09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '064865873d0e67de4c226373325e4516') in 0.021324 seconds 
-  Import took 0.027521 seconds .
+  Time since last request: 0.000158 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png
+  artifactKey: Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png using Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59c96f0d65b1f2b3db991d31b54b4377') in 0.033441 seconds 
+  Import took 0.039099 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000141 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png
+  artifactKey: Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png using Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fca1bfbb739241fa3efde45c5f84e3d3') in 0.031502 seconds 
+  Import took 0.048501 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 20.568851 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
+  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '305d74f9270c392d56334ef53fc47ba9') in 0.020711 seconds 
+  Import took 0.026334 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000142 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png
+  artifactKey: Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png using Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8100945767205c9093f0cbc61de8e3e5') in 0.025395 seconds 
+  Import took 0.032099 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000146 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png
+  artifactKey: Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png using Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '96864a46b71d7f3215ff7820e8461a9e') in 0.026980 seconds 
+  Import took 0.032341 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000131 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png
+  artifactKey: Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png using Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cfc155d8c9f5df15d4e67e5001d92b69') in 0.022297 seconds 
+  Import took 0.027808 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000140 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f95e8d72c43cac79d4d08ae5b855550') in 0.021995 seconds 
+  Import took 0.027161 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000154 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png
+  artifactKey: Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png using Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f5cd1a97506593605e1798b9e3f7b6b8') in 0.025268 seconds 
+  Import took 0.030487 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 81.717870 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
+  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4ccc389c7c6a98f20175474ae0410ae4') in 0.019139 seconds 
+  Import took 0.025434 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000181 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png
+  artifactKey: Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png using Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '11a94ac8d981e79d01cd9daa800c2336') in 0.019599 seconds 
+  Import took 0.027423 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000157 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png
+  artifactKey: Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png using Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b9e5a292883a958f7c7f088f5d6f7a9c') in 0.013572 seconds 
+  Import took 0.020561 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000150 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png
+  artifactKey: Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png using Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '931754a884b752e8293e56a2c259e560') in 0.013400 seconds 
+  Import took 0.019323 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000143 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8853bbbb4b09cd9dd1fe7864102ab017') in 0.013027 seconds 
+  Import took 0.018137 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000127 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png
+  artifactKey: Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png using Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1b32b4f4cf359834294aae119081bfa9') in 0.011274 seconds 
+  Import took 0.016480 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 120.734089 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '720490219cf63b7aa90c285b170b8cf9') in 0.042699 seconds 
+  Import took 0.048809 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 15.041524 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '46ccd79cb8ff32af9c9085fe50632d37') in 0.045729 seconds 
+  Import took 0.051287 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 38.648429 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d17633d5641d6fb3a2fe20e7544e8a5') in 0.076978 seconds 
+  Import took 0.087197 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 31.018981 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '181cc61a2690f1269dc6a7de4e83490a') in 0.050594 seconds 
+  Import took 0.056229 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 10.842569 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8d7fcb8bff1ac4deb295d741d54a2670') in 0.070042 seconds 
+  Import took 0.075602 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 38.808374 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '88cf8ebcf866839eb0078ba51e1ca944') in 0.041008 seconds 
+  Import took 0.047520 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 16.910547 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9b7c9a57c54ec09b2ccb12e41e5a3ae') in 0.034839 seconds 
+  Import took 0.040432 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.828641 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e667107ab51f81642a8fae168fcf8e29') in 0.041437 seconds 
+  Import took 0.047088 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 50.569918 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd035d6687916c9f06fbbc8e8ee58102b') in 0.052857 seconds 
+  Import took 0.059155 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 10.911408 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '45d54512a663f109bc57b7142db29e8e') in 0.035742 seconds 
+  Import took 0.042289 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.541123 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c9df79dcbcfa9aae9607eee92d5f2a16') in 0.045843 seconds 
+  Import took 0.051444 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 6.803698 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '127fb6adde2cd6a7af7b42c5a5aa647c') in 0.048045 seconds 
+  Import took 0.053896 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 25.980601 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '10972b93242586bfc1bce427b466988c') in 0.036306 seconds 
+  Import took 0.043027 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 753.111447 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
+  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e4eb40c085daf76c106fbbeeef7a3d12') in 0.058225 seconds 
+  Import took 0.067922 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 20.043876 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
+  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6039f49dfa5f58fa45c26357db2a06e') in 0.033393 seconds 
+  Import took 0.040031 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.962420 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png
+  artifactKey: Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png using Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aa75c604a76e25b37251cfa302d8b16d') in 0.038984 seconds 
+  Import took 0.049680 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 21.613024 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png
+  artifactKey: Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png using Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cdf9542ae479b433e6a6f70811480f0') in 0.061991 seconds 
+  Import took 0.067701 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 16.125608 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png
+  artifactKey: Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png using Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3d8b4a3c2cc8453791a78f2077f3dcb') in 0.030685 seconds 
+  Import took 0.036279 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.336512 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png
+  artifactKey: Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png using Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a02d64495cff1b7b7ab3362e7506c76') in 0.057453 seconds 
+  Import took 0.063634 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 151.723822 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
+  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4368d3251660c9f23046998939af1a37') in 0.071068 seconds 
+  Import took 0.080327 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000180 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png
+  artifactKey: Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png using Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5c4c9fa75497d0c28473883963029059') in 0.104552 seconds 
+  Import took 0.111080 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000197 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png
+  artifactKey: Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png using Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '254dc3a0cbc30aed318677cf597f8d88') in 0.078398 seconds 
+  Import took 0.084722 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000137 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png
+  artifactKey: Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png using Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c6cbe62ef6f0fd0b39019b9ddf2f80e0') in 0.030936 seconds 
+  Import took 0.035930 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000123 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png
+  artifactKey: Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png using Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd64384c5ec82a9e3c771fead57e6ba84') in 0.026562 seconds 
+  Import took 0.032737 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 36.333347 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png
+  artifactKey: Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png using Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4eb056d53cab0c10fae041ebcdaecdc1') in 0.028777 seconds 
+  Import took 0.037197 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000246 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png
+  artifactKey: Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png using Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e8890ca545a957162c7909698813fc2f') in 0.035552 seconds 
+  Import took 0.041431 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000160 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png
+  artifactKey: Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png using Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b4ffc2ad28a3a6cd968cd938bb508e2') in 0.070855 seconds 
+  Import took 0.077499 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000151 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png
+  artifactKey: Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png using Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd4dd4c3a70b5021ebd6d176ede3d9ab7') in 0.019390 seconds 
+  Import took 0.025577 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.498761 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png
+  artifactKey: Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png using Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f094b66b5c43ee8e67c1816895d056e2') in 0.020304 seconds 
+  Import took 0.028351 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000156 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png
+  artifactKey: Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png using Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a277f1049e37ff37397a2c28966ac6a3') in 0.030284 seconds 
+  Import took 0.036311 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000144 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png
+  artifactKey: Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png using Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa5cebeb68b4d47b69963ba9cf302ae8') in 0.033045 seconds 
+  Import took 0.039088 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000157 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png
+  artifactKey: Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png using Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6aaed767efc867021e889675d76aa29a') in 0.037323 seconds 
+  Import took 0.043396 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.152820 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png
+  artifactKey: Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png using Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc15e4aa0cce75acf3fe854051ebb151') in 0.037873 seconds 
+  Import took 0.048089 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000185 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png
+  artifactKey: Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png using Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea308d31bdd2b4a130bbaec3f14f6bda') in 0.054996 seconds 
+  Import took 0.062455 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000151 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png
+  artifactKey: Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png using Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1422ca254d4b287401a9f76ce5eb9680') in 0.029619 seconds 
+  Import took 0.035844 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000131 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png
+  artifactKey: Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png using Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8a5c5bc123fb2f4366074eb34cb98381') in 0.015509 seconds 
+  Import took 0.021371 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 27.484082 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png
+  artifactKey: Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png using Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '398e9e9bc210c79d7e8c8ee85703a9b1') in 0.029857 seconds 
+  Import took 0.035670 seconds .
 

@@ -39,8 +39,8 @@ TagManager:
   - SavedPath
   - Tree
   - Projectile_Melee
-  - 
-  - 
+  - StatusEffectGiver
+  - StatusEffectReciever
   - 
   - 
   - 

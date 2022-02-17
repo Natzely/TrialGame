@@ -8,6 +8,8 @@ public class Damager : MonoBehaviour
     public UnitController Parent;
     public int Damage = 1;
 
+    public StatusEffect_Handler StatusHandler { get; set; }
+
     private SpriteRenderer _sR;
     private Projectile_Straight _projectile;
 
@@ -32,7 +34,8 @@ public class Damager : MonoBehaviour
         if(uC != null && damageable != null && uC.Player != Player)// && !uC.AlliedWith.Contains(Player))
         {
             Damage = Mathf.FloorToInt(Damage * CalculateBonusDamage(uC));
-            damageable.Damage(this);
+            if (damageable.Damage(this))
+                StatusHandler.ClearStatus(Enums.UnitStatusEffect.Rage);
             //Parent.DamageResults(damageable.Damage(this));
             Destroy(gameObject);
         }

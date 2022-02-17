@@ -113,12 +113,12 @@ public class PlayerManager : UnitManager
             var bestN = gB.Neighbors.GetBestMoveNeighbor();
             if (bestN != null)
             { 
-                var (favorableTerrain, moveDistance, minAttackDis, maxAttackDis) = bestN.GetPlayerMoveParams();
-                gB.SetGrid(bestN, favorableTerrain, moveDistance, minAttackDis, maxAttackDis);
+                //var (uC, moveDistance) = bestN.GetPlayerMoveParams();
+                gB.SetGrid(bestN, bestN.PlayerActiveUnit);//, moveDistance);
             }
             else
             {
-                gB.SetGrid(null, new List<Enums.GridBlockType>(), -1, -1, -1);
+                gB.SetGrid(null, null);
             }
         }
     }
@@ -191,6 +191,7 @@ public class PlayerManager : UnitManager
         var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
+            uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
             uC.enabled = true;
             uC.Player = Player;
             uC.Speed *= _globalVariables.UnitSpeedModifier;

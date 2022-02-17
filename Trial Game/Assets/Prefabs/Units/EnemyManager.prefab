@@ -43,9 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ecaaac7a22b8b74db7ebb31d849bdc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: 1
+  Player: 2
   UnitHolder: {fileID: 0}
   CursorBoundaries: {fileID: 0}
+  InitializeUnitsAtStart: 1
   PlayerManager: {fileID: 0}
   MoveDelay: 5.5
   DealyTimer: 2.5

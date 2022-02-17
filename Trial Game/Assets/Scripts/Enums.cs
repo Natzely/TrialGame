@@ -58,12 +58,12 @@ public class Enums : MonoBehaviour
         Curve = 3,
     }
 
+    [System.Serializable, System.Flags]
     public enum Player
     {
-        Player1 = 0,
-        Player2 = 1,
-        Player3 = 2,
-        Player4 = 3,
+        None = 0,
+        Player1 = 1,
+        Player2 = 2,
     }
 
     public enum UnitState
@@ -134,6 +134,20 @@ public class Enums : MonoBehaviour
     {
         Ready = 0,
         Cancel = 1,
+    }
+
+    [System.Serializable, System.Flags]
+    public enum UnitStatusEffect
+    {
+        None = 0,
+        Rage = 1,
+    }
+
+    [System.Serializable, System.Flags]
+    public enum GridStatusEffect
+    {
+        None = 0,
+        Rage = 1,
     }
 }
 

@@ -76,21 +76,16 @@ public class GridNeighbors : IEnumerable<GridBlock>
     public GridBlock GetBestMoveNeighbor()
     {
         GridBlock rGB = null;
-        (List<Enums.GridBlockType> faveTerrain, int move, int min, int max) param = (new List<Enums.GridBlockType>(), -1, -1, -1);
+        (int attack, int move) param = (-1, -1);
 
         foreach (var gB in _neighbors.Values)
         {
-            if (gB != null)
+            if (gB != null && gB.IsSpaceActive)
             {
-                var values = gB.GetPlayerMoveParams();
-                if (values.MoveDistance > param.move)
+                if (gB.PlayerMoveDistance > param.move || 
+                   (gB.PlayerAttackDistance > param.attack))
                 {
-                    param = values;
-                    rGB = gB;
-                }
-                else if (values.MaxAttackDis > param.max)
-                {
-                    param = values;
+                    param = (gB.PlayerAttackDistance, gB.PlayerMoveDistance);
                     rGB = gB;
                 }
             }

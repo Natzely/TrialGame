@@ -605,7 +605,7 @@ PrefabInstance:
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
@@ -652,6 +652,11 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 615182851}
+    - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 615182852}
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -715,17 +720,17 @@ PrefabInstance:
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: OnMove
       objectReference: {fileID: 0}
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: 
+      value: Cursor_Move, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1549941073417115028, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2639350603208456233, guid: 65d987a7223c32f4f9481fa6550bd629,
         type: 3}
@@ -1628,6 +1633,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d1a6f2814dc09548824d843e289ab7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &615182852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6006786357570588135, guid: e24f8baabc24f534e9d818ec889b3a77,
+    type: 3}
+  m_PrefabInstance: {fileID: 1096122165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615182846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ca45b53ec011142ab8cf903876abec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &615182853 stripped
@@ -7030,11 +7047,6 @@ PrefabInstance:
       objectReference: {fileID: 1147294422}
     - target: {fileID: 3538441141034844254, guid: 2e12013ee509a4947a663c2cfb7c52fa,
         type: 3}
-      propertyPath: InitializeUnitsAtStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3538441141034844254, guid: 2e12013ee509a4947a663c2cfb7c52fa,
-        type: 3}
       propertyPath: StartingUnits.Array.size
       value: 11
       objectReference: {fileID: 0}
@@ -7159,11 +7171,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
         type: 3}
-      propertyPath: Player
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
-        type: 3}
       propertyPath: MoveDelay
       value: 999999
       objectReference: {fileID: 0}
@@ -7192,11 +7199,6 @@ PrefabInstance:
       propertyPath: CursorBoundaries
       value: 
       objectReference: {fileID: 1640524788}
-    - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
-        type: 3}
-      propertyPath: InitializeUnitsAtStart
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6618294660883537338, guid: 4270de0bbc3e17742abf24bb7084e436,
         type: 3}
       propertyPath: StartingUnits.Array.size

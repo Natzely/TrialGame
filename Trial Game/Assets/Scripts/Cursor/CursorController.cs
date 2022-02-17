@@ -15,7 +15,6 @@ public class CursorController : MonoBehaviour, ILog
     public AudioClip Sound_Move;
     public AudioClip Sound_Select;
     [SerializeField] private Image MiniMapIcon;
-    public int CurrentMove;
 
     public UnitController CurrentUnit
     {
@@ -80,7 +79,8 @@ public class CursorController : MonoBehaviour, ILog
 
     public void UpdateMinimapIcon()
     {
-        _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
+        if (_miniMapIcon)
+            _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
     }
 
     void Awake()
@@ -96,7 +96,8 @@ public class CursorController : MonoBehaviour, ILog
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(CreateMinimapIcon());
+        if (_pM.Minimap_UnitIcons)
+            StartCoroutine(CreateMinimapIcon());
 
         _startPos = transform.position;
         _playerColor = _sR.color = Colors.Player1;
@@ -490,15 +491,9 @@ public class CursorController : MonoBehaviour, ILog
 
     private void InitializeGrid(GridBlock origin)
     {
-        int moveDistance = /*CursorState == Enums.CursorState.OnlyAttack*/_onlyAttack ? 0 : CurrentUnit.AdjustedMoveDistance;
+        //int moveDistance = /*CursorState == Enums.CursorState.OnlyAttack*/_onlyAttack ? 0 : CurrentUnit.AdjustedMoveDistance;
 
-        origin.SetGrid(
-            null,
-            CurrentUnit.FavorableTerrain,
-            moveDistance,
-            CurrentUnit.AdjustedMinAttackDistance,
-            CurrentUnit.AdjustedMaxAttackDistance
-        );
+        origin.SetGrid(origin, CurrentUnit, _onlyAttack);
     }
 
     private void SelectUnit(bool select)

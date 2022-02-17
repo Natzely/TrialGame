@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[RequireComponent(typeof(Rigidbody), typeof(SpriteRenderer), typeof(BoxCollider2D))]
+[RequireComponent(/*typeof(Rigidbody),*/ typeof(SpriteRenderer), typeof(BoxCollider2D))]
 [RequireComponent(typeof(Animator), typeof(Damageable), typeof(GridBlockCosts))]
 [RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
 public class UnitController: MonoBehaviour, ILog
@@ -26,6 +26,7 @@ public class UnitController: MonoBehaviour, ILog
 
     public GameObject OffCooldownObject;
     public GameObject Projectile;
+    public StatusEffect_Handler StatusHandler;
     public Image MinimapIconImage;
     public Image MapTileImage;
     public EnemyController EnemyController;
@@ -50,6 +51,11 @@ public class UnitController: MonoBehaviour, ILog
     public int MoveDistance;
 
     public Enums.UnitState UnitState { get; set; }
+
+    public Enums.UnitStatusEffect StatusEffects
+    {
+        get { return StatusHandler.Statuses; }
+    }
     public UnitManager UnitManager { get; set; }
     public MovePoint Target
     {
@@ -256,11 +262,13 @@ public class UnitController: MonoBehaviour, ILog
     {
         if (!Attacked)
         {
-            GameObject projObj = Instantiate(Projectile, (Vector2)transform.position, Quaternion.identity);
+            Vector2 instPos = transform.position.V2() + new Vector2(_lookX * .75f, _lookY * .75f);
+            GameObject projObj = Instantiate(Projectile, instPos , Quaternion.identity);
             Damager damager = projObj.GetComponent<Damager>();
             damager.Player = Player;
             damager.Parent = this;
             damager.Damage = Mathf.Max(1, Mathf.FloorToInt(Damage * (_damagable.Health / Damageable.MAXHEALTH)));
+            damager.StatusHandler = StatusHandler;
 
             Projectile tmpProjectile = projObj.GetComponent<Projectile>();
             var tmpDir = _attackPos - transform.position.V2();
@@ -346,7 +354,8 @@ public class UnitController: MonoBehaviour, ILog
 
     public void UpdateMinimapIcon()
     {
-        _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
+        if (_miniMapIcon)
+            _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
     }
 
     void Awake()
@@ -374,9 +383,8 @@ public class UnitController: MonoBehaviour, ILog
             UnitManager.AddUnit(this, true);
 
         _pM = FindObjectOfType<PlayerManager>();
+        if(_pM.Minimap_UnitIcons)
         StartCoroutine(CreateMinimapIcon());
-
-        gameObject.name = $"P{((int)Player) + 1}_" + gameObject.name;
 
         BoxCollider.size = ColliderSizeIdle;
 
