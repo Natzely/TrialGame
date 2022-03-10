@@ -1,7 +1,28 @@
 fileFormatVersion: 2
 guid: eaf76627003d9dd4f93639c5e737c34d
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1999445289092740320
+    second: Atlatl_Walk_Back_0
+  - first:
+      213: 4566099760913608215
+    second: Atlatl_Walk_Back_1
+  - first:
+      213: -6566909388147151670
+    second: Atlatl_Walk_Back_2
+  - first:
+      213: 843014958282647547
+    second: Atlatl_Walk_Back_3
+  - first:
+      213: 3676134745666548019
+    second: Atlatl_Walk_Back_4
+  - first:
+      213: -7455560683690422707
+    second: Atlatl_Walk_Back_5
+  - first:
+      213: 6971462100820395514
+    second: Atlatl_Walk_Back_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +110,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e4733c95e47fbb10800000000000000
+      internalID: 1999445289092740320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_1
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71e60425a8b0e5f30800000000000000
+      internalID: 4566099760913608215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_2
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: accaf4754b6add4a0800000000000000
+      internalID: -6566909388147151670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf727c853adf2bb00800000000000000
+      internalID: 843014958282647547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_4
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 331fcedf211440330800000000000000
+      internalID: 3676134745666548019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_5
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4e83473f07888890800000000000000
+      internalID: -7455560683690422707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Back_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af58f7428db9fb060800000000000000
+      internalID: 6971462100820395514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

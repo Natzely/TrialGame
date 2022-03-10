@@ -1,7 +1,22 @@
 fileFormatVersion: 2
 guid: 2fcf17b353dcd25459186344965475ed
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -162053795267724929
+    second: Atlatl_Attk_Back_0
+  - first:
+      213: 3078639161131697511
+    second: Atlatl_Attk_Back_1
+  - first:
+      213: 3248687049538699416
+    second: Atlatl_Attk_Back_2
+  - first:
+      213: -3613361972346178097
+    second: Atlatl_Attk_Back_3
+  - first:
+      213: 8170370693007070260
+    second: Atlatl_Attk_Back_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +104,112 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Atlatl_Attk_Back_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f79309a8ee440cdf0800000000000000
+      internalID: -162053795267724929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Attk_Back_1
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7658cd6710689ba20800000000000000
+      internalID: 3078639161131697511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Attk_Back_2
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8908a26c8a7a51d20800000000000000
+      internalID: 3248687049538699416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Attk_Back_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc5b6693e62caddc0800000000000000
+      internalID: -3613361972346178097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Attk_Back_4
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 434d2f75bdcf26170800000000000000
+      internalID: 8170370693007070260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

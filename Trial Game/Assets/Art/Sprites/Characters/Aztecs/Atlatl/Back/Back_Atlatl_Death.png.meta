@@ -1,7 +1,25 @@
 fileFormatVersion: 2
 guid: eec2c808003afe14eb459c5c3d0a4d98
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3737245145398093085
+    second: Back_Atlatl_Death_0
+  - first:
+      213: -2008296960477074793
+    second: Back_Atlatl_Death_1
+  - first:
+      213: -1849638736317321870
+    second: Back_Atlatl_Death_2
+  - first:
+      213: 8278232460932195636
+    second: Back_Atlatl_Death_3
+  - first:
+      213: 4371337871452392411
+    second: Back_Atlatl_Death_4
+  - first:
+      213: 3137090304038447674
+    second: Back_Atlatl_Death_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +107,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ea5efd4753a22cc0800000000000000
+      internalID: -3737245145398093085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_1
+      rect:
+        serializedVersion: 2
+        x: 1572
+        y: 1621
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79a644b0e881124e0800000000000000
+      internalID: -2008296960477074793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_2
+      rect:
+        serializedVersion: 2
+        x: 3144
+        y: 1621
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27de00f7e53c456e0800000000000000
+      internalID: -1849638736317321870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 435a8f1309032e270800000000000000
+      internalID: 8278232460932195636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_4
+      rect:
+        serializedVersion: 2
+        x: 1572
+        y: 0
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdbc12d32ac1aac30800000000000000
+      internalID: 4371337871452392411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back_Atlatl_Death_5
+      rect:
+        serializedVersion: 2
+        x: 3144
+        y: 0
+        width: 1572
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.535, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3aa880b20f298b20800000000000000
+      internalID: 3137090304038447674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

@@ -1,7 +1,28 @@
 fileFormatVersion: 2
 guid: 0a9c0f7e75dfbab469e9f59256f9967f
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -5179978182848062916
+    second: Front_Atlatl_Death_0
+  - first:
+      213: -6060003428774012008
+    second: Front_Atlatl_Death_1
+  - first:
+      213: -5993856341160244272
+    second: Front_Atlatl_Death_2
+  - first:
+      213: -8094981055627476634
+    second: Front_Atlatl_Death_3
+  - first:
+      213: -6341049299656219794
+    second: Front_Atlatl_Death_4
+  - first:
+      213: 4011993358992055538
+    second: Front_Atlatl_Death_5
+  - first:
+      213: -579584313362959960
+    second: Front_Atlatl_Death_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +110,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3a511399450d18b0800000000000000
+      internalID: -5179978182848062916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_1
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89b96422dfa86eba0800000000000000
+      internalID: -6060003428774012008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_2
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0dbcb6e1a6b81dca0800000000000000
+      internalID: -5993856341160244272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 661cec37e99d8af80800000000000000
+      internalID: -8094981055627476634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_4
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6360ce12411008a0800000000000000
+      internalID: -6341049299656219794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_5
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc92fb14b67da730800000000000000
+      internalID: 4011993358992055538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Death_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a1bc944327e4f7f0800000000000000
+      internalID: -579584313362959960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

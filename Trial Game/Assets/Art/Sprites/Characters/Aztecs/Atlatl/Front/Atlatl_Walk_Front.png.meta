@@ -1,7 +1,28 @@
 fileFormatVersion: 2
 guid: f3437fe581987794385c4fbb2483ed40
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6523904571626573695
+    second: Atlatl_Walk_Front_0
+  - first:
+      213: -6889014372893561614
+    second: Atlatl_Walk_Front_1
+  - first:
+      213: -2000280657426669852
+    second: Atlatl_Walk_Front_2
+  - first:
+      213: -3294175625017297912
+    second: Atlatl_Walk_Front_3
+  - first:
+      213: -439744051136415307
+    second: Atlatl_Walk_Front_4
+  - first:
+      213: -2434223661066307792
+    second: Atlatl_Walk_Front_5
+  - first:
+      213: 4484451367784970673
+    second: Atlatl_Walk_Front_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +110,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 180b6a37b5f6675a0800000000000000
+      internalID: -6523904571626573695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_1
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc6e1b6ded4560a0800000000000000
+      internalID: -6889014372893561614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_2
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 3242
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ee9ffa07539d34e0800000000000000
+      internalID: -2000280657426669852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 804f71be8bcb842d0800000000000000
+      internalID: -3294175625017297912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_4
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b93ce78d17b5e9f0800000000000000
+      internalID: -439744051136415307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_5
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 037ba423a76e73ed0800000000000000
+      internalID: -2434223661066307792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlatl_Walk_Front_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b9765562c8fb3e30800000000000000
+      internalID: 4484451367784970673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

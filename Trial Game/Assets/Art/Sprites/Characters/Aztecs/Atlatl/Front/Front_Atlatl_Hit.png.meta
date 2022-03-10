@@ -1,7 +1,19 @@
 fileFormatVersion: 2
 guid: d6368c2cf7f45a243b5c656253fee740
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -4377214412924661987
+    second: Front_Atlatl_Hit_0
+  - first:
+      213: 6001337640975242502
+    second: Front_Atlatl_Hit_1
+  - first:
+      213: 3243564787784215008
+    second: Front_Atlatl_Hit_2
+  - first:
+      213: -4399446627469937103
+    second: Front_Atlatl_Hit_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -89,7 +101,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Front_Atlatl_Hit_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1fc7e3dea20143c0800000000000000
+      internalID: -4377214412924661987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Hit_1
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 1621
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 605928bb9c8094350800000000000000
+      internalID: 6001337640975242502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Hit_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e9e7d54df4730d20800000000000000
+      internalID: 3243564787784215008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Front_Atlatl_Hit_3
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 0
+        width: 1242
+        height: 1621
+      alignment: 9
+      pivot: {x: 0.5, y: 0.215}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1363d510a9602f2c0800000000000000
+      internalID: -4399446627469937103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
