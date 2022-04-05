@@ -140,14 +140,20 @@ public class Enums : MonoBehaviour
     public enum UnitStatusEffect
     {
         None = 0,
-        Rage = 1,
+        Rage = 2,
     }
 
     [System.Serializable, System.Flags]
     public enum GridStatusEffect
     {
         None = 0,
+        Rage = 2,
+    }
+
+    public enum Scenerio
+    {
         Rage = 1,
+        Brawl = 2,
     }
 }
 

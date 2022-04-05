@@ -1,108 +1,108 @@
 Using pre-set license
-Built from '2020.3/staging' branch; Version is '2020.3.25f1 (9b9180224418) revision 10195328'; Using compiler version '192528614'; Build Type 'Release'
-OS: 'Windows 11  (10.0.22000) 64bit Core' Language: 'en' Physical Memory: 16231 MB
+Built from '2020.3/staging' branch; Version is '2020.3.30f1 (1fb1bf06830e) revision 2077119'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22000) 64bit Core' Language: 'en' Physical Memory: 32710 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
 
 COMMAND LINE ARGUMENTS:
-C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe
+C:\Program Files\Unity\Hub\Editor\2020.3.30f1\Editor\Unity.exe
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker0
 -projectPath
-C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
+A:/Development/Unity Projects/TrialGame/Trial Game
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-56325
-Successfully changed project path to: C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
-C:/Users/drago/Desktop/Projects/TrialGame/Trial Game
+56914
+Successfully changed project path to: A:/Development/Unity Projects/TrialGame/Trial Game
+A:/Development/Unity Projects/TrialGame/Trial Game
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 169.34 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 105.01 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Initialize engine version: 2020.3.25f1 (9b9180224418)
-[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path C:/Users/drago/Desktop/Projects/TrialGame/Trial Game/Assets
+Initialize engine version: 2020.3.30f1 (1fb1bf06830e)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path A:/Development/Unity Projects/TrialGame/Trial Game/Assets
 GfxDevice: creating device client; threaded=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce GTX 1660 Ti (ID=0x2191)
+    Renderer: NVIDIA GeForce RTX 3080 Ti (ID=0x2208)
     Vendor:   
-    VRAM:     5991 MB
+    VRAM:     12108 MB
     Driver:   30.0.15.1179
 Initialize mono
-Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
-Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
-Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56616
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56220
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001374 seconds.
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.30f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001310 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 160.67 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 94.37 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.711 seconds
+- Completed reload, in  0.588 seconds
 Domain Reload Profiling:
-	ReloadAssembly (711ms)
-		BeginReloadAssembly (47ms)
+	ReloadAssembly (588ms)
+		BeginReloadAssembly (51ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (597ms)
-			LoadAssemblies (45ms)
+		EndReloadAssembly (474ms)
+			LoadAssemblies (49ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (158ms)
+			SetupTypeCache (128ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (32ms)
-			SetupLoadedEditorAssemblies (289ms)
+			RebuildScriptCaches (29ms)
+			SetupLoadedEditorAssemblies (227ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (161ms)
-				BeforeProcessingInitializeOnLoad (18ms)
+				RefreshPlugins (94ms)
+				BeforeProcessingInitializeOnLoad (14ms)
 				ProcessInitializeOnLoadAttributes (79ms)
-				ProcessInitializeOnLoadMethodAttributes (26ms)
+				ProcessInitializeOnLoadMethodAttributes (35ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.011319 seconds.
+Registered in 0.006057 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 113.61 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 95.48 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.437 seconds
+- Completed reload, in  1.314 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1438ms)
-		BeginReloadAssembly (126ms)
+	ReloadAssembly (1315ms)
+		BeginReloadAssembly (132ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (18ms)
-		EndReloadAssembly (1253ms)
-			LoadAssemblies (90ms)
+			CreateAndSetChildDomain (16ms)
+		EndReloadAssembly (1132ms)
+			LoadAssemblies (93ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (365ms)
+			SetupTypeCache (335ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (75ms)
-			SetupLoadedEditorAssemblies (588ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (532ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
+				InitializePlatformSupportModulesInManaged (3ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (114ms)
-				BeforeProcessingInitializeOnLoad (117ms)
-				ProcessInitializeOnLoadAttributes (296ms)
-				ProcessInitializeOnLoadMethodAttributes (52ms)
-				AfterProcessingInitializeOnLoad (5ms)
+				RefreshPlugins (96ms)
+				BeforeProcessingInitializeOnLoad (99ms)
+				ProcessInitializeOnLoadAttributes (280ms)
+				ProcessInitializeOnLoadMethodAttributes (49ms)
+				AfterProcessingInitializeOnLoad (4ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (5ms)
@@ -110,14 +110,14 @@ Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 1.25 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 1.16 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4029 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 162.6 MB.
-System memory in use after: 162.8 MB.
+Unloading 4038 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 183.4 MB.
+System memory in use after: 183.6 MB.
 
-Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 4463.
-Total: 7.066900 ms (FindLiveObjects: 0.286200 ms CreateObjectMapping: 0.157200 ms MarkObjects: 6.588700 ms  DeleteObjects: 0.034000 ms)
+Unloading 76 unused Assets to reduce memory usage. Loaded Objects now: 4492.
+Total: 5.313200 ms (FindLiveObjects: 0.223300 ms CreateObjectMapping: 0.176000 ms MarkObjects: 4.880900 ms  DeleteObjects: 0.032400 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -126,133 +126,330 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/Scenes/Level 3.unity
-  artifactKey: Guid(3f24fb52c8975d24f99613c85c7c747a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/Level 3.unity using Guid(3f24fb52c8975d24f99613c85c7c747a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '139d7c263e9b1c03959defa0e56cecc0') in 0.019871 seconds 
-  Import took 0.026122 seconds .
-
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9fb6b3447a7456c7e04d063ff807b58') in 0.155155 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 128.117728 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Ready.png
-  artifactKey: Guid(dcfe37fd93482ac43b338c760bb0c08d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Ready.png using Guid(dcfe37fd93482ac43b338c760bb0c08d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d346e3470350ffbcabf0ff435406b65') in 0.185091 seconds 
-  Import took 0.193250 seconds .
-
+  Time since last request: 23.998256 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6f7845ff2890c05af62ea5138df6fc11') in 0.055119 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 137.834319 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
-  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8366113de2104f6e7e0ec3db5ea789bc') in 0.066947 seconds 
-  Import took 0.073281 seconds .
-
+  Time since last request: 300.783281 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '80545d01f2190c37d6c3ed20a30cc51f') in 0.065882 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000310 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png
-  artifactKey: Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Death.png using Guid(5934e9794292aa442a5c7db7c4d4b58e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e5f5f8774286154b5e50bbec522530b') in 0.069366 seconds 
-  Import took 0.076585 seconds .
-
+  Time since last request: 0.000255 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Being-hit.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Being-hit.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '92f0496a9979bea482840110249aaf91') in 0.023838 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000208 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png
-  artifactKey: Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Walk_Side.png using Guid(ccff3f3f083eed6478ac621d139070d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '669225926c4baf345e70b8ed49d697ff') in 0.078173 seconds 
-  Import took 0.083675 seconds .
-
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Shield-Back.png
+  artifactKey: Guid(7d5b5a94186d04849a9287440ca2a697) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Shield-Back.png using Guid(7d5b5a94186d04849a9287440ca2a697) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3188f0868b2c25ae2669b9acbc17ef2f') in 0.010822 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000294 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png
-  artifactKey: Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Selected.png using Guid(0735fa852393b7f40aa07a17f52516a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '96b983d2d93ca5a5a041a1d8a1e1f604') in 0.049428 seconds 
-  Import took 0.055309 seconds .
-
+  Time since last request: 0.000179 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f10185e69a13f042a370baaf4580ae9a') in 0.194322 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000324 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png
-  artifactKey: Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Idle.png using Guid(6abca5a5d70712e42b4906d7af6ff82f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2356ebc046800563b7d5e135ebe641bf') in 0.048638 seconds 
-  Import took 0.055994 seconds .
-
+  Time since last request: 0.000208 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0ecc3c0e9f3849774ed1d471fc806823') in 0.015586 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000300 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png
-  artifactKey: Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Hit.png using Guid(fb2822dd9ebf5f84fa70d9d0ce337087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0c3659998823f868f0c96614d639341') in 0.035045 seconds 
-  Import took 0.041929 seconds .
-
+  Time since last request: 11.776040 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hit.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hit.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b4598ea522b021f3490c2271a6366d77') in 0.023862 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 2806.002620 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Idle.png
-  artifactKey: Guid(6ba33c8807bb7e1468291979e52574cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Idle.png using Guid(6ba33c8807bb7e1468291979e52574cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '021e152b3c9a496bd4b79dcbddc96b13') in 0.042469 seconds 
-  Import took 0.050502 seconds .
-
+  Time since last request: 46.995503 seconds.
+  path: Assets/Art/Animations/Character/Player/Aztecs/Warrior/_Warrior.controller
+  artifactKey: Guid(28df300cc64879344a88d3aa2416ecb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Animations/Character/Player/Aztecs/Warrior/_Warrior.controller using Guid(28df300cc64879344a88d3aa2416ecb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e9f4d73632c45f128b49aa4a76994e6c') in 0.022286 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 261.370583 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Attack.png
-  artifactKey: Guid(bd58bdd6d5bb33c49b85a3486ea604af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Attack.png using Guid(bd58bdd6d5bb33c49b85a3486ea604af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '27e95e7680099b651785f5559cc8ef6c') in 0.048644 seconds 
-  Import took 0.056807 seconds .
-
+  Time since last request: 348.363636 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Side/Side-Hurt.png
+  artifactKey: Guid(c306a9cccabce054eb9bf5f210ffbb84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Side/Side-Hurt.png using Guid(c306a9cccabce054eb9bf5f210ffbb84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ed9477ce46915f7bd6cabaf34bb2d9c5') in 0.065654 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 253.056219 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bba00e9db4b2ec94a0fc4f43e5c712d2') in 0.061991 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 14.933252 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd613a6e5a0fd72ab47ae2963a5348006') in 0.107677 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 27.310464 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8f479e96704ef5cfe647d5834566b3b') in 0.084242 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 12.820968 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e14b182b914fc3f0cc7e0a61e717a830') in 0.043048 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 20.005287 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cc745f13baeaf95a722c7012edcef96') in 0.084020 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 17.792962 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c4ef159b8eaad74ebedc069d56fcc5fa') in 0.076313 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 26.026760 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6dc75998e953f9e85dce52426b3bca4') in 0.063788 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 17.409128 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1af0351273a5ccdf675db6d6e0bf85d0') in 0.055805 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 18.724312 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '189caf0402515f91d0089391db1cc91c') in 0.086408 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 42.031653 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png
+  artifactKey: Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Attack.png using Guid(9592978bdd14c4547981a068bda51c8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ccf53224d9a6b4c1f33481fb0f65e73b') in 0.062361 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 642.364953 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c98919f5a66697a0c20457b7c2804a09') in 0.059117 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 13.765875 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a13cf28d6cffdaa132c3dee84bfaddb2') in 0.051944 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 42.936651 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f413851a7a86a3878fd64bca2d2df2cb') in 0.050420 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 13.593575 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65ad1945bacc043b8398737cb06a6eec') in 0.054296 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 17.818164 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e6dbedc7c16de62a73920c124ab2b67a') in 0.063024 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 15.412288 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f23c5a87c395b85f15dc61c3bf72301e') in 0.048666 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 10.914439 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a1d7abf1c79d17d8cb54ade078bbf04') in 0.055919 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1284.538654 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e709fa34bed4feecc90bf66c1a64ca2f') in 0.056829 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 13.042868 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '322ed5e2454743903b75d75618794e0b') in 0.065282 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 33.482368 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png
+  artifactKey: Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Death.png using Guid(8a61c8559623da544be5def21e359b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2ec02d4ae6424c1591f8fcabd580e226') in 0.066581 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 358.025622 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2948e1882703b7ff8ede09fdc435423c') in 0.024148 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 23.346568 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c65c4dc17e48cf501504eb51f17a10a3') in 0.271598 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 27.045320 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87d788c0e68fced208448aa051852655') in 0.039363 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 12.528189 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0f9a598daeba704b8e5c9dab3970da76') in 0.029778 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 13.754937 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc79185f10465973381d3287a492c2b9') in 0.039515 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 17.618053 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '933dc2376b900b164fe4c498e8ea269d') in 0.101125 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 24.971825 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1ef4dc28258f483db3e2ecd2db7eff0c') in 0.051395 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 22.124930 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7aabaf3dd085355a167e55ef89e1bb8') in 0.161988 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 27.595641 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ddfdc31d00bdaed9a6d885861908c270') in 0.205219 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 66.725806 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png
+  artifactKey: Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Hurt.png using Guid(6f98de4cf32cb4c4591eb92136e7789b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1daa5ab00266a42645201b4377a96921') in 0.071446 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 9158.974879 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3187b7ae38d346210777fd78bb7c9c8') in 0.037616 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 67.545161 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '48e335abc778146ef0063e0b72d76035') in 0.057375 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 12.221957 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02b17894098fb771605cfd1c4af6b0fd') in 0.050508 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 10.728803 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a5b04bfc58ae28a99946e0359d83f3a') in 0.043624 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 16.101157 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '15ff73a863a2c1b037e94ca7ae70c04f') in 0.051539 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 21.393607 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png
+  artifactKey: Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Back/Back-Walk.png using Guid(c76fc01d3615df14690f142c2f3c6b84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '88d01e37b39f21df86d7e95b8d6a31bc') in 0.038126 seconds 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.015046 seconds.
+Registered in 0.006715 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 1.28 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 1.11 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.317 seconds
+- Completed reload, in  1.158 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1317ms)
-		BeginReloadAssembly (117ms)
+	ReloadAssembly (1158ms)
+		BeginReloadAssembly (131ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (6ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (44ms)
-		EndReloadAssembly (1134ms)
-			LoadAssemblies (89ms)
+			CreateAndSetChildDomain (42ms)
+		EndReloadAssembly (971ms)
+			LoadAssemblies (107ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (355ms)
+			SetupTypeCache (301ms)
 			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (80ms)
-			SetupLoadedEditorAssemblies (497ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (422ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
+				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (127ms)
-				ProcessInitializeOnLoadAttributes (304ms)
-				ProcessInitializeOnLoadMethodAttributes (53ms)
-				AfterProcessingInitializeOnLoad (5ms)
+				BeforeProcessingInitializeOnLoad (106ms)
+				ProcessInitializeOnLoadAttributes (263ms)
+				ProcessInitializeOnLoadMethodAttributes (43ms)
+				AfterProcessingInitializeOnLoad (4ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (6ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.40 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 1.15 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3953 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 158.7 MB.
-System memory in use after: 158.9 MB.
+Unloading 3961 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 179.4 MB.
+System memory in use after: 179.7 MB.
 
-Unloading 70 unused Assets to reduce memory usage. Loaded Objects now: 4484.
-Total: 6.253900 ms (FindLiveObjects: 0.303000 ms CreateObjectMapping: 0.221500 ms MarkObjects: 5.700700 ms  DeleteObjects: 0.027900 ms)
+Unloading 67 unused Assets to reduce memory usage. Loaded Objects now: 4509.
+Total: 5.392600 ms (FindLiveObjects: 0.215800 ms CreateObjectMapping: 0.150800 ms MarkObjects: 4.999600 ms  DeleteObjects: 0.025500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -261,190 +458,152 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 3758.797686 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
-  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2271b2bd7dfe4afe11be07ac3a877516') in 0.118734 seconds 
-  Import took 0.128232 seconds .
-
+  Time since last request: 299.396971 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '381279814693d48c51444e45f86ff881') in 0.059061 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 28.772040 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png
-  artifactKey: Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side/Atlatl_Attack.png using Guid(5784df0034f338144bb1ec7fe687a0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bfa1c9d423c725806642587e84f558f6') in 0.061120 seconds 
-  Import took 0.066904 seconds .
-
+  Time since last request: 0.000206 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Shield-Front.png
+  artifactKey: Guid(5cb4b18381f0b57469177b3b88d5ae39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Shield-Front.png using Guid(5cb4b18381f0b57469177b3b88d5ae39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '51221e8660f57221c833a69d05caa414') in 0.015848 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 1886.746526 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Death.png
-  artifactKey: Guid(1b9369998fda80941a7f5f41b2b675ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Death.png using Guid(1b9369998fda80941a7f5f41b2b675ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d59fa7981d173f72283913cc9c8ff57') in 0.040456 seconds 
-  Import took 0.049285 seconds .
-
+  Time since last request: 0.000174 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png
+  artifactKey: Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png using Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd961b44d19ab08cac4b9d2d2ffc5dd49') in 0.011572 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 416.040381 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Back.Run.png
-  artifactKey: Guid(ec3ce258067427043a3f7dd2b66832c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Back.Run.png using Guid(ec3ce258067427043a3f7dd2b66832c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99ea8d06f574acf9ae3f8fd05f9d97cd') in 0.055483 seconds 
-  Import took 0.070158 seconds .
-
+  Time since last request: 0.000180 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png
+  artifactKey: Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png using Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e8967b84653079cbbdda2d90c16f2359') in 0.014277 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000272 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Hurt.png
-  artifactKey: Guid(2dd714323ebd0de4d8f12833ce449e3d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Hurt.png using Guid(2dd714323ebd0de4d8f12833ce449e3d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '35e5bd07287746175c54cdca64500ba9') in 0.025816 seconds 
-  Import took 0.031671 seconds .
-
+  Time since last request: 0.000222 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Being-hit.png
+  artifactKey: Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Being-hit.png using Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb6b83574c91325657b2bc4b7d77ef25') in 0.015522 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000282 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Run.png
-  artifactKey: Guid(2121add43d1d0c341a4c3e777a84a439) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Side.Run.png using Guid(2121add43d1d0c341a4c3e777a84a439) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '688f75dab946c3b527a99053a5337f98') in 0.060379 seconds 
-  Import took 0.068480 seconds .
-
+  Time since last request: 48.393436 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b3c7dea1b3a87290a7c69b61cecb780f') in 0.091218 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000288 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Front.Run.png
-  artifactKey: Guid(93d1877d53be4f743b6f6fd0afd136bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/H'annit.Front.Run.png using Guid(93d1877d53be4f743b6f6fd0afd136bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f543a1cb01c1893181db67da7e845586') in 0.049782 seconds 
-  Import took 0.058169 seconds .
-
+  Time since last request: 10.179872 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png
+  artifactKey: Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png using Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '97e5a90aa8abcc5d16d75b591d90d691') in 0.089672 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 3.267903 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl
-  artifactKey: Guid(91657851e94e70a419606f93a04e3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl using Guid(91657851e94e70a419606f93a04e3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4e177351bab271e3a97df91f6ca894b1') in 0.008174 seconds 
-  Import took 0.014979 seconds .
-
+  Time since last request: 11.518670 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png
+  artifactKey: Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png using Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0db9c29b962af94108112a3b3b7eefcd') in 0.099462 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 3.629390 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side
-  artifactKey: Guid(e3a2e76da08f4014581b1f5fd901065e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Side using Guid(e3a2e76da08f4014581b1f5fd901065e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ce0a3ebf4693039cc959eb5e54023da') in 0.008554 seconds 
-  Import took 0.015072 seconds .
-
+  Time since last request: 20.294749 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Being-hit.png
+  artifactKey: Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Being-hit.png using Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cefaa4d949f812b041b1150655f89d0e') in 0.031657 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 3.183976 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png
-  artifactKey: Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Attk_Front.png using Guid(5c651fecdec350e40b74cbb66a8b3dba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6a1af9662b560c65a7457066205ab00') in 0.058065 seconds 
-  Import took 0.065416 seconds .
-
+  Time since last request: 9.267015 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Shield-Front.png
+  artifactKey: Guid(5cb4b18381f0b57469177b3b88d5ae39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Shield-Front.png using Guid(5cb4b18381f0b57469177b3b88d5ae39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e5e7599e0c7a3f8caf9363c0c0038973') in 0.104459 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000308 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png
-  artifactKey: Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Death.png using Guid(0a9c0f7e75dfbab469e9f59256f9967f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02b56bbb06c00f568ffb28cc67631d2a') in 0.072462 seconds 
-  Import took 0.078469 seconds .
-
+  Time since last request: 121.904285 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8aefce2c8bf07e604d9f1f0daebe3128') in 0.045877 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000297 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png
-  artifactKey: Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Front_Atlatl_Hit.png using Guid(d6368c2cf7f45a243b5c656253fee740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b283574e5d25f4402d37d4ebc1cc49a2') in 0.035675 seconds 
-  Import took 0.041813 seconds .
-
+  Time since last request: 31.486680 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bdb6000d881d1dfba64a7c7736a50c59') in 0.068915 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000307 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png
-  artifactKey: Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Front/Atlatl_Walk_Front.png using Guid(f3437fe581987794385c4fbb2483ed40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e78dbc60ab6bfc7dfffe40aa96c3d6f1') in 0.029198 seconds 
-  Import took 0.035674 seconds .
-
+  Time since last request: 19.212869 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5076dd0e19ee801dcdab097044628aa7') in 0.054146 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 8.310545 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png
-  artifactKey: Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Attk_Back.png using Guid(2fcf17b353dcd25459186344965475ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '95346efc63f50fa40f2d214643631cab') in 0.039173 seconds 
-  Import took 0.050411 seconds .
-
+  Time since last request: 15.335398 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c4574c6dd7735f64e0228f9965bfa5c0') in 0.090892 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000265 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png
-  artifactKey: Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Hit.png using Guid(2a3e1011b977f704fa251764916c99c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '312b2ccc289227f24a2e32735a9f50c8') in 0.053141 seconds 
-  Import took 0.060239 seconds .
-
+  Time since last request: 45.725986 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4ef211b1a62a56310927b69e6c475d78') in 0.087696 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000261 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png
-  artifactKey: Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Atlatl_Walk_Back.png using Guid(eaf76627003d9dd4f93639c5e737c34d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a897fd3ee7ea6be07f7d068baf05591') in 0.030033 seconds 
-  Import took 0.037422 seconds .
-
+  Time since last request: 61.530377 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png
+  artifactKey: Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Attack.png using Guid(ca4166f61f9fe40438b998eaac7f44fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '34a14a988b5d2e294c55f81b6ce39dea') in 0.068087 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000192 seconds.
-  path: Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png
-  artifactKey: Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Sprites/Characters/Aztecs/Atlatl/Back/Back_Atlatl_Death.png using Guid(eec2c808003afe14eb459c5c3d0a4d98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f8fb97013bcf56fc48e572cfdc11f8f3') in 0.018057 seconds 
-  Import took 0.025385 seconds .
-
+  Time since last request: 126.782794 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Hurt.png
+  artifactKey: Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Hurt.png using Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e8d1e39b3b65d18a05a3ec1438b689f') in 0.043301 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 2801.543548 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/_Atlatl.controller
-  artifactKey: Guid(b3784ed380c13e947a9a96e3ea367ff8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/_Atlatl.controller using Guid(b3784ed380c13e947a9a96e3ea367ff8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8d98981866ca76ff8722b86b473146b0') in 0.055347 seconds 
-  Import took 0.065564 seconds .
-
+  Time since last request: 26.524092 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png
+  artifactKey: Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png using Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c12b505b2e885f7457be7849d9b956b') in 0.052705 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 910.940910 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Attack_Back.anim
-  artifactKey: Guid(ef7800de7f937b444bc17e71ca80c3e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Attack_Back.anim using Guid(ef7800de7f937b444bc17e71ca80c3e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '98b61d0d511b0ebac516c15bb34295c5') in 0.012986 seconds 
-  Import took 0.020863 seconds .
-
+  Time since last request: 19.300420 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png
+  artifactKey: Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png using Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c5015d4473abd84c77c3cff0f6c17c7e') in 0.047181 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 39.666199 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Hurt_Front.anim
-  artifactKey: Guid(3391143a0f64f144b91e346ab627e4ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Hurt_Front.anim using Guid(3391143a0f64f144b91e346ab627e4ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b5e1f00644f2147ce02512e7340f481') in 0.010800 seconds 
-  Import took 0.019736 seconds .
-
+  Time since last request: 11.011228 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png
+  artifactKey: Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Death.png using Guid(5fb034f504620aa40a34a5c00a70c419) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ead7bf900b66dfdb222a9ed0d32af31c') in 0.078359 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.556456 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Hurt_Back.anim
-  artifactKey: Guid(b196ef1783c87b64c88d1a9fbcfd0ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Hurt_Back.anim using Guid(b196ef1783c87b64c88d1a9fbcfd0ddf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0ccc0e675dbe7c1e1128a067d00fcdad') in 0.008694 seconds 
-  Import took 0.015723 seconds .
-
+  Time since last request: 174.187011 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Hurt.png
+  artifactKey: Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Hurt.png using Guid(e9a1ece1ea8785343aacfd5c5e27e2db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '338fdf8c4c8d842e08c861ce08f9d1ac') in 0.040479 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 73.030744 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Run_Down.anim
-  artifactKey: Guid(5c5e49a5de69933429e44a4516fc3c4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Run_Down.anim using Guid(5c5e49a5de69933429e44a4516fc3c4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d9bf9f297efd011f7866e8417922a81') in 0.010136 seconds 
-  Import took 0.017391 seconds .
-
+  Time since last request: 92.191673 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png
+  artifactKey: Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png using Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb0683e0cd3e3edb35cebb4c3182fd2b') in 0.051283 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 1.773841 seconds.
-  path: Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Run_Left.anim
-  artifactKey: Guid(3a203f9c82319334fa62ee495ca05b20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Art/Animations/Character/Player/Aztecs/Atlatl/A_A_Run_Left.anim using Guid(3a203f9c82319334fa62ee495ca05b20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4727f4320aed665d60ef29bf4987caa8') in 0.010622 seconds 
-  Import took 0.017079 seconds .
-
+  Time since last request: 15.083504 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png
+  artifactKey: Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png using Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0f1448b86ff831ce9639d709a1d2e777') in 0.099316 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 21.583763 seconds.
+  path: Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png
+  artifactKey: Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Art/Sprites/Characters/Aztecs/Warrior/Front/Front-Walk.png using Guid(fc09ea61110317249a2798178642dd67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3df8cd168194182ed516f0c1945701ca') in 0.062320 seconds 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

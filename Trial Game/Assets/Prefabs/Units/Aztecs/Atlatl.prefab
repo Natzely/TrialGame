@@ -317,7 +317,7 @@ MonoBehaviour:
     type: 3}
   Projectile: {fileID: 6850689932613346955, guid: d0b97e8a444362648804176c4601835a,
     type: 3}
-  StatusHandler: {fileID: 0}
+  StatusHandler: {fileID: 3355845144255145545}
   MinimapIconImage: {fileID: 6849667185187882453, guid: 7a70802fde0cebf41971027f9aa2f497,
     type: 3}
   MapTileImage: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
@@ -329,6 +329,8 @@ MonoBehaviour:
   ColliderSizeMoving: {x: 0.65, y: 0.65}
   ColliderSizeIdle: {x: 0.2, y: 0.2}
   HideMoveDistance: {x: 0, y: 0}
+  HorAttackVector: {x: 0.5, y: 0.85}
+  VerAttackVector: {x: -0.2, y: 0.85}
   OnCooldown: 0
   HiddenByObstacle: 0
   Hide: 0
@@ -339,8 +341,8 @@ MonoBehaviour:
   Speed: 2.5
   Damage: 6
   Defense: 2
-  MaxAttackDistance: 1
-  MinAttackDistance: 0
+  MaxAttackDistance: 4
+  MinAttackDistance: 1
   MoveDistance: 4
 --- !u!114 &3097757917150243156
 MonoBehaviour:
@@ -358,6 +360,7 @@ MonoBehaviour:
     type: 3}
   DamageText: {fileID: 1873056084328786480}
   HealthText: {fileID: 7466798685341615900}
+  DeathObject: {fileID: 0}
   Health: 10
 --- !u!114 &-8758389589995592329
 MonoBehaviour:
@@ -674,6 +677,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7530291345336432983}
     m_Modifications:
+    - target: {fileID: 1518159955235156977, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2738090560109248854, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
         type: 3}
       propertyPath: m_Name
@@ -734,6 +742,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248856, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: SpriteRender
+      value: 
+      objectReference: {fileID: 7530291345336432976}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.5974346
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.5770145
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0029171407
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0043756664
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1, type: 3}
 --- !u!4 &3355845144255145543 stripped
@@ -742,6 +775,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 823593288872601360}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3355845144255145545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2738090560109248857, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+    type: 3}
+  m_PrefabInstance: {fileID: 823593288872601360}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28198f668fe1c9049847e904cb6a3601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3101933449152717098
 PrefabInstance:
   m_ObjectHideFlags: 0

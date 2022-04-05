@@ -21,6 +21,13 @@ public class StatusEffect_Handler : MonoBehaviour
         CleanseStatus(status);
     }
 
+    public void ClearAllStatuses()
+    {
+        _statuses = Enums.UnitStatusEffect.None;
+        _colorEditor.Edit(false);
+        RageSmoke.Stop();
+    }
+
     private void Awake()
     {
         _colorEditor = GetComponent<SpriteRendererColorEditor>();
@@ -55,6 +62,6 @@ public class StatusEffect_Handler : MonoBehaviour
             RageSmoke.Stop();
         }
 
-        _statuses = _statuses & ~status;
+        _statuses &= ~status;
     }
 }

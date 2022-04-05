@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile_Arc : Projectile
 {
-    public float ArcHeight;
+    public float ArcHeightAdjustment;
     public float SizeScale;
     public Vector2 TempDestination;
 
@@ -21,6 +21,8 @@ public class Projectile_Arc : Projectile
 
     public override void Launch(Vector2 destination)
     {
+        float ArcHeight = ArcHeightAdjustment * transform.position.V2().GridDistance(destination);
+
         _destination = destination;
         _arcVertex = new Vector2(
             (_destination.x + _startPos.x) / 2,

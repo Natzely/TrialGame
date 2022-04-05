@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     public Enums.Player Player;
-    public UnitController Parent;
+    public UnitController Unit;
     public int Damage = 1;
 
     public StatusEffect_Handler StatusHandler { get; set; }
@@ -44,18 +44,18 @@ public class Damager : MonoBehaviour
     private float CalculateBonusDamage(UnitController uC)
     {
         float bonusDamageMult = 1; 
-        if (Parent.Type == Enums.UnitType.Horse)
+        if (Unit.Type == Enums.UnitType.Horse)
         {
-            if (Parent.Moving)
+            if (Unit.Moving)
             {
                 bonusDamageMult = 2;
-                if (uC.LookDirVector.x == Parent.LookDirVector.x && uC.LookDirVector.y == Parent.LookDirVector.y)
+                if (uC.LookDirVector.x == Unit.LookDirVector.x && uC.LookDirVector.y == Unit.LookDirVector.y)
                     bonusDamageMult = 2.5f;
             }
         }
-        else if (Parent.Type == Enums.UnitType.Melee && uC.Type == Enums.UnitType.Horse)
+        else if (Unit.Type == Enums.UnitType.Melee && uC.Type == Enums.UnitType.Horse)
         {
-            if (-uC.LookDirVector.x != Parent.LookDirVector.x || -uC.LookDirVector.y != Parent.LookDirVector.y)
+            if (-uC.LookDirVector.x != Unit.LookDirVector.x || -uC.LookDirVector.y != Unit.LookDirVector.y)
             {
                 bonusDamageMult = 1.5f;
                 if (uC.MeleeAttackedCount == 2)
@@ -64,7 +64,7 @@ public class Damager : MonoBehaviour
                     bonusDamageMult = 2.5f;
             }
         }
-        else if (Parent.Type == Enums.UnitType.Range && uC.Moving)
+        else if (Unit.Type == Enums.UnitType.Range && uC.Moving)
         {
             if (uC.Type == Enums.UnitType.Melee)
                 bonusDamageMult = 1.5f;

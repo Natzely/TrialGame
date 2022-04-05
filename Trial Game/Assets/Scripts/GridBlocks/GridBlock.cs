@@ -43,12 +43,12 @@ public class GridBlock : MonoBehaviour, ILog
     private Path_Active _currentActivePath;
     private bool _initialized;
 
-    public (UnitController uC, int MoveDistance) GetPlayerMoveParams()
+    public (UnitController uC, int MoveDistance, int MaxAttackDistance) GetPlayerMoveParams()
     {
         if (_gridParams == null)
-            return (null, -1);
+            return (null, -1, -1);
         else
-            return (_gridParams.UnitController, _gridParams.MoveDistance);
+            return (_gridParams.UnitController, _gridParams.MoveDistance, _gridParams.MaxAttackDistance);
     }
 
     public IEnumerable<GridBlock> AvailableAttackSpace(GridBlock behindGrid, int unitAttackDistance)
@@ -63,16 +63,16 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void CheckGrid(GridBlock moveFrom)
     {
-        var (uC, moveDistance) = moveFrom.GetPlayerMoveParams();
+        var (uC, moveDis, maxAttackDis) = moveFrom.GetPlayerMoveParams();
         if (uC && uC.FavorableTerrain != null)
         {
-            var tempMove = moveDistance - (uC.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost);
-            var tempAttack = uC.MaxAttackDistance - 1;
+            var tempMove = moveDis - (uC.FavorableTerrain.Contains(moveFrom.Type) ? 1 : moveFrom.MovementCost);
+            var tempAttack = maxAttackDis - 1;
             UseMoveAnimation = moveFrom.UseMoveAnimation;
 
             if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
             {
-                SetGrid(moveFrom, uC);
+                 SetGrid(moveFrom, uC);
                 if (Cursor.CurrentGridBlock == this || PlayerManager.PlayerInfo.MovementPathContains(this))
                     Cursor.CurrentGridUpdate();
             }
@@ -88,8 +88,8 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void SetGrid(GridBlock moveFrom, UnitController uC, bool onlyAttack = false)
     {
-        _gridParams.Update(uC);
-
+        _gridParams.Update(moveFrom, uC);
+         
         if (Unpassable || (CurrentUnit && CurrentUnit.IsEnemy(Enums.Player.Player1)) ||
             MovingFromRageBox(moveFrom, uC) || onlyAttack ||
             _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
@@ -101,14 +101,15 @@ public class GridBlock : MonoBehaviour, ILog
         if (_gridParams.MoveDistance >= 0 || onlyAttack)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Move;
-
             _gridParams.ShowMoveSpace(moveFrom);
         }
-        else if (moveFrom.GridParams.MaxAttackDistance > 0)
+        else if (_gridParams.MaxAttackDistance > 0)
         {
             _gridParams.ActiveSpace = Enums.ActiveSpace.Attack;
-            _gridParams.ShowAttackSpace(moveFrom);
-            _gridParams.MaxAttackDistance = moveFrom.GridParams.MaxAttackDistance - 1;
+            if (_gridParams.GridStart.Position.GridDistance(this.Position) > _gridParams.MinAttackDistance) // Check if the unit needs to be a certain distance away to attack.
+                _gridParams.ShowAttackSpace(moveFrom); // Create red square if it is.
+
+            _gridParams.MaxAttackDistance = _gridParams.MaxAttackDistance - 1;
         }
         else
             _gridParams.Reset();
@@ -387,15 +388,22 @@ public class GridBlock : MonoBehaviour, ILog
                 _moveMod = (_uC ? _uC.MoveDistance : -1) - value;
             }
         }
-        public int MaxAttackDistance 
-        { 
-            get { return _uC ? _uC.MaxAttackDistance - _attackMod : -1; }
+        public int MaxAttackDistance
+        {
+            get { return _uC ? _uC.MaxAttackDistance - _maxAttackMod : -1; }
             set
             {
-                _attackMod = (_uC ? _uC.MaxAttackDistance : -1) - value;
+                _maxAttackMod = (_uC ? _uC.MaxAttackDistance : -1) - value;
             }
         }
-        public int MinAttackDistance { get { return _uC ? _uC.MinAttackDistance : -1; } }
+        public int MinAttackDistance
+        {
+            get { return _uC ? _uC.MinAttackDistance - _minAttackMod : -1; }
+            set 
+            {
+                _minAttackMod = (_uC ? _uC.MinAttackDistance : -1) - value;
+            }
+        }
 
         private GridBlock _parent;
         private PlayerManager _pM;
@@ -403,16 +411,31 @@ public class GridBlock : MonoBehaviour, ILog
         private GameObject _object_AS;
         private GameObject _object_MS;
         private int _moveMod;
-        private int _attackMod;
+        private int _maxAttackMod;
+        private int _minAttackMod;
 
         public bool IsSpaceActive
         {
             get { return ActiveSpace != Enums.ActiveSpace.Inactive; }
         }
 
-        public void Update(UnitController uc)
+        public void Update(GridBlock moveFrom, UnitController uC)
         {
-            _uC = uc;
+            if (moveFrom.GridParams.UnitController == null)
+            {
+                _uC = uC;
+                _moveMod = 0;
+                _maxAttackMod = 0;
+                _minAttackMod = 0;
+                GridStart = _parent;
+            }
+            else
+                _uC = uC;
+
+            MoveDistance = moveFrom.GridParams.MoveDistance;
+            MaxAttackDistance = moveFrom.GridParams.MaxAttackDistance;
+            MinAttackDistance = moveFrom.GridParams.MinAttackDistance;
+            GridStart = moveFrom.GridParams.GridStart;
         }
 
         public void Reset()
@@ -421,9 +444,9 @@ public class GridBlock : MonoBehaviour, ILog
             GridStart = null;
             if(AttackSpace) AttackSpace.Disable();
             if(MoveSpace) MoveSpace.Disable();
-            MoveDistance = -1;
-            _moveMod = 0;
-            _attackMod = 0;
+            _moveMod = 99;
+            _maxAttackMod = 99;
+            _minAttackMod = 99;
             _uC = null;
         }
 
@@ -501,6 +524,8 @@ public class GridBlock : MonoBehaviour, ILog
             _pM = playerManager;
             _object_AS = AttackSpace;
             _object_MS = MoveSpace;
+            _maxAttackMod = 99;
+            _moveMod = 99;
         }
     }
 }

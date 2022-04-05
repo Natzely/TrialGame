@@ -36,6 +36,8 @@ public class UnitController: MonoBehaviour, ILog
     public Vector2 ColliderSizeMoving;
     public Vector2 ColliderSizeIdle;
     public Vector2 HideMoveDistance;
+    public Vector2 HorAttackVector;
+    public Vector2 VerAttackVector;
     public bool OnCooldown = false;
     public bool HiddenByObstacle;
     public bool Hide;
@@ -262,11 +264,21 @@ public class UnitController: MonoBehaviour, ILog
     {
         if (!Attacked)
         {
-            Vector2 instPos = transform.position.V2() + new Vector2(_lookX * .75f, _lookY * .75f);
+            Vector2 instPos = transform.position.V2();
+            if(MaxAttackDistance > 1)
+            {
+                if (_lookY != 0)
+                    instPos += VerAttackVector;
+                else
+                    instPos += new Vector2(HorAttackVector.x * _lookX, HorAttackVector.y);
+            }
+            else
+                instPos += new Vector2(_lookX * .75f, _lookY * .75f);
+
             GameObject projObj = Instantiate(Projectile, instPos , Quaternion.identity);
             Damager damager = projObj.GetComponent<Damager>();
             damager.Player = Player;
-            damager.Parent = this;
+            damager.Unit = this;
             damager.Damage = Mathf.Max(1, Mathf.FloorToInt(Damage * (_damagable.Health / Damageable.MAXHEALTH)));
             damager.StatusHandler = StatusHandler;
 
@@ -602,7 +614,7 @@ public class UnitController: MonoBehaviour, ILog
     private void Reset()
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        Select(false);
+        //Select(false);
         Hover(false);
         _collisionTarget = null;
         _nextPoint = null;

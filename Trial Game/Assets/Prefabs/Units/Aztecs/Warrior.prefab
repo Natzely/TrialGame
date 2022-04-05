@@ -318,6 +318,7 @@ MonoBehaviour:
     type: 3}
   Projectile: {fileID: 6850689932613346955, guid: a1470483a96840d4c8f5f3eb5858d11c,
     type: 3}
+  StatusHandler: {fileID: 6561994747918379551}
   MinimapIconImage: {fileID: 6849667185187882453, guid: 7a70802fde0cebf41971027f9aa2f497,
     type: 3}
   MapTileImage: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
@@ -1072,6 +1073,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7530291345336432983}
     m_Modifications:
+    - target: {fileID: 1518159955235156977, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 2738090560109248854, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
         type: 3}
       propertyPath: m_Name
@@ -1142,6 +1148,26 @@ PrefabInstance:
       propertyPath: SpriteRender
       value: 
       objectReference: {fileID: 7530291345336432976}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.8904554
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.6649228
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.054772288
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738090560109248858, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.025775164
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1, type: 3}
 --- !u!4 &6561994747918379537 stripped
@@ -1150,3 +1176,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9146605989113293638}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6561994747918379551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2738090560109248857, guid: 9cc537bb0aaa0cd4d90fbe4e3a5756f1,
+    type: 3}
+  m_PrefabInstance: {fileID: 9146605989113293638}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28198f668fe1c9049847e904cb6a3601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

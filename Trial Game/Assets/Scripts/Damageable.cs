@@ -11,6 +11,8 @@ public class Damageable : MonoBehaviour
     public GameObject DeathSoundObject;
     public Damage_TextEffect DamageText;
     public TextMeshProUGUI HealthText;
+    public GameObject DeathObject;
+
     public float Health = 2;
 
     private Animator _animator;
@@ -26,7 +28,7 @@ public class Damageable : MonoBehaviour
     {
         if (damager.Damage > 0)
         {
-            if (damager.Parent.Type == Enums.UnitType.Melee && _uC.Type == Enums.UnitType.Horse)
+            if (damager.Unit.Type == Enums.UnitType.Melee && _uC.Type == Enums.UnitType.Horse)
                 _uC.IncreaseMeeleAttackCount();
 
             int calcDamage = Mathf.FloorToInt(Mathf.Max(damager.Damage / _uC.Defense, 1));
@@ -48,7 +50,7 @@ public class Damageable : MonoBehaviour
 
             if (Health <= 0)
             {
-                Vector2 posDif = (transform.position - damager.transform.position) * -1; // Flip it because if its coming from top, the we would want to look up instead of down.
+                Vector2 posDif = (transform.position.V2() - damager.Unit.Position) * -1; // Flip it because if its coming from top, the we would want to look up instead of down.
                 posDif.Normalize();
                 _animator.SetFloat("Look X", posDif.x);
                 _animator.SetFloat("Look Y", posDif.y);
@@ -62,12 +64,20 @@ public class Damageable : MonoBehaviour
                 DamageText.gameObject.SetActive(false);
                 DamageText.Text = calcDamage + "";
                 DamageText.gameObject.SetActive(true);
-                if (!_uC.TookAction && _uC.MinAttackDistance == damager.Parent.MinAttackDistance)
-                    _uC.Target = damager.Parent.CurrentGridBlock.ToMovePoint();
+                if (!_uC.TookAction && _uC.MinAttackDistance == damager.Unit.MinAttackDistance)
+                    _uC.Target = damager.Unit.CurrentGridBlock.ToMovePoint();
             }
         }
 
         return false;
+    }
+
+    public void DestroyUnit()
+    {
+        var deathO = Instantiate(DeathObject, transform.position, Quaternion.identity);
+        SpriteRenderer oSR = deathO.GetComponent<SpriteRenderer>();
+        oSR.sprite = _uC.SpriteRender.sprite;
+        Destroy(gameObject);
     }
 
     void Start()

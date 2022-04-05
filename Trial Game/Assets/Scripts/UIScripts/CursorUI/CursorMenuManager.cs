@@ -49,7 +49,6 @@ public class CursorMenuManager : MonoBehaviour
     private void Awake()
     {
         _panels = new List<CursorPanel>();
-
     }
 
     // Start is called before the first frame update

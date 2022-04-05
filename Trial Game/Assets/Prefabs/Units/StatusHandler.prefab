@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28198f668fe1c9049847e904cb6a3601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteRender: {fileID: 0}
   RageSmoke: {fileID: 1518159955235156976}
 --- !u!61 &2738090560109248858
 BoxCollider2D:
@@ -147,12 +146,17 @@ PrefabInstance:
     - target: {fileID: 258061823610770064, guid: e850219a7d33a85479bdac0f9aba35b7,
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 258061823610770064, guid: e850219a7d33a85479bdac0f9aba35b7,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 258061823610770064, guid: e850219a7d33a85479bdac0f9aba35b7,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 258061823610770064, guid: e850219a7d33a85479bdac0f9aba35b7,
         type: 3}

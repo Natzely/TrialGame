@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 
 public class Cursor_Move : MonoBehaviour
 {
@@ -60,10 +56,15 @@ public class Cursor_Move : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed && Controller.CursorState != Enums.CursorState.CursorMenu)
+        if (context.performed)// && Controller.CursorState != Enums.CursorState.CursorMenu)
         {
             var tmpPos = context.ReadValue<Vector2>();
             _moveDir = Vector2Int.RoundToInt(tmpPos);
+            if(Controller.CursorState == Enums.CursorState.CursorMenu)
+            {
+                Controller.CursorMenu.SelectNextAvailablePanel(_moveDir.y);
+                _moveDir = Vector2Int.zero;
+            }
         }
         else if (context.canceled)
         {

@@ -35,6 +35,8 @@ public class CursorController : MonoBehaviour, ILog
         }
     }
 
+    public CursorMenuManager CursorMenu { get { return _cursorMenu; } }
+
     public Vector2 Position { get { return transform.position; } }
 
     private GridBlock _orgGridBlock;
@@ -224,7 +226,7 @@ public class CursorController : MonoBehaviour, ILog
     private Enums.CursorMenuState CheckForDistanceAttack()
     {
         Vector2 checkPos = _onlyAttack ? _attackFromGridBlock.Position : _orgGridBlock.Position;
-        if (CurrentUnit.MaxAttackDistance > 1 && CurrentGridBlock.Position.GridDistance(checkPos) >= CurrentUnit.MinAttackDistance)
+        if (CurrentUnit.MaxAttackDistance > 1 && CurrentGridBlock.Position.GridDistance(checkPos) > CurrentUnit.MinAttackDistance)
             return Enums.CursorMenuState.Attack;
         else
             return Enums.CursorMenuState.None;
