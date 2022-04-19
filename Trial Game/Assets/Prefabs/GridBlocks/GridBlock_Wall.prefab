@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8282250386879923856}
   - component: {fileID: 824339820758328376}
   - component: {fileID: -3825919530045476461}
-  m_Layer: 16
+  m_Layer: 27
   m_Name: GridBlock_Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

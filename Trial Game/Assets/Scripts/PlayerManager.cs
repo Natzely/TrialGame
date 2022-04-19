@@ -10,6 +10,8 @@ public class PlayerManager : UnitManager
     public GameObject Minimap_UnitIcons;
     public GameObject Minimap_TileIcons;
 
+    public CursorController Cursor { get { return _cC; } }
+
     public bool HideActiveGrid { get; private set; }
     public float MinimapSquareSize
     {
@@ -188,9 +190,10 @@ public class PlayerManager : UnitManager
     public override void InitializeUnits()
     {
         base.InitializeUnits();
-        var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
+        var nonNullUnits = Units.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
+            uC.enabled = true;
             uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
             uC.enabled = true;
             uC.Player = Player;
@@ -199,6 +202,7 @@ public class PlayerManager : UnitManager
             uC.UnitManager = this;
             uC.BoxCollider.enabled = true;
             uC.DefaultLook = 1;
+            uC.HiddenOverlay.SetActive(true);
         }
 
     }
@@ -280,7 +284,7 @@ public class PlayerManager : UnitManager
                 }
                 catch (Exception ex)
                 {
-                    Log(ex.Message);
+                    DebugLogger.Instance.Log(ex.Message);
                 }
             }
         }

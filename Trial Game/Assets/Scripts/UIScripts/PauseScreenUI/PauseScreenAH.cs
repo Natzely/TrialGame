@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-public class PauseScreenAH : UIActionHandler
+public class PauseScreenAH : UIActionHandler, ILog
 {
     public Enums.PauseState State;
 
+    [SerializeField] private LevelManager LevelManager;
     [SerializeField] private InputSystemUIInputModule InputSystem;
     [SerializeField] private GameObject HightLightPanel;
     [SerializeField] private GameObject MainButtonPanel;
     [SerializeField] private GameObject ControlsPanel;
     [SerializeField] private GameObject Controls_FirstSelected;
 
-    public bool IsGamePaused { get; private set; }
+    private bool IsGamePaused { get { return LevelManager.GameState == Enums.GameState.Pause; } }
     public bool IsSubMenuOpened { get; private set; }
 
     private RectTransform _rectTransform;
@@ -44,6 +45,7 @@ public class PauseScreenAH : UIActionHandler
 
     public override void HandleButtonSubmit(UIButton button)
     {
+        Log($"{gameObject.name}: HandleButtonSubmit");
         var pauseButton = (PauseScreen_Button)button;
         _audioSource.Play(Sound_Enter);
 
@@ -119,24 +121,27 @@ public class PauseScreenAH : UIActionHandler
 
     private void ShowPauseScreen()
     {
-        if (!IsGamePaused)
+        if (LevelManager.GameState == Enums.GameState.Play)
         {
             _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
-            _eventSystem.SetSelectedGameObject(this.gameObject);
+            InputSystem.moveRepeatDelay = 3;
+            _eventSystem.SetSelectedGameObject(FirstSelected.gameObject);
+            LevelManager.GameState = Enums.GameState.Pause;
+            
         }
-        else
+        else if(LevelManager.GameState == Enums.GameState.Pause)
         {
             _hidePauseScreen = true;
+            LevelManager.GameState = Enums.GameState.Play;
             //_audioSource.Play(Sound_Exit);
             //PlayerInput.SwitchCurrentActionMap("Player");
         }
 
-        IsGamePaused = !IsGamePaused;
         Time.timeScale = IsGamePaused ? 0 : 1;
 
         _rectTransform.anchoredPosition = IsGamePaused ? Vector2.zero : _orgPos;
-        DebugLog(IsGamePaused ? "Pause" : "Unpause" + " Game");
+        DebugLog((IsGamePaused ? "Pause" : "Unpause") + " Game");
     }
 
     private void ShowControlsPanel()
@@ -178,5 +183,15 @@ public class PauseScreenAH : UIActionHandler
             move.x = 0;
             _currentButton.MoveToNextUIObject(move);
         }
+    }
+
+    public void Log(string msg)
+    {
+        DebugLogger.Instance.Log(msg);
+    }
+
+    public void LogError(string msg)
+    {
+        throw new System.NotImplementedException();
     }
 }

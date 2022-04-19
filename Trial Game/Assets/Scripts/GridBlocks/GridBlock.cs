@@ -95,6 +95,10 @@ public class GridBlock : MonoBehaviour, ILog
             _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
             _gridParams.MoveDistance = -1;
 
+        if (gameObject.layer == LayerMask.NameToLayer("GridBlock_Wall") &&
+            !uC.gameObject.CompareTag("Unit_Atlatl"))
+            _gridParams.MaxAttackDistance = 0;
+
         if(moveFrom != this && _gridParams.MoveDistance >= 0)
             _gridParams.MoveDistance = moveFrom.GridParams.MoveDistance - (uC.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost); // If this terrain is favorable to the unit, only subtract one.
 
@@ -293,6 +297,7 @@ public class GridBlock : MonoBehaviour, ILog
         var colObj = collision.gameObject;
         var uC = colObj.GetComponent<UnitController>();
         var sG = colObj.GetComponent<StatusEffect_Giver>();
+        var damager = colObj.GetComponent<Damager>();
 
         if (_gridParams == null)
             _gridParams = new MoveGridParams(this, PlayerManager, AttackSpace, MoveSpace);
@@ -315,9 +320,10 @@ public class GridBlock : MonoBehaviour, ILog
         }
 
         if(sG)
-        {
             _statuses = sG.GridStatusEffects;
-        }    
+
+        if(damager)
+            Destroy(damager.gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -363,7 +369,7 @@ public class GridBlock : MonoBehaviour, ILog
 
     public void Log(string msg)
     {
-        UnitManager.Log($"{gameObject.name} | {msg}");
+        DebugLogger.Instance.Log(msg);
     }
 
     public void LogError(string msg)

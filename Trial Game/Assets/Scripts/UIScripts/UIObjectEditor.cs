@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public abstract class UIObjectEditor : MonoBehaviour
 {
     [SerializeField] internal bool EditOnStart = false;
+    [SerializeField] internal bool Loop;
     [SerializeField] internal float Speed = 1;
     [SerializeField] internal float Acceleration = 1;
     [SerializeField] internal float Decceleration = 1;
@@ -39,6 +40,11 @@ public abstract class UIObjectEditor : MonoBehaviour
 
         //if (!edit)
         //    Reset();
+    }
+
+    public void UpdateSpeed(float newSpeed)
+    {
+        Speed = newSpeed;
     }
 
     /// <inheritdoc Make sure to set _curDistance and _distance to the difference of the main variable being edited/>>

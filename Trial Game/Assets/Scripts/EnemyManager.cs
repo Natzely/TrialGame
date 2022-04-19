@@ -31,7 +31,7 @@ public class EnemyManager : UnitManager
     {
         base.InitializeUnits();
 
-        var nonNullUnits = _startingUnits.Where(uC => uC != null).ToList();
+        var nonNullUnits = Units.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)
         {
             if (uC)

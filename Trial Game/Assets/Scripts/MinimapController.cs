@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class MinimapController : MonoBehaviour, ILog
 {
-    [SerializeField] private PauseScreenAH PauseScreen;
+    [SerializeField] private LevelManager LevelManager;
     [SerializeField] private GameObject MapIcons;
 
     private bool _showingMap;
@@ -20,7 +20,7 @@ public class MinimapController : MonoBehaviour, ILog
 
     public void ShowMinimap(InputAction.CallbackContext context)
     {
-        if (!PauseScreen.IsGamePaused)
+        if (LevelManager.GameState == Enums.GameState.Play)
         {
             if (!_showingMap && context.performed)
             {

@@ -85,6 +85,13 @@ public class CursorController : MonoBehaviour, ILog
             _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
     }
 
+    public void AllowMove()
+    {
+        var moveScript = GetComponent<Cursor_Move>();
+        if (moveScript)
+            moveScript.enabled = true;
+    }
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -509,7 +516,7 @@ public class CursorController : MonoBehaviour, ILog
 
     public void Log(string msg)
     {
-        UnitManager.Log($"{gameObject.name} | {msg}");
+        DebugLogger.Instance.Log(msg);
     }
 
     public void LogError(string msg)

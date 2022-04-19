@@ -36,7 +36,6 @@ public class Damager : MonoBehaviour
             Damage = Mathf.FloorToInt(Damage * CalculateBonusDamage(uC));
             if (damageable.Damage(this))
                 StatusHandler.ClearStatus(Enums.UnitStatusEffect.Rage);
-            //Parent.DamageResults(damageable.Damage(this));
             Destroy(gameObject);
         }
     }

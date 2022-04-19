@@ -26,6 +26,7 @@ public class UnitController: MonoBehaviour, ILog
 
     public GameObject OffCooldownObject;
     public GameObject Projectile;
+    public GameObject HiddenOverlay;
     public StatusEffect_Handler StatusHandler;
     public Image MinimapIconImage;
     public Image MapTileImage;
@@ -70,6 +71,7 @@ public class UnitController: MonoBehaviour, ILog
             else _attackTarget = null;
         }
     }
+
     private GridBlock _currentGridBlock;
     public GridBlock CurrentGridBlock
     {
@@ -422,7 +424,7 @@ public class UnitController: MonoBehaviour, ILog
                     GetNextPoint();
 
                 Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * GridblockSpeedModifier * Time.deltaTime);
-                _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
+                //_miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
 
                 transform.position = moveVector;
                 if (transform.position.V2() == _nextPoint.Position)
@@ -478,7 +480,7 @@ public class UnitController: MonoBehaviour, ILog
             if (!_selected && !Moving && _animator.GetBool("Moving"))
                 _animator.SetBool("Moving", false);
 
-            if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Launch") && !Attacked)
+            if (_attack && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !Attacked)
             {
                 Log($"attacks");
                 Attack();
@@ -590,7 +592,8 @@ public class UnitController: MonoBehaviour, ILog
     private void OnDestroy()
     {
         //Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
-        UnitManager.RemoveUnit(this);
+        if(UnitManager)
+            UnitManager.RemoveUnit(this);
         DeleteSavedPath();
         if (CurrentGridBlock) CurrentGridBlock.ResetCurrentUnit(this);
         Destroy(_miniMapIcon);
@@ -675,7 +678,7 @@ public class UnitController: MonoBehaviour, ILog
 
             _nextPoint = possiblePoint;
             Moving = true;
-            _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+            //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
             UnitState = Enums.UnitState.Moving;
             BoxCollider.size = ColliderSizeMoving;
             _animator.SetBool("Moving", true);
@@ -796,7 +799,7 @@ public class UnitController: MonoBehaviour, ILog
 
     public void Log(string msg)
     {
-        UnitManager.Log($"{gameObject.name} | {msg}");
+        DebugLogger.Instance.Log(msg);
     }
 
     public void LogError(string msg)

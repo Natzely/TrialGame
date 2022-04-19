@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: 2
+  SceneManager: {fileID: 0}
   UnitHolder: {fileID: 0}
+  DeadUnitHolder: {fileID: 0}
   CursorBoundaries: {fileID: 0}
   InitializeUnitsAtStart: 1
   PlayerManager: {fileID: 0}

@@ -8,17 +8,18 @@ using UnityEngine;
 public abstract class UnitManager : MonoBehaviour
 {
     public Enums.Player Player;
+    public LevelManager SceneManager;
     public GameObject UnitHolder;
+    public GameObject DeadUnitHolder;
     public PolygonCollider2D CursorBoundaries;
     public bool InitializeUnitsAtStart;
-    public static bool DebugLog = true;
     
     public GridBlock[,] FullGrid { get; set; }
 
     public int AvailableUnits { get { return PlayerInfo.Units.Where(u => u.Available).Count(); } }
 
     protected GlobalVariables _globalVariables;
-    protected HashSet<UnitController> _startingUnits;
+    protected HashSet<UnitController> Units;
 
     private static string _debugFilePath;
 
@@ -31,7 +32,7 @@ public abstract class UnitManager : MonoBehaviour
 
     public virtual void InitializeUnits()
     {
-        _startingUnits = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
+        Units = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
     }
 
     public void ResetBlockGrid()
@@ -61,14 +62,10 @@ public abstract class UnitManager : MonoBehaviour
     {
         if (unit)
             PlayerInfo.Units.Remove(unit);
-    }
 
-    public static void Log(string msg)
-    {
-        if (DebugLog)
+        if(PlayerInfo.Units.Where(u => u).Count() <= 0)
         {
-            using StreamWriter writer = File.AppendText(_debugFilePath);
-            writer.WriteLine(msg);
+            SceneManager.FinishScene(this);
         }
     }
 

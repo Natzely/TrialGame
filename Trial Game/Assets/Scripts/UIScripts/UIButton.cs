@@ -61,8 +61,6 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         Button.Select();
     }
 
-
-
     public void Deselect()
     {
         ButtonText.fontSize = _savedFontSize = MINTEXTSIZE;
@@ -80,7 +78,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         Button = GetComponent<Button>();
         AudioSource = GetComponent<AudioSource>();
         Image = GetComponent<Image>();
-        UIHandler = FindObjectOfType<UIActionHandler>();
+        UIHandler = GetComponentInParent<UIActionHandler>();
         _savedFontSize = MINTEXTSIZE;
     }
 

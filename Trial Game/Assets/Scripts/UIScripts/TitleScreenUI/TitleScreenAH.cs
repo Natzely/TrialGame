@@ -8,8 +8,7 @@ public class TitleScreenAH : UIActionHandler
     [SerializeField] private Transform StartAt;
     [SerializeField] private Transform MoveTo;
     [SerializeField] private TitleScreen_LevelButton FirstLevel;
-    [SerializeField] private UI_PanelFade LevelLoadFade;
-    [SerializeField] private AudioClip[] Sounds_LoadLevel;
+    [SerializeField] private AudioClip StartSound;
 
     private Enums.TitleState _state;
     private UI_ShowLoadScreen _sls;
@@ -71,9 +70,8 @@ public class TitleScreenAH : UIActionHandler
 
     private void LoadLevel(string sceneName)
     {
-        _audioSource.Play(Sounds_LoadLevel[Random.Range(0, Sounds_LoadLevel.Length - 1)]);
-        _sceneManager.LoadScene(sceneName, _audioSource.clip.length);
+        _audioSource.Play(StartSound);
+        _sceneManager.LoadScene(sceneName, 0, StartSound.length);
         HideLoadPanel();
-        LevelLoadFade.StartFade(_audioSource.clip.length);
     }
 }

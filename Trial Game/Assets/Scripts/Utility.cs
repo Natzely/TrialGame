@@ -27,6 +27,7 @@ public static class Utility
         objects = objects.Where(o => o.name == name).ToList();
         return objects.FirstOrDefault() as GameObject;
     }
+
     public static class LinearEquationSolver
     {
         /// <summary>Computes the solution of a linear equation system.</summary>

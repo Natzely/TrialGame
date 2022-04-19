@@ -2,8 +2,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
 using UnityEngine;
+using System.Reflection;
 
-public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
+public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler, ILog
 {
     [SerializeField] private LevelManager LevelManager;
     [SerializeField] private InputSystemUIInputModule InputSystem;
@@ -32,14 +33,17 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
 
     public override void HandleButtonSubmit(UIButton button)
     {
+        Log($"{gameObject.name}: HandleButtonSubmit");
         var sideSelButton = (TitleScreen_Button)button;
 
         switch (sideSelButton.Type)
         {
             case Enums.UI_TitleButtonType.Quit:
+                Log("\tQuit");
                 OnCancel(null);
                 break;
             case Enums.UI_TitleButtonType.Start:
+                Log("\tStart");
                 _selectedMask.Confirmed = true;
                 _cgEditor.Edit(true);
                 break;
@@ -95,11 +99,15 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
 
     public void OnCancel(BaseEventData eventData)
     {
-        _selectedMask.Selected = false;
-        _sideSelected = false;
-        InputSystem.moveRepeatDelay = 0;
-        InputSystem.moveRepeatRate = 0;
-        _eventSystem.SetSelectedGameObject(this.gameObject);
+        if (_selectedMask)
+        {
+            _selectedMask.Selected = false;
+            _sideSelected = false;
+            InputSystem.moveRepeatDelay = 0;
+            InputSystem.moveRepeatRate = 0;
+            _eventSystem.SetSelectedGameObject(this.gameObject);
+            _selectedMask = null;
+        }
         
     }
 
@@ -120,5 +128,15 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
         InputSystem.moveRepeatDelay = 2;
         InputSystem.moveRepeatRate = .3f;
         CancelButton.Select(true);
+    }
+
+    public void Log(string msg)
+    {
+        DebugLogger.Instance.Log(msg);
+    }
+
+    public void LogError(string msg)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 public class UnitInfoUI : MonoBehaviour
 {
-    [SerializeField] private PauseScreenAH PauseScreen;
+    [SerializeField] private LevelManager LevelManager;
     public Sprite[] UnitSprites;
     public RectTransform Transform;
     public Image UnitImage;
@@ -27,7 +27,7 @@ public class UnitInfoUI : MonoBehaviour
 
     public void ShowUnitInfo(InputAction.CallbackContext context)
     {   
-        if (!PauseScreen.IsGamePaused)
+        if (LevelManager.GameState == Enums.GameState.Play)
         {
             if (_visible && context.performed)
             {

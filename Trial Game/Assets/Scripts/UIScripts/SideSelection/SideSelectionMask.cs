@@ -30,6 +30,7 @@ public class SideSelectionMask : MonoBehaviour
             //Text.Edit = UnitPanel.Edit = UnitBackgroundMask.Edit = value;
             Text.Edit(value);
             UnitBackgroundMask.Edit(value);
+            UnitMover.SetActive(value);
             UnitPanel.Edit(value);
             ConfirmationPanel.Edit(value);
             _flagRectT.anchorMin = _flagRectT.anchorMax = new Vector2(
@@ -66,5 +67,6 @@ public class SideSelectionMask : MonoBehaviour
         _orgAnchorX = _flagRectT.anchorMin.x;
         _orgPosX = _flagRectT.anchoredPosition.x;
         _orgPivotX = _flagRectT.pivot.x;
+        UnitMover.SetActive(false);
     }
 }

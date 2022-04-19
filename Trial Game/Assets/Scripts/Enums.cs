@@ -155,5 +155,13 @@ public class Enums : MonoBehaviour
         Rage = 1,
         Brawl = 2,
     }
+
+    public enum GameState
+    {
+        SideSelection = 0,
+        Play = 1,
+        Pause = 2,
+        Results = 3,
+    }
 }
 

@@ -7,8 +7,7 @@ using TMPro;
 public class UITextSizeEditor : UIObjectEditor
 {
     [SerializeField] private TextMeshProUGUI Text;
-    [SerializeField] private bool Loop;
-    [SerializeField] private float FontSizeEdit;
+    public float FontSizeEdit;
 
     private float _orgFontSize;
     private float _fontSizeTarget;

@@ -5,16 +5,19 @@ using UnityEngine.InputSystem;
 
 public class LevelManager : SceneManager
 {
+    public Enums.GameState GameState;
     [SerializeField] private PlayerInput PlayerInput;
     [SerializeField] private CameraController CameraControllerScript;
     [SerializeField] private SideSelectionAH SideSelection;
-    [SerializeField] private GameObject Cursor;
+    [SerializeField] private CursorController Cursor;
     [SerializeField] private GameObject AztecUnitHolder;
     [SerializeField] private GameObject SpanishUnitHolder;
     [SerializeField] private UnitManager PlayerManager;
     [SerializeField] private UnitManager EnemyManager;
+    [SerializeField] private ResultText ResultText;
     [SerializeField] private float CameraPlayZoom;
     [SerializeField] private float CameraSelectionZoom;
+
 
     public void StartPlay()
     {
@@ -23,10 +26,23 @@ public class LevelManager : SceneManager
         PlayerManager.InitializeUnits();
         EnemyManager.InitializeUnits();
 
-        Cursor.SetActive(true);
+        ResultText.SetupText(SideSelection.ConfirmedSide);
+        Cursor.AllowMove();
         PlayerInput.SwitchCurrentActionMap("Player");
         CameraControllerScript.enabled = true;
         Destroy(SideSelection.gameObject);
+        GameState = Enums.GameState.Play;
+    }
+
+    public void FinishScene(UnitManager uM)
+    {
+        GameState = Enums.GameState.Results;
+        if (uM is EnemyManager)
+            ResultText.Show(true);
+        else
+            ResultText.Show(false);
+
+        LoadScene("Title Scene", TimeToLoad, TimeToFade);
     }
 
     public void StartSelection()

@@ -45,11 +45,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIInput: {fileID: 0}
+  LevelLoadFade: {fileID: 0}
   FadeMusicSpeed: 0
+  TimeToLoad: 0
+  TimeToFade: 0
+  DebugLog: 0
+  WriteDebugToFile: 0
+  GameState: 0
   PlayerInput: {fileID: 0}
   CameraControllerScript: {fileID: 0}
-  Cursor: {fileID: 0}
   SideSelection: {fileID: 0}
+  Cursor: {fileID: 0}
+  AztecUnitHolder: {fileID: 0}
+  SpanishUnitHolder: {fileID: 0}
+  PlayerManager: {fileID: 0}
+  EnemyManager: {fileID: 0}
+  ResultText: {fileID: 0}
   CameraPlayZoom: 5.5
   CameraSelectionZoom: 21
 --- !u!82 &6227435921116030398

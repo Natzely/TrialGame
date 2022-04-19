@@ -13,6 +13,7 @@ TagManager:
   - Projectile
   - Minimap_Units
   - Minimap_Grid
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -41,7 +42,7 @@ TagManager:
   - Projectile_Melee
   - StatusEffectGiver
   - StatusEffectReciever
-  - 
+  - GridBlock_Wall
   - 
   - 
   - 

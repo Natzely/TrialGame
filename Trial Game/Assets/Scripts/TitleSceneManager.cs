@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TitleSceneManager : SceneManager
 {
+    public TextMeshProUGUI Title;
     public AudioClip AfterSlideInBGM;
 
     internal override void Awake()
@@ -13,6 +15,7 @@ public class TitleSceneManager : SceneManager
 
     internal override void Start()
     {
+        Title.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 0);
         base.Start();
     }
 

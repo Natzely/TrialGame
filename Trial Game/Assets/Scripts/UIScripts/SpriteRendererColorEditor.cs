@@ -7,7 +7,6 @@ public class SpriteRendererColorEditor : UIObjectEditor
 
     [SerializeField] private SpriteRenderer SpriteRender;
     [SerializeField] private Color ColorEdit;
-    [SerializeField] private bool Loop;
 
     private Color _orgColor;
     private Color _targetColor;

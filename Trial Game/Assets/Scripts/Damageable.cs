@@ -12,7 +12,6 @@ public class Damageable : MonoBehaviour
     public Damage_TextEffect DamageText;
     public TextMeshProUGUI HealthText;
     public GameObject DeathObject;
-
     public float Health = 2;
 
     private Animator _animator;
@@ -75,8 +74,10 @@ public class Damageable : MonoBehaviour
     public void DestroyUnit()
     {
         var deathO = Instantiate(DeathObject, transform.position, Quaternion.identity);
+        deathO.transform.SetParent(_uC.UnitManager.DeadUnitHolder.transform);
         SpriteRenderer oSR = deathO.GetComponent<SpriteRenderer>();
         oSR.sprite = _uC.SpriteRender.sprite;
+        oSR.flipX = _uC.SpriteRender.flipX;
         Destroy(gameObject);
     }
 
