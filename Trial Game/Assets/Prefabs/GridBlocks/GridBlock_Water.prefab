@@ -56,7 +56,7 @@ MonoBehaviour:
     type: 3}
   MinimapTile: {fileID: 2591678617079306126, guid: 077c205fa0c4e83418e93b6053a3b1f0,
     type: 3}
-  SpeedCost: 0
+  SpeedCost: 999999
   Unpassable: 1
   IsDestination: 0
 --- !u!61 &7472597618557682154

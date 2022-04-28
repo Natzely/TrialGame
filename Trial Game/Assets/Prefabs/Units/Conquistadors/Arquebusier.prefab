@@ -267,7 +267,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.485, y: 0.33}
-    oldSize: {x: 1.7808696, y: 2.3756528}
+    oldSize: {x: 1.7817392, y: 2.3756523}
     newSize: {x: 2.2755556, y: 3.0360506}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -365,6 +365,7 @@ MonoBehaviour:
   DeathObject: {fileID: 8267284481520230163, guid: 8f4967ec36253314ea0449093b73f626,
     type: 3}
   Health: 10
+  _animator: {fileID: 0}
 --- !u!114 &-8758389589995592329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,10 +382,14 @@ MonoBehaviour:
   RoadSpeedMultiplyer: 1
   TreeSpeedMultiplyer: 0.6
   WaterSpeedMultiplyer: 0
+  GroundSpeedMultiplyer: 1
+  PathwaySpeedMultiplyer: 0.5
   GrassMoveCost: 1
   RoadMoveCost: 1
   TreeMoveCost: 1
   WaterMoveCost: 9999
+  GroundMoveCost: 1
+  PathwayMoveCost: 2
 --- !u!82 &4877884251898067759
 AudioSource:
   m_ObjectHideFlags: 0

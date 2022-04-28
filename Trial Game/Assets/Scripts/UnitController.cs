@@ -393,12 +393,12 @@ public class UnitController: MonoBehaviour, ILog
         if (Player == Enums.Player.Player1)
             _cC = FindObjectOfType<CursorController>();
 
-        if (!OnCooldown && UnitManager)
-            UnitManager.AddUnit(this, true);
+        //if (!OnCooldown && UnitManager)
+        //    UnitManager.AddUnit(this, true);
 
         _pM = FindObjectOfType<PlayerManager>();
         if(_pM.Minimap_UnitIcons)
-        StartCoroutine(CreateMinimapIcon());
+            StartCoroutine(CreateMinimapIcon());
 
         BoxCollider.size = ColliderSizeIdle;
 
@@ -506,6 +506,7 @@ public class UnitController: MonoBehaviour, ILog
             if (CooldownTimer <= 0)
             {
                 Log($"Come of cooldown");
+
                 if (Type == Enums.UnitType.Melee && CooldownReduction)
                     CooldownReduction.gameObject.SetActive(false);
 
@@ -522,7 +523,7 @@ public class UnitController: MonoBehaviour, ILog
                 }
 
                 if (Player != Enums.Player.Player1 && UnitManager) // This is for non player units to make sure all units are looped through
-                    UnitManager.AddUnit(this);
+                    ((EnemyManager)UnitManager).AddBackToQueue(this);
 
                 UnitState = Enums.UnitState.Idle;
             }
@@ -530,7 +531,9 @@ public class UnitController: MonoBehaviour, ILog
 
         if (Player != Enums.Player.Player1 && _nextPoint == null && UnitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
         {
-            if (!UnitManager.PlayerInfo.Units.Contains(this))
+            // This is just a failsafe. In case the unit isn't doing anything and it somehow
+            // got removed from it's manager.
+            if (!UnitManager.Units.Contains(this))
             {
                 Log($"added to unit list");
                 UnitManager.AddUnit(this);
@@ -642,49 +645,49 @@ public class UnitController: MonoBehaviour, ILog
             return Position.GridDistance(Target.Position);
     }
 
-        private void GetNextPoint()
+    private void GetNextPoint()
+    {
+        var currentPoint = _nextPoint;
+        var possiblePoint = _movePositions.Peek();
+        if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
         {
-            var currentPoint = _nextPoint;
-            var possiblePoint = _movePositions.Peek();
-            if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
+            var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
+            foreach (GridBlock gB in orderedNeighbors)
             {
-                var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
-                foreach (GridBlock gB in orderedNeighbors)
+                if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
                 {
-                    if (gB.Position.GridDistance(possiblePoint.Position) <= 1)
-                    {
-                        possiblePoint = gB.ToMovePoint();
-                        break;
-                    }
+                    possiblePoint = gB.ToMovePoint();
+                    break;
                 }
             }
-            else
-                _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
-
-            if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
-            {
-                if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
-                {
-                    _nextPoint = null;
-                    return;
-                }
-                else // current spot isn't safe so find a new spot
-                {
-                    FindGoodPreviousSpot();
-                    GetNextPoint();
-                    return;
-                }
-            }
-
-            _nextPoint = possiblePoint;
-            Moving = true;
-            //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
-            UnitState = Enums.UnitState.Moving;
-            BoxCollider.size = ColliderSizeMoving;
-            _animator.SetBool("Moving", true);
-            IsHidden = false;
-            LookAt(possiblePoint.Position);
         }
+        else
+            _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
+
+        if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
+        {
+            if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
+            {
+                _nextPoint = null;
+                return;
+            }
+            else // current spot isn't safe so find a new spot
+            {
+                FindGoodPreviousSpot();
+                GetNextPoint();
+                return;
+            }
+        }
+
+        _nextPoint = possiblePoint;
+        Moving = true;
+        //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+        UnitState = Enums.UnitState.Moving;
+        BoxCollider.size = ColliderSizeMoving;
+        _animator.SetBool("Moving", true);
+        IsHidden = false;
+        LookAt(possiblePoint.Position);
+    }
 
     private void DeleteSavedPath()
     {
@@ -799,7 +802,7 @@ public class UnitController: MonoBehaviour, ILog
 
     public void Log(string msg)
     {
-        DebugLogger.Instance.Log(msg);
+        DebugLogger.Instance?.Log(msg);
     }
 
     public void LogError(string msg)

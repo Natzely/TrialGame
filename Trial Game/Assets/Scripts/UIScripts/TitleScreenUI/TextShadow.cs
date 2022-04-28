@@ -17,6 +17,7 @@ public class TextShadow : MonoBehaviour
     void Start()
     {
         _text = GetComponent<TextMeshProUGUI>();
+        _text.text = CopyText.text;
     }
 
     private void Update()

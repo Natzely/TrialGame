@@ -25,20 +25,20 @@ public class SpriteRendererColorEditor : UIObjectEditor
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _targetColor = ColorEdit;
     }
 
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if (_edit)
             EditObject();
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
         var newColor = Vector4.Lerp(SpriteRender.color, _targetColor, _colorSpeed +=(Speed * Time.deltaTime));
@@ -54,7 +54,7 @@ public class SpriteRendererColorEditor : UIObjectEditor
         }
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         SpriteRender.color = _orgColor;

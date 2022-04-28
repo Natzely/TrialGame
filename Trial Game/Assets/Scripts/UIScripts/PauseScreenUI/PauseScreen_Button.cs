@@ -9,6 +9,7 @@ public class PauseScreen_Button : UIButton
     {
         _selected = true;
         Image.color = Colors.Button_Selected;
+        AudioSource.Play(Sound_Select);
         UIHandler.OnItemSelected(this);
     }
 

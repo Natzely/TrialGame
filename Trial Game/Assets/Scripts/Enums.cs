@@ -102,10 +102,18 @@ public class Enums : MonoBehaviour
         Start = 4,
     }
 
+    public enum UI_ConfirmButtonType
+    {
+        Confirm = 0,
+        Cancel = 1,
+    }
+
     public enum PauseState
     {
         Main = 0,
         Controls = 1,
+        Restart = 2,
+        Quit = 3,
     }
 
     public enum TitleState

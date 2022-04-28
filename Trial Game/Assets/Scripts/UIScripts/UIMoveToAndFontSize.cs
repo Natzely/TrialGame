@@ -19,13 +19,13 @@ public class UIMoveToAndFontSize : UIMoveTo
         base.Edit(edit);
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         Text.fontSize = _orgFontSize;
         base.Reset();
     }
 
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgFontSize = Text.fontSize;
@@ -33,7 +33,7 @@ public class UIMoveToAndFontSize : UIMoveTo
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(_edit)
@@ -42,7 +42,7 @@ public class UIMoveToAndFontSize : UIMoveTo
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
         float newAdd = _fontDif * DistancePer;

@@ -5,9 +5,9 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    public float ZoomIn;
-    public float ZoomOut;
-    public float ZoomSpeed;
+    [SerializeField] private float ZoomIn;
+    [SerializeField] private float ZoomOut;
+    [SerializeField] private float ZoomSpeed;
 
     private CinemachineVirtualCamera _camera;
     private float _goalZoom;
@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (_camera.m_Lens.OrthographicSize != _goalZoom)
         {

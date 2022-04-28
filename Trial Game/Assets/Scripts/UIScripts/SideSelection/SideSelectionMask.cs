@@ -14,6 +14,7 @@ public class SideSelectionMask : MonoBehaviour
     [SerializeField] private ConfirmSelectionController ConfirmationPanel;
     [SerializeField] private GameObject UnitMover;
     [SerializeField] private GameObject Flag;
+    public AudioClip BackgroundMusic;
 
     private List<Animator> _unitAnimators;
     private UIRectTransformEditor _rectEditor;

@@ -25,7 +25,7 @@ public class UITextColorEditor : UIObjectEditor
         FontColorEdit = newColor;
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         Text.color = _orgFontColor;
@@ -33,7 +33,7 @@ public class UITextColorEditor : UIObjectEditor
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgFontColor = Text.color;
@@ -41,7 +41,7 @@ public class UITextColorEditor : UIObjectEditor
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if (_edit)
@@ -50,7 +50,7 @@ public class UITextColorEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
         

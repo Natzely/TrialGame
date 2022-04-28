@@ -94,6 +94,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "KillFriendly",
+                    "type": "Button",
+                    "id": "e92c2a54-c7cf-41bf-af7f-648409fb07b3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "KillEnemy",
+                    "type": "Button",
+                    "id": "c037f69a-05aa-46ed-bd08-8569a27a8183",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -371,6 +389,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70cca1cd-8075-4e6f-8f19-a924de818d43",
+                    "path": "<Keyboard>/f9",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "KillFriendly",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "885086c7-114b-4eaa-874a-f9a95def3a94",
+                    "path": "<Keyboard>/f12",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "KillEnemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -460,7 +500,7 @@
                     "name": "",
                     "id": "26966ecc-5953-495a-9da5-ed7345c8da70",
                     "path": "<Keyboard>/enter",
-                    "interactions": "Press(pressPoint=0.0001,behavior=1)",
+                    "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "",
                     "action": "Submit",

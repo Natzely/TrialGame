@@ -12,6 +12,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
 
     [SerializeField] internal TextMeshProUGUI ButtonText;
     [SerializeField] internal AudioClip Sound_Select;
+    [SerializeField] internal AudioClip Sound_Press;
 
     internal const int MINTEXTSIZE = 50;
     internal const int MAXTEXTSIZE = 55;
@@ -35,7 +36,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
 
     public void MoveToNextUIObject(Vector3 move)
     {
-        DebugLog($"{gameObject.name} move to next UI object");
+        Log($"{gameObject.name} move to next UI object");
         AudioSource.Play(Sound_Select);
         if (move.x != 0)
         {
@@ -59,6 +60,12 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         if (silent)
             AudioSource.volume = 0;
         Button.Select();
+    }
+
+    internal void Press(bool silent = false)
+    {
+        if (!silent && Sound_Press)
+            AudioSource.Play(Sound_Press);
     }
 
     public void Deselect()

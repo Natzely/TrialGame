@@ -16,7 +16,7 @@ public class UICanvasGroupEditor : UIObjectEditor
         base.Edit(edit);
     }
 
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _cGroup = GetComponent<CanvasGroup>();
@@ -24,7 +24,7 @@ public class UICanvasGroupEditor : UIObjectEditor
         _distance = _curDistance = Mathf.Abs(AlphaEdit - _cGroup.alpha);
     }
 
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(_edit)
@@ -33,12 +33,12 @@ public class UICanvasGroupEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
 
         _curDistance = Mathf.Abs(AlphaEdit - _cGroup.alpha);
-        float newAlpha = Mathf.MoveTowards(_cGroup.alpha, AlphaEdit, Speed * Time.deltaTime);
+        float newAlpha = Mathf.MoveTowards(_cGroup.alpha, AlphaEdit, Speed * Time.fixedDeltaTime);
         _cGroup.alpha = newAlpha;
 
         if (_cGroup.alpha == AlphaEdit)
@@ -49,7 +49,7 @@ public class UICanvasGroupEditor : UIObjectEditor
         }
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         _cGroup.alpha = _orgAlpha;
         base.Reset();

@@ -14,6 +14,8 @@ public class Damageable : MonoBehaviour
     public GameObject DeathObject;
     public float Health = 2;
 
+    [SerializeField] 
+
     private Animator _animator;
     private UnitController _uC;
 
@@ -69,6 +71,12 @@ public class Damageable : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Kill()
+    {
+        Health = 0;
+        _animator.SetTrigger("Hit");
     }
 
     public void DestroyUnit()

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: bridge
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300088, guid: f150e51f7e105be4aa935253705b0c03, type: 3}
-  m_DefaultGameObject: {fileID: 5460475136893554027, guid: c3e68976a5744194597b6c24fb5b231d,
+  m_DefaultSprite: {fileID: 21300364, guid: 3de07100f2136d346ab495124f6b12a1, type: 3}
+  m_DefaultGameObject: {fileID: 5460475136893554027, guid: d1fdfa0cac9b2224db6ebeb6b2bf802b,
     type: 3}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
     m_Sprites:
-    - {fileID: 21300088, guid: f150e51f7e105be4aa935253705b0c03, type: 3}
-    m_GameObject: {fileID: 5460475136893554027, guid: c3e68976a5744194597b6c24fb5b231d,
+    - {fileID: 21300364, guid: 3de07100f2136d346ab495124f6b12a1, type: 3}
+    m_GameObject: {fileID: 5460475136893554027, guid: d1fdfa0cac9b2224db6ebeb6b2bf802b,
       type: 3}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5

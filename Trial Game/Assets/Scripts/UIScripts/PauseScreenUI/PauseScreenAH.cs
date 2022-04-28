@@ -4,23 +4,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-public class PauseScreenAH : UIActionHandler, ILog
+public class PauseScreenAH : UIActionHandler
 {
     public Enums.PauseState State;
 
-    [SerializeField] private LevelManager LevelManager;
     [SerializeField] private InputSystemUIInputModule InputSystem;
     [SerializeField] private GameObject HightLightPanel;
     [SerializeField] private GameObject MainButtonPanel;
     [SerializeField] private GameObject ControlsPanel;
     [SerializeField] private GameObject Controls_FirstSelected;
+    [SerializeField] private ConfirmSelectionController ConfirmPanel;
 
-    private bool IsGamePaused { get { return LevelManager.GameState == Enums.GameState.Pause; } }
     public bool IsSubMenuOpened { get; private set; }
+
+    private LevelManager LevelManager { get { return (LevelManager)_sceneManager; } }
+    private bool IsGamePaused { get { return LevelManager.GameState == Enums.GameState.Pause; } }
 
     private RectTransform _rectTransform;
     private Vector2 _moveValue;
     private Vector2 _orgPos;
+    private UIButton _confirmButton;
     private float _soundTime;
     private bool _hidePauseScreen;
 
@@ -36,6 +39,10 @@ public class PauseScreenAH : UIActionHandler, ILog
                 case Enums.PauseState.Controls:
                     ShowControlsPanel();
                     break;
+                case Enums.PauseState.Restart:
+                case Enums.PauseState.Quit:
+                    ShowConfirmPanel(Enums.PauseState.Main);
+                    break;
                 default:
                     break;
             }
@@ -46,29 +53,60 @@ public class PauseScreenAH : UIActionHandler, ILog
     public override void HandleButtonSubmit(UIButton button)
     {
         Log($"{gameObject.name}: HandleButtonSubmit");
-        var pauseButton = (PauseScreen_Button)button;
-        _audioSource.Play(Sound_Enter);
+        var pauseButton = button as PauseScreen_Button;
+        var confirmButton = button as ConfirmPanelButton;
 
-        switch (pauseButton.Type)
+        if (pauseButton)
         {
-            case Enums.UI_PauseButtonType.Continue:
-                DebugLog("Continue");
-                ShowPauseScreen();
-                break;
-            case Enums.UI_PauseButtonType.Restart:
-                _sceneManager.RestartScene(_audioSource.clip.length);
-                break;
-            case Enums.UI_PauseButtonType.Controls:
-                ShowControlsPanel();
-                break;
-            case Enums.UI_PauseButtonType.Quit:
-                DebugLog("Quit");
-                _sceneManager.QuitGame(_audioSource.clip.length);
-                break;
-            case Enums.UI_PauseButtonType.Controls_OK:
-                DebugLog("Controls_OK");
-                ShowControlsPanel();
-                break;
+            _audioSource.Play(Sound_Enter);
+            switch (pauseButton.Type)
+            {
+                case Enums.UI_PauseButtonType.Continue:
+                    Log("Continue");
+                    ShowPauseScreen();
+                    break;
+                case Enums.UI_PauseButtonType.Restart:
+                    ShowConfirmPanel(Enums.PauseState.Restart, pauseButton);
+                    //LevelManager.RestartScene();// _audioSource.clip.length);
+                    break;
+                case Enums.UI_PauseButtonType.Controls:
+                    ShowControlsPanel();
+                    break;
+                case Enums.UI_PauseButtonType.Quit:
+                    ShowConfirmPanel(Enums.PauseState.Quit, pauseButton);
+                    //DebugLog("Quit");
+                    //LevelManager.QuitGame(_audioSource.clip.length);
+                    break;
+                case Enums.UI_PauseButtonType.Controls_OK:
+                    Log("Controls_OK");
+                    ShowControlsPanel();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (confirmButton)
+        {
+            switch (confirmButton.Type)
+            {
+                case Enums.UI_ConfirmButtonType.Confirm:
+                    switch(State)
+                    {
+                        case Enums.PauseState.Restart:
+                            LevelManager.RestartScene();
+                            break;
+                        case Enums.PauseState.Quit:
+                            LevelManager.QuitGame();
+                            break;
+                    }    
+                    break;
+                case Enums.UI_ConfirmButtonType.Cancel:
+                    ShowConfirmPanel(Enums.PauseState.Main);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -141,7 +179,16 @@ public class PauseScreenAH : UIActionHandler, ILog
         Time.timeScale = IsGamePaused ? 0 : 1;
 
         _rectTransform.anchoredPosition = IsGamePaused ? Vector2.zero : _orgPos;
-        DebugLog((IsGamePaused ? "Pause" : "Unpause") + " Game");
+        Log((IsGamePaused ? "Pause" : "Unpause") + " Game");
+    }
+
+    private void ShowConfirmPanel(Enums.PauseState state, UIButton button = null)
+    {
+        ConfirmPanel.Edit(state != Enums.PauseState.Main);
+        State = state;
+        if (state == Enums.PauseState.Main)
+            _confirmButton.Select();
+        _confirmButton = button;            
     }
 
     private void ShowControlsPanel()
@@ -183,15 +230,5 @@ public class PauseScreenAH : UIActionHandler, ILog
             move.x = 0;
             _currentButton.MoveToNextUIObject(move);
         }
-    }
-
-    public void Log(string msg)
-    {
-        DebugLogger.Instance.Log(msg);
-    }
-
-    public void LogError(string msg)
-    {
-        throw new System.NotImplementedException();
     }
 }

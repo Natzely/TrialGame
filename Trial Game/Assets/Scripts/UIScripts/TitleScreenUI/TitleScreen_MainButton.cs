@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TitleScreen_MainButton : TitleScreen_Button, ILog
+[RequireComponent(typeof(UITextSizeEditor))]
+public class TitleScreen_MainButton : TitleScreen_Button
 {
     [SerializeField] internal UITextSizeEditor SizeEditor;
 
@@ -39,15 +40,5 @@ public class TitleScreen_MainButton : TitleScreen_Button, ILog
     {
         Log($"{gameObject.name}: Submit");
         UIHandler.HandleButtonSubmit(this);
-    }
-
-    public void Log(string msg)
-    {
-        DebugLogger.Instance.Log(msg);
-    }
-
-    public void LogError(string msg)
-    {
-        throw new System.NotImplementedException();
     }
 }

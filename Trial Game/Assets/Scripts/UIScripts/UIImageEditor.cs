@@ -24,14 +24,14 @@ public class UIImageEditor : UIObjectEditor
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgAlpha = _image.color.a;
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(_edit)
@@ -40,12 +40,12 @@ public class UIImageEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
 
         _curDistance = Mathf.Abs(AlphaEdit - _image.color.a);
-        float newAlpha = Mathf.MoveTowards(_image.color.a, AlphaEdit, Speed * Time.deltaTime);
+        float newAlpha = Mathf.MoveTowards(_image.color.a, AlphaEdit, Speed * Time.fixedDeltaTime);
         _image.color = SetAlpha(newAlpha);
 
         if (_image.color.a == AlphaEdit)
@@ -56,7 +56,7 @@ public class UIImageEditor : UIObjectEditor
         }
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         _image.color = SetAlpha(_orgAlpha);

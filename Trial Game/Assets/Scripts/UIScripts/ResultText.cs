@@ -38,9 +38,12 @@ public class ResultText : MonoBehaviour
     }
 
     public void Show(bool victory)
-    {          // Otherwise use the Spanish one
-
+    {
         Text.text = victory ? VictoryText : DefeatText;
+
+        if (_currText.Equals(default(ResultText_Properties)))
+            SetupText(Enums.PlayerSides.Aztec);
+
         ColorEditor.UpdateColorEdit(_currText.Color);
         Text.fontStyle = _currText.Style;
         Text.characterSpacing = _currText.TextSpacing;
@@ -54,11 +57,10 @@ public class ResultText : MonoBehaviour
         }
         else
         {
+            Text.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 0);
             ColorEditor.Edit(true);
             SizeEditor.Edit(true);
         }
-
-        SceneManager.LoadScene("Title Screen");
     }
 
     private void Awake()

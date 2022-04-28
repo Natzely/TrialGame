@@ -183,7 +183,7 @@ public class CursorController : MonoBehaviour, ILog
             _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, squareSize);
             _miniMapIcon.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, squareSize);
             _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
-            _miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
+            //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Idle : Colors.Enemy_Idle;
         }
         catch (Exception ex)
         {
@@ -381,7 +381,6 @@ public class CursorController : MonoBehaviour, ILog
 
             SetCursorState();
             _moves = new List<MovePoint>() { new MovePoint(CurrentGridBlock) };
-
         }
         else if (_cursorMenu.VisiblePanels == 1)
         {
@@ -516,7 +515,7 @@ public class CursorController : MonoBehaviour, ILog
 
     public void Log(string msg)
     {
-        DebugLogger.Instance.Log(msg);
+        DebugLogger.Instance?.Log(msg);
     }
 
     public void LogError(string msg)

@@ -13,6 +13,9 @@ public class EnemyManager : UnitManager
     [Tooltip("Active timer until the next enemy move")]
     public float DealyTimer;
 
+    private List<UnitController> _unitQueue;
+
+
     public override IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos)
     {
         try
@@ -20,11 +23,23 @@ public class EnemyManager : UnitManager
             var pathList = PathFinder.CreatePath(Player, startPos, endPos, PlayerManager.FullGrid);
             return pathList;
         }
-        catch (Exception ex)
+        catch
         {
             Debug.Log("Error creating path");
         }
         return null;
+    }
+
+    public override void RemoveUnit(UnitController uC)
+    {
+        if (_unitQueue.Contains(uC))
+            _unitQueue.Remove(uC);
+        base.RemoveUnit(uC);
+    }
+
+    public void AddBackToQueue(UnitController uc)
+    {
+        _unitQueue.Add(uc);
     }
 
     public override void InitializeUnits()
@@ -47,6 +62,7 @@ public class EnemyManager : UnitManager
                 eC.UnitController = uC;
                 uC.BoxCollider.enabled = true;
                 uC.DefaultLook = -1;
+                _unitQueue.Add(uC);
             }
         }
     }
@@ -54,6 +70,7 @@ public class EnemyManager : UnitManager
     protected override void Awake()
     {
         base.Awake();
+        _unitQueue = new List<UnitController>();
         DealyTimer = MoveDelay;
     }
 
@@ -65,23 +82,23 @@ public class EnemyManager : UnitManager
 
     void Update()
     {
-        if (DealyTimer <= 0 && PlayerInfo.Units.Count > 0)
+        if (DealyTimer <= 0 && Units.Count > 0)
         {
-            var nextEnemy = PlayerInfo.Units[0];
+            var nextEnemy = _unitQueue[0];
             if (nextEnemy != null)
             {
-                var enemy = PlayerInfo.Units.Dequeue();    // Get next enemy (enemy is removed from the queue)
+                var enemy = _unitQueue.Dequeue();    // Get next enemy (enemy is removed from the queue)
                 var enemyController = enemy.GetComponent<EnemyController>();
                 if (enemyController.NextAction())             // Check if it can do and action
                     DealyTimer = MoveDelay;         // If an action was made, delay the next move (enemy will itself back to the queue when it's cooldown is done)
                 else
-                    PlayerInfo.Units.Add(enemy);           // No action was taken so add the enemy back to the end of the list.
+                    _unitQueue.Add(enemy);           // No action was taken so add the enemy back to the end of the list.
             }
             else
-                PlayerInfo.Units.RemoveAt(0);
+                _unitQueue.RemoveAt(0);
         }
 
-        if (PlayerInfo.Units.Count > 0) // Only decrease the next move timer if there are enemies available, otherwise, 
-            DealyTimer -= Time.deltaTime; // when all units are on cooldown, it will a unit instantly when one comes of cooldown instead of having a delay.
+        if (Units.Count > 0) // Only decrease the next move timer if there are enemies available, otherwise, 
+            DealyTimer -= Time.deltaTime; // when all units are on cooldown, it will pick a unit instantly when one comes of cooldown instead of having a delay.
     }
 }

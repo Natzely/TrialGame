@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/UI Test Scene.unity
     guid: e199b8651bccafa4fb9f7064177db8af
   - enabled: 1
-    path: Assets/Scenes/Title Screen.unity
+    path: Assets/Scenes/Title Scene.unity
     guid: fa94bb1568f9c1e42a2bf4adc74c3596
   - enabled: 0
     path: Assets/Scenes/Level 1.unity

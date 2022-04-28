@@ -22,14 +22,14 @@ public class UIRectTransformEditor : UIObjectEditor
         _rectT = GetComponent<RectTransform>();
     }
 
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgScale = _rectT.localScale;
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(_edit)
@@ -38,7 +38,7 @@ public class UIRectTransformEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
 
@@ -46,7 +46,7 @@ public class UIRectTransformEditor : UIObjectEditor
         _rectT.localScale = newScale;
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         _rectT.localScale = _orgScale;

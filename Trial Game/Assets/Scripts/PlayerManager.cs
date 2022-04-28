@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : UnitManager
 {
@@ -13,29 +14,11 @@ public class PlayerManager : UnitManager
     public CursorController Cursor { get { return _cC; } }
 
     public bool HideActiveGrid { get; private set; }
-    public float MinimapSquareSize
-    {
-        get 
-        {
-            float x = 0;
-            float y = 0;
-            if(Camera.main.aspect >= 1.7f)
-            {
-                x = 16;
-                y = 9;
-            }
-
-            float x2 = FullGrid.GetLength(0);
-            float y2 = FullGrid.GetLength(1);
-
-            float x1 = x / x2 / 1.1f;
-            float y1 = y / y2 / 1.1f;
-            return Mathf.Min(x1, y1);
-        }
-    }
+    public float MinimapSquareSize { get { return _miniMapTileSize; } }
 
     private List<UnitController> _nextUnitList;
     private CursorController _cC;
+    private float _miniMapTileSize;
 
     public bool GetDeleteMoveSpace()
     {
@@ -139,24 +122,12 @@ public class PlayerManager : UnitManager
 
     public UnitController GetNextUnit(UnitController unit)
     {
-        if(_nextUnitList == null) // Grab all units that are already in the map at the start.
-        {
-            _nextUnitList = new List<UnitController>();
-            var playerUnits = PlayerInfo.Units;
-            foreach(var u in playerUnits)
-            {
-                var random = new System.Random();
-                int insertAt = random.Next(_nextUnitList.Count());
-                _nextUnitList.Insert(insertAt, u);
-            }
-        }
-
         if (AvailableUnits <= 0)
             return null;
 
         if (unit == null) // Select first available unit in the list 
         {
-            var nextUnitPossible = _nextUnitList.Where(u => u != null && !u.OnCooldown && !u.Moving && !u.Attacked);
+            var nextUnitPossible = _nextUnitList.Where(u => u && !u.OnCooldown && !u.Moving && !u.Attacked);
             if (nextUnitPossible.Count() > 0)
                 return nextUnitPossible.First();
             else
@@ -164,7 +135,7 @@ public class PlayerManager : UnitManager
         }
         else // Select the next unit based on the unit that is currently selected.
         {
-            var coolDownList = _nextUnitList.Where(u => u != null && !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
+            var coolDownList = _nextUnitList.Where(u => u && !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
             if (coolDownList.Count > 0)
             {
                 var unitIndex = coolDownList.IndexOf(unit) + 1;
@@ -189,9 +160,9 @@ public class PlayerManager : UnitManager
 
     public override void InitializeUnits()
     {
-        base.InitializeUnits();
+        base.InitializeUnits();  
         var nonNullUnits = Units.Where(uC => uC != null).ToList();
-        foreach (UnitController uC in nonNullUnits)
+        foreach (UnitController uC in nonNullUnits)  // Add the necessary information for player units
         {
             uC.enabled = true;
             uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
@@ -205,6 +176,13 @@ public class PlayerManager : UnitManager
             uC.HiddenOverlay.SetActive(true);
         }
 
+        _nextUnitList = new List<UnitController>(); // Add the units to the QuickSelect List
+        foreach (var u in Units)
+        {
+            var random = new System.Random();
+            int insertAt = random.Next(_nextUnitList.Count());
+            _nextUnitList.Insert(insertAt, u);
+        }
     }
 
     private void Start()
@@ -239,13 +217,13 @@ public class PlayerManager : UnitManager
         return null;
     }
 
-    public override void AddUnit(UnitController unit, bool addAtRandom = false)
-    {
-        if (_nextUnitList != null)
-            _nextUnitList.Add(unit);
+    //public override void AddUnit(UnitController unit, bool addAtRandom = false)
+    //{
+    //    if (_nextUnitList != null)
+    //        _nextUnitList.Add(unit);
 
-        base.AddUnit(unit);
-    }
+    //    base.AddUnit(unit);
+    //}
 
     private IEnumerator GetGridBlocks()
     {
@@ -284,11 +262,30 @@ public class PlayerManager : UnitManager
                 }
                 catch (Exception ex)
                 {
-                    DebugLogger.Instance.Log(ex.Message);
+                    DebugLogger.Instance?.Log(ex.Message);
                 }
             }
         }
 
         ResetBlockGrid();
+        SetMinimapTileSize();
+    }
+
+    private void SetMinimapTileSize()
+    {
+        float x = 0;
+        float y = 0;
+        if (Camera.main.aspect >= 1.7f)
+        {
+            x = 16;
+            y = 9;
+        }
+
+        float x2 = FullGrid.GetLength(0);
+        float y2 = FullGrid.GetLength(1);
+
+        float x1 = (x / x2) * 2;// / .9f;
+        float y1 = (y / y2) * 2;// / .9f;
+        _miniMapTileSize = Mathf.Min(x1, y1);
     }
 }

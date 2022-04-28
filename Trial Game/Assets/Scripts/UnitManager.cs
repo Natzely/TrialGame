@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class UnitManager : MonoBehaviour
 {
@@ -12,14 +13,19 @@ public abstract class UnitManager : MonoBehaviour
     public GameObject UnitHolder;
     public GameObject DeadUnitHolder;
     public PolygonCollider2D CursorBoundaries;
-    public bool InitializeUnitsAtStart;
-    
+    [SerializeField] protected bool InitializeUnitsAtStart;
+
     public GridBlock[,] FullGrid { get; set; }
 
-    public int AvailableUnits { get { return PlayerInfo.Units.Where(u => u.Available).Count(); } }
+    public int AvailableUnits { get { return Units.Where(u => u.Available).Count(); } }
+    public int TotalUnits { get { return Units.Where(u => u).Count(); } }
 
     protected GlobalVariables _globalVariables;
-    protected HashSet<UnitController> Units;
+    public List<UnitController> Units 
+    { 
+        get { return PlayerInfo.Units; } 
+        private set { PlayerInfo.Units = value;  } 
+    }
 
     private static string _debugFilePath;
 
@@ -32,7 +38,18 @@ public abstract class UnitManager : MonoBehaviour
 
     public virtual void InitializeUnits()
     {
-        Units = new HashSet<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
+        Units = new List<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
+    }
+
+    public void KillUnit(InputAction.CallbackContext context)
+    {
+        if (context.performed && Units.Count > 0)
+        {
+            int random = UnityEngine.Random.Range(0, TotalUnits);
+            UnitController rUnit = Units[random];
+            Damageable unitDmg = rUnit.GetComponent<Damageable>();
+            unitDmg.Kill();
+        }
     }
 
     public void ResetBlockGrid()
@@ -45,25 +62,25 @@ public abstract class UnitManager : MonoBehaviour
 
     public virtual void AddUnit(UnitController unit, bool addAtRandom = false)
     {
-        if (PlayerInfo.Units.Contains(unit))
+        if (Units.Contains(unit))
             return;
 
         if (addAtRandom)
         {
             var r = new System.Random();
-            int index = r.Next(PlayerInfo.Units.Count());
-            PlayerInfo.Units.Insert(index, unit);
+            int index = r.Next(Units.Count());
+            Units.Insert(index, unit);
         }
         else
-            PlayerInfo.Units.Add(unit);
+            Units.Add(unit);
     }
 
-    public void RemoveUnit(UnitController unit)
+    public virtual void RemoveUnit(UnitController unit)
     {
-        if (unit)
-            PlayerInfo.Units.Remove(unit);
+        if (unit && Units.Contains(unit))
+            Units.Remove(unit);
 
-        if(PlayerInfo.Units.Where(u => u).Count() <= 0)
+        if(Units.Count() <= 0 && SceneManager.GameState != Enums.GameState.Results)
         {
             SceneManager.FinishScene(this);
         }

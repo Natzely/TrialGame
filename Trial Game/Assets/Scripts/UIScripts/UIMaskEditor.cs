@@ -19,7 +19,7 @@ public class UIMaskEditor : UIObjectEditor
         base.Edit(edit);
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         _mask.padding = _orgPadding;
         _mask.softness = _orgSoftness;
@@ -27,7 +27,7 @@ public class UIMaskEditor : UIObjectEditor
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         //Edit(true);
@@ -41,7 +41,7 @@ public class UIMaskEditor : UIObjectEditor
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(base._edit)
@@ -50,7 +50,7 @@ public class UIMaskEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         if (!_mask.padding.Equals(_orderedPadding) || _mask.softness.Equals(SoftnessEdit))
         {
@@ -59,13 +59,13 @@ public class UIMaskEditor : UIObjectEditor
 
             if (!_mask.padding.Equals(_orderedPadding))
             {
-                Vector4 newPadding = Vector4.MoveTowards(_mask.padding, _orderedPadding, _speed * Time.deltaTime);
+                Vector4 newPadding = Vector4.MoveTowards(_mask.padding, _orderedPadding, _speed * Time.fixedDeltaTime);
                 _mask.padding = newPadding;//new Vector4(newPadding.x, newPadding.z, newPadding.w, newPadding.y);
             }
 
             if (!_mask.softness.Equals(SoftnessEdit))
             {
-                Vector2Int newSoftness = Vector2Int.CeilToInt(Vector2.MoveTowards(_mask.softness, SoftnessEdit, _speed * Time.deltaTime));
+                Vector2Int newSoftness = Vector2Int.CeilToInt(Vector2.MoveTowards(_mask.softness, SoftnessEdit, _speed * Time.fixedDeltaTime));
                 _mask.softness = newSoftness;
             }
         }

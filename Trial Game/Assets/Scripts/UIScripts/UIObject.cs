@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIObject : MonoBehaviour, IDebugLog
+public class UIObject : MonoBehaviour, ILog
 {
     private TextMeshProUGUI _debugText;
     private Scrollbar _debugScroll;
@@ -26,12 +26,13 @@ public class UIObject : MonoBehaviour, IDebugLog
         }
     }
 
-    public void DebugLog(string msg)
+    public void Log(string msg)
     {
-        if (_debugText != null && Application.isEditor)
-        {
-            _debugText.text += msg + "\n";
-            _debugScroll.value = 0;
-        }
+        DebugLogger.Instance?.Log(msg);
+    }
+
+    public void LogError(string msg)
+    {
+        throw new System.NotImplementedException();
     }
 }

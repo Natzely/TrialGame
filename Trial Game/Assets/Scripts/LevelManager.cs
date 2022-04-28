@@ -34,6 +34,18 @@ public class LevelManager : SceneManager
         GameState = Enums.GameState.Play;
     }
 
+    public void StartMusic(float volume, float delay)
+    {
+        _audioSource.volume = volume;
+        _audioSource.clip = SideSelection.SelectedBGM;
+        _audioSource.PlayDelayed(delay);
+    }
+
+    public void RestartScene()
+    {
+        LoadScene(_currentScene);
+    }
+
     public void FinishScene(UnitManager uM)
     {
         GameState = Enums.GameState.Results;
@@ -51,13 +63,13 @@ public class LevelManager : SceneManager
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
     }

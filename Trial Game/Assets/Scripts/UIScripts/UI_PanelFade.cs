@@ -50,7 +50,7 @@ public class UI_PanelFade : MonoBehaviour
         if(_start)
         {
             float speedOrTime = _fadeTime > 0 ? (1 / _fadeTime) : FadeSpeed;
-            float newAlpha = _image.color.a + (_fadeDirection * Time.deltaTime * speedOrTime);
+            float newAlpha = _image.color.a + (_fadeDirection * Time.fixedDeltaTime * speedOrTime);
             SetNewAlpha(newAlpha);
             if (_image.color.a <= 0 || _image.color.a >= 1)
             {

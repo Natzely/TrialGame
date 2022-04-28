@@ -6,30 +6,25 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AudioSource))]
 public class SceneManager : MonoBehaviour
 {
-    [SerializeField] internal EventSystem UIInput;
-    [SerializeField] internal UI_PanelFade LevelLoadFade;
-    [SerializeField] internal float FadeMusicSpeed;
-    [SerializeField] internal float TimeToLoad;
-    [SerializeField] internal float TimeToFade;
-    [SerializeField] internal bool DebugLog;
-    [SerializeField] internal bool WriteDebugToFile;
+    [SerializeField] protected EventSystem UIInput;
+    [SerializeField] protected UI_PanelFade LevelLoadFade;
+    [SerializeField] protected float FadeMusicSpeed;
+    [SerializeField] protected float TimeToLoad;
+    [SerializeField] protected float TimeToFade;
+    [SerializeField] public bool DebugLog;
+    [SerializeField] public bool WriteDebugToFile;
 
-    internal AudioSource _audioSource;
+    protected AudioSource _audioSource;
+    protected string _currentScene;
+
     private bool _loadScene;
     private bool _quitGame;
+    private bool _quitGameAfterFade;
     private bool _fadeMusic;
     private bool _activateScene;
     private float _waitTime;
     private float _fadeTime;
-    private string _currentScene;
     private string _sceneToLoad;
-
-    public void RestartScene(float waitTime = 0)
-    {
-        _waitTime = waitTime;
-        _loadScene = true;
-        _sceneToLoad = _currentScene;
-    }
 
     public void LoadScene(string sceneName, float waitTime = 0, float fadeTime = 0)
     {
@@ -38,12 +33,13 @@ public class SceneManager : MonoBehaviour
         _loadScene = true;
         _fadeMusic = true;
         _sceneToLoad = sceneName;
-        StartCoroutine(LoadScene(_sceneToLoad));
     }
 
     public void ActivateScene()
     {
         _activateScene = true;
+        if (_quitGameAfterFade)
+            Application.Quit();
     }
 
     public void QuitGame(float waitTime = 0)
@@ -52,29 +48,32 @@ public class SceneManager : MonoBehaviour
         _quitGame = true;
     }
 
-    internal virtual void Awake()
+    protected virtual void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
     }
 
-    internal virtual void Start()
+    protected virtual void Start()
     {
         _currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
     }
 
-    internal virtual void Update()
+    protected virtual void Update()
     {
         if (_waitTime > 0)
             _waitTime -= Time.unscaledDeltaTime;
 
         if (_quitGame && _waitTime <= 0)
         {
-            Application.Quit();
+            _quitGame = false;
+            _quitGameAfterFade = true;
+            LevelLoadFade.StartFade();
         }
         else if (_loadScene && _waitTime <= 0)
         {
             _loadScene = false;
-            LevelLoadFade.StartFade(_fadeTime);
+            LevelLoadFade.StartFade();
+            StartCoroutine(LoadScene(_sceneToLoad));
         }
 
         if (_fadeMusic && _audioSource.volume > 0)

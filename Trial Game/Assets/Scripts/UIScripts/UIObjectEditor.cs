@@ -5,25 +5,25 @@ using UnityEngine.Events;
 
 public abstract class UIObjectEditor : MonoBehaviour
 {
-    [SerializeField] internal bool EditOnStart = false;
-    [SerializeField] internal bool Loop;
-    [SerializeField] internal float Speed = 1;
-    [SerializeField] internal float Acceleration = 1;
-    [SerializeField] internal float Decceleration = 1;
+    [SerializeField] protected bool EditOnStart = false;
+    [SerializeField] protected bool Loop;
+    [SerializeField] protected float Speed = 1;
+    [SerializeField] protected float Acceleration = 1;
+    [SerializeField] protected float Decceleration = 1;
     [Tooltip("At what percent should you start slowing down")]
-    [SerializeField] [Range(0, 1)] internal float SlowDownPercent = 1;
-    [SerializeField] internal float MinSpeed;
-    [SerializeField] internal float MaxSpeed;
+    [SerializeField] [Range(0, 1)] protected float SlowDownPercent = 1;
+    [SerializeField] protected float MinSpeed;
+    [SerializeField] protected float MaxSpeed;
     [Tooltip("Time to wait before edit begins in seconds")]
-    [SerializeField] internal float WaitTime;
-    [SerializeField] internal UnityEvent EditEvent;
+    [SerializeField] protected float WaitTime;
+    public UnityEvent EditEvent;
 
-    internal float DistancePer { get => 1 - (_curDistance / _distance); }
+    protected float DistancePer { get => 1 - (_curDistance / _distance); }
 
-    internal bool _edit { get; private set; }
-    internal float _speed;
-    internal float _curDistance;
-    internal float _distance;
+    protected bool _edit { get; private set; }
+    protected float _speed;
+    protected float _curDistance;
+    protected float _distance;
 
     private bool _startWaitTimer;
     private float _waitTimer;
@@ -51,7 +51,7 @@ public abstract class UIObjectEditor : MonoBehaviour
     /// <summary>
     /// Make sure to set _curDistance and _distance to the difference of the main variable being edited
     /// </summary>
-    internal virtual void Start()
+    protected virtual void Start()
     {
         _waitTimer = WaitTime;
         _speed = Speed;
@@ -59,11 +59,11 @@ public abstract class UIObjectEditor : MonoBehaviour
             Edit();
     }
 
-    internal virtual void Update()
+    protected virtual void Update()
     {
         if (_waitTimer > 0 && _startWaitTimer)
         {
-            _waitTimer -= Time.deltaTime;
+            _waitTimer -= Time.fixedDeltaTime;
             if (_waitTimer < 0)
                 _edit = true;
         }
@@ -72,7 +72,7 @@ public abstract class UIObjectEditor : MonoBehaviour
     /// <summary>
     /// Make sure to update _curDistance;
     /// </summary>
-    internal virtual void EditObject()
+    protected virtual void EditObject()
     {
         if (DistancePer >= SlowDownPercent)
             _speed *= Decceleration;
@@ -81,7 +81,7 @@ public abstract class UIObjectEditor : MonoBehaviour
         _speed = Mathf.Clamp(_speed, MinSpeed, MaxSpeed);
     }
 
-    internal virtual void Reset()
+    protected virtual void Reset()
     {
         _speed = Speed;
         _edit = false;

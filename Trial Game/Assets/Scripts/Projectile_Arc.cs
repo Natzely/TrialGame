@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Projectile_Arc : Projectile
 {
-    public float ArcHeightAdjustment;
-    public float SizeScale;
-    public Vector2 TempDestination;
+    [SerializeField] private BoxCollider2D Collider;
+    [SerializeField] private float ArcHeightAdjustment;
+    [SerializeField] private float SizeScale;
+    [SerializeField] private float EnableColliderDistance;
+    [SerializeField] private Vector2 TempDestination;
 
     private float YDiff { get { return Mathf.Abs(_destination.y - _startPos.y); } }
 
@@ -52,6 +54,7 @@ public class Projectile_Arc : Projectile
     protected override void Awake()
     {
         base.Awake();
+        Collider.enabled = false;
     }
 
     private void Start()
@@ -80,5 +83,9 @@ public class Projectile_Arc : Projectile
             transform.SetPositionAndRotation(newPos, Quaternion.Euler(0, 0, rotation));
             transform.localScale = new Vector3(1 + sizeDif, 1 + sizeDif, 0);
         }
+
+        var dis = transform.position.GridDistance(_destination);
+        if (dis <= EnableColliderDistance)
+            Collider.enabled = true;
     }
 }

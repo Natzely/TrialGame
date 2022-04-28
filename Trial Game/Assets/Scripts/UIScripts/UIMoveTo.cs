@@ -16,13 +16,13 @@ public class UIMoveTo : UIObjectEditor
         base.Edit(edit);
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         _rectT.anchoredPosition = _orgPos;
         base.Reset();
     }
 
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         //Edit(true);
@@ -33,7 +33,7 @@ public class UIMoveTo : UIObjectEditor
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(base._edit)
@@ -42,7 +42,7 @@ public class UIMoveTo : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         _curDistance = Vector2.Distance(_rectT.anchoredPosition, MoveTo);
         base.EditObject();

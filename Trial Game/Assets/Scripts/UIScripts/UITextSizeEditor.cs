@@ -19,7 +19,7 @@ public class UITextSizeEditor : UIObjectEditor
         base.Edit(edit);
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         Text.fontSize = _orgFontSize;
@@ -27,7 +27,7 @@ public class UITextSizeEditor : UIObjectEditor
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgFontSize = Text.fontSize;
@@ -35,7 +35,7 @@ public class UITextSizeEditor : UIObjectEditor
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if(_edit)
@@ -44,10 +44,10 @@ public class UITextSizeEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
-        float newSize = Mathf.MoveTowards(Text.fontSize, _fontSizeTarget, Speed * Time.deltaTime);
+        float newSize = Mathf.MoveTowards(Text.fontSize, _fontSizeTarget, Speed * Time.fixedDeltaTime);
         Text.fontSize = newSize;
         if (Text.fontSize == _fontSizeTarget && Loop)
             _fontSizeTarget = _fontSizeTarget == _orgFontSize ? FontSizeEdit : _orgFontSize;

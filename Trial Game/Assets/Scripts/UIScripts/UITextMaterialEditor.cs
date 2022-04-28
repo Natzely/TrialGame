@@ -27,19 +27,19 @@ public class UITextMaterialEditor : UIObjectEditor
         GlowPowerEdit = newGlowPower;
     }
 
-    internal override void Reset()
+    protected override void Reset()
     {
         base.Reset();
         Text.fontSharedMaterial.SetFloat(GlowPowerID, _orgGlowPower);
         _glowPowerTarget = GlowPowerEdit;
     }
-    private void Awake()
+    protected void Awake()
     {
         GlowPowerID = ShaderUtilities.ID_GlowPower;
     }
 
     // Start is called before the first frame update
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         _orgGlowPower = Text.fontSharedMaterial.GetFloat(GlowPowerID);
@@ -47,7 +47,7 @@ public class UITextMaterialEditor : UIObjectEditor
     }
 
     // Update is called once per frame
-    internal override void Update()
+    protected override void Update()
     {
         base.Update();
         if (_edit)
@@ -56,7 +56,7 @@ public class UITextMaterialEditor : UIObjectEditor
         }
     }
 
-    internal override void EditObject()
+    protected override void EditObject()
     {
         base.EditObject();
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -4496432915204269968}
   - component: {fileID: 5243752479754259736}
   - component: {fileID: -7562616754991587964}
-  m_Layer: 15
+  m_Layer: 28
   m_Name: Damager_Range_Arc
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -161,6 +161,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 4
+  Collider: {fileID: -4496432915204269968}
   ArcHeightAdjustment: 0.2
   SizeScale: 0
+  EnableColliderDistance: 0.9
   TempDestination: {x: 0, y: 0}
