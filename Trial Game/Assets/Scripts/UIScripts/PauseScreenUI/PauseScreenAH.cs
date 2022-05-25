@@ -17,7 +17,7 @@ public class PauseScreenAH : UIActionHandler
 
     public bool IsSubMenuOpened { get; private set; }
 
-    private LevelManager LevelManager { get { return (LevelManager)_sceneManager; } }
+    private LevelManager LevelManager { get { return (LevelManager)SceneManager.Instance; } }
     private bool IsGamePaused { get { return LevelManager.GameState == Enums.GameState.Pause; } }
 
     private RectTransform _rectTransform;
@@ -131,10 +131,10 @@ public class PauseScreenAH : UIActionHandler
         IsSubMenuOpened = true;
     }
 
-    public override void Awake()
+    protected override void Awake()
     {
-        base.Awake();
         _orgPos = new Vector2(0, 1450);
+        base.Awake();
     }
 
     private void Start()

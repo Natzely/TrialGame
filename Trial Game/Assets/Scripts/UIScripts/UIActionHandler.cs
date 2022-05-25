@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(AudioSource))]
 public abstract class UIActionHandler : UIObject
 {
+    
     public GameObject CurrentButton { get { return _eventSystem.currentSelectedGameObject; } }
     [SerializeField] internal PlayerInput PlayerInput;
     [SerializeField] internal UIButton FirstSelected;
@@ -15,22 +16,24 @@ public abstract class UIActionHandler : UIObject
 
     internal UIButton _currentButton;
     internal UIButton _prevButton;
-    internal SceneManager _sceneManager;
     internal AudioSource _audioSource;
     internal EventSystem _eventSystem;
 
-    public abstract void HandleButtonSubmit(UIButton type);
+    public abstract void HandleButtonSubmit(UIButton button);
 
-    public override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
         _currentButton = FirstSelected;
         _audioSource = GetComponent<AudioSource>();
-        _sceneManager = FindObjectOfType<SceneManager>();
         _eventSystem = FindObjectOfType<EventSystem>();
     }
 
-    public void OnItemSelected(UIButton button)
+    protected virtual void Start()
+    {
+        //_currentButton.Select();
+    }
+
+    public virtual void OnItemSelected(UIButton button)
     {
         if (button != _currentButton)
         {

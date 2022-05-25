@@ -309,7 +309,7 @@ MonoBehaviour:
   MAXMOVEAFTERATTACK: 3
   PLUSACTIONTIME: 7.5
   Player: 0
-  Type: 0
+  Type: 1
   AttackAudioSource: {fileID: 5224534530976703657}
   HurtAudioSource: {fileID: 2635142902251534675}
   WalkingAudioSource: {fileID: 4877884251898067759}

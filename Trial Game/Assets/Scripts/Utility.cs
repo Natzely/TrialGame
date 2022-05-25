@@ -88,4 +88,9 @@ public static class Utility
             return true;
         }
     }
+
+    public static IEnumerable<T> GetValues<T>()
+    {
+        return (T[])Enum.GetValues(typeof(T));
+    }
 }

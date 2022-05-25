@@ -245,6 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 4739032698661550819}
+  OverrideConstTextSizes: 0
   Sound_Select: {fileID: 8300000, guid: cd1a99202b8648543999ecd59f21bfbf, type: 3}
   Sound_Press: {fileID: 0}
   Type: 0
@@ -260,6 +261,7 @@ GameObject:
   - component: {fileID: 1097902969648348625}
   - component: {fileID: 7534075824503001974}
   - component: {fileID: 1653292867272775174}
+  - component: {fileID: 2436578156356120686}
   - component: {fileID: 1736329676134960780}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -309,7 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditOnStart: 0
   Loop: 0
-  Speed: 10
+  Speed: 3
   Acceleration: 1
   Decceleration: 1
   SlowDownPercent: 1
@@ -321,6 +323,22 @@ MonoBehaviour:
       m_Calls: []
   Text: {fileID: 1736329676134960780}
   FontSizeEdit: 60
+--- !u!114 &2436578156356120686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582340592070837837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21d2c622fdb470f4881b9e998f1f11a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 1736329676134960780}
+  LanguageTexts:
+  - 
+  - 
 --- !u!114 &1736329676134960780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,7 +440,9 @@ PrefabInstance:
     - target: {fileID: 4558055317541088199, guid: 9cbdf49e4238a974ba6259691c32318b,
         type: 3}
       propertyPath: m_text
-      value: Quit
+      value: 'Ready
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 4558055317541088199, guid: 9cbdf49e4238a974ba6259691c32318b,
         type: 3}

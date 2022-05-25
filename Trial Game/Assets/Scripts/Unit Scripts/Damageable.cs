@@ -47,26 +47,24 @@ public class Damageable : MonoBehaviour
             //    HealthText.color = Colors.Health_Low;
             //else if (Health / _maxHealth < .67)
             //    HealthText.color = Colors.Health_Half;
+
+            _animator.SetTrigger("Hit");
+            _uC.AttackedFrom = damager.Unit.Position;
             HealthText.havePropertiesChanged = true;
+            Debug.Log($"{gameObject.name}: Hurt");
 
             if (Health <= 0)
             {
-                Vector2 posDif = (transform.position.V2() - damager.Unit.Position) * -1; // Flip it because if its coming from top, the we would want to look up instead of down.
-                posDif.Normalize();
-                _animator.SetFloat("Look X", posDif.x);
-                _animator.SetFloat("Look Y", posDif.y);
-                _animator.SetTrigger("Hit");
                 _uC.OnUnitInterupt?.Invoke();
                 return true;
             }
             else
             {
-                _animator.SetTrigger("Hit");
                 DamageText.gameObject.SetActive(false);
                 DamageText.Text = calcDamage + "";
                 DamageText.gameObject.SetActive(true);
                 if (!_uC.TookAction && _uC.MinAttackDistance == damager.Unit.MinAttackDistance)
-                    _uC.Target = damager.Unit.CurrentGridBlock.ToMovePoint();
+                    _uC.AttackBackTarget = damager.Unit.CurrentGridBlock.ToMovePoint();
             }
         }
 

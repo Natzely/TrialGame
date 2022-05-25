@@ -19,8 +19,6 @@ public abstract class UnitManager : MonoBehaviour
 
     public int AvailableUnits { get { return Units.Where(u => u.Available).Count(); } }
     public int TotalUnits { get { return Units.Where(u => u).Count(); } }
-
-    protected GlobalVariables _globalVariables;
     public List<UnitController> Units 
     { 
         get { return PlayerInfo.Units; } 
@@ -89,7 +87,6 @@ public abstract class UnitManager : MonoBehaviour
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
-        _globalVariables = FindObjectOfType<GlobalVariables>();
         _debugFilePath = Application.persistentDataPath + "/Debug.txt";
     }
 }

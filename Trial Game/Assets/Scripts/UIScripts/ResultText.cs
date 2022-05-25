@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof(UITextColorEditor))]
+[RequireComponent(typeof(UITextSizeEditor))]
+[RequireComponent(typeof(UITextMaterialEditor))]
 public class ResultText : MonoBehaviour
 {
-    public TextMeshProUGUI Text;
-    [SerializeField] private SceneManager SceneManager;
+    public TextMeshProUGUI VictoryText;
+    public TextMeshProUGUI DefeatText;
     public TMP_FontAsset AztecFont;
     public Color AztecColor;
     public int AztecSpacing;
@@ -16,48 +19,45 @@ public class ResultText : MonoBehaviour
     public UITextColorEditor ColorEditor;
     public UITextSizeEditor SizeEditor;
     public UITextMaterialEditor MaterialEditor;
-    public string VictoryText;
-    public string DefeatText;
     public Enums.PlayerSides sides;
-    public bool victory;
 
+    private TextMeshProUGUI _currTextMesh;
     private ResultText_Properties _currText;
     private ResultText_Properties _aztecText;
     private ResultText_Properties _spanishText;
 
-    public void SetupText(Enums.PlayerSides side)
+    public void Show(bool victory, Enums.PlayerSides side)
     {
-        if ((side == Enums.PlayerSides.Aztec && victory) ||        // If Aztecs win
-                  (side == Enums.PlayerSides.Spanish && !victory))    // Or Spanish loose
+        _currTextMesh = victory ? VictoryText : DefeatText;
+
+        ColorEditor.Text = SizeEditor.Text = MaterialEditor.Text = _currTextMesh;
+
+        if ((side == Enums.PlayerSides.Aztec && victory) ||         // If Aztecs win
+             (side == Enums.PlayerSides.Spanish && !victory))        // Or Spanish loose
             _currText = _aztecText;                                 // Use the Aztec style
         else
-            _currText = _spanishText;                               // Otherwise use the Spanish one
+            _currText = _spanishText;
 
-        Text.font = _currText.Font;
-        Text.color = new Color(_currText.Color.r, _currText.Color.g, _currText.Color.b, 0);
-    }
+        //if (_currText.Equals(default(ResultText_Properties)))
+        //    SetupText(sides);
 
-    public void Show(bool victory)
-    {
-        Text.text = victory ? VictoryText : DefeatText;
-
-        if (_currText.Equals(default(ResultText_Properties)))
-            SetupText(Enums.PlayerSides.Aztec);
+        _currTextMesh.font = _currText.Font;
+        _currTextMesh.color = new Color(_currText.Color.r, _currText.Color.g, _currText.Color.b, 0);
 
         ColorEditor.UpdateColorEdit(_currText.Color);
-        Text.fontStyle = _currText.Style;
-        Text.characterSpacing = _currText.TextSpacing;
+        _currTextMesh.fontStyle = _currText.Style;
+        _currTextMesh.characterSpacing = _currText.TextSpacing;
 
         if(victory)
         {
-            Text.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 1);
+            _currTextMesh.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 1);
             ColorEditor.UpdateSpeed(100);
             ColorEditor.Edit(true);
             MaterialEditor.Edit(true);
         }
         else
         {
-            Text.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 0);
+            _currTextMesh.fontSharedMaterial.SetFloat(ShaderUtilities.ID_GlowPower, 0);
             ColorEditor.Edit(true);
             SizeEditor.Edit(true);
         }

@@ -22,7 +22,7 @@ public class TitleScreenAH : UIActionHandler
             button.RaiseVolume();
     }
 
-    public override void Awake()
+    protected override void Awake()
     {
         base.Awake();
         transform.position = StartAt.position;
@@ -36,7 +36,10 @@ public class TitleScreenAH : UIActionHandler
         switch(titleButton.Type)
         {
             case Enums.UI_TitleButtonType.Start:
-                LoadLevel("Level 3");
+                LoadLevel("How To Play Scene");
+                break;
+            case Enums.UI_TitleButtonType.Language:
+                SceneManager.Instance.ChangeLanguage();
                 break;
             case Enums.UI_TitleButtonType.Load:
                 _state = Enums.TitleState.Levels;
@@ -44,7 +47,7 @@ public class TitleScreenAH : UIActionHandler
                 FirstLevel.Select();
                 break;
             case Enums.UI_TitleButtonType.Quit:
-                _sceneManager.QuitGame(button.ClipLength);
+                SceneManager.Instance.QuitGame(button.ClipLength);
                 break;
             case Enums.UI_TitleButtonType.Level_Done:
                 var levelButton = (TitleScreen_LevelButton)titleButton;
@@ -71,7 +74,7 @@ public class TitleScreenAH : UIActionHandler
     private void LoadLevel(string sceneName)
     {
         _audioSource.Play(StartSound);
-        _sceneManager.LoadScene(sceneName, 0, StartSound.length);
+        SceneManager.Instance.LoadScene(sceneName, 0, StartSound.length + 4f);
         HideLoadPanel();
     }
 }

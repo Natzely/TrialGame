@@ -767,6 +767,12 @@ TextureImporter:
   - first:
       213: 21300508
     second: Dungeon @128x128_1
+  - first:
+      213: -4498334818250334440
+    second: Dungeon @128x128_2
+  - first:
+      213: -2757847610163581164
+    second: Dungeon @128x128_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -4034,7 +4040,7 @@ TextureImporter:
         y: 768
         width: 128
         height: 128
-      alignment: 0
+      alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -4702,8 +4708,8 @@ TextureImporter:
       name: Dungeon@128x128_183
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 512
+        x: 1021
+        y: 509
         width: 128
         height: 128
       alignment: 0
@@ -6177,7 +6183,7 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -6198,7 +6204,7 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -6206,6 +6212,48 @@ TextureImporter:
       bones: []
       spriteID: 923b970a9b9fa7f46bac5c19f5217493
       internalID: 21300508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dungeon @128x128_2
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81fda65e054b291c0800000000000000
+      internalID: -4498334818250334440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dungeon @128x128_3
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41f2a83d5382ab9d0800000000000000
+      internalID: -2757847610163581164
       vertices: []
       indices: 
       edges: []

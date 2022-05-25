@@ -11,7 +11,7 @@ public class TitleScreen_MainButton : TitleScreen_Button
         Log($"{gameObject.name}: Selected");
         AudioSource.Play(Sound_Select);
         _selected = true;
-        SizeEditor.Edit(true);
+        //SizeEditor.Edit(true);
         UIHandler.OnItemSelected(this);
     }
 
@@ -20,7 +20,7 @@ public class TitleScreen_MainButton : TitleScreen_Button
         Log($"{gameObject.name}: Deselected");
         //_image.color = Colors.Button_Deselected;
         Deselect();
-        SizeEditor.Edit(false);
+        //SizeEditor.Edit(false);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

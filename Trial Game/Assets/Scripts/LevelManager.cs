@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class LevelManager : SceneManager
 {
     public Enums.GameState GameState;
+    public Enums.PlayerSides Side;
     [SerializeField] private PlayerInput PlayerInput;
     [SerializeField] private CameraController CameraControllerScript;
     [SerializeField] private SideSelectionAH SideSelection;
@@ -18,15 +19,15 @@ public class LevelManager : SceneManager
     [SerializeField] private float CameraPlayZoom;
     [SerializeField] private float CameraSelectionZoom;
 
-
     public void StartPlay()
     {
-        PlayerManager.UnitHolder = SideSelection.ConfirmedSide == Enums.PlayerSides.Aztec ? AztecUnitHolder : SpanishUnitHolder;
-        EnemyManager.UnitHolder = SideSelection.ConfirmedSide == Enums.PlayerSides.Aztec ? SpanishUnitHolder : AztecUnitHolder;
+        Side = SideSelection.ConfirmedSide;
+        PlayerManager.UnitHolder = Side == Enums.PlayerSides.Aztec ? AztecUnitHolder : SpanishUnitHolder;
+        EnemyManager.UnitHolder = Side == Enums.PlayerSides.Aztec ? SpanishUnitHolder : AztecUnitHolder;
         PlayerManager.InitializeUnits();
         EnemyManager.InitializeUnits();
 
-        ResultText.SetupText(SideSelection.ConfirmedSide);
+        //ResultText.SetupText(SideSelection.ConfirmedSide);
         Cursor.AllowMove();
         PlayerInput.SwitchCurrentActionMap("Player");
         CameraControllerScript.enabled = true;
@@ -50,9 +51,9 @@ public class LevelManager : SceneManager
     {
         GameState = Enums.GameState.Results;
         if (uM is EnemyManager)
-            ResultText.Show(true);
+            ResultText.Show(true, Side);
         else
-            ResultText.Show(false);
+            ResultText.Show(false, Side);
 
         LoadScene("Title Scene", TimeToLoad, TimeToFade);
     }
@@ -60,6 +61,11 @@ public class LevelManager : SceneManager
     public void StartSelection()
     {
         UIInput.SetSelectedGameObject(SideSelection.gameObject);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     // Start is called before the first frame update

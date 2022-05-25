@@ -11,7 +11,7 @@ public class DebugLogger : MonoBehaviour
     public static DebugLogger Instance { get ; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(this);

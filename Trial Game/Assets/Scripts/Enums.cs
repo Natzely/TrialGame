@@ -100,6 +100,7 @@ public class Enums : MonoBehaviour
         Level_Done = 2,
         Level_Development = 3,
         Start = 4,
+        Language = 5,
     }
 
     public enum UI_ConfirmButtonType
@@ -170,6 +171,25 @@ public class Enums : MonoBehaviour
         Play = 1,
         Pause = 2,
         Results = 3,
+    }
+
+    public enum Language
+    {
+        English = 0,
+        Spanish = 1,
+    }
+
+    public enum HTPButton
+    {
+        Moving = 0,
+        Selecting = 1,
+        Cancel = 2,
+        NextUnit=3,
+        MoveAttack=4,
+        AttackDirectly=5,
+        UnitCooldown=6,
+        Menu=7,
+        Minimap=8,
     }
 }
 

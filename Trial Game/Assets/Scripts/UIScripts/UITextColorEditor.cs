@@ -5,7 +5,7 @@ using TMPro;
 
 public class UITextColorEditor : UIObjectEditor
 {
-    [SerializeField] private TextMeshProUGUI Text;
+    public TextMeshProUGUI Text;
     [SerializeField] private Color FontColorEdit;
 
     private Color _orgFontColor;
@@ -15,6 +15,8 @@ public class UITextColorEditor : UIObjectEditor
     {
         if (!edit)
             Reset();
+        _orgFontColor = Text.color;
+        _fontColorTarget = FontColorEdit;
         base.Edit(edit);
     }
 
@@ -36,8 +38,6 @@ public class UITextColorEditor : UIObjectEditor
     protected override void Start()
     {
         base.Start();
-        _orgFontColor = Text.color;
-        _fontColorTarget = FontColorEdit;
     }
 
     // Update is called once per frame

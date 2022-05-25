@@ -13,11 +13,11 @@ public class ResultTextButton : Editor
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Victory", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            text.Show(true);
+            text.Show(true, text.sides);
         }
         if (GUILayout.Button("Defeat", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            text.Show(false);
+            text.Show(false, text.sides);
         }
         EditorGUILayout.EndHorizontal();
         DrawDefaultInspector();

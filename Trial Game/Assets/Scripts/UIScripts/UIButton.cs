@@ -10,21 +10,22 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
 {
     public float ClipLength { get { return AudioSource.clip.length; } }
 
-    [SerializeField] internal TextMeshProUGUI ButtonText;
-    [SerializeField] internal AudioClip Sound_Select;
-    [SerializeField] internal AudioClip Sound_Press;
+    [SerializeField] protected TextMeshProUGUI ButtonText;
+    [SerializeField] protected bool OverrideConstTextSizes;
+    [SerializeField] protected AudioClip Sound_Select;
+    [SerializeField] protected AudioClip Sound_Press;
 
-    internal const int MINTEXTSIZE = 50;
-    internal const int MAXTEXTSIZE = 55;
-    internal const float TEXTSIZESPEED = 100f;
+    protected const int MINTEXTSIZE = 50;
+    protected const int MAXTEXTSIZE = 55;
+    protected const float TEXTSIZESPEED = 100f;
 
-    internal UIActionHandler UIHandler { private set; get; }
-    internal AudioSource AudioSource { private set; get; }
-    internal Button Button { private set; get; }
-    internal Image Image { private set; get; }
+    protected UIActionHandler UIHandler { private set; get; }
+    protected AudioSource AudioSource { private set; get; }
+    protected Button Button { private set; get; }
+    protected Image Image { private set; get; }
 
-    internal bool _selected;
-    internal float _savedFontSize;
+    protected bool _selected;
+    protected float _savedFontSize;
 
     public abstract void OnDeselect(BaseEventData eventData);
     public abstract void OnPointerClick(PointerEventData eventData);
@@ -33,6 +34,8 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
     public abstract void OnSubmit(BaseEventData eventData);
 
     private bool _silent;
+    private float _maxFontSize;
+    private float _minFontSize;
 
     public void MoveToNextUIObject(Vector3 move)
     {
@@ -70,7 +73,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
 
     public void Deselect()
     {
-        ButtonText.fontSize = _savedFontSize = MINTEXTSIZE;
+        ButtonText.fontSize = _savedFontSize = _minFontSize;
         _selected = false;
     }
 
@@ -79,25 +82,25 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         AudioSource.volume = 1;
     }
 
-    public override void Awake()
+    private void Awake()
     {
-        base.Awake();
         Button = GetComponent<Button>();
         AudioSource = GetComponent<AudioSource>();
         Image = GetComponent<Image>();
         UIHandler = GetComponentInParent<UIActionHandler>();
-        _savedFontSize = MINTEXTSIZE;
+        _maxFontSize = _savedFontSize = OverrideConstTextSizes ? ButtonText.fontSize + 5 : MAXTEXTSIZE;
+        _minFontSize = OverrideConstTextSizes ? ButtonText.fontSize : MINTEXTSIZE;
     }
 
     // Update is called once per frame
-    internal virtual void Update()
+    protected virtual void Update()
     {
         if (_selected && ButtonText != null)
         {
-            if (ButtonText.fontSize < MAXTEXTSIZE)
+            if (ButtonText.fontSize < _maxFontSize)
             {
                 _savedFontSize += TEXTSIZESPEED * Time.unscaledDeltaTime;
-                ButtonText.fontSize = Mathf.Clamp(_savedFontSize, MINTEXTSIZE, MAXTEXTSIZE);
+                ButtonText.fontSize = Mathf.Clamp(_savedFontSize, _minFontSize, _maxFontSize);
             }
             else
                 _selected = false;

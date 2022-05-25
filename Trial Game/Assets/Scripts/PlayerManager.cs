@@ -168,8 +168,8 @@ public class PlayerManager : UnitManager
             uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
             uC.enabled = true;
             uC.Player = Player;
-            uC.Speed *= _globalVariables.UnitSpeedModifier;
-            uC.Cooldown *= _globalVariables.UnitCooldownModifier;
+            uC.Speed *= GameSettinngsManager.Instance.UnitSpeedModifier;
+            uC.Cooldown *= GameSettinngsManager.Instance.UnitCooldownModifier;
             uC.UnitManager = this;
             uC.BoxCollider.enabled = true;
             uC.DefaultLook = 1;
@@ -284,8 +284,8 @@ public class PlayerManager : UnitManager
         float x2 = FullGrid.GetLength(0);
         float y2 = FullGrid.GetLength(1);
 
-        float x1 = (x / x2) * 2;// / .9f;
-        float y1 = (y / y2) * 2;// / .9f;
+        float x1 = (x / x2) / .9f;
+        float y1 = (y / y2) / .9f;
         _miniMapTileSize = Mathf.Min(x1, y1);
     }
 }

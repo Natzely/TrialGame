@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8766863519856723862}
   - component: {fileID: 2168699861925652785}
+  - component: {fileID: 3091896777666570558}
   - component: {fileID: 7966306608276190411}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -45,6 +46,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5260505073932581898}
   m_CullTransparentMesh: 1
+--- !u!114 &3091896777666570558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5260505073932581898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21d2c622fdb470f4881b9e998f1f11a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 7966306608276190411}
+  LanguageTexts:
+  - 
+  - 
 --- !u!114 &7966306608276190411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +299,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 7966306608276190411}
+  OverrideConstTextSizes: 0
   Sound_Select: {fileID: 8300000, guid: 9570c955a29a7344ba8edc5817236b34, type: 3}
+  Sound_Press: {fileID: 0}
   Type: 0
 --- !u!82 &7909673811386046609
 AudioSource:

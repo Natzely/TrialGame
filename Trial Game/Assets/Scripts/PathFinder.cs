@@ -13,6 +13,7 @@ public class PathFinder
         Location current = null;
         Location start = null;
         Location target = null;
+        Location bestLoc = new Location() { G = 9999, H = 9999, F = 9999 };
 
         start = new Location { X = (int)gbStart.GridPosition.x, Y = (int)gbStart.GridPosition.y };
         target = new Location { X = (int)gbTarget.GridPosition.x, Y = (int)gbTarget.GridPosition.y };
@@ -47,7 +48,7 @@ public class PathFinder
             if (current.X == target.X && current.Y == target.Y)
               break;
 
-            var adjacentSquares = GetWalkableAdjacentSquares(player, current.X, current.Y, map);
+            var adjacentSquares = GetWalkableAdjacentSquares(player, current.X, current.Y, map, gbTarget);
             g++;
 
             foreach (Location adjacentSquare in adjacentSquares)
@@ -75,6 +76,12 @@ public class PathFinder
                     adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (gbStart.CurrentUnit.CheckGridMoveCost(map[asX, asY].Type) * MOVEMENTCOSTMODIFIER);
                     adjacentSquare.Parent = current;
 
+                    //Debug.Log($"Current Square | {adjacentSquare.X},{adjacentSquare.Y} | G: {adjacentSquare.G} H: {adjacentSquare.H} F: {adjacentSquare.F}");
+                    
+                    // Update bestLoc incase it's needed
+                    if(adjacentSquare.H < bestLoc.H)
+                        bestLoc = adjacentSquare;
+
                     // and add it to the open list
                     openList.Insert(0, adjacentSquare);
                 }
@@ -92,6 +99,20 @@ public class PathFinder
             }
         }
 
+        // Check if the target was reached, if the target was a far away attack space it 
+        // mess up the pathing since it can't make a path to it. Just use the next best 
+        // green space to path to.
+        if(current != null && player == Enums.Player.Player1)
+        {
+            GridBlock gB = map[current.X, current.Y];
+            if(gB != gbTarget)
+            {
+                GridBlock reachableTarget = map[bestLoc.X, bestLoc.Y];
+                var reachablePath = CreatePath(player, gbStart, reachableTarget, map);
+                return reachablePath;
+            }
+        }
+
         Vector2? lastDir = null;
         Vector2? dir = null;
         GridBlock pB = null;
@@ -99,6 +120,12 @@ public class PathFinder
         while (current != null)
         {
             GridBlock gB = map[current.X, current.Y];
+
+            if (player == Enums.Player.Player1 && gB.ActiveSpace != Enums.ActiveSpace.Move)
+            {
+                current = current.Parent;
+                continue;
+            }
 
             gridList.Add(gB);
 
@@ -124,11 +151,12 @@ public class PathFinder
         gridList.Reverse();
         foreach(GridBlock gB in gridList)
             pathList.Add(gB.ToMovePoint());
-        
+
         return pathList;
+
     }
 
-    private static List<Location> GetWalkableAdjacentSquares(Enums.Player player, int x, int y, GridBlock[,] map)
+    private static List<Location> GetWalkableAdjacentSquares(Enums.Player player, int x, int y, GridBlock[,] map, GridBlock target)
     {
         List<Location> returnList = new List<Location>();
         var proposedLocations = new List<Location>()
@@ -146,17 +174,18 @@ public class PathFinder
             if (loc.X >= map.GetLength(0) || loc.Y >= map.GetLength(1))
                 continue;
             var gridBlock = map[loc.X, loc.Y];
-            if (gridBlock == null)
+            if (gridBlock == null || gridBlock.Unpassable)
+                continue;
+            if (player == Enums.Player.Player1 && gridBlock.ActiveSpace == Enums.ActiveSpace.Attack && gridBlock != target)
                 continue;
             var aS = gridBlock.ActiveSpace;
-            if (player == Enums.Player.Player1 && aS != Enums.ActiveSpace.Move)
-                continue;
-            if (gridBlock.Unpassable)
+            if (player == Enums.Player.Player1 && aS == Enums.ActiveSpace.Inactive)
                 continue;
 
             returnList.Add(loc);
         }
 
+        returnList.Shuffle();
         return returnList;
     }
 

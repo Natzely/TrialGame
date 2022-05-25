@@ -175,7 +175,6 @@ MonoBehaviour:
   InputSystem: {fileID: 0}
   AztecMask: {fileID: 5352467992588788476}
   SpanishMask: {fileID: 4389889343267027921}
-  CancelButton: {fileID: 0}
   SpanishIntro: {fileID: 0}
   AztecIntro: {fileID: 0}
   MoveAcceleration: 1.01
@@ -1399,11 +1398,6 @@ PrefabInstance:
       propertyPath: Loop
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1289151613466595675, guid: 58061ad4ed1dbf64c8d313a4e887c7f3,
-        type: 3}
-      propertyPath: Speed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1862562428843722105, guid: 58061ad4ed1dbf64c8d313a4e887c7f3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1438,11 +1432,6 @@ PrefabInstance:
         type: 3}
       propertyPath: Loop
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4545462084686953677, guid: 58061ad4ed1dbf64c8d313a4e887c7f3,
-        type: 3}
-      propertyPath: Speed
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5307799094792358159, guid: 58061ad4ed1dbf64c8d313a4e887c7f3,
         type: 3}

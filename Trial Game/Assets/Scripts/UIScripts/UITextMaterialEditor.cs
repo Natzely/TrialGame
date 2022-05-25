@@ -5,7 +5,7 @@ using TMPro;
 
 public class UITextMaterialEditor : UIObjectEditor
 {
-    [SerializeField] private TextMeshProUGUI Text;
+    public TextMeshProUGUI Text;
     [SerializeField] [ColorUsage(true, true)] private Color GlowColor;
     [SerializeField] [Range(0, 1)] private float GlowPowerEdit;
 
@@ -17,6 +17,7 @@ public class UITextMaterialEditor : UIObjectEditor
     {
         if (!edit)
             Reset();
+        _orgGlowPower = Text.fontSharedMaterial.GetFloat(GlowPowerID);
         base.Edit(edit);
     }
 
@@ -42,7 +43,6 @@ public class UITextMaterialEditor : UIObjectEditor
     protected override void Start()
     {
         base.Start();
-        _orgGlowPower = Text.fontSharedMaterial.GetFloat(GlowPowerID);
         _glowPowerTarget = GlowPowerEdit;
     }
 

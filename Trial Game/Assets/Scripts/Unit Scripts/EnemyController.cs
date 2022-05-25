@@ -49,7 +49,7 @@ public class EnemyController : MonoBehaviour
 
             GridBlock gbTarget = null;
             List<MovePoint> moves = null;
-            var gbTargets = target.CurrentGridBlock.GetRangeSpaces(UnitController.CurrentGridBlock, minAttackRange);
+            var gbTargets = target.CurrentGridBlock.GetRangeSpaces(UnitController.CurrentGridBlock, minAttackRange).ToList();
 
             if (gbTargets != null)
             {
@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour
                 foreach (var gB in gbTargets)
                 {
                     var tempMoves = UnitManager.CreatePath((GridBlock)UnitController.CurrentGridBlock, (GridBlock)gB);
-                    if (tempMoves.Count() < pathLength)
+                    if (tempMoves != null && tempMoves.Count() < pathLength)
                     {
                         pathLength = tempMoves.Count();
                         moves = tempMoves.ToList();

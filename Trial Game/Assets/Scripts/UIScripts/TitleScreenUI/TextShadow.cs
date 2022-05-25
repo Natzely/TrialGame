@@ -22,7 +22,7 @@ public class TextShadow : MonoBehaviour
 
     private void Update()
     {
-        if (_text.color.a != Alpha || _text.fontSize != CopyText.fontSize || 
+        if (_text.text != CopyText.text || _text.color.a != Alpha || _text.fontSize != CopyText.fontSize || 
             _text.transform.rotation != CopyText.transform.rotation ||
             (_text.rectTransform.position - PositionOffset) != CopyText.rectTransform.position)
             UpdateText();

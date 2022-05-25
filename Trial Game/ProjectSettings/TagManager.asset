@@ -15,6 +15,7 @@ TagManager:
   - Minimap_Grid
   - Wall
   - Unit_Atlatl
+  - Unit_Arq
   layers:
   - Default
   - TransparentFX

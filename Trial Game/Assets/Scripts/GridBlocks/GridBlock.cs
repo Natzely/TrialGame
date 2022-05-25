@@ -66,11 +66,22 @@ public class GridBlock : MonoBehaviour, ILog
         var (uC, moveDis, maxAttackDis) = moveFrom.GetPlayerMoveParams();
         if (uC && uC.FavorableTerrain != null)
         {
-            var tempMove = moveDis - (uC.FavorableTerrain.Contains(moveFrom.Type) ? 1 : moveFrom.MovementCost);
+            int tempMove = 0;
+            if (Unpassable || (CurrentUnit && CurrentUnit.IsEnemy(Enums.Player.Player1)) ||
+            MovingFromRageBox(moveFrom, uC) || 
+            _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
+                tempMove = -1;
+            else
+                tempMove = moveDis - (uC.FavorableTerrain.Contains(moveFrom.Type) ? 1 : moveFrom.MovementCost);
+
             var tempAttack = maxAttackDis - 1;
+            if (maxAttackDis > 0 && gameObject.layer == LayerMask.NameToLayer("GridBlock_Wall") && !uC.CompareTag("Unit_Atlatl"))
+                tempAttack = 0;
+
             UseMoveAnimation = moveFrom.UseMoveAnimation;
 
-            if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
+            if(_gridParams.IsGreaterThanMove(tempMove) || _gridParams.IsGreaterThanAttack(tempAttack))
+            //if (tempMove > _gridParams.MoveDistance || tempAttack > _gridParams.MaxAttackDistance)
             {
                  SetGrid(moveFrom, uC);
                 if (Cursor.CurrentGridBlock == this || PlayerManager.PlayerInfo.MovementPathContains(this))
@@ -95,9 +106,8 @@ public class GridBlock : MonoBehaviour, ILog
             _unitsMovingThrough.Any(uC => uC != null && uC.IsEnemy(Enums.Player.Player1)))
             _gridParams.MoveDistance = -1;
 
-        if (gameObject.layer == LayerMask.NameToLayer("GridBlock_Wall") &&
-            !uC.gameObject.CompareTag("Unit_Atlatl"))
-            _gridParams.MaxAttackDistance = 0;
+        if (gameObject.layer == LayerMask.NameToLayer("GridBlock_Wall") && !uC.CompareTag("Unit_Atlatl"))
+            _gridParams.MaxAttackDistance = 1;
 
         if(moveFrom != this && _gridParams.MoveDistance >= 0)
             _gridParams.MoveDistance = moveFrom.GridParams.MoveDistance - (uC.FavorableTerrain.Contains(this.Type) ? 1 : MovementCost); // If this terrain is favorable to the unit, only subtract one.
@@ -425,23 +435,40 @@ public class GridBlock : MonoBehaviour, ILog
             get { return ActiveSpace != Enums.ActiveSpace.Inactive; }
         }
 
+        public bool IsGreaterThanMove(float compMove)
+        {
+            return (compMove >= 0 && compMove > MoveDistance);
+        }
+
+        public bool IsGreaterThanAttack(float compAttack)
+        {
+            return (compAttack >= 0 && compAttack > MaxAttackDistance);
+        }
+
         public void Update(GridBlock moveFrom, UnitController uC)
         {
-            if (moveFrom.GridParams.UnitController == null)
+            try
             {
-                _uC = uC;
-                _moveMod = 0;
-                _maxAttackMod = 0;
-                _minAttackMod = 0;
-                GridStart = _parent;
-            }
-            else
-                _uC = uC;
+                if (moveFrom.GridParams.UnitController == null)
+                {
+                    _uC = uC;
+                    _moveMod = 0;
+                    _maxAttackMod = 0;
+                    _minAttackMod = 0;
+                    GridStart = _parent;
+                }
+                else
+                    _uC = uC;
 
-            MoveDistance = moveFrom.GridParams.MoveDistance;
-            MaxAttackDistance = moveFrom.GridParams.MaxAttackDistance;
-            MinAttackDistance = moveFrom.GridParams.MinAttackDistance;
-            GridStart = moveFrom.GridParams.GridStart;
+                MoveDistance = moveFrom.GridParams.MoveDistance;
+                MaxAttackDistance = moveFrom.GridParams.MaxAttackDistance;
+                MinAttackDistance = moveFrom.GridParams.MinAttackDistance;
+                GridStart = moveFrom.GridParams.GridStart;
+            }
+            catch
+            {
+                Debug.Log("");
+            }
         }
 
         public void Reset()

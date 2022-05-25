@@ -195,6 +195,9 @@ public class CursorController : MonoBehaviour, ILog
     {
         Enums.CursorMenuState newState = Enums.CursorMenuState.None;
 
+        if (!_onlyAttack)
+            _moves = _pM.CreatePath(_orgGridBlock, CurrentGridBlock).ToList();
+
         if (CurrentGridBlock.IsCurrentUnitEnemy(Player))
         {
             CursorState = Enums.CursorState.Attack;
@@ -207,10 +210,9 @@ public class CursorController : MonoBehaviour, ILog
         else
         {
             CursorState = Enums.CursorState.Selected;
+
             if (CurrentGridBlock.ActiveSpace == Enums.ActiveSpace.Move)
             {
-                if (!_onlyAttack)
-                    _moves = _pM.CreatePath(_orgGridBlock, CurrentGridBlock).ToList();
                 if (!CurrentGridBlock.IsOccupied)
                     newState = Enums.CursorMenuState.Move | CheckForDistanceAttack();
                 if ((!CurrentGridBlock.IsOccupied || CurrentGridBlock.CurrentUnit == CurrentUnit) && CurrentGridBlock.Type == Enums.GridBlockType.Tree)
@@ -243,7 +245,7 @@ public class CursorController : MonoBehaviour, ILog
     {
         if (CurrentUnit != null)
             // Check if we're moving a unit                        and we've hit a map collider     or a unit that isn't our moving unit
-            return CursorState == Enums.CursorState.Selected && (gO.CompareTag("Unit") && gO.transform.position != CurrentUnit.transform.position);
+            return CursorState == Enums.CursorState.Selected && (gO.IsInLayer("Unit") && gO.transform.position != CurrentUnit.transform.position);
 
         return false;
     }
@@ -402,8 +404,8 @@ public class CursorController : MonoBehaviour, ILog
             else if (_onlyAttack)//CursorState == Enums.CursorState.OnlyAttack)
             {
                 _cursorMenu.SelectFirstPanel();
+                CurrentUnit.MoveTo(_moves);
                 CurrentUnit.Target = CurrentGridBlock.ToMovePoint();
-                CurrentUnit.MoveTo(_moves, false);
 
                 _aS.Play(Sound_Attack);
                 SelectUnit(false);
@@ -492,9 +494,23 @@ public class CursorController : MonoBehaviour, ILog
     {
         var gBList = _moves.Where(gB => 
             (gB.CurrentUnit == null || gB.CurrentUnit == CurrentUnit) && 
-            gB.Position.GridDistance(CurrentGridBlock.Position) <= CurrentUnit.MaxAttackDistance).ToList();
+            CanAttackFrom(gB.Position, CurrentGridBlock.Position)).ToList();
         var gB = gBList.FirstOrDefault();
         return gB;
+    }
+
+    private bool CanAttackFrom(Vector2 fromGB, Vector2 attackGB)
+    {
+        if (CurrentUnit.CompareTag("Unit_Arq"))
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(fromGB, attackGB - fromGB, fromGB.GridDistance(attackGB));
+
+            bool val = fromGB.GridDistance(attackGB) <= CurrentUnit.MaxAttackDistance &&
+                   !hits.Any(h => h.collider.gameObject.tag.Equals("Wall"));
+            return val;
+        }
+        else
+            return fromGB.GridDistance(attackGB) <= CurrentUnit.MaxAttackDistance;
     }
 
     private void InitializeGrid(GridBlock origin)

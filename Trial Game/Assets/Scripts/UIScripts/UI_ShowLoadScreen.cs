@@ -22,9 +22,8 @@ public class UI_ShowLoadScreen : UIObject
     private Vector2 _orgSize;
     private bool _show;
 
-    public override void Awake()
+    private void Awake()
     {
-        base.Awake();
         _rectTransform = GetComponent<RectTransform>();
         _orgSize = _rectTransform.sizeDelta;
         Show = false;

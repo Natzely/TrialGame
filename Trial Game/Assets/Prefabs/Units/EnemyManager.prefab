@@ -48,7 +48,7 @@ MonoBehaviour:
   UnitHolder: {fileID: 0}
   DeadUnitHolder: {fileID: 0}
   CursorBoundaries: {fileID: 0}
-  InitializeUnitsAtStart: 1
+  InitializeUnitsAtStart: 0
   PlayerManager: {fileID: 0}
-  MoveDelay: 5.5
-  DealyTimer: 2.5
+  MoveDelay: 7
+  DealyTimer: 4

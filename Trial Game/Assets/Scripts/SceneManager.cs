@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -11,8 +12,12 @@ public class SceneManager : MonoBehaviour
     [SerializeField] protected float FadeMusicSpeed;
     [SerializeField] protected float TimeToLoad;
     [SerializeField] protected float TimeToFade;
-    [SerializeField] public bool DebugLog;
-    [SerializeField] public bool WriteDebugToFile;
+    [SerializeField] internal bool DebugLog;
+    [SerializeField] internal bool WriteDebugToFile;
+
+    public static SceneManager Instance { get; private set; }
+    public UnityEvent LanguageChange;
+
 
     protected AudioSource _audioSource;
     protected string _currentScene;
@@ -48,9 +53,32 @@ public class SceneManager : MonoBehaviour
         _quitGame = true;
     }
 
+    public void ChangeLanguage(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            ChangeLanguage();
+        }
+    }
+
+    public void ChangeLanguage()
+    {
+        if (GameSettinngsManager.Instance.Language == Enums.Language.English)
+            GameSettinngsManager.Instance.Language = Enums.Language.Spanish;
+        else
+            GameSettinngsManager.Instance.Language = Enums.Language.English;
+        LanguageChange.Invoke();
+    }
+
     protected virtual void Awake()
     {
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+
         _audioSource = GetComponent<AudioSource>();
+        LanguageChange = new UnityEvent();
     }
 
     protected virtual void Start()
@@ -67,12 +95,12 @@ public class SceneManager : MonoBehaviour
         {
             _quitGame = false;
             _quitGameAfterFade = true;
-            LevelLoadFade.StartFade();
+            LevelLoadFade.StartFade(_fadeTime);
         }
         else if (_loadScene && _waitTime <= 0)
         {
             _loadScene = false;
-            LevelLoadFade.StartFade();
+            LevelLoadFade.StartFade(_fadeTime);
             StartCoroutine(LoadScene(_sceneToLoad));
         }
 

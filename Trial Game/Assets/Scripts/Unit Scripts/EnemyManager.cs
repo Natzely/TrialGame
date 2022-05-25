@@ -23,9 +23,9 @@ public class EnemyManager : UnitManager
             var pathList = PathFinder.CreatePath(Player, startPos, endPos, PlayerManager.FullGrid);
             return pathList;
         }
-        catch
+        catch (Exception e)
         {
-            Debug.Log("Error creating path");
+            Debug.Log($"Error creating path | {e.Message}");
         }
         return null;
     }
@@ -54,8 +54,8 @@ public class EnemyManager : UnitManager
                 uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
                 uC.enabled = true;
                 uC.Player = Player;
-                uC.Speed *= _globalVariables.UnitSpeedModifier;
-                uC.Cooldown *= _globalVariables.UnitCooldownModifier;
+                uC.Speed *= GameSettinngsManager.Instance.UnitSpeedModifier;
+                uC.Cooldown *= GameSettinngsManager.Instance.UnitCooldownModifier;
                 uC.UnitManager = this;
                 var eC = uC.gameObject.AddComponent<EnemyController>();
                 eC.UnitManager = this;
@@ -82,7 +82,7 @@ public class EnemyManager : UnitManager
 
     void Update()
     {
-        if (DealyTimer <= 0 && Units.Count > 0)
+        if (DealyTimer <= 0 && _unitQueue.Count > 0)
         {
             var nextEnemy = _unitQueue[0];
             if (nextEnemy != null)

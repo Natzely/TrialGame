@@ -6,7 +6,7 @@ using TMPro;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class UITextSizeEditor : UIObjectEditor
 {
-    [SerializeField] private TextMeshProUGUI Text;
+    public TextMeshProUGUI Text;
     public float FontSizeEdit;
 
     private float _orgFontSize;
@@ -16,6 +16,8 @@ public class UITextSizeEditor : UIObjectEditor
     {
         if (!edit)
             Reset();
+        _orgFontSize = Text.fontSize;
+        _fontSizeTarget = FontSizeEdit;
         base.Edit(edit);
     }
 
@@ -30,8 +32,6 @@ public class UITextSizeEditor : UIObjectEditor
     protected override void Start()
     {
         base.Start();
-        _orgFontSize = Text.fontSize;
-        _fontSizeTarget = FontSizeEdit;
     }
 
     // Update is called once per frame
