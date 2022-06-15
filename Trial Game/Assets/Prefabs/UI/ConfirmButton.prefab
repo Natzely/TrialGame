@@ -248,6 +248,7 @@ MonoBehaviour:
   OverrideConstTextSizes: 0
   Sound_Select: {fileID: 8300000, guid: cd1a99202b8648543999ecd59f21bfbf, type: 3}
   Sound_Press: {fileID: 0}
+  Sound_Cancel: {fileID: 8300000, guid: 813c439adf0455a4a966a4d3289ce57b, type: 3}
   Type: 0
   SizeEditor: {fileID: 1653292867272775174}
 --- !u!1 &4582340592070837837

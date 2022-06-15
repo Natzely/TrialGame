@@ -54,6 +54,8 @@ MonoBehaviour:
     type: 3}
   SavedPath: {fileID: 6727648032492768543, guid: 9f121c5ff0f76e346844cf4df09a72f7,
     type: 3}
+  OccupiedSpace: {fileID: 7147913594010298060, guid: f8ffb2fc7d74bf74aa1bf8448b66ed81,
+    type: 3}
   MinimapTile: {fileID: 2971420630142139890, guid: be597c860735194458d38d7f431678dc,
     type: 3}
   SpeedCost: 1

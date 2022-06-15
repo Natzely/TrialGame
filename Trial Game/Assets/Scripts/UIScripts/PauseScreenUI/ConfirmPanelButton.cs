@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(UITextSizeEditor))]
-public class ConfirmPanelButton : UIButton
+public class ConfirmPanelButton : UIButton, ICancelHandler
 {
     public Enums.UI_ConfirmButtonType Type;
-    [SerializeField] protected UITextSizeEditor SizeEditor;
+    [SerializeField] private UITextSizeEditor SizeEditor;
 
     public override void OnSelect(BaseEventData eventData)
     {
@@ -43,5 +43,11 @@ public class ConfirmPanelButton : UIButton
         Log($"{gameObject.name}: Submit");
         Press();
         UIHandler.HandleButtonSubmit(this);
+    }
+
+    public void OnCancel(BaseEventData eventData)
+    {
+        AudioSource.Play(Sound_Cancel);
+        ((SideSelectionAH)UIHandler).OnCancel(eventData);
     }
 }

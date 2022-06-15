@@ -329,6 +329,11 @@ PrefabInstance:
       propertyPath: EditOnStart
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3073797740157718837, guid: 1acf661bd2801c44199d2bf7ee9c80da,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 590446864}
     - target: {fileID: 7360087990190475908, guid: 1acf661bd2801c44199d2bf7ee9c80da,
         type: 3}
       propertyPath: m_Name
@@ -337,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 7360087990190475908, guid: 1acf661bd2801c44199d2bf7ee9c80da,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8950253809966294395, guid: 1acf661bd2801c44199d2bf7ee9c80da,
         type: 3}
@@ -1091,8 +1096,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Text: {fileID: 476907040}
   LanguageTexts:
-  - Press [Space] to Continue
-  - Pressiona [Space] para Continuar
+  - Hold [Space] to Continue
+  - Sujeta [Espacio] para Continuar
 --- !u!1001 &502944982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3055,7 +3060,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press [Space] to Continue
+  m_text: Sujeta [Espacio] para Continuar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b3129480d8a022e4089b9bc9774155eb, type: 2}
   m_sharedMaterial: {fileID: 8315678297925680396, guid: b3129480d8a022e4089b9bc9774155eb,
@@ -3147,8 +3152,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Text: {fileID: 1246392525}
   LanguageTexts:
-  - Press [Space] to Continue
-  - Pressiona [Space] para Continuar
+  - Hold [Space] to Continue
+  - Sujeta [Espacio] para Continuar
 --- !u!114 &1246392528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3997,7 +4002,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 25}
-  m_SizeDelta: {x: 250, y: 30}
+  m_SizeDelta: {x: 291.86, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1769980191
 MonoBehaviour:

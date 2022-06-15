@@ -151,6 +151,9 @@ public class PauseScreenAH : UIActionHandler
 
         if (_hidePauseScreen)
         {
+            //MainButtonPanel.SetActive(false);
+            //ControlsPanel.SetActive(false);
+            //ConfirmPanel.gameObject.SetActive(false);
             _audioSource.Play(Sound_Exit);
             PlayerInput.SwitchCurrentActionMap("Player");
             _hidePauseScreen = false;
@@ -164,6 +167,9 @@ public class PauseScreenAH : UIActionHandler
             _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
             InputSystem.moveRepeatDelay = 3;
+            //MainButtonPanel.SetActive(true);
+            //ControlsPanel.SetActive(true);
+            //ConfirmPanel.gameObject.SetActive(true);
             _eventSystem.SetSelectedGameObject(FirstSelected.gameObject);
             LevelManager.GameState = Enums.GameState.Pause;
             
@@ -171,12 +177,12 @@ public class PauseScreenAH : UIActionHandler
         else if(LevelManager.GameState == Enums.GameState.Pause)
         {
             _hidePauseScreen = true;
+            _eventSystem.SetSelectedGameObject(null);
             LevelManager.GameState = Enums.GameState.Play;
-            //_audioSource.Play(Sound_Exit);
-            //PlayerInput.SwitchCurrentActionMap("Player");
         }
 
         Time.timeScale = IsGamePaused ? 0 : 1;
+
 
         _rectTransform.anchoredPosition = IsGamePaused ? Vector2.zero : _orgPos;
         Log((IsGamePaused ? "Pause" : "Unpause") + " Game");

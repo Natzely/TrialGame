@@ -119,6 +119,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
     {
         if (_selectedMask)
         {
+
             _selectedMask.Selected = false;
             _sideSelected = false;
             InputSystem.moveRepeatDelay = 0;

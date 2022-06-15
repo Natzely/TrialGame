@@ -14,6 +14,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
     [SerializeField] protected bool OverrideConstTextSizes;
     [SerializeField] protected AudioClip Sound_Select;
     [SerializeField] protected AudioClip Sound_Press;
+    [SerializeField] protected AudioClip Sound_Cancel;
 
     protected const int MINTEXTSIZE = 50;
     protected const int MAXTEXTSIZE = 55;

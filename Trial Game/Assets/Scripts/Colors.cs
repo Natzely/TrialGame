@@ -11,6 +11,10 @@ public static class Colors
     public static Color32 Health_Half = new Color32(255, 200, 0, 255);
     public static Color32 Health_Low  = new Color32(200, 0, 25, 255);
 
+    // Grid Colors
+    public static Color PlayerOccupied = new Color(0, .4f, .8f);
+    public static Color EnemyOccupied  = new Color(.5f, .1f, .1f);
+
     // Minimap Colors 
     public static Color Player_Idle     = new Color(0,.8f,0);
     public static Color Player_Moving   = new Color(0, 1, 0);

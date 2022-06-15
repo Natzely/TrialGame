@@ -13,6 +13,7 @@ public class GridBlock : MonoBehaviour, ILog
     public GameObject AttackSpace;
     public GameObject ActivePath;
     public GameObject SavedPath;
+    public GameObject OccupiedSpace;
     public Image MinimapTile;
     public int SpeedCost = 0;
     public bool Unpassable = false;
@@ -37,6 +38,7 @@ public class GridBlock : MonoBehaviour, ILog
     private Enums.GridStatusEffect _statuses;
     private MoveGridParams _gridParams;
     private GameObject _triggerObject;
+    private GameObject _occupiedObject;
     private BoxCollider2D _bC;
     private Dictionary<UnitController, Path_Saved> _savedPaths;
     private List<UnitController> _unitsMovingThrough;
@@ -206,8 +208,7 @@ public class GridBlock : MonoBehaviour, ILog
         {
             if (_savedPaths[unit])
             {
-                Destroy(_savedPaths[unit].gameObject);
-                _savedPaths[unit] = null;
+                _savedPaths[unit].gameObject.NullDestroy();
                 _savedPaths.Remove(unit);
             }
         }
@@ -268,7 +269,7 @@ public class GridBlock : MonoBehaviour, ILog
 
         if (!Position.InsideSquare(pCollider.points[1], pCollider.points[3]))
         {
-            Destroy(gameObject);
+            gameObject.NullDestroy();
         }
     }
 
@@ -318,6 +319,12 @@ public class GridBlock : MonoBehaviour, ILog
 
             if (!_gridParams.MoveSpace)
                 _gridParams.CreateSpaces();
+            if (_occupiedObject == null)
+            {
+                _occupiedObject = Instantiate(OccupiedSpace, Position, Quaternion.identity);
+                OccupiedSpace oS = _occupiedObject.GetComponent<OccupiedSpace>();
+                oS.Player = uC.Player;
+            }
 
             if (_gridParams.MoveSpace.Active && uC.Player != Enums.Player.Player1)
             {
@@ -333,7 +340,7 @@ public class GridBlock : MonoBehaviour, ILog
             _statuses = sG.GridStatusEffects;
 
         if(damager)
-            Destroy(damager.gameObject);
+            damager.gameObject.NullDestroy();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -344,6 +351,10 @@ public class GridBlock : MonoBehaviour, ILog
         {
             if (_unitsMovingThrough.Contains(uC))
                 _unitsMovingThrough.Remove(uC);
+            if(_unitsMovingThrough.Count == 0)
+            {
+                _occupiedObject.NullDestroy();
+            }
         }
     }
 

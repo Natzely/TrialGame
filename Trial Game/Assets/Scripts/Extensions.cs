@@ -239,6 +239,12 @@ public static class Extensions
         return gO.layer == layer;
     }
 
+    public static void NullDestroy(this GameObject gO)
+    {
+        UnityEngine.Object.Destroy(gO);
+        gO = null;
+    }
+
     #endregion -----------------------------------------------------------------------------------------
 
     #region Float Extensions ---------------------------------------------------------------------------
