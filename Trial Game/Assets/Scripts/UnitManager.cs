@@ -15,19 +15,21 @@ public abstract class UnitManager : MonoBehaviour
     public PolygonCollider2D CursorBoundaries;
     [SerializeField] protected bool InitializeUnitsAtStart;
 
+    public PlayerInfo PlayerInfo { get; private set; }
     public GridBlock[,] FullGrid { get; set; }
-
+    public List<UnitController> Units
+    {
+        get { return PlayerInfo.Units; }
+        private set { PlayerInfo.Units = value; }
+    }
+    public bool IsBlockGridActive
+    {
+        get { return PlayerInfo.ActiveGrid.Count > 0; }
+    }
     public int AvailableUnits { get { return Units.Where(u => u.Available).Count(); } }
     public int TotalUnits { get { return Units.Where(u => u).Count(); } }
-    public List<UnitController> Units 
-    { 
-        get { return PlayerInfo.Units; } 
-        private set { PlayerInfo.Units = value;  } 
-    }
 
     private static string _debugFilePath;
-
-    public PlayerInfo PlayerInfo { get; private set; }
 
     protected private int _gridSizeX;
     protected private int _gridSizeY;

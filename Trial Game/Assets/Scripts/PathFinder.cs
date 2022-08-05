@@ -37,7 +37,7 @@ public class PathFinder
                 var lowest = openList.Min(l => l.F);
                 current = openList.FirstOrDefault(l => l.F == lowest);
             }
-        
+
             // add the current square to the closed list
             closedList.Add(current);
 
@@ -46,7 +46,7 @@ public class PathFinder
 
             // if we added the destination to the closed list, we've found a path
             if (current.X == target.X && current.Y == target.Y)
-              break;
+                break;
 
             var adjacentSquares = GetWalkableAdjacentSquares(player, current.X, current.Y, map, gbTarget);
             g++;
@@ -70,16 +70,30 @@ public class PathFinder
                 if (openList.FirstOrDefault(l => l.X == asX
                         && l.Y == asY) == null)
                 {
+                    GridBlock gb = map[asX, asY];
+                    // This is to pursade the pathing to use paths that don't use blocks with units in them.
+                    int scoreAddition = gb.CurrentUnit ? 1 : 0;
                     // compute its score, set the parent
                     adjacentSquare.G = g;
-                    adjacentSquare.H = ComputeHScore(asX, asY, target.X, target.Y);
-                    adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (gbStart.CurrentUnit.CheckGridMoveCost(map[asX, asY].Type) * MOVEMENTCOSTMODIFIER);
-                    adjacentSquare.Parent = current;
+                    adjacentSquare.H = ComputeHScore(asX, asY, target.X, target.Y) + scoreAddition;
+                    try
+                    {
+                        var currentUnit = gbStart.CurrentUnit;
+                        var gridMove = map[asX, asY];
+                        var type = gridMove.Type;
+                        int moveCost = currentUnit.CheckGridMoveCost(type);
+                        adjacentSquare.F = adjacentSquare.G + adjacentSquare.H + (moveCost * MOVEMENTCOSTMODIFIER);
+                        adjacentSquare.Parent = current;
+                    }
+                    catch
+                    {
+                        Debug.Log("");
+                    }
 
                     //Debug.Log($"Current Square | {adjacentSquare.X},{adjacentSquare.Y} | G: {adjacentSquare.G} H: {adjacentSquare.H} F: {adjacentSquare.F}");
-                    
+
                     // Update bestLoc incase it's needed
-                    if(adjacentSquare.H < bestLoc.H)
+                    if (adjacentSquare.H < bestLoc.H && !gb.CurrentUnit)
                         bestLoc = adjacentSquare;
 
                     // and add it to the open list
@@ -100,12 +114,12 @@ public class PathFinder
         }
 
         // Check if the target was reached, if the target was a far away attack space it 
-        // mess up the pathing since it can't make a path to it. Just use the next best 
+        // messxes up the pathing since it can't make a path to it. Just use the next best 
         // green space to path to.
-        if(current != null && player == Enums.Player.Player1)
+        if (current != null && player == Enums.Player.Player1)
         {
             GridBlock gB = map[current.X, current.Y];
-            if(gB != gbTarget)
+            if (gB != gbTarget)
             {
                 GridBlock reachableTarget = map[bestLoc.X, bestLoc.Y];
                 var reachablePath = CreatePath(player, gbStart, reachableTarget, map);
@@ -121,11 +135,13 @@ public class PathFinder
         {
             GridBlock gB = map[current.X, current.Y];
 
-            if (player == Enums.Player.Player1 && gB.ActiveSpace != Enums.ActiveSpace.Move)
+            if ((player == Enums.Player.Player1 && gB.ActiveSpace != Enums.ActiveSpace.Move) ||
+                (player == Enums.Player.Player2 && gB == gbTarget))
             {
                 current = current.Parent;
                 continue;
             }
+
 
             gridList.Add(gB);
 
@@ -149,7 +165,7 @@ public class PathFinder
         }
 
         gridList.Reverse();
-        foreach(GridBlock gB in gridList)
+        foreach (GridBlock gB in gridList)
             pathList.Add(gB.ToMovePoint());
 
         return pathList;
@@ -176,7 +192,11 @@ public class PathFinder
             var gridBlock = map[loc.X, loc.Y];
             if (gridBlock == null || gridBlock.Unpassable)
                 continue;
+            //if (player == Enums.Player.Player2 && gridBlock.IsCurrentUnitEnemy(player) && gridBlock.CurrentUnit != target)
+              //  continue;
             if (player == Enums.Player.Player1 && gridBlock.ActiveSpace == Enums.ActiveSpace.Attack && gridBlock != target)
+                continue;
+            if (player == Enums.Player.Player1 && gridBlock == target && gridBlock.CurrentUnit)
                 continue;
             var aS = gridBlock.ActiveSpace;
             if (player == Enums.Player.Player1 && aS == Enums.ActiveSpace.Inactive)

@@ -7,6 +7,7 @@ public class Cursor_Move : MonoBehaviour
     [SerializeField] private PolygonCollider2D Boundaries;
     [SerializeField] private AudioClip MoveSound;
     [SerializeField] private AudioSource AudioSource;
+    [SerializeField] private AttackResults AttackResults;
     [SerializeField] private float ActionTime;
     [SerializeField] private float HoldTime;
     [SerializeField] private float HoldActionTime;
@@ -16,12 +17,15 @@ public class Cursor_Move : MonoBehaviour
         set { transform.position = value; }
     }
 
+    private LevelManager LevelManager { get { return (LevelManager)SceneManager.Instance; } }
+
     private Vector2 _minClamp;
     private Vector2 _maxClamp;
     private Vector2Int _moveDir;
     private float _currentTimer;
     private float _actionTimer;
     private float _holdTimer;
+    private bool _timeStopped;
 
     // Start is called before the first frame update
     void Start()
@@ -40,24 +44,30 @@ public class Cursor_Move : MonoBehaviour
             if (tmpPos != Position)
             {
                 Position = tmpPos;
+                if(LevelManager.GameState == Enums.GameState.TimeStop)
+                {
+                    var neighbor = Controller.CurrentGridBlock.Neighbors[_moveDir];
+                    Controller.CurrentGridBlock = neighbor;
+                }
                 Controller.UpdateMinimapIcon();
                 AudioSource.Play(MoveSound);
             }
 
-            _holdTimer += Time.deltaTime;
+            _holdTimer += Time.unscaledDeltaTime;
             if (_holdTimer >= HoldTime)
                 _currentTimer = HoldActionTime;
 
             _actionTimer = _currentTimer;
         }
 
-        _actionTimer -= Time.deltaTime;
+        _actionTimer -= Time.unscaledDeltaTime;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)// && Controller.CursorState != Enums.CursorState.CursorMenu)
         {
+            AttackResults.Show(false);
             var tmpPos = context.ReadValue<Vector2>();
             _moveDir = Vector2Int.RoundToInt(tmpPos);
             if(Controller.CursorState == Enums.CursorState.CursorMenu)

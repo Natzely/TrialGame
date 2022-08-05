@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -244,6 +245,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      H'annit.Side.Run_0: 1575263467673730799
+      H'annit.Side.Run_4: 4096804649681433988
+      H'annit.Side.Run_5: 2715841876749455508
+      H'annit.Side.Run_1: -680392160529393444
+      H'annit.Side.Run_3: -2567980015744415579
+      H'annit.Side.Run_2: 5418770182793349062
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

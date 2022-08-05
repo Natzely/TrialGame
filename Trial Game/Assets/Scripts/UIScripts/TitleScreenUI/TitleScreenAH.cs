@@ -74,7 +74,7 @@ public class TitleScreenAH : UIActionHandler
     private void LoadLevel(string sceneName)
     {
         _audioSource.Play(StartSound);
-        SceneManager.Instance.LoadScene(sceneName, 0, StartSound.length + 4f);
+        SceneManager.Instance.LoadScene(sceneName, 0, StartSound.length);
         HideLoadPanel();
     }
 }

@@ -1,15 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
-using UnityEngine.Tilemaps;
-using UnityEditor.Build.Content;
-using UnityEditor.Build.Player;
 
 [CustomEditor(typeof(HowToPlayButton), true)]
 [CanEditMultipleObjects]

@@ -38,7 +38,7 @@ public class GridBlock : MonoBehaviour, ILog
     private Enums.GridStatusEffect _statuses;
     private MoveGridParams _gridParams;
     private GameObject _triggerObject;
-    private GameObject _occupiedObject;
+    private OccupiedSpace _occupiedSpace;
     private BoxCollider2D _bC;
     private Dictionary<UnitController, Path_Saved> _savedPaths;
     private List<UnitController> _unitsMovingThrough;
@@ -94,9 +94,17 @@ public class GridBlock : MonoBehaviour, ILog
 
     private bool MovingFromRageBox(GridBlock moveFrom, UnitController uC)
     {
-        return moveFrom.StatusEffects.HasFlag(Enums.GridStatusEffect.Rage) &&
-               !_statuses.HasFlag(Enums.GridStatusEffect.Rage) &&
-               uC.StatusEffects.HasFlag(Enums.UnitStatusEffect.Rage);
+        try
+        {
+            return moveFrom.StatusEffects.HasFlag(Enums.GridStatusEffect.Rage) &&
+                   !_statuses.HasFlag(Enums.GridStatusEffect.Rage) &&
+                   uC.StatusEffects.HasFlag(Enums.UnitStatusEffect.Rage);
+        }
+        catch
+        {
+            Debug.Log("");
+            return false;
+        }
     }
 
     public void SetGrid(GridBlock moveFrom, UnitController uC, bool onlyAttack = false)
@@ -148,8 +156,9 @@ public class GridBlock : MonoBehaviour, ILog
             org = true;
         }
 
-        var orderedNeighbors = target.Neighbors.OrderByDistance(start, minDis <= 1).ToList();
-        var nonUsedNeighbors = orderedNeighbors.Except(gridDis.Select(g => g.GridBlock).ToList()).ToList();
+        var orderedNeighbors = target.Neighbors.OrderByDistance(start, true).ToList(); // Get the neighbors by order of distance
+        var reachableNeighbors = orderedNeighbors.Where(n => n.Position.GridDistance(start.Position) < start.CurrentUnit.MoveDistance); // Get the ones the unit can reach
+        var nonUsedNeighbors = orderedNeighbors.Except(gridDis.Select(g => g.GridBlock)).ToList();
         foreach (var n in nonUsedNeighbors)
         {
             var dis = n.Position.GridDistance(start.Position);
@@ -260,6 +269,11 @@ public class GridBlock : MonoBehaviour, ILog
         _initialized = true;
     }
 
+    public void UpdateOccupiedSpace()
+    {
+        _occupiedSpace.Player = CurrentUnit.Player;
+    }
+
     void Start()
     {
         gameObject.name = String.Format(Strings.GridblockName, Position.x, Position.y);
@@ -319,11 +333,11 @@ public class GridBlock : MonoBehaviour, ILog
 
             if (!_gridParams.MoveSpace)
                 _gridParams.CreateSpaces();
-            if (_occupiedObject == null)
+            if (!_occupiedSpace)
             {
-                _occupiedObject = Instantiate(OccupiedSpace, Position, Quaternion.identity);
-                OccupiedSpace oS = _occupiedObject.GetComponent<OccupiedSpace>();
-                oS.Player = uC.Player;
+                GameObject oS = Instantiate(OccupiedSpace, Position, Quaternion.identity);
+                _occupiedSpace = oS.GetComponent<OccupiedSpace>();
+                _occupiedSpace.Player = uC.Player;
             }
 
             if (_gridParams.MoveSpace.Active && uC.Player != Enums.Player.Player1)
@@ -351,10 +365,12 @@ public class GridBlock : MonoBehaviour, ILog
         {
             if (_unitsMovingThrough.Contains(uC))
                 _unitsMovingThrough.Remove(uC);
-            if(_unitsMovingThrough.Count == 0)
+            if(_unitsMovingThrough.Count > 0 && _occupiedSpace)
             {
-                _occupiedObject.NullDestroy();
+                _occupiedSpace.Player = _unitsMovingThrough.First().Player;
             }
+            else if(_unitsMovingThrough.Count == 0 && _occupiedSpace)
+                _occupiedSpace.gameObject.NullDestroy();
         }
     }
 
@@ -372,7 +388,8 @@ public class GridBlock : MonoBehaviour, ILog
 
     private void UpdateGrid()
     {
-        SetGrid(null, _gridParams.UnitController);
+        var neighBor = Neighbors.GetBestMoveNeighbor();
+        SetGrid(neighBor, _gridParams.UnitController);
     }
 
     private void CreatePathBlock()
@@ -476,9 +493,9 @@ public class GridBlock : MonoBehaviour, ILog
                 MinAttackDistance = moveFrom.GridParams.MinAttackDistance;
                 GridStart = moveFrom.GridParams.GridStart;
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.Log("");
+                Debug.Log(ex.Message);
             }
         }
 

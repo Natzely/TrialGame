@@ -11,13 +11,11 @@ public class PlayerManager : UnitManager
     public GameObject Minimap_UnitIcons;
     public GameObject Minimap_TileIcons;
 
-    public CursorController Cursor { get { return _cC; } }
-
     public bool HideActiveGrid { get; private set; }
     public float MinimapSquareSize { get { return _miniMapTileSize; } }
 
-    private List<UnitController> _nextUnitList;
     private CursorController _cC;
+    private List<UnitController> _nextUnitList;
     private float _miniMapTileSize;
 
     public bool GetDeleteMoveSpace()
@@ -103,7 +101,7 @@ public class PlayerManager : UnitManager
             }
             else
             {
-                gB.SetGrid(null, null);
+                gB.Disable();
             }
         }
     }
@@ -127,7 +125,7 @@ public class PlayerManager : UnitManager
 
         if (unit == null) // Select first available unit in the list 
         {
-            var nextUnitPossible = _nextUnitList.Where(u => u && !u.OnCooldown && !u.Moving && !u.Attacked);
+            var nextUnitPossible = _nextUnitList.Where(u => u && u.Available);
             if (nextUnitPossible.Count() > 0)
                 return nextUnitPossible.First();
             else
@@ -135,7 +133,7 @@ public class PlayerManager : UnitManager
         }
         else // Select the next unit based on the unit that is currently selected.
         {
-            var coolDownList = _nextUnitList.Where(u => u && !u.OnCooldown && !u.Moving && !u.Attacked).ToList();
+            var coolDownList = _nextUnitList.Where(u => u && u.Available).ToList();
             if (coolDownList.Count > 0)
             {
                 var unitIndex = coolDownList.IndexOf(unit) + 1;
@@ -168,6 +166,9 @@ public class PlayerManager : UnitManager
             uC.gameObject.name = $"P{((int)Player)}_" + uC.gameObject.name;
             uC.enabled = true;
             uC.Player = Player;
+            uC.Cursor = CursorController.Instance;
+            if (uC.CurrentGridBlock)
+                uC.CurrentGridBlock.UpdateOccupiedSpace();
             uC.Speed *= GameSettinngsManager.Instance.UnitSpeedModifier;
             uC.Cooldown *= GameSettinngsManager.Instance.UnitCooldownModifier;
             uC.UnitManager = this;
@@ -176,20 +177,21 @@ public class PlayerManager : UnitManager
             uC.HiddenOverlay.SetActive(true);
         }
 
-        _nextUnitList = new List<UnitController>(); // Add the units to the QuickSelect List
+        _nextUnitList = new List<UnitController>(new UnitController[Units.Count]); // Add the units to the QuickSelect List
         foreach (var u in Units)
-        {
-            var random = new System.Random();
-            int insertAt = random.Next(_nextUnitList.Count());
-            _nextUnitList.Insert(insertAt, u);
+        {            
+            // Randomly insert the units into the quick select list.
+            int insertAt;
+            do insertAt = UnityEngine.Random.Range(0, _nextUnitList.Count);
+            while (_nextUnitList[insertAt]);
+            _nextUnitList[insertAt] =  u;
         }
     }
 
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
-        _cC = FindObjectOfType<CursorController>();
-
+        _cC = CursorController.Instance;
         if (InitializeUnitsAtStart)
             InitializeUnits();
     }

@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
     {
         if (_camera.m_Lens.OrthographicSize != _goalZoom)
         {
-            float newZoom = Mathf.MoveTowards(_camera.m_Lens.OrthographicSize, _goalZoom, Time.deltaTime * ZoomSpeed);
+            float newZoom = Mathf.MoveTowards(_camera.m_Lens.OrthographicSize, _goalZoom, Time.unscaledDeltaTime * ZoomSpeed);
             _camera.m_Lens.OrthographicSize = newZoom;
         }
     }

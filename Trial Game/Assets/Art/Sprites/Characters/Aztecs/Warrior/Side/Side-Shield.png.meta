@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -180,7 +181,7 @@ TextureImporter:
         width: 2900
         height: 2000
       alignment: 9
-      pivot: {x: 0.5, y: 0.215}
+      pivot: {x: 0.49, y: 0.215}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,6 +245,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Side-Shield_0: 7091595077481011174
+      Side-Shield_4: 8372316478592831625
+      Side-Shield_1: -2990027625493330851
+      Side-Shield_5: 8593671047610410559
+      Side-Shield_2: -7919067460783642303
+      Side-Shield_3: -2377612658119588554
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

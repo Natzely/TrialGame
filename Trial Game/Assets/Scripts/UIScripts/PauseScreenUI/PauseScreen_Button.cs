@@ -9,7 +9,10 @@ public class PauseScreen_Button : UIButton
     {
         _selected = true;
         Image.color = Colors.Button_Selected;
-        AudioSource.Play(Sound_Select);
+        if (!SilentSelect)
+            AudioSource.Play(Sound_Select);
+        else
+            SilentSelect = false;
         UIHandler.OnItemSelected(this);
     }
 
@@ -21,7 +24,7 @@ public class PauseScreen_Button : UIButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (UIHandler.CurrentButton != this.gameObject)
+        if (UIHandler.CurrentButton != this)
             AudioSource.Play(Sound_Select);
         Button.Select();
     }

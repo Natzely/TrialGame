@@ -14,23 +14,28 @@ public class PauseScreenAH : UIActionHandler
     [SerializeField] private GameObject ControlsPanel;
     [SerializeField] private GameObject Controls_FirstSelected;
     [SerializeField] private ConfirmSelectionController ConfirmPanel;
-
-    public bool IsSubMenuOpened { get; private set; }
+    [SerializeField] private UnitInfoAH UnitInfo;
 
     private LevelManager LevelManager { get { return (LevelManager)SceneManager.Instance; } }
     private bool IsGamePaused { get { return LevelManager.GameState == Enums.GameState.Pause; } }
+    private bool IsGamePausable 
+    { 
+        get { return LevelManager.GameState == Enums.GameState.Play ||
+                     LevelManager.GameState == Enums.GameState.TimeStop; } 
+    }
 
+    private Enums.GameState _prevState;
     private RectTransform _rectTransform;
+    private UIButton _confirmButton;
     private Vector2 _moveValue;
     private Vector2 _orgPos;
-    private UIButton _confirmButton;
     private float _soundTime;
     private bool _hidePauseScreen;
 
     public void EscapeKeyPress(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
+        {            
             switch (State)
             {
                 case Enums.PauseState.Main:
@@ -43,9 +48,23 @@ public class PauseScreenAH : UIActionHandler
                 case Enums.PauseState.Quit:
                     ShowConfirmPanel(Enums.PauseState.Main);
                     break;
+                case Enums.PauseState.UnitInfo:
+                    _audioSource.Play(Sound_Exit);
+                    State = Enums.PauseState.Main;
+                    break;
                 default:
                     break;
             }
+        }
+    }
+
+    public void UnitInfoKeyPress(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            var unitType = CursorController.Instance.CurrentUnitType;
+            if (unitType != Enums.UnitInfo.None)
+                ShowPauseScreen(unitType);
         }
     }
 
@@ -80,6 +99,10 @@ public class PauseScreenAH : UIActionHandler
                 case Enums.UI_PauseButtonType.Controls_OK:
                     Log("Controls_OK");
                     ShowControlsPanel();
+                    break;
+                case Enums.UI_PauseButtonType.Units:
+                    State = Enums.PauseState.UnitInfo;
+                    UnitInfo.Show();
                     break;
                 default:
                     break;
@@ -126,11 +149,6 @@ public class PauseScreenAH : UIActionHandler
             Move(_moveValue);
     }
 
-    public void ShowSubMenu()
-    {
-        IsSubMenuOpened = true;
-    }
-
     protected override void Awake()
     {
         _orgPos = new Vector2(0, 1450);
@@ -151,34 +169,35 @@ public class PauseScreenAH : UIActionHandler
 
         if (_hidePauseScreen)
         {
-            //MainButtonPanel.SetActive(false);
-            //ControlsPanel.SetActive(false);
-            //ConfirmPanel.gameObject.SetActive(false);
             _audioSource.Play(Sound_Exit);
             PlayerInput.SwitchCurrentActionMap("Player");
             _hidePauseScreen = false;
         }
     }
 
-    private void ShowPauseScreen()
+    private void ShowPauseScreen(Enums.UnitInfo unitType = Enums.UnitInfo.None)
     {
-        if (LevelManager.GameState == Enums.GameState.Play)
+        if (IsGamePausable)
         {
             _audioSource.Play(Sound_Enter);
             PlayerInput.SwitchCurrentActionMap("UI");
             InputSystem.moveRepeatDelay = 3;
-            //MainButtonPanel.SetActive(true);
-            //ControlsPanel.SetActive(true);
-            //ConfirmPanel.gameObject.SetActive(true);
+            FirstSelected.SilentSelect = true;
             _eventSystem.SetSelectedGameObject(FirstSelected.gameObject);
+            _prevState = LevelManager.GameState;
             LevelManager.GameState = Enums.GameState.Pause;
-            
+
+            if (unitType != Enums.UnitInfo.None)
+            {
+                State = Enums.PauseState.UnitInfo;
+                UnitInfo.Show(unitType);
+            }
         }
         else if(LevelManager.GameState == Enums.GameState.Pause)
         {
             _hidePauseScreen = true;
             _eventSystem.SetSelectedGameObject(null);
-            LevelManager.GameState = Enums.GameState.Play;
+            LevelManager.GameState = _prevState;
         }
 
         Time.timeScale = IsGamePaused ? 0 : 1;

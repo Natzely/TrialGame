@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "StopTime",
+                    "type": "Button",
+                    "id": "cff8cbfb-40fa-44d4-85b2-a838a2ab0a85",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -409,6 +418,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "KillEnemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "210e0d78-54ad-4234-a692-439bc5bdf04f",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopTime",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -39,6 +39,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -220,6 +221,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Atlatl_Attk_Back_4: 8170370693007070260
+      Atlatl_Attk_Back_0: -162053795267724929
+      Atlatl_Attk_Back_2: 3248687049538699416
+      Atlatl_Attk_Back_3: -3613361972346178097
+      Atlatl_Attk_Back_1: 3078639161131697511
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

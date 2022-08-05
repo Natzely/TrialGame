@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public abstract class UIActionHandler : UIObject
 {
     
-    public GameObject CurrentButton { get { return _eventSystem.currentSelectedGameObject; } }
+    public UIButton CurrentButton { get { return _eventSystem.currentSelectedGameObject.GetComponent<UIButton>(); } }
     [SerializeField] internal PlayerInput PlayerInput;
     [SerializeField] internal UIButton FirstSelected;
     [SerializeField] internal AudioClip Sound_Enter;
@@ -19,6 +19,12 @@ public abstract class UIActionHandler : UIObject
     internal AudioSource _audioSource;
     internal EventSystem _eventSystem;
 
+    public void SelectCurrentButton(bool silent) 
+    {
+        _currentButton.SilentSelect = silent;
+        _eventSystem.SetSelectedGameObject(_currentButton.gameObject); 
+    }
+
     public abstract void HandleButtonSubmit(UIButton button);
 
     protected virtual void Awake()
@@ -26,11 +32,6 @@ public abstract class UIActionHandler : UIObject
         _currentButton = FirstSelected;
         _audioSource = GetComponent<AudioSource>();
         _eventSystem = FindObjectOfType<EventSystem>();
-    }
-
-    protected virtual void Start()
-    {
-        //_currentButton.Select();
     }
 
     public virtual void OnItemSelected(UIButton button)

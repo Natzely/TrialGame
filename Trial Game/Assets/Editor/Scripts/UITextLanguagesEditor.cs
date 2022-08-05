@@ -29,7 +29,6 @@ public class UITextEditor : Editor
     {
         if (UIText.LanguageTexts == null || UIText.LanguageTexts.Count == 0)
         {
-            Debug.Log("new");
             UIText.LanguageTexts = new List<string>();
             _languageTexts = new List<string>();
 

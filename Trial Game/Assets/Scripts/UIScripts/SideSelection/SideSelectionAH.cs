@@ -22,6 +22,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
 
     public Enums.PlayerSides ConfirmedSide { get { return _selectedMask.PlayerSides; } }
     public AudioClip SelectedBGM { get { return _selectedMask.BackgroundMusic; } }
+    public float DestroyDelay { get; private set; }
 
     private UICanvasGroupEditor _cgEditor;
     private RectTransform _aztecTrans;
@@ -55,7 +56,8 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
                 _selectedMask.Confirmed = true;
                 _cgEditor.Edit(true);
                 _audioSource.loop = false;
-                LevelManager.StartMusic(_maxVolume, _audioSource.clip.length - _audioSource.time);
+                DestroyDelay = _audioSource.clip.length - _audioSource.time;
+                LevelManager.StartMusic(_maxVolume, DestroyDelay);
                 break;
         }
     }

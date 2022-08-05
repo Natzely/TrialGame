@@ -16,8 +16,11 @@ public class LevelManager : SceneManager
     [SerializeField] private UnitManager PlayerManager;
     [SerializeField] private UnitManager EnemyManager;
     [SerializeField] private ResultText ResultText;
+    [SerializeField] private TimeStopHandler TimeStopHandler;
     [SerializeField] private float CameraPlayZoom;
     [SerializeField] private float CameraSelectionZoom;
+
+    public new static LevelManager Instance { get { return (LevelManager)SceneManager.Instance; } }
 
     public void StartPlay()
     {
@@ -31,7 +34,8 @@ public class LevelManager : SceneManager
         Cursor.AllowMove();
         PlayerInput.SwitchCurrentActionMap("Player");
         CameraControllerScript.enabled = true;
-        Destroy(SideSelection.gameObject);
+        Destroy(SideSelection.gameObject, SideSelection.DestroyDelay);
+        TimeStopHandler.SetActive();
         GameState = Enums.GameState.Play;
     }
 
@@ -55,7 +59,7 @@ public class LevelManager : SceneManager
         else
             ResultText.Show(false, Side);
 
-        LoadScene("Title Scene", TimeToLoad, TimeToFade);
+        LoadScene("Credits", TimeToLoad, TimeToFade);
     }
 
     public void StartSelection()

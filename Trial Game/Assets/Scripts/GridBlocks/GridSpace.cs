@@ -57,7 +57,7 @@ public class GridSpace : GridBlockItem
     {
         if (_activate)
         {
-            Vector2 moveVector = Vector2.MoveTowards(transform.position, ParentGridBlock.transform.position, MoveAnimationSpeed * Time.deltaTime);
+            Vector2 moveVector = Vector2.MoveTowards(transform.position, ParentGridBlock.transform.position, MoveAnimationSpeed * Time.unscaledDeltaTime);
             transform.position = moveVector;
 
             if (transform.position == ParentGridBlock.transform.position)

@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7526784779545354020}
   m_RootOrder: 0
@@ -182,6 +183,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8766863519856723862}
   m_Father: {fileID: 0}
@@ -300,8 +302,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 7966306608276190411}
   OverrideConstTextSizes: 0
-  Sound_Select: {fileID: 8300000, guid: 9570c955a29a7344ba8edc5817236b34, type: 3}
+  Sound_Select: {fileID: 8300000, guid: 0539590a2a4cb4e47a702eaa67224108, type: 3}
   Sound_Press: {fileID: 0}
+  Sound_Cancel: {fileID: 0}
   Type: 0
 --- !u!82 &7909673811386046609
 AudioSource:
@@ -314,7 +317,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

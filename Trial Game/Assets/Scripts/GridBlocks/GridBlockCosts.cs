@@ -11,6 +11,7 @@ public class GridBlockCosts : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float WaterSpeedMultiplyer;
     [SerializeField] [Range(0, 1)] private float GroundSpeedMultiplyer;
     [SerializeField] [Range(0, 1)] private float PathwaySpeedMultiplyer;
+    [SerializeField] [Range(0, 1)] private float WallSpeedMultiplyer;
 
     [SerializeField] private int GrassMoveCost;
     [SerializeField] private int RoadMoveCost;
@@ -18,6 +19,7 @@ public class GridBlockCosts : MonoBehaviour
     [SerializeField] private int WaterMoveCost;
     [SerializeField] private int GroundMoveCost;
     [SerializeField] private int PathwayMoveCost;
+    [SerializeField] private int WallMoveCost;
 
     private Dictionary<Enums.GridBlockType, float> _unitMultiplyers;
     private Dictionary<Enums.GridBlockType, int> _unitMoveCosts;
@@ -32,6 +34,7 @@ public class GridBlockCosts : MonoBehaviour
             { Enums.GridBlockType.Tree, TreeSpeedMultiplyer },
             { Enums.GridBlockType.Ground, GroundSpeedMultiplyer },
             { Enums.GridBlockType.Pathway, PathwaySpeedMultiplyer },
+            { Enums.GridBlockType.Wall, WallSpeedMultiplyer },
         };
 
         _unitMoveCosts = new Dictionary<Enums.GridBlockType, int>()
@@ -42,6 +45,7 @@ public class GridBlockCosts : MonoBehaviour
             { Enums.GridBlockType.Tree, TreeMoveCost },
             { Enums.GridBlockType.Ground, GroundMoveCost },
             { Enums.GridBlockType.Pathway, PathwayMoveCost },
+            { Enums.GridBlockType.Wall, WallMoveCost },
         };
     }
 

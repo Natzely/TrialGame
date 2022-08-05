@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -244,6 +245,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      WalkFront_5: 4356739290426585048
+      WalkFront_2: -8893018721510099259
+      WalkFront_0: -203687184881022635
+      WalkFront_4: 991760652912911158
+      WalkFront_1: -7218907244574358448
+      WalkFront_3: 934757917089722312
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

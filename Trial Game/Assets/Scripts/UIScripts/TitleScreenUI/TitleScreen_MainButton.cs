@@ -26,7 +26,7 @@ public class TitleScreen_MainButton : TitleScreen_Button
     public override void OnPointerEnter(PointerEventData eventData)
     {
         Log($"{gameObject.name}: Entered");
-        if (UIHandler.CurrentButton != this.gameObject)
+        if (UIHandler.CurrentButton != this)
         Button.Select();
     }
 

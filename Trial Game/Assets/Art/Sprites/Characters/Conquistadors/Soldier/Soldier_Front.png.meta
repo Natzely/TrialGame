@@ -90,6 +90,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -628,6 +629,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Soldier_Front_7: 723882717241742354
+      Soldier_Front_2: -7634749030119071730
+      Soldier_Front_8: 5203611808608139509
+      Soldier_Front_10: 684312705241730509
+      Soldier_Front_13: 8587259558793237715
+      Soldier_Front_21: -7686331284735629680
+      Soldier_Front_4: 9158492148428135808
+      Soldier_Front_19: 924755207749075410
+      Soldier_Front_3: 7036548409421070599
+      Soldier_Front_15: -6400641781378682726
+      Soldier_Front_20: -8342954616498095248
+      Soldier_Front_18: 6901072451901681768
+      Soldier_Front_14: 4330902177927189330
+      Soldier_Front_9: 5179862087492342257
+      Soldier_Front_0: 5701539132542302668
+      Soldier_Front_16: 2586713539561452406
+      Soldier_Front_12: 4824551098105707402
+      Soldier_Front_5: 6286183215142868638
+      Soldier_Front_11: 4888560223616814112
+      Soldier_Front_1: -5056403482025673559
+      Soldier_Front_6: -4745976479105308547
+      Soldier_Front_17: -5750953202866048226
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

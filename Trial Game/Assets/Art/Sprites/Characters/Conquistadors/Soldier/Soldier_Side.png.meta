@@ -90,6 +90,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -98,7 +99,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -143,6 +144,30 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -628,6 +653,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Soldier_Side_17: 5822763309226517023
+      Soldier_Side_9: 4100807537646033408
+      Soldier_Side_13: -8933344937024727680
+      Soldier_Side_7: 7577789782661819999
+      Soldier_Side_15: 5851935350893373225
+      Soldier_Side_19: 3602530770372676166
+      Soldier_Side_2: -2476652085021319506
+      Soldier_Side_3: 27428386407566478
+      Soldier_Side_21: 5587598651996771315
+      Soldier_Side_16: 1069271811348760111
+      Soldier_Side_20: -4318223181299659817
+      Soldier_Side_5: -5429506273258615711
+      Soldier_Side_0: -6714206894517653033
+      Soldier_Side_14: 1384992445602487674
+      Soldier_Side_12: -795863185698775679
+      Soldier_Side_6: -5732223081497317482
+      Soldier_Side_10: -8832912191090878154
+      Soldier_Side_11: -6100000440547321095
+      Soldier_Side_8: 996584409331468947
+      Soldier_Side_18: -988450469547653760
+      Soldier_Side_1: 8364376062785766057
+      Soldier_Side_4: 8144590861149005391
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

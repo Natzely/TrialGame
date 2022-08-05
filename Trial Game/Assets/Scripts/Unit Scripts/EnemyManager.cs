@@ -13,8 +13,9 @@ public class EnemyManager : UnitManager
     [Tooltip("Active timer until the next enemy move")]
     public float DealyTimer;
 
-    private List<UnitController> _unitQueue;
+    public List<UnitController> UnitQueue { get { return _unitQueue; } }
 
+    private List<UnitController> _unitQueue;
 
     public override IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos)
     {
@@ -39,7 +40,8 @@ public class EnemyManager : UnitManager
 
     public void AddBackToQueue(UnitController uc)
     {
-        _unitQueue.Add(uc);
+        if (!_unitQueue.Contains(uc))
+            _unitQueue.Add(uc);
     }
 
     public override void InitializeUnits()
@@ -47,6 +49,7 @@ public class EnemyManager : UnitManager
         base.InitializeUnits();
 
         var nonNullUnits = Units.Where(uC => uC != null).ToList();
+        _unitQueue = new List<UnitController>(new UnitController[Units.Count]);
         foreach (UnitController uC in nonNullUnits)
         {
             if (uC)
@@ -62,7 +65,11 @@ public class EnemyManager : UnitManager
                 eC.UnitController = uC;
                 uC.BoxCollider.enabled = true;
                 uC.DefaultLook = -1;
-                _unitQueue.Add(uC);
+
+                int insertAt;
+                do insertAt = UnityEngine.Random.Range(0, _unitQueue.Count);
+                while (_unitQueue[insertAt]);
+                _unitQueue[insertAt] = uC;
             }
         }
     }
@@ -70,8 +77,7 @@ public class EnemyManager : UnitManager
     protected override void Awake()
     {
         base.Awake();
-        _unitQueue = new List<UnitController>();
-        DealyTimer = MoveDelay;
+        //DealyTimer = MoveDelay;
     }
 
     protected void Start()

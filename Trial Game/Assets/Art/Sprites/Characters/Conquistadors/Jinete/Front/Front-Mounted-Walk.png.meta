@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -400,6 +401,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Front-Mounted-Walk_7: -4751340472599231367
+      Front-Mounted-Walk_2: -2872690060465270151
+      Front-Mounted-Walk_10: -2063132491157319908
+      Front-Mounted-Walk_0: 3713428467560205681
+      Front-Mounted-Walk_8: -5196761519096277698
+      Front-Mounted-Walk_1: 8983960492126821582
+      Front-Mounted-Walk_4: -2297276977522590040
+      Front-Mounted-Walk_3: 6744662060931290396
+      Front-Mounted-Walk_11: 5793288527638858187
+      Front-Mounted-Walk_9: -4909770479542779640
+      Front-Mounted-Walk_6: 2384062730922920723
+      Front-Mounted-Walk_5: 8897055587953133808
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

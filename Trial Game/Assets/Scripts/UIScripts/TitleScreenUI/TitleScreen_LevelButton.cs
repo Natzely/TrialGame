@@ -23,7 +23,7 @@ public class TitleScreen_LevelButton : TitleScreen_Button
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (UIHandler.CurrentButton != this.gameObject)
+        if (UIHandler.CurrentButton != this)
             Button.Select();
     }
 

@@ -13,8 +13,14 @@ public class Damageable : MonoBehaviour
     public TextMeshProUGUI HealthText;
     public GameObject DeathObject;
     public float Health = 2;
+    [Tooltip("0-100")]
+    [Range(0, 100)]
+    public float BlockChance;
+    [Tooltip("0")]
+    [Range(0, 1)]
+    public float DamageReduction;
 
-    [SerializeField] 
+    public bool CanBlock { get; set; }
 
     private Animator _animator;
     private UnitController _uC;
@@ -32,7 +38,15 @@ public class Damageable : MonoBehaviour
             if (damager.Unit.Type == Enums.UnitType.Melee && _uC.Type == Enums.UnitType.Horse)
                 _uC.IncreaseMeeleAttackCount();
 
-            int calcDamage = Mathf.FloorToInt(Mathf.Max(damager.Damage / _uC.Defense, 1));
+            float calcDamage = Mathf.Max(damager.Damage / _uC.Defense, 1);
+            float blockNum = Random.Range(1, 100);
+            bool blocked = (blockNum <= BlockChance) && CanBlock;
+
+            if (blocked)
+                calcDamage = Mathf.CeilToInt(calcDamage * (1 - DamageReduction));
+
+            calcDamage = Mathf.FloorToInt(calcDamage);
+
             Health -= calcDamage;
             if (Health > 0)
             {
@@ -43,32 +57,38 @@ public class Damageable : MonoBehaviour
             {
                 HealthText.enabled = false;
             }
-            //if (Health / _maxHealth < .34)
-            //    HealthText.color = Colors.Health_Low;
-            //else if (Health / _maxHealth < .67)
-            //    HealthText.color = Colors.Health_Half;
 
-            _animator.SetTrigger("Hit");
+            if (blocked && Health > 0)
+                _animator.SetTrigger("Block");
+            else
+                _animator.SetTrigger("Hit");
+
             _uC.AttackedFrom = damager.Unit.Position;
             HealthText.havePropertiesChanged = true;
-            Debug.Log($"{gameObject.name}: Hurt");
 
+            ShowDamage(calcDamage);
             if (Health <= 0)
             {
                 _uC.OnUnitInterupt?.Invoke();
+                TimeStopHandler.Instance.Death();
                 return true;
             }
             else
             {
-                DamageText.gameObject.SetActive(false);
-                DamageText.Text = calcDamage + "";
-                DamageText.gameObject.SetActive(true);
-                if (!_uC.TookAction && _uC.MinAttackDistance == damager.Unit.MinAttackDistance)
+                TimeStopHandler.Instance.Violence();
+                if ((!_uC.TookAction || _uC.InfoType == Enums.UnitInfo.Soldier) && _uC.CheckAttack(damager.Unit.CurrentGridBlock, true))// Position.GridDistance(damager.Unit.Position) <= _uC.MaxAttackDistance)
                     _uC.AttackBackTarget = damager.Unit.CurrentGridBlock.ToMovePoint();
             }
         }
 
         return false;
+    }
+
+    private void ShowDamage(float damage)
+    {
+        DamageText.gameObject.SetActive(false);
+        DamageText.Text = damage + "";
+        DamageText.gameObject.SetActive(true);
     }
 
     public void Kill()

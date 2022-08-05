@@ -7,12 +7,12 @@ using UnityEngine;
 
 public static class Utility
 {
-    public static double RoundAwayFromZero(double f)
+    public static float RoundAwayFromZero(float f)
     {
         if (f > 0.0)
-            return Math.Ceiling(f);
+            return Mathf.Ceil(f);
         else if (f < 0.0)
-            return Math.Floor(f);
+            return Mathf.Floor(f);
         return f;
     }
 

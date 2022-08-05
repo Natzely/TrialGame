@@ -27,7 +27,7 @@ public class ConfirmPanelButton : UIButton, ICancelHandler
     public override void OnPointerEnter(PointerEventData eventData)
     {
         Log($"{gameObject.name}: Entered");
-        if (UIHandler.CurrentButton != this.gameObject)
+        if (UIHandler.CurrentButton != this)
             Button.Select();
     }
 
@@ -48,6 +48,7 @@ public class ConfirmPanelButton : UIButton, ICancelHandler
     public void OnCancel(BaseEventData eventData)
     {
         AudioSource.Play(Sound_Cancel);
-        ((SideSelectionAH)UIHandler).OnCancel(eventData);
+        if (UIHandler is SideSelectionAH)
+            ((SideSelectionAH)UIHandler).OnCancel(eventData);
     }
 }

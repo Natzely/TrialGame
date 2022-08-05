@@ -15,13 +15,40 @@ public class CursorController : MonoBehaviour, ILog
     public AudioClip Sound_Move;
     public AudioClip Sound_Select;
     [SerializeField] private Image MiniMapIcon;
+    [SerializeField] private AttackResults AttackResults;
 
+    public static CursorController Instance { get; private set; }
     public UnitController CurrentUnit
     {
         get { return _pM.PlayerInfo.SelectedUnit; }
         private set { _pM.PlayerInfo.SelectedUnit = value; }
     }
-    public GridBlock CurrentGridBlock { get; private set; }
+    public UnitController NonSelectableUnit { get; set; }
+    public Enums.UnitInfo CurrentUnitType
+    {
+        get
+        {
+            if (CurrentUnit)
+                return CurrentUnit.InfoType;
+            else if (NonSelectableUnit)
+                return NonSelectableUnit.InfoType;
+            else
+                return Enums.UnitInfo.None;
+
+        }
+    }
+    public GridBlock CurrentGridBlock
+    {
+        get { return _currentGB; }
+        set
+        {
+            _currentGB = value;
+            GetUnit(_currentGB);
+
+            if (CursorState != Enums.CursorState.Default/* && CursorState != Enums.CursorState.OnlyAttack*/)
+                SetCursorState();
+        }
+    }
 
     private Enums.CursorState _cursorState;
     public Enums.CursorState CursorState
@@ -39,6 +66,7 @@ public class CursorController : MonoBehaviour, ILog
 
     public Vector2 Position { get { return transform.position; } }
 
+    private GridBlock _currentGB;
     private GridBlock _orgGridBlock;
     private GridBlock _attackFromGridBlock;
     private PlayerManager _pM;
@@ -94,6 +122,11 @@ public class CursorController : MonoBehaviour, ILog
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+
         _animator = GetComponent<Animator>();
         _sR = GetComponent<SpriteRenderer>();
         _aS = GetComponent<AudioSource>();
@@ -124,6 +157,11 @@ public class CursorController : MonoBehaviour, ILog
             _delayedCursorState = false;
         }
 
+        if(!CurrentUnit && _pM.IsBlockGridActive)
+        {
+            ResetCursor();
+        }
+
         if (_getUnit && CurrentGridBlock != null)
         {
             GetUnit(CurrentGridBlock);
@@ -139,10 +177,6 @@ public class CursorController : MonoBehaviour, ILog
         if (grid != null)
         {
             CurrentGridBlock = grid;
-            GetUnit(grid);
-
-            if (CursorState != Enums.CursorState.Default/* && CursorState != Enums.CursorState.OnlyAttack*/)
-                SetCursorState();
         }
         else if (gO.name.StartsWith("UnitOff"))
         {
@@ -168,7 +202,6 @@ public class CursorController : MonoBehaviour, ILog
         {
             _sR.color = _playerColor;
         }
-
     }
 
     private IEnumerator CreateMinimapIcon()
@@ -194,14 +227,38 @@ public class CursorController : MonoBehaviour, ILog
     private void SetCursorState()
     {
         Enums.CursorMenuState newState = Enums.CursorMenuState.None;
+        MovePoint attackFromPoint = null;
 
         if (!_onlyAttack)
-            _moves = _pM.CreatePath(_orgGridBlock, CurrentGridBlock).ToList();
+        {
+            if (CurrentUnit.CheckAttack(CurrentGridBlock, true) && CurrentGridBlock.IsCurrentUnitEnemy(Player))
+                _moves = new List<MovePoint>() { _orgGridBlock.ToMovePoint() };
+            else
+                _moves = _pM.CreatePath(_orgGridBlock, CurrentGridBlock).ToList();
 
-        if (CurrentGridBlock.IsCurrentUnitEnemy(Player))
+            if (CurrentGridBlock.IsCurrentUnitEnemy(Player))
+            {
+                attackFromPoint = _moves.Last();
+                while (attackFromPoint.Position.GridDistance(CurrentGridBlock.Position) < (CurrentUnit.MinAttackDistance + 1))
+                {
+                    _moves.Remove(attackFromPoint);
+                    attackFromPoint = _moves.Last();
+                }
+                _moves = _pM.CreatePath(_orgGridBlock, attackFromPoint.GridBlock).ToList();
+            }
+        }
+        else
+        {
+            attackFromPoint = _attackFromGridBlock.ToMovePoint();
+        }
+
+        if (CurrentGridBlock.IsCurrentUnitEnemy(Player) &&
+            CheckForDistanceAttack() == Enums.CursorMenuState.Attack)
         {
             CursorState = Enums.CursorState.Attack;
             newState = Enums.CursorMenuState.Attack;
+            GridBlock attackFrom = attackFromPoint != null ? attackFromPoint.GridBlock : _orgGridBlock;
+            AttackResults.Show(true, CurrentUnit, CurrentGridBlock.CurrentUnit, attackFrom);
         }
         else if (CurrentGridBlock.Unpassable)
         {
@@ -234,8 +291,12 @@ public class CursorController : MonoBehaviour, ILog
 
     private Enums.CursorMenuState CheckForDistanceAttack()
     {
-        Vector2 checkPos = _onlyAttack ? _attackFromGridBlock.Position : _orgGridBlock.Position;
-        if (CurrentUnit.MaxAttackDistance > 1 && CurrentGridBlock.Position.GridDistance(checkPos) > CurrentUnit.MinAttackDistance)
+        Vector2 checkPos = !_onlyAttack ? _moves.Last().GridBlock.Position : _attackFromGridBlock.Position;
+        int attackDis = CurrentGridBlock.Position.GridDistance(checkPos);
+        //if (CurrentUnit.MaxAttackDistance > 1 && CurrentGridBlock.Position.GridDistance(checkPos) > CurrentUnit.MinAttackDistance)
+        if (CurrentGridBlock != _attackFromGridBlock && 
+            attackDis > CurrentUnit.MinAttackDistance && 
+            attackDis <= CurrentUnit.MaxAttackDistance)// + CurrentUnit.MoveDistance)
             return Enums.CursorMenuState.Attack;
         else
             return Enums.CursorMenuState.None;
@@ -259,12 +320,13 @@ public class CursorController : MonoBehaviour, ILog
             if (tmpUnit != null && (tmpUnit.Player != Player || tmpUnit.OnCooldown || tmpUnit.Moving))
             {
                 Log($"Current unit {tmpUnit.gameObject.name} is not applicable");
+                NonSelectableUnit = tmpUnit;
                 tmpUnit = null;
             }
             else if (tmpUnit != null)
             {
                 Log($"Current unit {tmpUnit.gameObject.name}");
-                tmpUnit.Hover(true);
+                NonSelectableUnit = null;
             }
 
             CurrentUnit = tmpUnit;
@@ -283,6 +345,7 @@ public class CursorController : MonoBehaviour, ILog
         CursorState = Enums.CursorState.Default;
         _cursorMenu.ResetPanels();
         _cursorMenu.State = Enums.CursorMenuState.None;
+        AttackResults.Show(false);
         _pM.ResetBlockGrid();
         _attackFromGridBlock = null;
         _onlyAttack = false;
@@ -316,7 +379,11 @@ public class CursorController : MonoBehaviour, ILog
             _quickSelectUnit = _pM.GetNextUnit(useUC);
             if (_quickSelectUnit != null)
             {
-                transform.position = _quickSelectUnit.transform.position;
+                transform.position = _quickSelectUnit.transform.position; 
+                if (LevelManager.Instance.GameState == Enums.GameState.TimeStop)
+                {
+                    CurrentGridBlock = _quickSelectUnit.CurrentGridBlock;
+                }
                 _aS.Play(Sound_Move);
             }
         }
@@ -329,6 +396,7 @@ public class CursorController : MonoBehaviour, ILog
 
         if (CursorState != Enums.CursorState.Default)
         {
+            AttackResults.Show(false);
             if (_onlyAttack)//CursorState == Enums.CursorState.OnlyAttack)
             {
                 _onlyAttack = false;
@@ -407,6 +475,7 @@ public class CursorController : MonoBehaviour, ILog
                 CurrentUnit.MoveTo(_moves);
                 CurrentUnit.Target = CurrentGridBlock.ToMovePoint();
 
+                TimeStopHandler.Instance.TimeAction();
                 _aS.Play(Sound_Attack);
                 SelectUnit(false);
                 ResetCursor();
@@ -455,6 +524,7 @@ public class CursorController : MonoBehaviour, ILog
         else if (state == Enums.CursorMenuState.Reveal)
             _moves.Add(CurrentGridBlock.ToMovePoint(false));
 
+        TimeStopHandler.Instance.TimeAction();
         CurrentUnit.MoveTo(_moves);
 
         _aS.Play(Sound_Select);
@@ -466,7 +536,7 @@ public class CursorController : MonoBehaviour, ILog
     {
         _pM.ActiveGrid_Hide();
         _onlyAttack = true;
-        _attackFromGridBlock = CurrentGridBlock;
+        _attackFromGridBlock = _moves.Last().GridBlock;
         SetCursorState();
         _pM.ResetBlockGrid();
         CurrentGridBlock.UseMoveAnimation = false;
@@ -476,15 +546,16 @@ public class CursorController : MonoBehaviour, ILog
 
     private void MoveToAttack()
     {
-        var bestGrid = FirstAvaiableMovePoint();
-        if (bestGrid == null)
-            return;
-        else
-            _moves.RemoveAllAfter(bestGrid);
+        //var bestGrid = FirstAvaiableMovePoint();
+        //if (bestGrid == null)
+        //    return;
+        //else
+        //    _moves.RemoveAllAfter(bestGrid);
 
         CurrentUnit.Target = CurrentGridBlock.ToMovePoint();
-        CurrentUnit.MoveTo(_moves, _attackFromGridBlock == null);
+        CurrentUnit.MoveTo(_moves);
 
+        TimeStopHandler.Instance.TimeAction();
         _aS.Play(Sound_Attack);
         SelectUnit(false);
         ResetCursor();

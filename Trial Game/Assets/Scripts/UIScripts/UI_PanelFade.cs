@@ -9,8 +9,8 @@ public class UI_PanelFade : MonoBehaviour
 {
     [SerializeField] private bool StartHidden;
     [SerializeField] private bool BlockAction;
-    [SerializeField] private float FadeSpeed;
-    [SerializeField] private UnityEvent AfterFade;
+    [SerializeField] private float FadeTime;
+    public UnityEvent AfterFade;
 
     private Image _image;
     private bool _start;
@@ -49,8 +49,9 @@ public class UI_PanelFade : MonoBehaviour
     {
         if(_start)
         {
-            float speedOrTime = _fadeTime > 0 ? (1 / _fadeTime) : FadeSpeed;
-            float newAlpha = _image.color.a + (_fadeDirection * Time.fixedDeltaTime * speedOrTime);
+            float fadeTime = _fadeTime > 0 ? _fadeTime : FadeTime;
+            float percentToAdd = Time.unscaledDeltaTime / fadeTime;
+            float newAlpha = _image.color.a + (_fadeDirection * percentToAdd);
             SetNewAlpha(newAlpha);
             if (_image.color.a <= 0 || _image.color.a >= 1)
             {

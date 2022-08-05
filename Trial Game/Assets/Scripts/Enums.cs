@@ -32,14 +32,14 @@ public class Enums : MonoBehaviour
         Pathway = 7,
     }
 
-    public enum NeighborDirection
-    {
-        Up = 0,
-        Down = 1,
-        Left = 2,
-        Right = 3,
-        Error = -1,
-    }
+    //public enum NeighborDirection
+    //{
+    //    Up = 0,
+    //    Down = 1,
+    //    Left = 2,
+    //    Right = 3,
+    //    Error = -1,
+    //}
 
     public enum PathDirection
     {
@@ -75,6 +75,7 @@ public class Enums : MonoBehaviour
         Hurt = 4,
         PlusAction = 5,
         Cooldown = 6,
+        Blocking = 7,
     }
 
     public enum UnitType
@@ -91,6 +92,7 @@ public class Enums : MonoBehaviour
         Controls = 2,
         Quit = 3,
         Controls_OK = 4,
+        Units = 5,
     }
 
     public enum UI_TitleButtonType
@@ -115,6 +117,7 @@ public class Enums : MonoBehaviour
         Controls = 1,
         Restart = 2,
         Quit = 3,
+        UnitInfo = 4,
     }
 
     public enum TitleState
@@ -171,6 +174,7 @@ public class Enums : MonoBehaviour
         Play = 1,
         Pause = 2,
         Results = 3,
+        TimeStop = 4,
     }
 
     public enum Language
@@ -181,15 +185,40 @@ public class Enums : MonoBehaviour
 
     public enum HTPButton
     {
-        Moving = 0,
-        Selecting = 1,
-        Cancel = 2,
-        NextUnit=3,
-        MoveAttack=4,
-        AttackDirectly=5,
-        UnitCooldown=6,
-        Menu=7,
-        Minimap=8,
+        Moving         = 0,
+        Selecting      = 1,
+        Cancel         = 2,
+        NextUnit       = 3,
+        MoveAttack     = 4,
+        AttackDirectly = 5,
+        UnitCooldown   = 6,
+        Menu           = 7,
+        Minimap        = 8,
+        DamageResults  = 9,
+        UnitInfo       = 10,
+        TimeStop       = 11,
+    }
+
+    public enum UnitInfo
+    {
+        Warrior = 0,
+        Spear = 1,
+        Captor = 2,
+        Cavalry = 3,
+        Musket = 4,
+        Soldier = 5,
+        None = 6,
+    }
+
+    public enum UnitStat
+    {
+        Health = 0,
+        Move = 1,
+        Speed = 2,
+        Attack = 3,
+        Defense = 4,
+        Range = 5,
+        Cooldwon = 6,
     }
 }
 

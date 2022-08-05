@@ -29,18 +29,18 @@ public class Damager : MonoBehaviour
     {
         GameObject tmpObj = collision.gameObject;
         Damageable damageable = tmpObj.GetComponent<Damageable>();
-        UnitController uC = tmpObj.GetComponent<UnitController>();
+        UnitController enemyUC = tmpObj.GetComponent<UnitController>();
         
-        if(uC != null && damageable != null && uC.Player != Player)// && !uC.AlliedWith.Contains(Player))
+        if(enemyUC != null && damageable != null && enemyUC.Player != Player)// && !uC.AlliedWith.Contains(Player))
         {
-            Damage = Mathf.FloorToInt(Damage * CalculateBonusDamage(uC));
+            Damage = Mathf.FloorToInt(Damage * CalculateBonusDamage(enemyUC));
             if (damageable.Damage(this))
                 StatusHandler.ClearStatus(Enums.UnitStatusEffect.Rage);
             Destroy(gameObject);
         }
     }
 
-    private float CalculateBonusDamage(UnitController uC)
+    private float CalculateBonusDamage(UnitController enemyUC)
     {
         float bonusDamageMult = 1; 
         if (Unit.Type == Enums.UnitType.Horse)
@@ -48,26 +48,26 @@ public class Damager : MonoBehaviour
             if (Unit.Moving)
             {
                 bonusDamageMult = 2;
-                if (uC.LookDirVector.x == Unit.LookDirVector.x && uC.LookDirVector.y == Unit.LookDirVector.y)
+                if (enemyUC.LookDirVector.x == Unit.LookDirVector.x && enemyUC.LookDirVector.y == Unit.LookDirVector.y)
                     bonusDamageMult = 2.5f;
             }
         }
-        else if (Unit.Type == Enums.UnitType.Melee && uC.Type == Enums.UnitType.Horse)
+        else if (Unit.Type == Enums.UnitType.Melee && enemyUC.Type == Enums.UnitType.Horse)
         {
-            if (-uC.LookDirVector.x != Unit.LookDirVector.x || -uC.LookDirVector.y != Unit.LookDirVector.y)
+            if (-enemyUC.LookDirVector.x != Unit.LookDirVector.x || -enemyUC.LookDirVector.y != Unit.LookDirVector.y)
             {
                 bonusDamageMult = 1.5f;
-                if (uC.MeleeAttackedCount == 2)
+                if (enemyUC.MeleeAttackedCount == 2)
                     bonusDamageMult = 2f;
-                if (uC.Moving)
+                if (enemyUC.Moving)
                     bonusDamageMult = 2.5f;
             }
         }
-        else if (Unit.Type == Enums.UnitType.Range && uC.Moving)
+        else if (Unit.Type == Enums.UnitType.Range && enemyUC.Moving)
         {
-            if (uC.Type == Enums.UnitType.Melee)
+            if (enemyUC.Type == Enums.UnitType.Melee)
                 bonusDamageMult = 1.5f;
-            else if (uC.Type == Enums.UnitType.Horse)
+            else if (enemyUC.Type == Enums.UnitType.Horse)
                 bonusDamageMult = 2.0f;
         }
 

@@ -57,6 +57,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -364,6 +365,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Back-Mounted-Attack_10: -9154152335618314094
+      Back-Mounted-Attack_7: -1231772768352405440
+      Back-Mounted-Attack_5: -4326649482276955806
+      Back-Mounted-Attack_0: -7171130513805342815
+      Back-Mounted-Attack_3: 2370794438640226012
+      Back-Mounted-Attack_6: 5815132511375465135
+      Back-Mounted-Attack_4: -3349845663151062649
+      Back-Mounted-Attack_1: -5867958809570741838
+      Back-Mounted-Attack_8: 8224103139226087103
+      Back-Mounted-Attack_2: 8060845074962415750
+      Back-Mounted-Attack_9: -5672844591417676797
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

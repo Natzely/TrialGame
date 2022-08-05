@@ -34,7 +34,7 @@ public class SceneManager : MonoBehaviour
     public void LoadScene(string sceneName, float waitTime = 0, float fadeTime = 0)
     {
         _waitTime = waitTime;
-        _fadeTime = fadeTime;
+        _fadeTime = fadeTime == 0 ? TimeToFade : fadeTime;
         _loadScene = true;
         _fadeMusic = true;
         _sceneToLoad = sceneName;
@@ -84,6 +84,7 @@ public class SceneManager : MonoBehaviour
     protected virtual void Start()
     {
         _currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        LevelLoadFade.AfterFade.AddListener(ActivateScene);
     }
 
     protected virtual void Update()

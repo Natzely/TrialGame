@@ -9,6 +9,7 @@ using TMPro;
 public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, ISubmitHandler
 {
     public float ClipLength { get { return AudioSource.clip.length; } }
+    public bool SilentSelect { get; set; }
 
     [SerializeField] protected TextMeshProUGUI ButtonText;
     [SerializeField] protected bool OverrideConstTextSizes;
@@ -74,7 +75,8 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
 
     public void Deselect()
     {
-        ButtonText.fontSize = _savedFontSize = _minFontSize;
+        if (ButtonText)
+            ButtonText.fontSize = _savedFontSize = _minFontSize;
         _selected = false;
     }
 
@@ -83,7 +85,7 @@ public abstract class UIButton : UIObject, ISelectHandler, IDeselectHandler, IPo
         AudioSource.volume = 1;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Button = GetComponent<Button>();
         AudioSource = GetComponent<AudioSource>();

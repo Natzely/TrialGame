@@ -18,6 +18,7 @@ public class CursorPanel : MonoBehaviour
     [SerializeField] private GameObject Text;
     [SerializeField] private float AnimationSpeed;
     [SerializeField] private float MoveDistance;
+
     
     
     public bool Showing { get { return _showing; } }
@@ -49,7 +50,9 @@ public class CursorPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _rectTrans.sizeDelta = _hideSize;
         Show(false);
+        
     }
 
     // Update is called once per frame
@@ -62,13 +65,14 @@ public class CursorPanel : MonoBehaviour
 
         if (_rectTrans.sizeDelta != _goalSize)
         {
-            var newSize = Vector2.MoveTowards(_rectTrans.sizeDelta, _goalSize, AnimationSpeed);
-            _rectTrans.sizeDelta = _backgroundTrans.sizeDelta = newSize;
+            var newSize = Vector2.MoveTowards(_rectTrans.sizeDelta, _goalSize, AnimationSpeed * Time.unscaledDeltaTime);
+            //_rectTrans.sizeDelta = _backgroundTrans.sizeDelta = newSize;
+            _rectTrans.sizeDelta = newSize;
         }
 
         if (_backgroundTrans.anchoredPosition != _goalPos)
         {
-            var newPos = Vector2.MoveTowards(_backgroundTrans.anchoredPosition, _goalPos, AnimationSpeed);
+            var newPos = Vector2.MoveTowards(_backgroundTrans.anchoredPosition, _goalPos, AnimationSpeed / 2 * Time.unscaledDeltaTime);
             _backgroundTrans.anchoredPosition = newPos;
         }
     }

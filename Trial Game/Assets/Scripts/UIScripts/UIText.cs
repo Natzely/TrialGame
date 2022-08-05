@@ -16,6 +16,9 @@ public class UIText : UIObject
 
     private void Start()
     {
+        if (!Text)
+            Text = GetComponent<TextMeshProUGUI>();
+
         SceneManager.Instance.LanguageChange.AddListener(ChangeText);
         ChangeText();
     }
