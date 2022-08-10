@@ -2303,16 +2303,16 @@ PrefabInstance:
     - target: {fileID: 5003213420381415490, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
       propertyPath: LanguageTexts.Array.data[0]
-      value: This screen will show you information on all the units. A base description,
+      value: This screen shows you information on all the units. A base description,
         what they specialize in, and their stats. You can press right to get a description
-        of the stats. Can also be seen by pressing [F] on any unit.
+        of the stats. Accessed from the pause menu or by pressing [F] on any unit.
       objectReference: {fileID: 0}
     - target: {fileID: 5003213420381415490, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
       propertyPath: LanguageTexts.Array.data[1]
       value: "Aqui puedes ver la info de las unidades. Tiene una descripcion basica,su
         especializaci\xF3n, y sus stats. Puedes ver descripciones de las stats con
-        la derecha. Tambien puede ser visto con [F] sobre qualquier unidad."
+        la derecha. Puede ser visto con [F] sobre una unidad o desde el menu de pausa."
       objectReference: {fileID: 0}
     - target: {fileID: 6052768851877447479, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
@@ -2836,7 +2836,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -40, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &896650022
 MonoBehaviour:
@@ -2858,9 +2858,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Aqui puedes ver la info de las unidades. Tiene una descripcion basica,su
-    especializaci\xF3n, y sus stats. Puedes ver descripciones de las stats con la
-    derecha. Tambien puede ser visto con [F] sobre qualquier unidad."
+  m_text: This screen shows you information on all the units. A base description,
+    what they specialize in, and their stats. You can press right to get a description
+    of the stats. Accessed from the pause menu or by pressing [F] on any unit.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

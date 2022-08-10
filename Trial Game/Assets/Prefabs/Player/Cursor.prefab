@@ -130,7 +130,7 @@ MonoBehaviour:
   MoveSound: {fileID: 8300000, guid: 2e7463fad1e5a654cb4a3ff216cd7e27, type: 3}
   AudioSource: {fileID: 3804145181817776958}
   AttackResults: {fileID: 56918854842521117}
-  ActionTime: 0.09
+  ActionTime: 0.11
   HoldTime: 0.12
   HoldActionTime: 0.05
 --- !u!50 &1230999480

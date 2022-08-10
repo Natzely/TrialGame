@@ -58,6 +58,10 @@ public class UnitController : MonoBehaviour, ILog
     public int MinAttackDistance;
     public int MoveDistance;
 
+    //public TextMeshProUGUI DebugText;
+    //public float DebugTime;
+    //private float _debugTimer;
+
     private Enums.UnitState _unitState;
     public Enums.UnitState UnitState
     {
@@ -185,6 +189,8 @@ public class UnitController : MonoBehaviour, ILog
     private int _defaultLook;
     private int _triedFindingPlace;
 
+    private Stopwatch _sW;
+
     public void Select(bool select)
     {
         Log($"---------- {MethodBase.GetCurrentMethod().Name} ----------");
@@ -226,6 +232,7 @@ public class UnitController : MonoBehaviour, ILog
 
             Log("Moving");
             CurrentGridBlock.ResetCurrentUnit(this);
+            _sW.Start();
             GetNextPoint();
         }
         Log("----------------------------------------");
@@ -429,11 +436,6 @@ public class UnitController : MonoBehaviour, ILog
         return Player != player;// && !AlliedWith.Contains(player);
     }
 
-    public void IncreaseMeeleAttackCount()
-    {
-        MeleeAttackedCount++;
-    }
-
     public int CheckGridMoveCost(Enums.GridBlockType gridType)
     {
         return _gridblockCosts.GetGridblockMoveCost(gridType);
@@ -458,6 +460,8 @@ public class UnitController : MonoBehaviour, ILog
         _prevPositions = new Stack<MovePoint>();
         _nextPoint = null;
         GridblockSpeedModifier = 1;
+
+        _sW = new Stopwatch();
     }
 
     // Start is called before the first frame update
@@ -502,6 +506,14 @@ public class UnitController : MonoBehaviour, ILog
                 Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * GridblockSpeedModifier * Time.deltaTime);
                 _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
 
+                //if (DebugText && _debugTimer <= 0)
+                //{
+                //    DebugText.text += $"Current:{transform.position} | Speed: {Speed} | GBM: {GridblockSpeedModifier} | Time: {Time.deltaTime} | New Pos: {moveVector}\n";
+                //    _debugTimer = DebugTime;
+                //}
+                //else if (DebugText)
+                //    _debugTimer -= Time.deltaTime;
+
                 LookAt(moveVector);
                 transform.position = moveVector;
                 if (transform.position.V2() == _nextPoint.Position)
@@ -538,6 +550,12 @@ public class UnitController : MonoBehaviour, ILog
 
                             CurrentGridBlock.SetCurrentUnit(this);
                             UnitState = Enums.UnitState.Idle;
+                            _sW.Stop();
+                            double totalSecs = (_sW.Elapsed.TotalMilliseconds / 1000);
+                            double speed = (_prevPositions.Count - 1) / totalSecs;
+                            //UnityEngine.Debug.Log($"{gameObject.name}: Moving {_prevPositions.Count - 1} blocks took {totalSecs.ToString("F1")} for a speed of {speed.ToString("F1")}");
+                            //if(DebugText)
+                            //DebugText.text += $"{gameObject.name}: Moving {_prevPositions.Count - 1} blocks took {totalSecs.ToString("F1")} for a speed of {speed.ToString("F1")}\n";
                         }
                         else if(_prevPositions.Count > 1)
                         {
@@ -855,22 +873,22 @@ public class UnitController : MonoBehaviour, ILog
         //Log("----------------------------------------");
     }
 
-    private float CheckReducedCooldown()
-    {
-        if (this.Type == Enums.UnitType.Melee)
-        {
-            int friendliesAround = CurrentGridBlock.Neighbors.GetAlliedUnits(Player);
-            if (friendliesAround > 0)
-            {
-                //Debug.Log($"Units found to decrease cooldown. {String.Join(", ", list.Select(l => l.gameObject.name))}");
-                CooldownReduction.text = friendliesAround + "";
-                CooldownReduction.gameObject.SetActive(true);
-            }
-            return 1 - (.1f * friendliesAround);
-        }
-        else
-            return 1;
-    }
+    //private float CheckReducedCooldown()
+    //{
+    //    if (this.Type == Enums.UnitType.Melee)
+    //    {
+    //        int friendliesAround = CurrentGridBlock.Neighbors.GetAlliedUnits(Player);
+    //        if (friendliesAround > 0)
+    //        {
+    //            //Debug.Log($"Units found to decrease cooldown. {String.Join(", ", list.Select(l => l.gameObject.name))}");
+    //            CooldownReduction.text = friendliesAround + "";
+    //            CooldownReduction.gameObject.SetActive(true);
+    //        }
+    //        return 1 - (.1f * friendliesAround);
+    //    }
+    //    else
+    //        return 1;
+    //}
 
     private void ResetLook()
     {

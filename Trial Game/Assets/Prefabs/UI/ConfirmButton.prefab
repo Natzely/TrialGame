@@ -31,6 +31,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4470382137131107051}
   - {fileID: 1097902969648348625}
@@ -244,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b92741213610b44b9f25c56e0bb7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonText: {fileID: 4739032698661550819}
+  ButtonText: {fileID: 1736329676134960780}
   OverrideConstTextSizes: 0
   Sound_Select: {fileID: 8300000, guid: cd1a99202b8648543999ecd59f21bfbf, type: 3}
   Sound_Press: {fileID: 0}
@@ -281,6 +282,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2225391622836086115}
   m_RootOrder: 1
@@ -312,18 +314,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditOnStart: 0
   Loop: 0
-  Speed: 3
+  Speed: 10
   Acceleration: 1
   Decceleration: 1
   SlowDownPercent: 1
   MinSpeed: 1
-  MaxSpeed: 1
+  MaxSpeed: 10
   WaitTime: 0
   EditEvent:
     m_PersistentCalls:
       m_Calls: []
   Text: {fileID: 1736329676134960780}
   FontSizeEdit: 60
+  DebugText: {fileID: 0}
+  DebugTime: 0
 --- !u!114 &2436578156356120686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,15 +608,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 9116721646138511652}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4739032698661550819 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4558055317541088199, guid: 9cbdf49e4238a974ba6259691c32318b,
-    type: 3}
-  m_PrefabInstance: {fileID: 9116721646138511652}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -35,9 +35,6 @@ public class Damageable : MonoBehaviour
     {
         if (damager.Damage > 0)
         {
-            if (damager.Unit.Type == Enums.UnitType.Melee && _uC.Type == Enums.UnitType.Horse)
-                _uC.IncreaseMeeleAttackCount();
-
             float calcDamage = Mathf.Max(damager.Damage / _uC.Defense, 1);
             float blockNum = Random.Range(1, 100);
             bool blocked = (blockNum <= BlockChance) && CanBlock;

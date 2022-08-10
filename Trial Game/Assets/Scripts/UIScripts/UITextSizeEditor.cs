@@ -47,7 +47,7 @@ public class UITextSizeEditor : UIObjectEditor
     protected override void EditObject()
     {
         base.EditObject();
-        float newSize = Mathf.MoveTowards(Text.fontSize, _fontSizeTarget, Speed * Time.fixedDeltaTime);
+        float newSize = Mathf.MoveTowards(Text.fontSize, _fontSizeTarget, Speed * Time.deltaTime);
         Text.fontSize = newSize;
         if (Text.fontSize == _fontSizeTarget && Loop)
             _fontSizeTarget = _fontSizeTarget == _orgFontSize ? FontSizeEdit : _orgFontSize;

@@ -59,13 +59,13 @@ public class UIMaskEditor : UIObjectEditor
 
             if (!_mask.padding.Equals(_orderedPadding))
             {
-                Vector4 newPadding = Vector4.MoveTowards(_mask.padding, _orderedPadding, _speed * Time.fixedDeltaTime);
+                Vector4 newPadding = Vector4.MoveTowards(_mask.padding, _orderedPadding, _speed * Time.deltaTime);
                 _mask.padding = newPadding;//new Vector4(newPadding.x, newPadding.z, newPadding.w, newPadding.y);
             }
 
             if (!_mask.softness.Equals(SoftnessEdit))
             {
-                Vector2Int newSoftness = Vector2Int.CeilToInt(Vector2.MoveTowards(_mask.softness, SoftnessEdit, _speed * Time.fixedDeltaTime));
+                Vector2Int newSoftness = Vector2Int.CeilToInt(Vector2.MoveTowards(_mask.softness, SoftnessEdit, _speed * Time.deltaTime));
                 _mask.softness = newSoftness;
             }
         }

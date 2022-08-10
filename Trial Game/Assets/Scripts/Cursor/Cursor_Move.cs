@@ -37,30 +37,39 @@ public class Cursor_Move : MonoBehaviour
 
     private void Update()
     {
-        if (_moveDir != Vector2.zero && _actionTimer <= 0)
+        // If the movement key is being press
+        if (_moveDir != Vector2.zero)
         {
-            var tmpPos = Position + _moveDir;
-            tmpPos = tmpPos.Clamp(_minClamp, _maxClamp);
-            if (tmpPos != Position)
+            // Increase hold timer
+            _holdTimer += Time.deltaTime;
+            if (_holdTimer >= HoldTime) // If the key has been pressed for long enough
             {
-                Position = tmpPos;
-                if(LevelManager.GameState == Enums.GameState.TimeStop)
-                {
-                    var neighbor = Controller.CurrentGridBlock.Neighbors[_moveDir];
-                    Controller.CurrentGridBlock = neighbor;
-                }
-                Controller.UpdateMinimapIcon();
-                AudioSource.Play(MoveSound);
+                Debug.Log("Held");
+                _currentTimer = HoldActionTime; // Switch to the holdtimer to move the cursor faster
             }
 
-            _holdTimer += Time.unscaledDeltaTime;
-            if (_holdTimer >= HoldTime)
-                _currentTimer = HoldActionTime;
+            //and the actionTimer reached zero, move the cursor;
+            if (_actionTimer <= 0)
+            {
+                var tmpPos = Position + _moveDir;
+                tmpPos = tmpPos.Clamp(_minClamp, _maxClamp);
+                if (tmpPos != Position)
+                {
+                    Position = tmpPos;
+                    if (LevelManager.GameState == Enums.GameState.TimeStop)
+                    {
+                        var neighbor = Controller.CurrentGridBlock.Neighbors[_moveDir];
+                        Controller.CurrentGridBlock = neighbor;
+                    }
+                    Controller.UpdateMinimapIcon();
+                    AudioSource.Play(MoveSound);
+                }
 
-            _actionTimer = _currentTimer;
+                _actionTimer = _currentTimer;
+            }
         }
 
-        _actionTimer -= Time.unscaledDeltaTime;
+        _actionTimer -= Time.deltaTime;
     }
 
     public void OnMove(InputAction.CallbackContext context)

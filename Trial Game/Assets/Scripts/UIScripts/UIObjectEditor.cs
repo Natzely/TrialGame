@@ -63,7 +63,7 @@ public abstract class UIObjectEditor : MonoBehaviour
     {
         if (_waitTimer > 0 && _startWaitTimer)
         {
-            _waitTimer -= Time.fixedDeltaTime;
+            _waitTimer -= Time.deltaTime;
             if (_waitTimer < 0)
                 _edit = true;
         }
