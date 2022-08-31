@@ -34,7 +34,7 @@ public class ContinueButton : MonoBehaviour
     {
         if(_perfom)
         {
-            float percent = Time.deltaTime / HoldTime;
+            float percent = Time.unscaledDeltaTime / HoldTime;
             float sub = percent * _orgWidth;
             float newWidth = _rectT.sizeDelta.x - sub;
             _rectT.sizeDelta = new Vector2(newWidth, _rectT.sizeDelta.y);

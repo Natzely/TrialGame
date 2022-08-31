@@ -41,7 +41,7 @@ public class Cursor_Move : MonoBehaviour
         if (_moveDir != Vector2.zero)
         {
             // Increase hold timer
-            _holdTimer += Time.deltaTime;
+            _holdTimer += Time.unscaledDeltaTime;
             if (_holdTimer >= HoldTime) // If the key has been pressed for long enough
             {
                 Debug.Log("Held");
@@ -51,15 +51,21 @@ public class Cursor_Move : MonoBehaviour
             //and the actionTimer reached zero, move the cursor;
             if (_actionTimer <= 0)
             {
+                Debug.Log($"Moving Cursor");
                 var tmpPos = Position + _moveDir;
                 tmpPos = tmpPos.Clamp(_minClamp, _maxClamp);
+                Debug.Log($"From {Position} to {tmpPos}");
                 if (tmpPos != Position)
                 {
+                    Debug.Log("Moved cursor");
                     Position = tmpPos;
+                    Debug.Log("Moved cursor");
                     if (LevelManager.GameState == Enums.GameState.TimeStop)
                     {
+                        Debug.Log("Setting Gridblock");
                         var neighbor = Controller.CurrentGridBlock.Neighbors[_moveDir];
                         Controller.CurrentGridBlock = neighbor;
+                        Debug.Log("Set Gridblock");
                     }
                     Controller.UpdateMinimapIcon();
                     AudioSource.Play(MoveSound);
@@ -69,17 +75,19 @@ public class Cursor_Move : MonoBehaviour
             }
         }
 
-        _actionTimer -= Time.deltaTime;
+        _actionTimer -= Time.unscaledDeltaTime;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         if (context.performed)// && Controller.CursorState != Enums.CursorState.CursorMenu)
         {
+            Debug.Log("New Move");
             AttackResults.Show(false);
             var tmpPos = context.ReadValue<Vector2>();
             _moveDir = Vector2Int.RoundToInt(tmpPos);
-            if(Controller.CursorState == Enums.CursorState.CursorMenu)
+            Debug.Log($"Got New Dir {_moveDir}");
+            if (Controller.CursorState == Enums.CursorState.CursorMenu)
             {
                 Controller.CursorMenu.SelectNextAvailablePanel(_moveDir.y);
                 _moveDir = Vector2Int.zero;

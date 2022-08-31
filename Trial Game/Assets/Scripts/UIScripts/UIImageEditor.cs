@@ -45,7 +45,7 @@ public class UIImageEditor : UIObjectEditor
         base.EditObject();
 
         _curDistance = Mathf.Abs(AlphaEdit - _image.color.a);
-        float newAlpha = Mathf.MoveTowards(_image.color.a, AlphaEdit, Speed * Time.deltaTime);
+        float newAlpha = Mathf.MoveTowards(_image.color.a, AlphaEdit, Speed * Time.unscaledDeltaTime);
         _image.color = SetAlpha(newAlpha);
 
         if (_image.color.a == AlphaEdit)
