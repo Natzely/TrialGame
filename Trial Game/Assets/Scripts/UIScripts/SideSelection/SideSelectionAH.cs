@@ -58,6 +58,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
                 _audioSource.loop = false;
                 DestroyDelay = _audioSource.clip.length - _audioSource.time;
                 LevelManager.StartMusic(_maxVolume, DestroyDelay);
+                Log($"Destroy Side Selection and start looping music in {DestroyDelay} seconds");
                 break;
         }
     }

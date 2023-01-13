@@ -44,6 +44,7 @@ public class LevelManager : SceneManager
         _audioSource.volume = volume;
         _audioSource.clip = SideSelection.SelectedBGM;
         _audioSource.PlayDelayed(delay);
+        Debug.Log("start level music");
     }
 
     public void RestartScene()

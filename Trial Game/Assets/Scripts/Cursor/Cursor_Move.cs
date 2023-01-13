@@ -44,34 +44,45 @@ public class Cursor_Move : MonoBehaviour
             _holdTimer += Time.unscaledDeltaTime;
             if (_holdTimer >= HoldTime) // If the key has been pressed for long enough
             {
-                Debug.Log("Held");
+                //Debug.Log("Held");
                 _currentTimer = HoldActionTime; // Switch to the holdtimer to move the cursor faster
             }
 
             //and the actionTimer reached zero, move the cursor;
             if (_actionTimer <= 0)
             {
-                Debug.Log($"Moving Cursor");
+                //Debug.Log($"Setting up new Cursor position");
                 var tmpPos = Position + _moveDir;
                 tmpPos = tmpPos.Clamp(_minClamp, _maxClamp);
-                Debug.Log($"From {Position} to {tmpPos}");
+                //Debug.Log($"From {Position} to {tmpPos}");
                 if (tmpPos != Position)
                 {
-                    Debug.Log("Moved cursor");
+                    // Because a move could be diagonal and then be clamped in one direction,
+                    // get the move direction again after the clamp
+                    var tmpMoveDir = Vector2Int.RoundToInt(tmpPos - Position);
+                    //Debug.Log("Moving cursor");
                     Position = tmpPos;
-                    Debug.Log("Moved cursor");
+                    //Debug.Log("Moved cursor");
                     if (LevelManager.GameState == Enums.GameState.TimeStop)
                     {
-                        Debug.Log("Setting Gridblock");
-                        var neighbor = Controller.CurrentGridBlock.Neighbors[_moveDir];
-                        Controller.CurrentGridBlock = neighbor;
-                        Debug.Log("Set Gridblock");
+                        //Debug.Log("Setting Gridblock");
+                        var gridPos = Controller.CurrentGridBlock.GridPosition;
+                        //Debug.Log($"Grid Pos: {gridPos}");
+                        var neighborPos = gridPos + new Vector2(tmpMoveDir.x, tmpMoveDir.y);
+                        //Debug.Log($"Neighbor Pos: {neighborPos}");
+                        var neighbor = PlayerManager.Instance?.GetGridBlock(neighborPos);
+                        if (neighbor != null)
+                            Controller.CurrentGridBlock = neighbor;
+                        else
+                            Debug.Log("Neighbor was not found");
+                        //Debug.Log("Set Gridblock");
                     }
                     Controller.UpdateMinimapIcon();
                     AudioSource.Play(MoveSound);
                 }
 
                 _actionTimer = _currentTimer;
+                //Debug.Log($"Current Timer {_currentTimer}");
             }
         }
 
@@ -82,11 +93,11 @@ public class Cursor_Move : MonoBehaviour
     {
         if (context.performed)// && Controller.CursorState != Enums.CursorState.CursorMenu)
         {
-            Debug.Log("New Move");
+            //Debug.Log("New Move");
             AttackResults.Show(false);
             var tmpPos = context.ReadValue<Vector2>();
             _moveDir = Vector2Int.RoundToInt(tmpPos);
-            Debug.Log($"Got New Dir {_moveDir}");
+            //Debug.Log($"Got New Dir {_moveDir}");
             if (Controller.CursorState == Enums.CursorState.CursorMenu)
             {
                 Controller.CursorMenu.SelectNextAvailablePanel(_moveDir.y);

@@ -8,7 +8,6 @@ using TMPro;
 
 public class GridNeighbors : IEnumerable<GridBlock>
 {
-
     private readonly Dictionary<Vector2, GridBlock> _neighbors;
     private readonly GridBlock _midGridBlock;
 
@@ -45,6 +44,7 @@ public class GridNeighbors : IEnumerable<GridBlock>
     private GridBlock FindNeighbor(Vector2 dir)
     {
         var neighborPostion = _midGridBlock.Position + dir;
+        //var neighbor = PlayerManager.Instance?.GetGridBlock(neighborPostion);
         var neighborName = String.Format(Strings.GridblockName, neighborPostion.x, neighborPostion.y);
         var neighbor = GameObject.Find(neighborName);
         //Vector2 startPos = _midGridBlock.transform.position.V2();

@@ -11,9 +11,11 @@ public class PlayerManager : UnitManager
     public GameObject Minimap_UnitIcons;
     public GameObject Minimap_TileIcons;
 
+    public static PlayerManager Instance { get; private set; }
     public bool HideActiveGrid { get; private set; }
     public float MinimapSquareSize { get { return _miniMapTileSize; } }
 
+    private static bool _lockInstance;
     private CursorController _cC;
     private List<UnitController> _nextUnitList;
     private float _miniMapTileSize;
@@ -44,12 +46,39 @@ public class PlayerManager : UnitManager
         return false;
     }
 
+    public GridBlock GetGridBlock(Vector2 location)
+    {
+        return GetGridBlock((int)location.x, (int)location.y);
+    }
+
+    public GridBlock GetGridBlock(int x, int y)
+    {
+        GridBlock returnBlock = null;
+        if (!_lockInstance && 
+            x >= 0 && x < FullGrid.GetLength(0) &&
+            y >= 0 && y < FullGrid.GetLength(1))
+        {
+            _lockInstance = true;
+            returnBlock = FullGrid[x, y];
+            _lockInstance = false;
+
+        }
+
+        return returnBlock;
+    }
+
     public void PrintPlayerGrid()
     {
-        GridBlock[,] grid;
+        PrintGrid(PlayerInfo.BlockGrid);
+    }
 
-        grid = PlayerInfo.BlockGrid;
+    public void PrintFullGrid()
+    {
+        PrintGrid(FullGrid);
+    }
 
+    private void PrintGrid(GridBlock[,] grid)
+    {
         int lengthX = grid.GetLength(0);
         int lengthY = grid.GetLength(1);
         string s = "\n";
@@ -57,7 +86,8 @@ public class PlayerManager : UnitManager
         {
             for (int x = 0; x < lengthX; x++)
             {
-                s += grid[x, y] == null ? "X" : "[]";
+                var tmpGB = grid[x, y];
+                s += (tmpGB == null || tmpGB.Unpassable) ? "X" : "[]";
             }
             s += "\n";
         }
@@ -188,6 +218,15 @@ public class PlayerManager : UnitManager
         }
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+
     private void Start()
     {
         StartCoroutine(GetGridBlocks());
@@ -260,7 +299,7 @@ public class PlayerManager : UnitManager
 
                 try
                 {
-                    FullGrid[posX, posY] = gb.Unpassable ? null : gb;
+                    FullGrid[posX, posY] = gb;// gb.Unpassable ? null : gb;
                 }
                 catch (Exception ex)
                 {
@@ -271,6 +310,7 @@ public class PlayerManager : UnitManager
 
         ResetBlockGrid();
         SetMinimapTileSize();
+        //PrintFullGrid();
     }
 
     private void SetMinimapTileSize()
