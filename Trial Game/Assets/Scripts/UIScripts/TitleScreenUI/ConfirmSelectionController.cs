@@ -24,7 +24,8 @@ public class ConfirmSelectionController : MonoBehaviour, ILog
 
     public void Confirm()
     {
-        CanvasEditor.AlphaEdit = 0;
+        MaskEditor.Edit(false);
+        CanvasEditor.Edit(false);
     }
 
     public void Log(string msg)

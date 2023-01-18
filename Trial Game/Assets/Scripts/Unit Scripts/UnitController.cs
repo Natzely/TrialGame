@@ -68,6 +68,7 @@ public class UnitController : MonoBehaviour, ILog
         get { return _unitState; }
         set
         {
+            UnityEngine.Debug.Log($"{gameObject.name} state changed to {value}");
             if ((value == Enums.UnitState.Hurt && _unitState == Enums.UnitState.Selected) ||
                 value == Enums.UnitState.Selected)
                 _sR.sortingOrder = 6;
@@ -197,7 +198,7 @@ public class UnitController : MonoBehaviour, ILog
         if (CooldownTimer <= 0)
         {
             if (UnitState != Enums.UnitState.PlusAction)
-                UnitState = select ? Enums.UnitState.Selected : Enums.UnitState.Idle;
+                UnitState = select ? Enums.UnitState.Selected : UnitState; // Enums.UnitState.Idle;
             _animator.SetBool("Selected", _selected = select);
         }
         Log("----------------------------------------");
@@ -232,7 +233,6 @@ public class UnitController : MonoBehaviour, ILog
 
             Log("Moving");
             CurrentGridBlock.ResetCurrentUnit(this);
-            _sW.Start();
             GetNextPoint();
         }
         Log("----------------------------------------");
@@ -470,6 +470,8 @@ public class UnitController : MonoBehaviour, ILog
         if (Player == Enums.Player.Player1)
             Cursor = FindObjectOfType<CursorController>();
 
+        _animator.keepAnimatorStateOnDisable = false;
+
         _pM = FindObjectOfType<PlayerManager>();
         if(_pM.Minimap_UnitIcons)
             StartCoroutine(CreateMinimapIcon());
@@ -482,7 +484,7 @@ public class UnitController : MonoBehaviour, ILog
 
     void Update()
     {
-        if (CooldownTimer <= 0)
+        if (CooldownTimer <= 0 && LevelManager.Instance?.GameState != Enums.GameState.TimeStop)
         {
             CheckState();
 
@@ -550,9 +552,9 @@ public class UnitController : MonoBehaviour, ILog
 
                             CurrentGridBlock.SetCurrentUnit(this);
                             UnitState = Enums.UnitState.Idle;
-                            _sW.Stop();
-                            double totalSecs = (_sW.Elapsed.TotalMilliseconds / 1000);
-                            double speed = (_prevPositions.Count - 1) / totalSecs;
+                            //_sW.Stop();
+                            //double totalSecs = (_sW.Elapsed.TotalMilliseconds / 1000);
+                            //double speed = (_prevPositions.Count - 1) / totalSecs;
                             //UnityEngine.Debug.Log($"{gameObject.name}: Moving {_prevPositions.Count - 1} blocks took {totalSecs.ToString("F1")} for a speed of {speed.ToString("F1")}");
                             //if(DebugText)
                             //DebugText.text += $"{gameObject.name}: Moving {_prevPositions.Count - 1} blocks took {totalSecs.ToString("F1")} for a speed of {speed.ToString("F1")}\n";
@@ -573,6 +575,7 @@ public class UnitController : MonoBehaviour, ILog
 
             if (!_selected && !Moving && _animator.GetBool("Moving"))
                 _animator.SetBool("Moving", false);
+
             if (_attack && !Attacked && (UnitState == Enums.UnitState.Idle || UnitState == Enums.UnitState.Moving))//!_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
                 Log($"attacks");
@@ -687,7 +690,8 @@ public class UnitController : MonoBehaviour, ILog
         if(UnitManager)
             UnitManager.RemoveUnit(this);
         DeleteSavedPath();
-        if (CurrentGridBlock) CurrentGridBlock.ResetCurrentUnit(this);
+        if (CurrentGridBlock) 
+            CurrentGridBlock.ResetCurrentUnit(this);
         Destroy(_miniMapIcon);
         IsDestroyed = true;
         //Log("----------------------------------------");
@@ -745,7 +749,20 @@ public class UnitController : MonoBehaviour, ILog
     {
         var currentPoint = _nextPoint;
         var possiblePoint = _movePositions.Peek();
-        if (possiblePoint == null || possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
+
+        // Check if it's the start position
+        if(currentPoint == null && possiblePoint.Position == Position)
+        {
+            // If it is, save it and move to the first new position
+            // It is still important to save this first position in case we need to go back to it.
+            _prevPositions.Push(possiblePoint); 
+            _movePositions.Dequeue();
+            currentPoint = possiblePoint;
+            if (!_movePositions.TryPeek(out possiblePoint))
+                possiblePoint = null;
+        }
+
+        if (possiblePoint != null && possiblePoint.Position.GridDistance(Position) > 1) // Make sure the next point is one point away, this should trigger VERY rarely
         {
             var orderedNeighbors = CurrentGridBlock.Neighbors.OrderByDistance(possiblePoint.GridBlock);
             foreach (GridBlock gB in orderedNeighbors)
@@ -757,10 +774,10 @@ public class UnitController : MonoBehaviour, ILog
                 }
             }
         }
-        else
+        else if(possiblePoint != null)
             _movePositions.Dequeue(); // point is fine go ahead and remove it from queue
 
-        if (currentPoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
+        if (currentPoint != null && possiblePoint != null && _movePositions.IsEmpty() && possiblePoint.CurrentUnit != null && !possiblePoint.CurrentUnit.IsEnemy(Player)) // if this is the last point in the queue make sure it's not empty
         {
             if (currentPoint.CurrentUnit == this) // Last spot is taken and current spot is safe to stay at
             {
@@ -776,13 +793,18 @@ public class UnitController : MonoBehaviour, ILog
         }
 
         _nextPoint = possiblePoint;
-        Moving = true;
-        //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
-        UnitState = Enums.UnitState.Moving;
-        BoxCollider.size = ColliderSizeMoving;
-        _animator.SetBool("Moving", true);
-        IsHidden = false;
-        LookAt(possiblePoint.Position);
+
+        if (_nextPoint != null)
+        {
+            Moving = true;
+            //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
+            UnityEngine.Debug.Log($"{gameObject.name} is moving");
+            UnitState = Enums.UnitState.Moving;
+            BoxCollider.size = ColliderSizeMoving;
+            _animator.SetBool("Moving", true);
+            IsHidden = false;
+            LookAt(_nextPoint.Position);
+        }
     }
 
     private void DeleteSavedPath()

@@ -241,7 +241,8 @@ public class EnemyController : MonoBehaviour
 
     private List<MovePoint> VerifiedPath(List<MovePoint> path, int maxMovement)
     {
-        var maxPath = MaxMovementPath(path, maxMovement).ToList();
+        var maxPath = MaxMovementPath(path, maxMovement+1).ToList(); // We have to retrieve [maxMovement + 1] moves because their current location counts as a move
+                                                                     // We need to save their current location in case they need return to it.
 
         while (maxPath.Count > 0 && maxPath.Last().IsOccupied && maxPath.Last().CurrentUnit != UnitController)
         {

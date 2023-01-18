@@ -370,16 +370,27 @@ public class CursorController : MonoBehaviour, ILog
     {
         if (context.performed && _cursorState == Enums.CursorState.Default)
         {
+            Debug.Log($"CurrentUnit is null: {CurrentUnit == null}");
             UnitController useUC;
             if (CurrentUnit)
+            {
+                Debug.Log("Use CurrentUnit");
                 useUC = CurrentUnit;
+            }
             else
+            {
+                Debug.Log("Use quick select unit");
                 useUC = _quickSelectUnit;
+            }
 
+
+            Debug.Log($"useUC is null: {useUC == null}");
             _quickSelectUnit = _pM.GetNextUnit(useUC);
+            
             if (_quickSelectUnit != null)
             {
-                transform.position = _quickSelectUnit.transform.position; 
+                Debug.Log($"New unit {_quickSelectUnit.name}");
+                transform.position = _quickSelectUnit.CurrentGridBlock.Position; 
                 if (LevelManager.Instance.GameState == Enums.GameState.TimeStop)
                 {
                     CurrentGridBlock = _quickSelectUnit.CurrentGridBlock;
@@ -552,8 +563,13 @@ public class CursorController : MonoBehaviour, ILog
         //else
         //    _moves.RemoveAllAfter(bestGrid);
 
-        CurrentUnit.Target = CurrentGridBlock.ToMovePoint();
-        CurrentUnit.MoveTo(_moves);
+        if (_moves.Count > 1)
+        {
+            CurrentUnit.Target = CurrentGridBlock.ToMovePoint();
+            CurrentUnit.MoveTo(_moves);
+        }
+        else
+            CurrentUnit.CheckAttack(CurrentGridBlock);
 
         TimeStopHandler.Instance.TimeAction();
         _aS.Play(Sound_Attack);

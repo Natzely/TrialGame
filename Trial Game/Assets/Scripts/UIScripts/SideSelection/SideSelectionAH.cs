@@ -54,6 +54,7 @@ public class SideSelectionAH : UIActionHandler, IMoveHandler, ICancelHandler
             case Enums.UI_ConfirmButtonType.Confirm:
                 Log("\tStart");
                 _selectedMask.Confirmed = true;
+                _eventSystem.SetSelectedGameObject(null);
                 _cgEditor.Edit(true);
                 _audioSource.loop = false;
                 DestroyDelay = _audioSource.clip.length - _audioSource.time;
