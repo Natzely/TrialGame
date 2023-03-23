@@ -6,10 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Image))]
 public class UIImageEditor : UIObjectEditor
 {
-    [SerializeField] [Range(0, 1)] public float AlphaEdit;
+    [SerializeField] private Color ColorEdit = Color.white;
+    [SerializeField] private float EffectTime;
 
     private Image _image;
-    private float _orgAlpha;
+    private Color _startColor;
+    private float _timer;
+    private bool _loop;
 
     public override void Edit(bool edit = true)
     {
@@ -27,7 +30,9 @@ public class UIImageEditor : UIObjectEditor
     protected override void Start()
     {
         base.Start();
-        _orgAlpha = _image.color.a;
+        _startColor = _image.color;
+        _timer = 0;
+        _loop = Loop;
     }
 
     // Update is called once per frame
@@ -44,32 +49,32 @@ public class UIImageEditor : UIObjectEditor
     {
         base.EditObject();
 
-        _curDistance = Mathf.Abs(AlphaEdit - _image.color.a);
-        float newAlpha = Mathf.MoveTowards(_image.color.a, AlphaEdit, Speed * Time.unscaledDeltaTime);
-        _image.color = SetAlpha(newAlpha);
+        float lerpPer = _timer / EffectTime;
+        Color newColor = Color.Lerp(_startColor, ColorEdit, lerpPer);
+        _image.color = newColor;
 
-        if (_image.color.a == AlphaEdit)
+        _timer += Time.deltaTime;
+
+        if (_image.color == ColorEdit && _loop)
+        {
+            Color tmp = ColorEdit;
+            ColorEdit = _startColor;
+            _startColor = tmp;
+            _timer = 0;
+            _loop = false;
+        }
+        else if (_image.color == ColorEdit && !_loop)
         {
             base.Edit(false);
             if (EditEvent != null)
                 EditEvent.Invoke();
         }
+        
     }
 
     protected override void Reset()
     {
         base.Reset();
-        _image.color = SetAlpha(_orgAlpha);
-    }
-
-    private Color SetAlpha(float alpha)
-    {
-        return new Color
-            (
-                _image.color.r,
-                _image.color.g,
-                _image.color.b,
-                alpha
-            );
+        _image.color = _startColor;
     }
 }

@@ -33,6 +33,7 @@ public class UnitController : MonoBehaviour, ILog
     public StatusEffect_Handler StatusHandler;
     public Image MinimapIconImage;
     public Image MapTileImage;
+    public Sprite UnitGlancePortrait;
     public EnemyController EnemyController;
     public TextMeshProUGUI PlusActionText;
     public TextMeshProUGUI CooldownReduction;
@@ -68,7 +69,7 @@ public class UnitController : MonoBehaviour, ILog
         get { return _unitState; }
         set
         {
-            UnityEngine.Debug.Log($"{gameObject.name} state changed to {value}");
+            //UnityEngine.Debug.Log($"{gameObject.name} state changed to {value}");
             if ((value == Enums.UnitState.Hurt && _unitState == Enums.UnitState.Selected) ||
                 value == Enums.UnitState.Selected)
                 _sR.sortingOrder = 6;
@@ -81,8 +82,11 @@ public class UnitController : MonoBehaviour, ILog
     {
         get { return StatusHandler.Statuses; }
     }
+
     public UnitManager UnitManager { get; set; }
     public CursorController Cursor {get;set;}
+    public UnitGlance UnitGlance { get; set;}
+
     public MovePoint Target
     {
         get { return _moveTarget; }
@@ -95,7 +99,6 @@ public class UnitController : MonoBehaviour, ILog
         }
     }
     public MovePoint AttackBackTarget { get; set; }
-    public Vector2 AttackedFrom { get; set; }
 
     private GridBlock _currentGridBlock;
     public GridBlock CurrentGridBlock
@@ -108,14 +111,18 @@ public class UnitController : MonoBehaviour, ILog
             GridblockSpeedModifier = _gridblockCosts.GetGridblockMultiplyer(_currentGridBlock.Type);
         }
     }
+
     public BoxCollider2D BoxCollider { get; private set; }
     public SpriteRenderer SpriteRender { get { return _sR; } }
+
     public Vector2 Position 
     { 
         get { return transform.position; } 
         set { transform.position = value; } 
     }
     public Vector2 LookDirVector { get { return new Vector2(_lookX, _lookY); } }
+    public Vector2 AttackedFrom { get; set; }
+
     public bool Attacked { get; private set; }
     public bool Moved { get; private set; }
     public bool Moving { get; private set; }
@@ -798,7 +805,7 @@ public class UnitController : MonoBehaviour, ILog
         {
             Moving = true;
             //_miniMapIcon.color = Player == Enums.Player.Player1 ? Colors.Player_Moving : Colors.Enemy_Moving;
-            UnityEngine.Debug.Log($"{gameObject.name} is moving");
+            //UnityEngine.Debug.Log($"{gameObject.name} is moving");
             UnitState = Enums.UnitState.Moving;
             BoxCollider.size = ColliderSizeMoving;
             _animator.SetBool("Moving", true);
@@ -894,23 +901,6 @@ public class UnitController : MonoBehaviour, ILog
         CooldownIcon.SetActive(true);
         //Log("----------------------------------------");
     }
-
-    //private float CheckReducedCooldown()
-    //{
-    //    if (this.Type == Enums.UnitType.Melee)
-    //    {
-    //        int friendliesAround = CurrentGridBlock.Neighbors.GetAlliedUnits(Player);
-    //        if (friendliesAround > 0)
-    //        {
-    //            //Debug.Log($"Units found to decrease cooldown. {String.Join(", ", list.Select(l => l.gameObject.name))}");
-    //            CooldownReduction.text = friendliesAround + "";
-    //            CooldownReduction.gameObject.SetActive(true);
-    //        }
-    //        return 1 - (.1f * friendliesAround);
-    //    }
-    //    else
-    //        return 1;
-    //}
 
     private void ResetLook()
     {

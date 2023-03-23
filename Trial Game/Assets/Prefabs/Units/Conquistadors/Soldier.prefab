@@ -146,7 +146,7 @@ BoxCollider2D:
   m_EdgeRadius: 0
 --- !u!95 &347991490560029868
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -163,7 +163,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &783470378874735502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +196,7 @@ MonoBehaviour:
     type: 3}
   MapTileImage: {fileID: 117740813845821540, guid: abc68319dee74654b8fd94c215bd0afe,
     type: 3}
+  UnitGlancePortrait: {fileID: 21300000, guid: 6d6534bfab3c8ab49aa6f30a84061840, type: 3}
   EnemyController: {fileID: 0}
   PlusActionText: {fileID: 0}
   CooldownReduction: {fileID: 0}

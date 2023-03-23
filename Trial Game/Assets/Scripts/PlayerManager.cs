@@ -188,8 +188,19 @@ public class PlayerManager : UnitManager
 
     public override void InitializeUnits()
     {
-        base.InitializeUnits();  
-        var nonNullUnits = Units.Where(uC => uC != null).ToList();
+        base.InitializeUnits();
+
+        _nextUnitList = new List<UnitController>(new UnitController[Units.Count]); // Add the units to the QuickSelect List
+        foreach (var u in Units)
+        {
+            // Randomly insert the units into the quick select list.
+            int insertAt;
+            do insertAt = UnityEngine.Random.Range(0, _nextUnitList.Count);
+            while (_nextUnitList[insertAt]);
+            _nextUnitList[insertAt] = u;
+        }
+
+        var nonNullUnits = _nextUnitList.Where(uC => uC != null).ToList();
         foreach (UnitController uC in nonNullUnits)  // Add the necessary information for player units
         {
             uC.enabled = true;
@@ -205,16 +216,8 @@ public class PlayerManager : UnitManager
             uC.BoxCollider.enabled = true;
             uC.DefaultLook = 1;
             uC.HiddenOverlay.SetActive(true);
-        }
 
-        _nextUnitList = new List<UnitController>(new UnitController[Units.Count]); // Add the units to the QuickSelect List
-        foreach (var u in Units)
-        {            
-            // Randomly insert the units into the quick select list.
-            int insertAt;
-            do insertAt = UnityEngine.Random.Range(0, _nextUnitList.Count);
-            while (_nextUnitList[insertAt]);
-            _nextUnitList[insertAt] =  u;
+            uC.UnitGlance = UnitGlanceHandler.Instance.CreateUnitGlance(uC.gameObject.name, uC.UnitGlancePortrait);
         }
     }
 
