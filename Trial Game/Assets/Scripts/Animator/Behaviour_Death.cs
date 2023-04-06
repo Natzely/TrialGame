@@ -7,21 +7,22 @@ public class Behaviour_Death : StateMachineBehaviour
 {
     public List<AudioClip> DeathSounds;
 
-    private UnitController uC;
-    private AudioSource aS;
+    private UnitController _uC;
+    private AudioSource _aS;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        uC = animator.GetComponent<UnitController>();
-        uC.StatusHandler.ClearAllStatuses();
-        aS = uC.HurtAudioSource;
+        _uC = animator.GetComponent<UnitController>();
+        _uC.StatusHandler.ClearAllStatuses();
+        _aS = _uC.HurtAudioSource;
 
-        aS.loop = false;
 
         var deathSoundIndex = (int)(Time.time % DeathSounds.Count);
         var deathClip = DeathSounds[deathSoundIndex];
-        aS?.Play(deathClip);
+        _aS.loop = false;
+        _aS?.Play(deathClip);
+        _uC.UnitGlance?.Death();
     }
 
 

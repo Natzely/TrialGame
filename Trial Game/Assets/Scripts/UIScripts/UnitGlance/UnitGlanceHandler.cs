@@ -44,6 +44,15 @@ public class UnitGlanceHandler : MonoBehaviour
         return uG;
     }
 
+    public void RemoveGlance(UnitGlance uG)
+    {
+        if(_glances.Contains(uG))
+        {
+            _glances.Remove(uG);
+            _handlerHeight = _glances.Count * uG.Height;
+        }
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -74,8 +83,7 @@ public class UnitGlanceHandler : MonoBehaviour
         }
 
         var glanceCDOrder = _glances
-            //.Where(g => g.CooldownTimer > 0)
-            .OrderBy(g => g.CooldownTimer)
+            .OrderByDescending(g => g.CooldownPercent)
             .ToList();
         float avlblGlances = _glances.Count - glanceCDOrder.Count;
         glanceCDOrder.ForEach(g => CooldownPosition(g, glanceCDOrder.IndexOf(g)));//, avlblGlances););
@@ -84,6 +92,6 @@ public class UnitGlanceHandler : MonoBehaviour
     private void CooldownPosition(UnitGlance uG, float cdIndex)//, float glancesNotInCooldown)
     {
         Vector2 newPos = new Vector2(0, -(_glanceHeight * cdIndex));//(glancesNotInCooldown + cdIndex)));
-        uG.SetOrigin(newPos);
+        uG.SetPosition(newPos);
     }
 }

@@ -24,6 +24,7 @@ public class Behaviour_Cooldown : StateMachineBehaviour
             tempColor.r = tempColor.g = tempColor.b = MinDarkness;
             _sR.color = tempColor;
             _startCooldown = true;
+            _uC.UnitGlance?.StartCooldown(_uC.Cooldown);
         }
     }
 

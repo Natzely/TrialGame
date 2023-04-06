@@ -197,6 +197,7 @@ public class Enums : MonoBehaviour
         DamageResults  = 9,
         UnitInfo       = 10,
         TimeStop       = 11,
+        UnitGlance     = 12,
     }
 
     public enum UnitInfo

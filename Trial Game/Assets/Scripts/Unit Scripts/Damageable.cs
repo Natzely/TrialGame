@@ -24,6 +24,7 @@ public class Damageable : MonoBehaviour
 
     private Animator _animator;
     private UnitController _uC;
+    private float _maxHealth;
 
     /// <summary>
     /// Handles damage given to a unit. Returns false if the unit still have health left and 
@@ -45,6 +46,7 @@ public class Damageable : MonoBehaviour
             calcDamage = Mathf.FloorToInt(calcDamage);
 
             Health -= calcDamage;
+            _uC.UnitGlance?.TakeDamage(Health / _maxHealth, calcDamage);
             if (Health > 0)
             {
                 HealthText.gameObject.SetActive(true);
@@ -104,10 +106,16 @@ public class Damageable : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void Start()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
         _uC = GetComponent<UnitController>();
+
+        _maxHealth = Health;
+    }
+
+    void Start()
+    {
         HealthText.text = Health.ToString();
         HealthText.color = Colors.Health_Full;
         if (_uC.Player != Enums.Player.Player1)

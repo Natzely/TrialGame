@@ -7,29 +7,31 @@ public class Behaviour_Moving : StateMachineBehaviour
     public AudioClip WalkingStone;
     public AudioClip WalkingGrass;
 
-    Enums.GridBlockType gbT;
-    AudioSource aS;
-    UnitController uC;
-    GridBlock gB;
+    Enums.GridBlockType _gbT;
+    AudioSource _aS;
+    UnitController _uC;
+    GridBlock _gB;
     
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        uC = animator.GetComponent<UnitController>();
-        gB = uC.CurrentGridBlock;
-        aS = uC.WalkingAudioSource;
-        gbT = gB.Type;
+        _uC = animator.GetComponent<UnitController>();
+        _gB = _uC.CurrentGridBlock;
+        _aS = _uC.WalkingAudioSource;
+        _gbT = _gB.Type;
         PlayProperClip();
+
+        _uC.UnitGlance?.UnitMoving(true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(uC.CurrentGridBlock.Type != gbT)
+        if(_uC.CurrentGridBlock.Type != _gbT)
         {
-            gbT = uC.CurrentGridBlock.Type;
-            aS.Stop();
+            _gbT = _uC.CurrentGridBlock.Type;
+            _aS.Stop();
             PlayProperClip();
         }
     }
@@ -37,8 +39,9 @@ public class Behaviour_Moving : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        aS.Stop();
-        aS = null;
+        _aS.Stop();
+        _aS = null;
+        _uC.UnitGlance?.UnitMoving(false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
@@ -55,9 +58,9 @@ public class Behaviour_Moving : StateMachineBehaviour
 
     private void PlayProperClip()
     {
-        if (gbT == Enums.GridBlockType.Stone)
-            aS.clip = WalkingStone;
+        if (_gbT == Enums.GridBlockType.Stone)
+            _aS.clip = WalkingStone;
         else
-            aS.clip = WalkingGrass;
+            _aS.clip = WalkingGrass;
     }
 }

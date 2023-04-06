@@ -13,19 +13,19 @@ public class UnitGlanceEditor : Editor
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Cooldown", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            unitGlance.Cooldown(22f);
+            unitGlance.StartCooldown(5f);
         }
         if (GUILayout.Button("Hurt-G", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            unitGlance.Hurt(.8f, 1);
+            unitGlance.TakeDamage(.8f, 1);
         }
         if (GUILayout.Button("Hurt-Y", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            unitGlance.Hurt(.55f, 3);
+            unitGlance.TakeDamage(.55f, 3);
         }
         if (GUILayout.Button("Hurt-R", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
-            unitGlance.Hurt(.25f, 5);
+            unitGlance.TakeDamage(.25f, 5);
         }
         if(GUILayout.Button("Kill", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
@@ -34,6 +34,23 @@ public class UnitGlanceEditor : Editor
         if (GUILayout.Button("Reset", EditorStyles.miniButtonMid, GUILayout.Width(85)))
         {
             unitGlance.Reset();
+        }
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("CD/H-G", EditorStyles.miniButtonMid, GUILayout.Width(85)))
+        {
+            unitGlance.StartCooldown(3f);
+            unitGlance.TakeDamage(.8f, 1);
+        }
+        if (GUILayout.Button("CD/H-Y", EditorStyles.miniButtonMid, GUILayout.Width(85)))
+        {
+            unitGlance.StartCooldown(3f);
+            unitGlance.TakeDamage(.55f, 3);
+        }
+        if (GUILayout.Button("CD/H-R", EditorStyles.miniButtonMid, GUILayout.Width(85)))
+        {
+            unitGlance.StartCooldown(3f);
+            unitGlance.TakeDamage(.25f, 5);
         }
         EditorGUILayout.EndHorizontal();
         DrawDefaultInspector();

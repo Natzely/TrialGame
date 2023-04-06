@@ -28,7 +28,7 @@ public class Path_Saved_Mask : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_updateMask)
+        if(_updateMask && Unit)
         {
             var newScale = new Vector3(
                 (_maskTransform.position[Unit.LookDirIndex] - Unit.Position[Unit.LookDirIndex]) * 1.8f,
@@ -36,6 +36,8 @@ public class Path_Saved_Mask : MonoBehaviour
                 _maskTransform.localScale.z);
             _maskTransform.localScale = newScale;
         }
+        if (!Unit)
+            Destroy(gameObject);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
