@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[RequireComponent(/*typeof(Rigidbody),*/ typeof(SpriteRenderer), typeof(BoxCollider2D))]
+[RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 [RequireComponent(typeof(Animator), typeof(Damageable), typeof(GridBlockCosts))]
 [RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
 public class UnitController : MonoBehaviour, ILog
@@ -145,7 +145,14 @@ public class UnitController : MonoBehaviour, ILog
     public double DistanceFromCursor { get; private set; }
     public float CurrentHealth { get { return _damagable.Health; } }
     public float GridblockSpeedModifier { get; set; }
-    public int CurrentDamage { get { return Mathf.Max(1, Mathf.FloorToInt(Damage * (_damagable.Health / Damageable.MAXHEALTH))); } }
+    public int CurrentDamage
+    {
+        get
+        {
+            return Mathf.Max(1,
+                Mathf.FloorToInt(Damage * Mathf.Clamp(_damagable.Health / Damageable.MAXHEALTH, 0, 1)));
+        }
+    }
     public int AdjustedMoveDistance { get { return UnitState == Enums.UnitState.PlusAction ? Mathf.Clamp(MoveDistance - _prevPositions.Count, 1, 3) : MoveDistance; } }
     public int AdjustedMaxAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MaxAttackDistance; } }
     public int AdjustedMinAttackDistance { get { return UnitState == Enums.UnitState.PlusAction ? 0 : MinAttackDistance; } }
@@ -515,14 +522,6 @@ public class UnitController : MonoBehaviour, ILog
                 Vector2 moveVector = Vector2.MoveTowards(transform.position, _nextPoint.Position, Speed * GridblockSpeedModifier * Time.deltaTime);
                 _miniMapIcon.rectTransform.anchoredPosition = Utility.UITilePosition(_miniMapIcon.rectTransform, transform);
 
-                //if (DebugText && _debugTimer <= 0)
-                //{
-                //    DebugText.text += $"Current:{transform.position} | Speed: {Speed} | GBM: {GridblockSpeedModifier} | Time: {Time.deltaTime} | New Pos: {moveVector}\n";
-                //    _debugTimer = DebugTime;
-                //}
-                //else if (DebugText)
-                //    _debugTimer -= Time.deltaTime;
-
                 LookAt(moveVector);
                 transform.position = moveVector;
                 if (transform.position.V2() == _nextPoint.Position)
@@ -605,7 +604,7 @@ public class UnitController : MonoBehaviour, ILog
 
         if (CooldownTimer > 0)
         {
-            CooldownTimer -= Time.deltaTime;
+            CooldownTimer -= Time.deltaTime * UnitManager.CDReductionMult;
             if (CooldownTimer <= 0)
             {
                 Log($"Come of cooldown");
@@ -633,8 +632,11 @@ public class UnitController : MonoBehaviour, ILog
             }
         }
 
-        if (Player != Enums.Player.Player1 && _nextPoint == null && UnitState == Enums.UnitState.Idle && !OnCooldown && !Moving && !Moved && !Attacked)
+        if (Player != Enums.Player.Player1 && _nextPoint == null && 
+            (UnitState == Enums.UnitState.Idle || UnitState == Enums.UnitState.Cooldown) && 
+            !OnCooldown && !Moving && !Moved && !Attacked)
         {
+            UnitState = Enums.UnitState.Idle;
             // This is just a failsafe. In case the unit isn't doing anything and it somehow
             // got removed from it's manager.
             if (!UnitManager.Units.Contains(this))

@@ -24,7 +24,16 @@ public class LevelManager : SceneManager
 
     public void StartPlay()
     {
-        Side = SideSelection.ConfirmedSide;
+        StartPlay(Enums.PlayerSides.None);
+    }
+
+    public void StartPlay(Enums.PlayerSides side = Enums.PlayerSides.None)
+    {
+        if (side == Enums.PlayerSides.None)
+            UnitGlanceHandler.Instance.Side = Side = SideSelection.ConfirmedSide;
+        else
+            UnitGlanceHandler.Instance.Side = Side = side;
+
         PlayerManager.UnitHolder = Side == Enums.PlayerSides.Aztec ? AztecUnitHolder : SpanishUnitHolder;
         EnemyManager.UnitHolder = Side == Enums.PlayerSides.Aztec ? SpanishUnitHolder : AztecUnitHolder;
         PlayerManager.InitializeUnits();

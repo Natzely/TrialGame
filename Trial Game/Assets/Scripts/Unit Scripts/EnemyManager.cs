@@ -7,12 +7,13 @@ using UnityEditor;
 
 public class EnemyManager : UnitManager
 {
+    public static EnemyManager Instance { get; private set; }
+
     public PlayerManager PlayerManager;
     [Tooltip("How long to wait until the EnemyManager moves another unit")]
     public float MoveDelay;
     [Tooltip("Active timer until the next enemy move")]
     public float DealyTimer;
-
     public List<UnitController> UnitQueue { get { return _unitQueue; } }
 
     private List<UnitController> _unitQueue;
@@ -76,6 +77,11 @@ public class EnemyManager : UnitManager
 
     protected override void Awake()
     {
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+
         base.Awake();
         //DealyTimer = MoveDelay;
     }

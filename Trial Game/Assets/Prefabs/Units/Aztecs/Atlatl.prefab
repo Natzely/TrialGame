@@ -209,7 +209,7 @@ MonoBehaviour:
   HiddenByObstacle: 0
   Hide: 0
   AttackSpeed: 500
-  Cooldown: 19
+  Cooldown: 28
   CooldownTimer: 0
   PlusAction: 0
   Speed: 0.8

@@ -886,14 +886,15 @@ PrefabInstance:
         type: 3}
       propertyPath: LanguageTexts.Array.data[0]
       value: Whenever your unit moves or attacks, it will darken and go on cooldown.
-        It will regain its color back slowly and will spout stars when ready!
+        It will regain its color back slowly and will spout stars when ready. As
+        you lose units, your cooldowns will lower.
       objectReference: {fileID: 0}
     - target: {fileID: 5003213420381415490, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
       propertyPath: LanguageTexts.Array.data[1]
       value: "Cuando tu unidad se mueve o ataca, se oscurecer\xE1 y no podr\xE1s
         usarlo por un rato. Su color regresa en un tiempo y cuando salgan estrellas
-        podr\xE1s reutilizarlo."
+        podr\xE1s reutilizarlo. Tus cooldowns se bajaran quando pierdas unidades."
       objectReference: {fileID: 0}
     - target: {fileID: 6052768851877447479, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
@@ -4925,16 +4926,17 @@ PrefabInstance:
     - target: {fileID: 5003213420381415490, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
       propertyPath: LanguageTexts.Array.data[0]
-      value: You can view a quick overview of your units status on the left side
-        of your screen. You'll be able to tell their health, cooldown duration, if
-        they're moving, and when they take damage.
+      value: A quick overview of your units status will be on the left side of your
+        screen. You'll be able to tell their health, cooldown duration, if they're
+        moving, and when they take damage. At the top you can see your unit count
+        and CD reduction.
       objectReference: {fileID: 0}
     - target: {fileID: 5003213420381415490, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}
       propertyPath: LanguageTexts.Array.data[1]
       value: "En el lado izquierdo puedes ver un simple estado de tus uniades. Podras
         ver su salud, duracion de cooldown, si se estan moviendo, y quando tomen
-        da\xF1o."
+        da\xF1o. Arriva puedes el numero de unidades y tu reduccion de cooldown."
       objectReference: {fileID: 0}
     - target: {fileID: 6052768851877447479, guid: ec2b1843fcf72694ab98bce2eeef8576,
         type: 3}

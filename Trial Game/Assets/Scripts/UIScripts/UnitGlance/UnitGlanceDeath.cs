@@ -9,8 +9,9 @@ public class UnitGlanceDeath : MonoBehaviour
         RectTransform rectTransform = GetComponent<RectTransform>();
         rectTransform.anchoredPosition = position;
     }
+
     public void Destroy()
     {
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

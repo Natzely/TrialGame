@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 2926
+  controlID: 24960
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -55,6 +55,7 @@ MonoBehaviour:
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+    m_OverlaysVisible: 1
   m_SerializedViewNames:
   - UnityEditor.DeviceSimulation.SimulatorWindow
   m_SerializedViewValues:
@@ -140,12 +141,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1451
+    width: 1546
     height: 1299
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 2927
+  controlID: 24888
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,7 +164,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1451
+    width: 1546
     height: 817
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
@@ -195,7 +196,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73
-    width: 1450
+    width: 1545
     height: 796
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -261,7 +262,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 0
-      snapOffset: {x: 0, y: 0}
+      snapOffset: {x: 0, y: 25}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Tilemap Focus
@@ -410,19 +411,20 @@ MonoBehaviour:
       id: Scene View/Particles
       index: 10
       layout: 4
+    m_OverlaysVisible: 1
   m_WindowGUID: cc27987af1a868c49b0894db9c0f5429
   m_Gizmos: 0
   m_OverrideSceneCullingMask: 6917529027641081856
-  m_SceneIsLit: 1
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 1
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -2.1153972, y: -0.55993474, z: 102.840576}
+    m_Target: {x: -3.175715, y: -20.267656, z: 0.080313414}
     speed: 2
-    m_Value: {x: -2.1153972, y: -0.55993474, z: 102.840576}
+    m_Value: {x: -3.175715, y: -20.267656, z: 0.080313414}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -434,12 +436,12 @@ MonoBehaviour:
   m_SceneViewState:
     m_AlwaysRefresh: 0
     showFog: 1
-    showSkybox: 1
+    showSkybox: 0
     showFlares: 1
     showImageEffects: 1
     showParticleSystems: 1
     showVisualEffectGraphs: 1
-    m_FxEnabled: 0
+    m_FxEnabled: 1
   m_Grid:
     xGrid:
       m_Fade:
@@ -459,13 +461,13 @@ MonoBehaviour:
       m_Size: {x: 1, y: 1}
     zGrid:
       m_Fade:
-        m_Target: 1
+        m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
-    m_ShowGrid: 1
+    m_ShowGrid: 0
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
@@ -473,9 +475,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 6.3311462
+    m_Target: 1.3982453
     speed: 2
-    m_Value: 6.3311462
+    m_Value: 1.3982453
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -519,12 +521,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 817
-    width: 1451
+    width: 1546
     height: 482
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 2760
+  controlID: 24889
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -568,7 +570,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 783
     y: 0
-    width: 668
+    width: 763
     height: 482
   m_MinSize: {x: 102, y: 121}
   m_MaxSize: {x: 4002, y: 4021}
@@ -600,12 +602,13 @@ MonoBehaviour:
     serializedVersion: 2
     x: 783
     y: 890
-    width: 666
+    width: 761
     height: 461
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+    m_OverlaysVisible: 1
   m_ViewTransforms:
     m_KeySerializationHelper:
     - {fileID: 1107874658956180954, guid: 9ceeb091a82bf9e4e91e5e89aac437b9, type: 2}
@@ -626,6 +629,10 @@ MonoBehaviour:
     - {fileID: 1102660983900649076, guid: 9ceeb091a82bf9e4e91e5e89aac437b9, type: 2}
     - {fileID: 1102660983900649076, guid: c0d8179d39f20d84c8aa6332dbb1af61, type: 2}
     - {fileID: -6686283504524329844, guid: 67709980f1ef0e543b61026bfcef889b, type: 2}
+    - {fileID: 1102660983900649076, guid: b3784ed380c13e947a9a96e3ea367ff8, type: 2}
+    - {fileID: 3809841434034725748, guid: b3784ed380c13e947a9a96e3ea367ff8, type: 2}
+    - {fileID: 5578507626007430933, guid: 28df300cc64879344a88d3aa2416ecb5, type: 2}
+    - {fileID: 1102660983900649076, guid: 28df300cc64879344a88d3aa2416ecb5, type: 2}
     m_ValueSerializationHelper:
     - e00: 0.36818182
       e01: 0
@@ -691,14 +698,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.37099236
+    - e00: 0.8521739
       e01: 0
       e02: 0
-      e03: 55.80916
+      e03: 186.56525
       e10: 0
-      e11: 0.37099236
+      e11: 0.8521739
       e12: 0
-      e13: 144.22137
+      e13: 57.60869
       e20: 0
       e21: 0
       e22: 1
@@ -723,14 +730,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.37099236
+    - e00: 0.9709924
       e01: 0
       e02: 0
-      e03: 55.80916
+      e03: 121.80951
       e10: 0
-      e11: 0.37099236
+      e11: 0.9709924
       e12: 0
-      e13: 125.67175
+      e13: -12.328247
       e20: 0
       e21: 0
       e22: 1
@@ -739,14 +746,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.37099236
+    - e00: 0.9709924
       e01: 0
       e02: 0
-      e03: 55.809143
+      e03: 107.67944
       e10: 0
-      e11: 0.37099236
+      e11: 0.9709924
       e12: 0
-      e13: 125.67174
+      e13: -12.328247
       e20: 0
       e21: 0
       e22: 1
@@ -771,14 +778,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.47746244
+    - e00: 0.40567613
       e01: 0
       e02: 0
-      e03: 67.520874
+      e03: 59.624374
       e10: 0
-      e11: 0.47746244
+      e11: 0.40567613
       e12: 0
-      e13: 114.88063
+      e13: 150.14859
       e20: 0
       e21: 0
       e22: 1
@@ -787,14 +794,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.47746244
+    - e00: 0.40567613
       e01: 0
       e02: 0
-      e03: 67.520874
+      e03: 59.624374
       e10: 0
-      e11: 0.47746244
+      e11: 0.40567613
       e12: 0
-      e13: 114.88063
+      e13: 150.14859
       e20: 0
       e21: 0
       e22: 1
@@ -851,14 +858,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.47746244
+    - e00: 0.40567613
       e01: 0
       e02: 0
-      e03: 67.520874
+      e03: 59.624374
       e10: 0
-      e11: 0.47746244
+      e11: 0.40567613
       e12: 0
-      e13: 114.88063
+      e13: 150.14859
       e20: 0
       e21: 0
       e22: 1
@@ -915,11 +922,75 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: -50.75
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 98.5
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: -49.5
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 153.5
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: -49.5
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 153.5
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    - e00: 1
+      e01: 0
+      e02: 0
+      e03: -50.75
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 98.5
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
   m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: 61b7049274c2549428bd13b800c00ebb,
+  m_AnimatorController: {fileID: 9100000, guid: 87eaaed34d423aa42a26b649a08fb6b6,
     type: 2}
   m_BreadCrumbs:
-  - m_Target: {fileID: 8687295198457361349, guid: 61b7049274c2549428bd13b800c00ebb,
+  - m_Target: {fileID: 1107874658956180954, guid: 87eaaed34d423aa42a26b649a08fb6b6,
       type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
@@ -950,14 +1021,14 @@ MonoBehaviour:
   - {fileID: 13}
   m_Position:
     serializedVersion: 2
-    x: 1451
+    x: 1546
     y: 0
-    width: 494
+    width: 493
     height: 1299
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 2868
+  controlID: 24961
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -975,7 +1046,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 494
+    width: 493
     height: 575
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -1005,20 +1076,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1451
+    x: 1546
     y: 73
-    width: 492
+    width: 491
     height: 554
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+    m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 91}
+      scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 0ed3feff2ed5feffd4e4feffc6e5feff16e6feff4ee9feff28f5ffff86f6ffffd8f7ffff10fbffff306f0000b4fa000052fd000024ff0000
+      m_ExpandedIDs: 6ee8daff68e9daff54e2dbffb4e2dbff2caaeeffb2aaeeffc6aaeeffd2baeeff2ac7efff60cbefffd6cbefff0efbffff90710000767200001273000082cf010068d0010036f402006cf40200d0f40200
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1059,10 +1131,10 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 575
-    width: 494
+    width: 493
     height: 724
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -1089,14 +1161,15 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1451
+    x: 1546
     y: 648
-    width: 492
+    width: 491
     height: 703
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+    m_OverlaysVisible: 1
   m_SearchFilter:
     m_NameFilter: 
     m_ClassNames: []
@@ -1110,22 +1183,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/UIScripts/PauseScreenUI
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/UIScripts/PauseScreenUI
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: A:\Development\Unity Projects\TrialGame\Trial Game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 149}
-    m_SelectedIDs: 827b0000
-    m_LastClickedID: 31618
-    m_ExpandedIDs: 00000000567b0000587b00005a7b00005c7b00005e7b0000607b0000627b0000647b0000667b0000687b00006a7b00006c7b00006e7b0000707b0000727b0000747b0000767b0000787b00007a7b00007c7b00007e7b0000807b0000827b0000847b0000867b0000887b00008a7b00008c7b00008e7b0000907b0000927b0000947b0000967b0000987b00009a7b00009c7b0000
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: aa9f0000
+    m_LastClickedID: 40874
+    m_ExpandedIDs: 000000002c9f00002e9f0000309f0000329f0000349f0000369f0000389f00003c9f00003e9f0000429f0000449f0000469f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1153,7 +1226,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000567b0000587b00005a7b00005c7b00005e7b0000607b0000627b0000647b0000667b0000687b00006a7b00006c7b00006e7b0000707b0000727b0000747b0000767b0000787b00007a7b00007c7b00007e7b0000807b0000827b0000847b0000867b0000887b00008a7b00008c7b00008e7b0000907b0000927b0000947b0000967b0000987b00009a7b00009c7b0000
+    m_ExpandedIDs: 000000002c9f00002e9f0000309f0000329f0000349f0000369f0000389f00003c9f00003e9f0000429f0000449f0000469f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1178,10 +1251,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 24ff0000
-    m_LastClickedInstanceID: 65316
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c62300005c360000f07a0000ca37000022290200107f0000ee800000787f000094800000d27f00002880000080c2000000000000d8ae0000
+    m_ExpandedInstanceIDs: c62300005c360000f07a0000ca37000022290200107f0000ee800000787f000094800000d27f00002880000080c2000000000000d8ae00009a920000467f000064340000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1219,22 +1292,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
+  m_Name: InspectorWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1945
+    x: 2039
     y: 0
-    width: 615
+    width: 521
     height: 1299
   m_MinSize: {x: 276, y: 71}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
+  - {fileID: 17}
   m_Selected: 0
-  m_LastSelected: 0
+  m_LastSelected: 1
 --- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1256,6 +1330,48 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+    x: 2039
+    y: 73
+    width: 520
+    height: 1278
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+    m_OverlaysVisible: 1
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
+  m_PreviewResizer:
+    m_CachedPref: -161
+    m_ControlHash: -371814159
+    m_PrefName: Preview_InspectorPreview
+  m_LastInspectedObjectInstanceID: -1
+  m_LastVerticalScrollValue: 0
+  m_GlobalObjectId: 
+  m_InspectorMode: 0
+  m_LockTracker:
+    m_IsLocked: 0
+  m_PreviewWindow: {fileID: 0}
+--- !u!114 &17
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffb9ccd5681bd841ae77e9e5571f770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Git for Unity
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
     x: 1945
     y: 73
     width: 614
@@ -1264,16 +1380,393 @@ MonoBehaviour:
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
-  m_ObjectsLockedBeforeSerialization: []
-  m_InstanceIDsLockedBeforeSerialization: 
-  m_PreviewResizer:
-    m_CachedPref: -161
-    m_ControlHash: -371814159
-    m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: 65316
-  m_LastVerticalScrollValue: 104
-  m_GlobalObjectId: 
-  m_InspectorMode: 0
-  m_LockTracker:
-    m_IsLocked: 0
-  m_PreviewWindow: {fileID: 0}
+    m_OverlaysVisible: 1
+  progressMessageClearTime: -1
+  notificationClearTime: -1
+  timeSinceLastRotation: -1
+  currentBranchAndRemoteHasUpdate: 0
+  currentTrackingStatusHasUpdate: 0
+  currentStatusEntriesHasUpdate: 0
+  repositoryProgressHasUpdate: 1
+  appManagerProgressHasUpdate: 1
+  changeTab: 5
+  activeTab: 5
+  initProjectView:
+    hasCompletedInitialCheck: 0
+    isUserDataPresent: 0
+    lastCheckUserChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 8
+  branchesView:
+    treeLocals:
+      IsRemote: 0
+      folders:
+        keys:
+        - Local branches
+        values:
+        - path: Local branches
+          label: Local branches
+          level: 0
+          isFolder: 1
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 0
+          checkState: 0
+      checkedFileNodes:
+        keys: []
+        values: []
+      title: Local branches
+      pathSeparator: /
+      displayRootNode: 1
+      isSelectable: 1
+      isCheckable: 0
+      nodes:
+      - path: Local branches
+        label: Local branches
+        level: 0
+        isFolder: 1
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+      selectedNode:
+        path: 
+        label: 
+        level: 0
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+    treeRemotes:
+      IsRemote: 1
+      folders:
+        keys:
+        - Remote branches
+        values:
+        - path: Remote branches
+          label: Remote branches
+          level: 0
+          isFolder: 1
+          isContainer: 0
+          isCollapsed: 0
+          isHidden: 0
+          isActive: 0
+          treeIsCheckable: 0
+          checkState: 0
+      checkedFileNodes:
+        keys: []
+        values: []
+      title: Remote branches
+      pathSeparator: /
+      displayRootNode: 1
+      isSelectable: 1
+      isCheckable: 0
+      nodes:
+      - path: Remote branches
+        label: Remote branches
+        level: 0
+        isFolder: 1
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+      selectedNode:
+        path: 
+        label: 
+        level: 0
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+    mode: 0
+    newBranchName: 
+    scroll: {x: 0, y: 0}
+    disableDelete: 1
+    disableCreate: 1
+    lastLocalAndRemoteBranchListChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 2
+    lastCurrentBranchAndRemoteChange:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 1
+    currentBranch:
+      name: 
+      tracking: 
+    currentRemote:
+      name: 
+      url: 
+      login: 
+      user: 
+      host: 
+      function: 0
+      token: 
+    localBranches: []
+    remoteBranches: []
+  changesView:
+    currentBranchHasUpdate: 0
+    currentStatusEntriesHasUpdate: 0
+    currentLocksHasUpdate: 0
+    commitBody: 
+    commitMessage: 
+    currentBranch: 
+    treeScroll: {x: 0, y: 0}
+    treeChanges:
+      assets:
+        keys: []
+        values: []
+      folders:
+        keys: []
+        values: []
+      checkedFileNodes:
+        keys: []
+        values: []
+      title: 
+      pathSeparator: \
+      displayRootNode: 0
+      isSelectable: 1
+      isCheckable: 1
+      isUsingGlobalSelection: 1
+      nodes:
+      - path: 
+        label: 
+        level: -1
+        isFolder: 1
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 1
+        checkState: 0
+        isLocked: 0
+        gitStatusEntry:
+          path: 
+          fullPath: 
+          projectPath: 
+          originalPath: 
+          indexStatus: 0
+          workTreeStatus: 0
+      selectedNode:
+        path: 
+        label: 
+        level: 0
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+        isLocked: 0
+        gitStatusEntry:
+          path: 
+          fullPath: 
+          projectPath: 
+          originalPath: 
+          indexStatus: 0
+          workTreeStatus: 0
+    gitStatusEntries: []
+    changedFilesText: No changed files
+    lastCurrentBranchChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 1
+    lastStatusEntriesChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 6
+    lastLocksChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 7
+  historyView:
+    currentLogHasUpdate: 0
+    currentTrackingStatusHasUpdate: 0
+    logEntries: []
+    statusAhead: 0
+    lastLogChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 3
+    lastTrackingStatusChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 5
+    historyControl:
+      scroll: {x: 0, y: 0}
+      entries: []
+      statusAhead: 0
+      selectedIndex: -1
+    selectedEntry:
+      commitID: 
+      mergeA: 
+      mergeB: 
+      authorName: 
+      authorEmail: 
+      commitEmail: 
+      commitName: 
+      summary: 
+      description: 
+      timeString: 0001-01-01T00:00:00.000+00:00
+      commitTimeString: 0001-01-01T00:00:00.000+00:00
+      changes: []
+    treeChanges:
+      assets:
+        keys: []
+        values: []
+      folders:
+        keys: []
+        values: []
+      checkedFileNodes:
+        keys: []
+        values: []
+      title: 
+      pathSeparator: /
+      displayRootNode: 0
+      isSelectable: 1
+      isCheckable: 0
+      isUsingGlobalSelection: 0
+      nodes: []
+      selectedNode:
+        path: 
+        label: 
+        level: 0
+        isFolder: 0
+        isContainer: 0
+        isCollapsed: 0
+        isHidden: 0
+        isActive: 0
+        treeIsCheckable: 0
+        checkState: 0
+        isLocked: 0
+        gitStatusEntry:
+          path: 
+          fullPath: 
+          projectPath: 
+          originalPath: 
+          indexStatus: 0
+          workTreeStatus: 0
+    detailsScroll: {x: 0, y: 0}
+  settingsView:
+    gitPathView:
+      gitPath: 
+      gitLfsPath: 
+      errorMessage: 
+      resetToBundled: 0
+      resetToSystem: 0
+      changingManually: 1
+    hasRemote: 0
+    lastCurrentRemoteChangedEvent:
+      updatedTimeString: 2023-04-30T21:39:36.918-05:00
+      cacheType: 1
+    newRepositoryRemoteUrl: 
+    repositoryRemoteName: origin
+    repositoryRemoteUrl: 
+    scroll: {x: 0, y: 0}
+    userSettingsView:
+      gitName: 
+      gitEmail: 
+      newGitName: 
+      newGitEmail: 
+      needsSaving: 0
+      lastCheckUserChangedEvent:
+        updatedTimeString: 2023-04-30T21:49:36.131-05:00
+        cacheType: 8
+    webTimeout: 100000
+    gitTimeout: 5000
+  locksView:
+    currentRemoteHasUpdate: 1
+    currentStatusEntriesHasUpdate: 0
+    currentLocksHasUpdate: 0
+    keychainHasUpdate: 1
+    locksControl:
+      scroll: {x: 0, y: 0}
+      gitLockEntries: []
+      assets:
+        keys: []
+        values: []
+      gitStatusDictionary:
+        keys: []
+        values: []
+      selectedEntry:
+        gitLock:
+          id: 
+          path: 
+          owner:
+            name: 
+            email: 
+          lockedAtString: 
+        gitFileStatus: 0
+        lockedAt: 1 Jan 0001, 00:00
+    lastCurrentRemoteChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 1
+    lastLocksChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 7
+    lastStatusEntriesChangedEvent:
+      updatedTimeString: 0001-01-01T00:00:00.000+00:00
+      cacheType: 6
+    lockedFiles: []
+    gitStatusEntries: []
+    currentUsername: 
+    unlockFileMenuContent:
+      m_Text: Release Lock
+      m_Image: {fileID: 0}
+      m_Tooltip: 
+    forceUnlockFileMenuContent:
+      m_Text: Release Lock (forced)
+      m_Image: {fileID: 0}
+      m_Tooltip: 
+  hasRemote: 1
+  currentRemoteName: 
+  currentBranch: 
+  currentRemoteUrl: No remote configured
+  statusAhead: 0
+  statusBehind: 0
+  hasItemsToCommit: 0
+  isTrackingRemoteBranch: 0
+  currentBranchContent:
+    m_Text: 
+    m_Image: {fileID: 0}
+    m_Tooltip: Active branch
+  currentRemoteUrlContent:
+    m_Text: No remote configured
+    m_Image: {fileID: 0}
+    m_Tooltip: Add a remote in the Settings tab
+  lastCurrentBranchAndRemoteChangedEvent:
+    updatedTimeString: 0001-01-01T00:00:00.000+00:00
+    cacheType: 1
+  lastTrackingStatusChangedEvent:
+    updatedTimeString: 0001-01-01T00:00:00.000+00:00
+    cacheType: 5
+  lastStatusEntriesChangedEvent:
+    updatedTimeString: 0001-01-01T00:00:00.000+00:00
+    cacheType: 6
+  pullButtonContent:
+    m_Text: Pull
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  pushButtonContent:
+    m_Text: Push
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  refreshButtonContent:
+    m_Text: Refresh
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  fetchButtonContent:
+    m_Text: Fetch
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  repositoryProgressValue: 0
+  repositoryProgressMessage: 
+  appManagerProgressValue: 0
+  appManagerProgressMessage: 
+  primaryConnectionUsername: 

@@ -110,7 +110,10 @@ public class UnitGlance : MonoBehaviour
     {
         _death = true;
         if (!_shake || !ShakeAndMove)   // Wait till shaking is over to stop movement
+        {
+            Handler.RemoveGlance(this);
             _newMovePoint = false;
+        }
 
         float rotZ = Random.Range(5, DeathAngle);
         if ((int)(Time.deltaTime * 10000) % 2 == 0)
@@ -180,8 +183,9 @@ public class UnitGlance : MonoBehaviour
 
         if(_barRect.sizeDelta.x < _cooldownBarOrgWidth && !_death)
         {
-            float moveBar = Mathf.MoveTowards(_barRect.sizeDelta.x, _cooldownBarOrgWidth, _cooldownBarSpeed * Time.deltaTime);
-            _cooldownTimer = Mathf.MoveTowards(_cooldownTimer, _cooldown, Time.deltaTime);
+            //float moveBar = Mathf.MoveTowards(_barRect.sizeDelta.x, _cooldownBarOrgWidth, _cooldownBarSpeed * Time.deltaTime * PlayerManager.Instance.CDReductionMult);
+            _cooldownTimer = Mathf.MoveTowards(_cooldownTimer, _cooldown, Time.deltaTime * PlayerManager.Instance.CDReductionMult);
+            float moveBar = _cooldownBarOrgWidth * (_cooldownTimer / _cooldown);
             _barRect.sizeDelta = new Vector2(moveBar, _barRect.sizeDelta.y);
         }
 
@@ -278,7 +282,6 @@ public class UnitGlance : MonoBehaviour
             shakeSev -= (shakeSev * (i+1) / numofPoint);  // decrease the shake severity as we create more points
         }
 
-        Debug.Log(string.Join(",", tmpList));
         _shakeDelta = _shakePoints.Dequeue();
         _shake = true;
         //_moveSpeed = PositionSpeed / _severity;

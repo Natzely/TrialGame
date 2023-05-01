@@ -140,6 +140,7 @@ public class Enums : MonoBehaviour
     {
         Aztec = 0,
         Spanish = 1,
+        None = 2,
     }
 
     public enum UI_SideSelectionButtonType

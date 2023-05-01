@@ -14,6 +14,7 @@ public abstract class UnitManager : MonoBehaviour
     public GameObject DeadUnitHolder;
     public PolygonCollider2D CursorBoundaries;
     [SerializeField] protected bool InitializeUnitsAtStart;
+    public float CDReductionMult = 1;
 
     public PlayerInfo PlayerInfo { get; private set; }
     public GridBlock[,] FullGrid { get; set; }
@@ -31,14 +32,19 @@ public abstract class UnitManager : MonoBehaviour
 
     private static string _debugFilePath;
 
-    protected private int _gridSizeX;
-    protected private int _gridSizeY;
+    protected float _totalUnits;
+    protected int _gridSizeX;
+    protected int _gridSizeY;
+
+    private float _perUnitReducAdjuster;
 
     public abstract IEnumerable<MovePoint> CreatePath(GridBlock startPos, GridBlock endPos);
 
     public virtual void InitializeUnits()
     {
         Units = new List<UnitController>(UnitHolder.GetComponentsInChildren<UnitController>());
+        _totalUnits = Units.Count;
+        _perUnitReducAdjuster = (1 / _totalUnits) / _totalUnits;
     }
 
     public void KillUnit(InputAction.CallbackContext context)
@@ -81,15 +87,24 @@ public abstract class UnitManager : MonoBehaviour
             Units.Remove(unit);
 
         if(Units.Count() <= 0 && SceneManager.GameState != Enums.GameState.Results)
-        {
             SceneManager.FinishScene(this);
-        }
+        else
+            UpdateUnitCooldownReduction();
     }
 
     protected virtual void Awake()
     {
         PlayerInfo = new PlayerInfo();
         _debugFilePath = Application.persistentDataPath + "/Debug.txt";
+    }
+
+    protected void UpdateUnitCooldownReduction()
+    {
+        float adjuster = (_totalUnits - Units.Count) * _perUnitReducAdjuster;
+        double reduction = (1 - (Units.Count / _totalUnits)) + adjuster;
+        CDReductionMult = 1 + (float)reduction;
+        if (this is PlayerManager)
+            UnitGlanceHandler.Instance.UnitCooldownReduction = CDReductionMult;
     }
 }
 

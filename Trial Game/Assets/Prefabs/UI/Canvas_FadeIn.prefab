@@ -190,12 +190,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682868481d0517446b94a8f791811b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditOnStart: 0
+  EditOnStart: 1
   Loop: 0
-  Speed: 2
+  Speed: 1
   Acceleration: 1
   Decceleration: 1
-  SlowDownPercent: 1
+  SlowDownPercent: 0
   MinSpeed: 0
   MaxSpeed: 0
   WaitTime: 0
@@ -203,3 +203,4 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ColorEdit: {r: 0, g: 0, b: 0, a: 0}
+  EffectTime: 0.25

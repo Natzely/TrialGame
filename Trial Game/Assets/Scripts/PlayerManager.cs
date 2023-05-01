@@ -7,11 +7,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : UnitManager
 {
+    public static PlayerManager Instance { get; private set; }
+
     public static float ACTIONTIMER = .1f;
     public GameObject Minimap_UnitIcons;
     public GameObject Minimap_TileIcons;
 
-    public static PlayerManager Instance { get; private set; }
     public bool HideActiveGrid { get; private set; }
     public float MinimapSquareSize { get { return _miniMapTileSize; } }
 
@@ -260,14 +261,6 @@ public class PlayerManager : UnitManager
 
         return null;
     }
-
-    //public override void AddUnit(UnitController unit, bool addAtRandom = false)
-    //{
-    //    if (_nextUnitList != null)
-    //        _nextUnitList.Add(unit);
-
-    //    base.AddUnit(unit);
-    //}
 
     private IEnumerator GetGridBlocks()
     {

@@ -1,12 +1,16 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UnitGlanceHandler : MonoBehaviour
 {
     [SerializeField] private GameObject UnitGlanceObject;
+    [SerializeField] private UnitGlanceIcon UnitIcon;
+    [SerializeField] private TextMeshProUGUI UnitCountText;
+    [SerializeField] private TextMeshProUGUI CooldownReductionText;
     [SerializeField] private float SizeSpeed;
 
     public static UnitGlanceHandler Instance { get; private set; }
@@ -16,10 +20,22 @@ public class UnitGlanceHandler : MonoBehaviour
         get { return _recT.sizeDelta.y; }
     }
 
+    public Enums.PlayerSides Side
+    {
+        set { UnitIcon.Side = value; }
+    }
+
+    public float UnitCooldownReduction
+    {
+        set { CooldownReductionText.text = value.ToString("N1"); }
+    }
+
     private RectTransform _recT;
     private List<UnitGlance> _glances;
     private float _handlerHeight;
     private float _glanceHeight;
+    private float _totalUnits;
+    private float _currentUnits;
 
     /// <summary>
     /// Initialize 
@@ -41,6 +57,9 @@ public class UnitGlanceHandler : MonoBehaviour
         _glances.Add(uG);
         _handlerHeight = _glances.Count * uG.Height;
 
+        _totalUnits = ++_currentUnits;
+        UpdateUnitCount();
+
         return uG;
     }
 
@@ -50,6 +69,8 @@ public class UnitGlanceHandler : MonoBehaviour
         {
             _glances.Remove(uG);
             _handlerHeight = _glances.Count * uG.Height;
+            _currentUnits--;
+            UpdateUnitCount();
         }
     }
 
@@ -63,12 +84,6 @@ public class UnitGlanceHandler : MonoBehaviour
         _recT = GetComponent<RectTransform>();
 
         _glances = new List<UnitGlance>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -93,5 +108,10 @@ public class UnitGlanceHandler : MonoBehaviour
     {
         Vector2 newPos = new Vector2(0, -(_glanceHeight * cdIndex));//(glancesNotInCooldown + cdIndex)));
         uG.SetPosition(newPos);
+    }
+
+    private void UpdateUnitCount()
+    {
+        UnitCountText.text = $"{_currentUnits}/{_totalUnits}";
     }
 }
